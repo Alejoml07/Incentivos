@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "bJ9TaadQMtT7vtoc2CzEHgMi94IGTZgGTMJYTtJOC74+jZXUi/fHA4cPfT1Ev5F8K/h+AbZTrI5BXJGPhoLCEw==",
+  "dgSpecHash": "Kjm0NExxJ5ESxu6JrQi9GxQ4EV58NbVW0P1TcgFDr4FylkP5f8h889/WG1pfvLZ6tDvmBqSUf98l6+ccNOs/bA==",
   "success": true,
-  "projectFilePath": "/Users/danielgarcia/Projects/PuntosLeonisa.Products/2.Infrastructure/PuntosLeonisa.Infracture.Persistence.CosmoDb/PuntosLeonisa.Infracture.Persistence.CosmoDb.csproj",
+  "projectFilePath": "C:\\Users\\andre\\Desktop\\BackEnd-Incentivos\\IncentivosService\\PuntosLeonisa.Products\\2.Infrastructure\\PuntosLeonisa.Infracture.Persistence.CosmoDb\\PuntosLeonisa.Infracture.Persistence.CosmoDb.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
