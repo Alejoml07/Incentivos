@@ -1,0 +1,6 @@
+﻿<Properties StartupConfiguration="{10BD2B53-FFEE-4D3C-9718-12768E374BC8}|Default">
+  <MonoDevelop.Ide.ItemProperties.1.Domain.PuntosLeonisa.Products.Domain FirstBuild="True" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.2.Infrastructure.Persistence.PuntosLeonisa.Infracture.Persistence.CosmoDb FirstBuild="True" />
+  <MonoDevelop.Ide.ItemProperties.4.Presentation.PuntosLeonisa.Products PreferredExecutionTarget="MonoDevelop.Default" FirstBuild="True" />
+</Properties>
