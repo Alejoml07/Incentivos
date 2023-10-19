@@ -7,6 +7,8 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using PuntosLeonisa.Products.Application;
+
 namespace Productos
 {
     public static class Productos
@@ -24,9 +26,9 @@ namespace Productos
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             name = name ?? data?.name;
 
-            //var aplication = new ProductosApplication();
+            var aplication = new ProductosApplication();
 
-            //aplication.GuardarProducto();
+            aplication.GuardarProducto();
 
             string responseMessage = string.IsNullOrEmpty(name)
                 ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."

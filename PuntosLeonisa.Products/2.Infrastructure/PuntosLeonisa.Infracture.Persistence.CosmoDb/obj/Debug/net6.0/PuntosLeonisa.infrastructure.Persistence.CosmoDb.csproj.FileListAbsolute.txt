@@ -18,11 +18,6 @@ C:/Users/andre/Desktop/BackEnd-Incentivos/IncentivosService/PuntosLeonisa.Produc
 C:/Users/andre/Desktop/BackEnd-Incentivos/IncentivosService/PuntosLeonisa.Products/2.Infrastructure/PuntosLeonisa.Infracture.Persistence.CosmoDb/obj/Debug/net6.0/refint/PuntosLeonisa.infrastructure.Persistence.CosmoDb.dll
 C:/Users/andre/Desktop/BackEnd-Incentivos/IncentivosService/PuntosLeonisa.Products/2.Infrastructure/PuntosLeonisa.Infracture.Persistence.CosmoDb/obj/Debug/net6.0/PuntosLeonisa.infrastructure.Persistence.CosmoDb.pdb
 C:/Users/andre/Desktop/BackEnd-Incentivos/IncentivosService/PuntosLeonisa.Products/2.Infrastructure/PuntosLeonisa.Infracture.Persistence.CosmoDb/obj/Debug/net6.0/ref/PuntosLeonisa.infrastructure.Persistence.CosmoDb.dll
-/Users/danielgarcia/sourcecode/IncentivosService/PuntosLeonisa.Products/2.Infrastructure/PuntosLeonisa.Infracture.Persistence.CosmoDb/bin/Debug/net6.0/Microsoft.Azure.Cosmos.ServiceInterop.dll
-/Users/danielgarcia/sourcecode/IncentivosService/PuntosLeonisa.Products/2.Infrastructure/PuntosLeonisa.Infracture.Persistence.CosmoDb/bin/Debug/net6.0/Cosmos.CRTCompat.dll
-/Users/danielgarcia/sourcecode/IncentivosService/PuntosLeonisa.Products/2.Infrastructure/PuntosLeonisa.Infracture.Persistence.CosmoDb/bin/Debug/net6.0/msvcp140.dll
-/Users/danielgarcia/sourcecode/IncentivosService/PuntosLeonisa.Products/2.Infrastructure/PuntosLeonisa.Infracture.Persistence.CosmoDb/bin/Debug/net6.0/vcruntime140.dll
-/Users/danielgarcia/sourcecode/IncentivosService/PuntosLeonisa.Products/2.Infrastructure/PuntosLeonisa.Infracture.Persistence.CosmoDb/bin/Debug/net6.0/vcruntime140_1.dll
 /Users/danielgarcia/sourcecode/IncentivosService/PuntosLeonisa.Products/2.Infrastructure/PuntosLeonisa.Infracture.Persistence.CosmoDb/bin/Debug/net6.0/PuntosLeonisa.infrastructure.Persistence.CosmoDb.deps.json
 /Users/danielgarcia/sourcecode/IncentivosService/PuntosLeonisa.Products/2.Infrastructure/PuntosLeonisa.Infracture.Persistence.CosmoDb/bin/Debug/net6.0/PuntosLeonisa.infrastructure.Persistence.CosmoDb.dll
 /Users/danielgarcia/sourcecode/IncentivosService/PuntosLeonisa.Products/2.Infrastructure/PuntosLeonisa.Infracture.Persistence.CosmoDb/bin/Debug/net6.0/PuntosLeonisa.infrastructure.Persistence.CosmoDb.pdb

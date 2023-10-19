@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 namespace PuntosLeonisa.Products.Domain;
 public class Producto :IDisposable
 {
+
     public string Id { get; set; }
    
     public string? Referencia { get; set; }
@@ -21,7 +22,7 @@ public class Producto :IDisposable
 
     public int? Estado { get; set; }
  
-    public DateTime? Fecha { get; set; }
+    public string? Fecha { get; set; }
 
     public string? ImagenPrincipal { get; set; }
 

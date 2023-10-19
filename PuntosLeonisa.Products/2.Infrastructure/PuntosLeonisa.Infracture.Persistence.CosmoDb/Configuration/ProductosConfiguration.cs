@@ -10,8 +10,9 @@ namespace PuntosLeonisa.Infrasctructure.Core.Configuration
     {
         public void Configure(EntityTypeBuilder<Producto> builder)
         {
-            builder.HasPartitionKey(e => e.Id);
-            builder.OwnsOne(p => p.Nombre);
+            builder.ToContainer("Producto")
+                .HasPartitionKey(e => e.Id);
+            //builder.OwnsOne(p => p.Nombre);
         }
     }
 }
