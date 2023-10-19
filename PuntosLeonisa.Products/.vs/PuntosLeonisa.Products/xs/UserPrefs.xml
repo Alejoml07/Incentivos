@@ -1,6 +1,72 @@
-﻿<Properties StartupConfiguration="{10BD2B53-FFEE-4D3C-9718-12768E374BC8}|Default">
-  <MonoDevelop.Ide.ItemProperties.1.Domain.PuntosLeonisa.Products.Domain FirstBuild="True" />
+﻿<Properties StartupConfiguration="{B841F7CF-084C-4BC6-A7D4-01D470FA18FE}|Default">
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workbench ActiveDocument="4.Presentation/Productos/Startup.cs">
+    <Files>
+      <File FileName="2.Infrastructure/PuntosLeonisa.Infrasctructure.Core/Configuration/ProductosConfiguration.cs" Line="9" Column="40" IsPinned="True" />
+      <File FileName="1.Domain/PuntosLeonisa.Domain.Core/Repository/IRepository.cs" Line="4" Column="1" />
+      <File FileName="1.Domain/PuntosLeonisa.Products.Domain/Interfaces/IProductoRepository.cs" Line="6" Column="1" />
+      <File FileName="2.Infrastructure/PuntosLeonisa.Infrasctructure.Core/Repository/Repository.cs" Line="20" Column="27" />
+      <File FileName="2.Infrastructure/PL.Products.Infrasctructure.Persistence.Repositories/Class1.cs" Line="9" Column="31" />
+      <File FileName="1.Domain/PuntosLeonisa.Products.Domain/Model/Productos.cs" Line="4" Column="14" />
+      <File FileName="2.Infrastructure/PuntosLeonisa.Infracture.Persistence.CosmoDb/CosmoDB.cs" Line="11" Column="1" />
+      <File FileName="3.Application/PuntosLeonisa.Products.Application/ProductosApplication.cs" Line="42" Column="37" />
+      <File FileName="4.Presentation/Productos/Productos.cs" Line="27" Column="12" />
+      <File FileName="4.Presentation/Productos/EmptyClass.cs" Line="13" Column="39" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="PuntosLeonisa.Products" expanded="True">
+            <Node name="1.Domain" expanded="True">
+              <Node name="Core" expanded="True">
+                <Node name="PuntosLeonisa.Domain.Core" expanded="True">
+                  <Node name="Repository" expanded="True" />
+                </Node>
+              </Node>
+              <Node name="Model" expanded="True">
+                <Node name="PuntosLeonisa.Products.Domain" expanded="True">
+                  <Node name="Model" expanded="True" />
+                </Node>
+              </Node>
+            </Node>
+            <Node name="2.Infrastructure" expanded="True">
+              <Node name="Core" expanded="True">
+                <Node name="PuntosLeonisa.Infrasctructure.Core" expanded="True">
+                  <Node name="Repository" expanded="True" />
+                </Node>
+              </Node>
+              <Node name="Persistence" expanded="True">
+                <Node name="Context" expanded="True">
+                  <Node name="PuntosLeonisa.infrastructure.Persistence.CosmoDb" expanded="True">
+                    <Node name="Configuration" expanded="True" />
+                  </Node>
+                </Node>
+                <Node name="Repository" expanded="True">
+                  <Node name="PL.Products.Infrasctructure.Persistence.Repositories" expanded="True" />
+                </Node>
+              </Node>
+            </Node>
+            <Node name="3.Application" expanded="True">
+              <Node name="PuntosLeonisa.Products.Application" selected="True">
+                <Node name="Dependencies" expanded="True">
+                  <Node name="FrameworkReferences" expanded="True" />
+                </Node>
+              </Node>
+            </Node>
+            <Node name="4.Presentation" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.ItemProperties.2.Infrastructure.Persistence.PuntosLeonisa.Infracture.Persistence.CosmoDb FirstBuild="True" />
-  <MonoDevelop.Ide.ItemProperties.4.Presentation.PuntosLeonisa.Products PreferredExecutionTarget="MonoDevelop.Default" FirstBuild="True" />
+  <MonoDevelop.Ide.ItemProperties.4.Presentation.Productos PreferredExecutionTarget="MonoDevelop.Default" />
 </Properties>

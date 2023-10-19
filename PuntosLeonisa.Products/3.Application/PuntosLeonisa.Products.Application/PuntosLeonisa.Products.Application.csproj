@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\2.Infrastructure\PL.Products.Infrasctructure.Persistence.Repositories\PL.Products.Infrasctructure.Persistence.Repositories.csproj" />
+    <ProjectReference Include="..\..\2.Infrastructure\PuntosLeonisa.Infracture.Persistence.CosmoDb\PuntosLeonisa.infrastructure.Persistence.CosmoDb.csproj" />
+    <ProjectReference Include="..\..\2.Infrastructure\PuntosLeonisa.Infrasctructure.Core\PuntosLeonisa.Infrasctructure.Core.csproj" />
+    <ProjectReference Include="..\..\1.Domain\PuntosLeonisa.Products.Domain\PuntosLeonisa.Products.Domain.csproj" />
+    <ProjectReference Include="..\..\1.Domain\PuntosLeonisa.Domain.Core\PuntosLeonisa.Domain.Core.csproj" />
+  </ItemGroup>
+</Project>

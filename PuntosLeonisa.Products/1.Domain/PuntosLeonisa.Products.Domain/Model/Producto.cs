@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 namespace PuntosLeonisa.Products.Domain;
-public class Productos :IDisposable
+public class Producto :IDisposable
 {
-    [JsonProperty(PropertyName = "id")]
-    public string? Id { get; set; }
+    public string Id { get; set; }
    
     public string? Referencia { get; set; }
   
@@ -46,11 +45,7 @@ public class Productos :IDisposable
     {
         throw new NotImplementedException();
     }
-
-    public Task SaveChangesAsync()
-    {
-        throw new NotImplementedException();
-    }
+      
 
     public override string ToString()
 

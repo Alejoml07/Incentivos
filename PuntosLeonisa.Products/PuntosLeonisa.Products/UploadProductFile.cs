@@ -12,39 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using PuntosLeonisa.infrastructure.Persistence.CosmoDb;
 
 
-using (var productos = new CosmoDB())
-{
-    var producto1 = new Productos
-    #region Inserting Products
-    {
-        Id = Guid.NewGuid().ToString(),
-        Referencia = "Pl123",
-        Nombre = "Planca",
-        Video = "Melo",
-        Caracteristicas = "Melisimo",
-        Descripcion = "Calienta melo",
-        Puntos = 1042,
-        TiempoEntrega = "1 mes",
-        Estado = 1,
-        Fecha = new DateTime(),
-        ImagenPrincipal = "Ya por favor",
-        Imagen1 = "Para que",
-        Imagen2 = "Tantas",
-        Imagen3 = "Imagenes",
-        Proveedor = "Rappi",
-        Correo = "Yaporfavor@gmail.com",
-        TipoPremio = 1,
-        Actualizado = 2,
-        UrlImagen = "Imagen.png"
 
-
-    };
-
-    productos.Productos.Add(producto1);
-
-    await productos.SaveChangesAsync();
-    #endregion
-}
 
 
 namespace PuntosLeonisa.Products
@@ -66,6 +34,8 @@ namespace PuntosLeonisa.Products
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             name = name ?? data?.name;
+
+           
 
             string responseMessage = string.IsNullOrEmpty(name)
                 ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
