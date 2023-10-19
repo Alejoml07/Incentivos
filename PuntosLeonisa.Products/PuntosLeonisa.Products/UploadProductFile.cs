@@ -7,11 +7,53 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using PuntosLeonisa.Products.Domain;
+using Microsoft.EntityFrameworkCore;
+using PuntosLeonisa.infrastructure.Persistence.CosmoDb;
+
+
+using (var productos = new CosmoDB())
+{
+    var producto1 = new Productos
+    #region Inserting Products
+    {
+        Id = Guid.NewGuid().ToString(),
+        Referencia = "Pl123",
+        Nombre = "Planca",
+        Video = "Melo",
+        Caracteristicas = "Melisimo",
+        Descripcion = "Calienta melo",
+        Puntos = 1042,
+        TiempoEntrega = "1 mes",
+        Estado = 1,
+        Fecha = new DateTime(),
+        ImagenPrincipal = "Ya por favor",
+        Imagen1 = "Para que",
+        Imagen2 = "Tantas",
+        Imagen3 = "Imagenes",
+        Proveedor = "Rappi",
+        Correo = "Yaporfavor@gmail.com",
+        TipoPremio = 1,
+        Actualizado = 2,
+        UrlImagen = "Imagen.png"
+
+
+    };
+
+    productos.Productos.Add(producto1);
+
+    await productos.SaveChangesAsync();
+    #endregion
+}
+
 
 namespace PuntosLeonisa.Products
+
 {
     public static class UploadProductFile
     {
+
+
         [FunctionName("UploadProductFile")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
@@ -31,6 +73,13 @@ namespace PuntosLeonisa.Products
 
             return new OkObjectResult(responseMessage);
         }
+
+
+
     }
+
+
+
+    
 }
 

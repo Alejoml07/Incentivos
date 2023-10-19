@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{5FE414
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Persistence", "Persistence", "{7AD93F93-D9FE-48DB-8872-C2FAB1C7D6A8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PuntosLeonisa.Infracture.Persistence.CosmoDb", "2.Infrastructure\PuntosLeonisa.Infracture.Persistence.CosmoDb\PuntosLeonisa.Infracture.Persistence.CosmoDb.csproj", "{AA4F8EB6-B236-4130-88E2-0D57E078346B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PuntosLeonisa.infrastructure.Persistence.CosmoDb", "2.Infrastructure\PuntosLeonisa.Infracture.Persistence.CosmoDb\PuntosLeonisa.infrastructure.Persistence.CosmoDb.csproj", "{AA4F8EB6-B236-4130-88E2-0D57E078346B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{A3744808-97B5-4028-A579-51FFC8F84F1A}"
 EndProject
