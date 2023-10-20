@@ -18,19 +18,19 @@ public class Producto :IDisposable
   
     public float? Puntos { get; set; }
 
-    public string? TiempoEntrega { get; set; }
+    public float? TiempoEntrega { get; set; }
 
     public int? Estado { get; set; }
  
-    public string? Fecha { get; set; }
+    public DateTime? FechaCreacion { get; set; }
 
     public string? ImagenPrincipal { get; set; }
 
-    public string? Imagen1 { get; set; }
+    public string? UrlImagen1 { get; set; }
 
-    public string? Imagen2 { get; set; }
+    public string? UrlImagen2 { get; set; }
 
-    public string? Imagen3 { get; set; }
+    public string? UrlImagen3 { get; set; }
 
     public string? Proveedor { get; set; }
 
@@ -38,9 +38,54 @@ public class Producto :IDisposable
 
     public int? TipoPremio { get; set; }
 
-    public int? Actualizado { get; set; }
+    public DateTime? FechaModificacion { get; set; }
 
-    public string? UrlImagen { get; set; }
+    public string? EAN { get; set; }
+
+    public string? Marca { get; set; }
+
+    public string? Color { get; set; }
+
+    public string? Talla { get; set; }
+
+    public float? Rating { get; set; }
+
+    public double? PrecioOferta { get; set; } 
+
+    public double? Precio { get; set; }
+
+    public string? Usuario { get; set; }
+
+    public string? UsuarioModificacion { get; set; }
+
+    public int? IdCategoria { get; set; }
+
+    //TODO:Revisar
+    public string? Categoria { get; set; }
+
+    //TODO:Revisar posible inventario
+    public int? Cantidad { get; set; }
+
+    public string? PalabrasClaves { get; set; }
+
+    public int? TipoIva { get; set; }
+
+    public string? Alto { get; set; }
+
+    public string? Ancho { get; set; }
+
+    public string? Largo { get; set; }
+
+    public string? Peso { get; set; }
+
+    public DateTime? FechaSincronizacion { get; set; }
+
+    public string? Invima { get; set; }
+
+    public string? Genero { get; set; }
+
+    public string? Tamaño { get; set; }
+
 
     public void Dispose()
     {
