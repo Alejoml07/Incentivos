@@ -26,7 +26,7 @@ namespace Productos
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var data = JsonConvert.DeserializeObject<Producto>(requestBody);
             //name = name ?? data?.name;
-
+            data.Id = Guid.NewGuid().ToString();
             var aplication = new ProductosApplication();
 
             aplication.GuardarProducto(data);
