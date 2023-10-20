@@ -5,69 +5,28 @@
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.ItemProperties.4.Presentation.Productos PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/danielgarcia/sourcecode/IncentivosService/PuntosLeonisa.Products/4.Presentation/Productos/Productos.cs" relfile="4.Presentation/Productos/Productos.cs" line="26" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.ItemProperties.2.Infrastructure.Persistence.PuntosLeonisa.Infracture.Persistence.CosmoDb FirstBuild="True" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="2.Infrastructure/PuntosLeonisa.Infracture.Persistence.CosmoDb/Configuration/ProductosConfiguration.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="4.Presentation/Productos/Productos.cs">
     <Files>
-      <File FileName="3.Application/PuntosLeonisa.Products.Application/ProductosApplication.cs" Line="47" Column="33" />
-      <File FileName="2.Infrastructure/PuntosLeonisa.Products.Infrasctructure.Repositorie/ProductoRepository.cs" Line="12" Column="1" />
-      <File FileName="4.Presentation/Productos/local.settings.json" Line="1" Column="1" />
-      <File FileName="4.Presentation/Productos/Startup.cs" Line="1" Column="1" />
-      <File FileName="4.Presentation/Productos/Productos.cs" Line="22" Column="1" />
-      <File FileName="2.Infrastructure/PuntosLeonisa.Infracture.Persistence.CosmoDb/Configuration/ProductosConfiguration.cs" Line="1" Column="1" />
+      <File FileName="4.Presentation/Productos/Productos.cs" Line="41" Column="50" />
+      <File FileName="3.Application/PuntosLeonisa.Products.Application/ProductosApplication.cs" Line="16" Column="42" />
+      <File FileName="2.Infrastructure/PuntosLeonisa.Infrasctructure.Core/Repository/Repository.cs" Line="39" Column="23" />
+      <File FileName="2.Infrastructure/PuntosLeonisa.Infracture.Persistence.CosmoDb/Configuration/ProductosConfiguration.cs" Line="14" Column="17" />
+      <File FileName="2.Infrastructure/PuntosLeonisa.Infracture.Persistence.CosmoDb/CosmoDB.cs" Line="27" Column="6" />
+      <File FileName="1.Domain/PuntosLeonisa.Products.Domain/Model/Producto.cs" Line="29" Column="15" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="PuntosLeonisa.Products">
-            <Node name="1.Domain" expanded="True">
-              <Node name="Model" expanded="True">
-                <Node name="PuntosLeonisa.Products.Domain" selected="True">
-                  <Node name="Dependencies" expanded="True">
-                    <Node name="PackageDependencies" expanded="True" />
-                  </Node>
-                </Node>
-              </Node>
-            </Node>
-            <Node name="2.Infrastructure" expanded="True">
-              <Node name="Core" expanded="True">
-                <Node name="PuntosLeonisa.Infrasctructure.Core">
-                  <Node name="Dependencies" expanded="True" />
-                </Node>
-              </Node>
-              <Node name="Persistence" expanded="True">
-                <Node name="Context" expanded="True">
-                  <Node name="PuntosLeonisa.infrastructure.Persistence.CosmoDb" expanded="True">
-                    <Node name="Dependencies" expanded="True">
-                      <Node name="PackageDependencies" expanded="True" />
-                      <Node name="ProjectDependencies" expanded="True" />
-                    </Node>
-                    <Node name="Configuration" expanded="True" />
-                  </Node>
-                </Node>
-                <Node name="Repository" expanded="True">
-                  <Node name="PuntosLeonisa.Products.Infrasctructure.Repositorie" expanded="True">
-                    <Node name="Dependencies" expanded="True">
-                      <Node name="FrameworkReferences" expanded="True" />
-                      <Node name="ProjectDependencies" expanded="True" />
-                    </Node>
-                  </Node>
-                </Node>
-              </Node>
-            </Node>
-            <Node name="3.Application" expanded="True">
-              <Node name="PuntosLeonisa.Products.Application">
-                <Node name="Dependencies" expanded="True">
-                  <Node name="FrameworkReferences" expanded="True" />
-                  <Node name="ProjectDependencies" expanded="True" />
-                </Node>
-              </Node>
-            </Node>
-            <Node name="4.Presentation">
-              <Node name="Productos">
+          <Node name="PuntosLeonisa.Products" expanded="True">
+            <Node name="4.Presentation" expanded="True">
+              <Node name="Productos" expanded="True" selected="True">
                 <Node name="Dependencies" expanded="True" />
               </Node>
             </Node>
