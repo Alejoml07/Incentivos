@@ -9,6 +9,8 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using PuntosLeonisa.Products.Application;
 using PuntosLeonisa.Products.Domain;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 
 namespace Productos
 {
@@ -21,17 +23,23 @@ namespace Productos
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            //string name = req.Query["name"];
+            try
+            {
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<Producto>(requestBody);
+                data.Id = Guid.NewGuid().ToString();
+                var aplication = new ProductosApplication();
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            var data = JsonConvert.DeserializeObject<Producto>(requestBody);
-            //name = name ?? data?.name;
-            data.Id = Guid.NewGuid().ToString();
-            var aplication = new ProductosApplication();
+                aplication.GuardarProducto(data);
+                return new OkResult();
 
-            aplication.GuardarProducto(data);
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(ex);
+            }
 
-            return new OkObjectResult(new { });
+
         }
 
         [FunctionName("GetProductos")]
@@ -42,16 +50,63 @@ namespace Productos
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             //string name = req.Query["name"];
+            try
+            {
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            //name = name ?? data?.name;
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                dynamic data = JsonConvert.DeserializeObject(requestBody);
 
-            var aplication = new ProductosApplication();
+                var aplication = new ProductosApplication();
 
-            var productos = aplication.GetAll().GetAwaiter().GetResult();
+                var productos = aplication.GetAll().GetAwaiter().GetResult();
 
-            return new OkObjectResult(new { productos = productos, status = 200 });
+                return new OkObjectResult(new { productos = productos, status = 200 });
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(ex);
+            }
+        }
+
+        [FunctionName("UploadImageToBlob")]
+        public static async Task<IActionResult> UploadImageToBlob(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+        ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            var formdata = await req.ReadFormAsync();
+            var file = req.Form.Files["image"];
+
+            if (file == null || file.Length == 0)
+            {
+                return new BadRequestObjectResult("File missing");
+            }
+
+            string connectionString = "DefaultEndpointsProtocol=https;AccountName=stgactincentivos;AccountKey=mtBoBaUJu8BKcHuCfdWzk1au7Upgif0rlzD+BlfAJZBsvQ02CiGzCNG5gj1li10GF8RpUwz6h+Mj+AStMOwyTA==;EndpointSuffix=core.windows.net";
+            string containerName = "$web";
+            string blobName = "/img/" + Path.GetRandomFileName() + Path.GetExtension(file.FileName);
+
+            BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+            BlobClient blobClient = containerClient.GetBlobClient(blobName);
+
+            string mimeType = file.ContentType;
+
+            BlobUploadOptions uploadOptions = new BlobUploadOptions
+            {
+                HttpHeaders = new BlobHttpHeaders { ContentType = mimeType }
+            };
+
+            using (var stream = file.OpenReadStream())
+            {
+                await blobClient.UploadAsync(stream, uploadOptions);
+            }
+
+            string blobUrl = blobClient.Uri.ToString();
+
+            return new OkObjectResult(new { message = $"Imagen {blobName} subida exitosamente.", url = blobUrl });
+
         }
 
         [FunctionName("LoadProducts")]
@@ -62,15 +117,16 @@ namespace Productos
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             //string name = req.Query["name"];
-            try { 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            var products = JsonConvert.DeserializeObject <Producto[]>(requestBody);
-            //name = name ?? data?.name;
-            var aplication = new ProductosApplication();
+            try
+            {
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var products = JsonConvert.DeserializeObject<Producto[]>(requestBody);
+                //name = name ?? data?.name;
+                var aplication = new ProductosApplication();
 
-            aplication.LoadProducts(products);
+                aplication.LoadProducts(products);
 
-            return new OkObjectResult(new { });
+                return new OkObjectResult(new { });
 
             }
             catch (Exception ex)

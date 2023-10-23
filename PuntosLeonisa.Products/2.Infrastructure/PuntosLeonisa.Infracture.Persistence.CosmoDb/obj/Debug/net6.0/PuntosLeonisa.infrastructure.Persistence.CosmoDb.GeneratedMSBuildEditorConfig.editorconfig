@@ -8,4 +8,4 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = PuntosLeonisa.infrastructure.Persistence.CosmoDb
-build_property.ProjectDir = C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Infracture.Persistence.CosmoDb\
+build_property.ProjectDir = /Users/danielgarcia/sourcecode/IncentivosService/PuntosLeonisa.Products/2.Infrastructure/PuntosLeonisa.Infracture.Persistence.CosmoDb/

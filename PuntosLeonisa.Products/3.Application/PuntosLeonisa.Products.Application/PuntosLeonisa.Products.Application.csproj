@@ -9,5 +9,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\2.Infrastructure\PuntosLeonisa.Products.Infrasctructure.Repositorie\PuntosLeonisa.Products.Infrasctructure.Repositorie.csproj" />
     <ProjectReference Include="..\..\2.Infrastructure\PuntosLeonisa.Infracture.Persistence.CosmoDb\PuntosLeonisa.infrastructure.Persistence.CosmoDb.csproj" />
+    <ProjectReference Include="..\..\2.Infrastructure\PuntosLeonisa.Products.Infrasctructure.Common\PuntosLeonisa.Products.Infrasctructure.Common.csproj" />
   </ItemGroup>
 </Project>
