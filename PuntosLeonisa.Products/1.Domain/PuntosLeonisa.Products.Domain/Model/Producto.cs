@@ -32,6 +32,10 @@ public class Producto :IDisposable
 
     public string? UrlImagen3 { get; set; }
 
+    public string? UrlImagen4 { get; set; }
+
+    public string? UrlImagen5 { get; set; }
+
     public string? Proveedor { get; set; }
 
     public string? Correo { get; set; }

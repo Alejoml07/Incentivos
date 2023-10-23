@@ -34,8 +34,25 @@ public class ProductosApplication
             Console.WriteLine(ex.Message);
         }
      
-
-
     }
 
+    public async void LoadProducts(Producto[] productos)
+    {
+
+        try
+        {
+            var repository = new ProductoRepository(new CosmoDB());
+            foreach (var producto in productos)
+            {
+                producto.Id = Guid.NewGuid().ToString();
+                await repository.Add(producto);
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+    }
 }

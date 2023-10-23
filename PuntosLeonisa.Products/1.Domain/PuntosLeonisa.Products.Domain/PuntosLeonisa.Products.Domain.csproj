@@ -16,7 +16,6 @@
     <None Remove="Interfaces\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Model\" />
     <Folder Include="Interfaces\" />
   </ItemGroup>
   <ItemGroup>

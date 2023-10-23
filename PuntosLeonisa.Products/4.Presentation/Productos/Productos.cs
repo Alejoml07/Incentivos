@@ -31,8 +31,6 @@ namespace Productos
 
             aplication.GuardarProducto(data);
 
-
-
             return new OkObjectResult(new { });
         }
 
@@ -53,9 +51,32 @@ namespace Productos
 
             var productos = aplication.GetAll().GetAwaiter().GetResult();
 
-
-
             return new OkObjectResult(new { productos = productos, status = 200 });
+        }
+
+        [FunctionName("LoadProducts")]
+        public static async Task<IActionResult> LoadProducts(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+           ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            //string name = req.Query["name"];
+            try { 
+            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+            var products = JsonConvert.DeserializeObject <Producto[]>(requestBody);
+            //name = name ?? data?.name;
+            var aplication = new ProductosApplication();
+
+            aplication.LoadProducts(products);
+
+            return new OkObjectResult(new { });
+
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(ex);
+            }
         }
     }
 }
