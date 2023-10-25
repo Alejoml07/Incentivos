@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
+using PuntosLeonisa.Products.Domain;
 
 namespace PuntosLeonisa.Infrasctructure.Core.Repository
 {

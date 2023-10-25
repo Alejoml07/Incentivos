@@ -156,6 +156,27 @@ namespace Productos
             }
         }
 
+        [FunctionName("DeleteProduct")]
+        public static async Task<IActionResult> DeleteProduct(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "DeleteProduct/{id}")] HttpRequest req,
+           string id,  // <-- Parámetro adicional
+           ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                var aplication = new ProductosApplication();
+                var productos = aplication.Delete(id).GetAwaiter().GetResult();
+
+                return new OkObjectResult(new { productos = productos, status = 200 });
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(ex);
+            }
+        }
+
     }
 }
 

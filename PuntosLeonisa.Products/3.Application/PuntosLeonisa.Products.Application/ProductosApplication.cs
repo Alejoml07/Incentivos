@@ -21,6 +21,20 @@ public class ProductosApplication
         return await repository.GetById(id);
     }
 
+    public async Task<Producto> Delete(string id)
+    {
+        var repository = new ProductoRepository(new CosmoDB());
+        var ToDelete = await this.GetById(id);
+        if (ToDelete == null)
+        {
+            throw new ArgumentException("Producto no encontrado");
+        }
+
+        await repository.Delete(ToDelete);
+        return ToDelete;
+
+    }
+
     public async Task<IEnumerable<Producto>> GetAll()
     {
         var repository = new ProductoRepository(new CosmoDB());
