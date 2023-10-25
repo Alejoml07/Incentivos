@@ -10,7 +10,7 @@ namespace Productos
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            Console.WriteLine("Hola");
+     
         }
     }
 }

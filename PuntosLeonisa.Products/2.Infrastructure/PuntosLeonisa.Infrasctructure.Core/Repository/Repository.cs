@@ -49,7 +49,7 @@ namespace PuntosLeonisa.Infrasctructure.Core.Repository
         /// </summary>
         /// <param name="id">Identificador del registro a obtener</param>
         /// <returns>La información del registro solicitado</returns>
-        public async Task<T> GetById(int id)
+        public async Task<T> GetById(string id)
         {
             var response = await _context.Set<T>().FindAsync(id);
 #pragma warning disable CS8603

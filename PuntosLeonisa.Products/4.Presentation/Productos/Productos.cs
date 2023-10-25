@@ -134,6 +134,28 @@ namespace Productos
                 return new BadRequestObjectResult(ex);
             }
         }
+
+        [FunctionName("GetProduct")]
+        public static async Task<IActionResult> GetProduct(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetProduct/{id}")] HttpRequest req,
+           string id,  // <-- Parámetro adicional
+           ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                var aplication = new ProductosApplication();
+                var productos = aplication.GetById(id).GetAwaiter().GetResult();
+
+                return new OkObjectResult(new { productos = productos, status = 200 });
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(ex);
+            }
+        }
+
     }
 }
 

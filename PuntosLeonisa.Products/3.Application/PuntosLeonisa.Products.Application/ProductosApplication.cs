@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
 using PuntosLeonisa.infrastructure.Persistence.CosmoDb;
 using PuntosLeonisa.Products.Domain;
 using PuntosLeonisa.Products.Infrasctructure.Common;
@@ -12,6 +13,12 @@ public class ProductosApplication
     public ProductosApplication()
     {
 
+    }
+
+    public async Task<Producto> GetById(string id)
+    {
+        var repository = new ProductoRepository(new CosmoDB());
+        return await repository.GetById(id);
     }
 
     public async Task<IEnumerable<Producto>> GetAll()
@@ -34,6 +41,26 @@ public class ProductosApplication
             {
                 byte[] bytes = Convert.FromBase64String(producto.UrlImagen1);
                 producto.UrlImagen1 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            }
+            if (!string.IsNullOrEmpty(producto.UrlImagen2))
+            {
+                byte[] bytes = Convert.FromBase64String(producto.UrlImagen2);
+                producto.UrlImagen2 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            }
+            if (!string.IsNullOrEmpty(producto.UrlImagen3))
+            {
+                byte[] bytes = Convert.FromBase64String(producto.UrlImagen3);
+                producto.UrlImagen3 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            }
+            if (!string.IsNullOrEmpty(producto.UrlImagen4))
+            {
+                byte[] bytes = Convert.FromBase64String(producto.UrlImagen4);
+                producto.UrlImagen4 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            }
+            if (!string.IsNullOrEmpty(producto.UrlImagen5))
+            {
+                byte[] bytes = Convert.FromBase64String(producto.UrlImagen5);
+                producto.UrlImagen5 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
             }
 
 
