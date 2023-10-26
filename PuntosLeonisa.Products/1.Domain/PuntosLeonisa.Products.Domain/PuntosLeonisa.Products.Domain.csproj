@@ -16,9 +16,6 @@
     <None Remove="Interfaces\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\PuntosLeonisa.Domain.Core\PuntosLeonisa.Domain.Core.csproj" />
   </ItemGroup>
 </Project>

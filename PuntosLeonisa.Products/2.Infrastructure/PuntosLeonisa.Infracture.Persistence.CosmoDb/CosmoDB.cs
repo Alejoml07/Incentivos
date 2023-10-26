@@ -26,6 +26,7 @@ public class CosmoDB : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new ProductosConfiguration());
+        modelBuilder.ApplyConfiguration(new UsuariosConfiguration());
 
     }
 

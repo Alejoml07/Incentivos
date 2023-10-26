@@ -53,6 +53,7 @@ public class ProductosApplication
                 await repository.Update(producto);
                 return;
             }
+
             producto.Id = Guid.NewGuid().ToString();
             
             var azureHelper = new AzureHelper("DefaultEndpointsProtocol=https;AccountName=stgactincentivos;AccountKey=mtBoBaUJu8BKcHuCfdWzk1au7Upgif0rlzD+BlfAJZBsvQ02CiGzCNG5gj1li10GF8RpUwz6h+Mj+AStMOwyTA==;EndpointSuffix=core.windows.net");
