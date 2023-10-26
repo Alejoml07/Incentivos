@@ -48,6 +48,13 @@ public class ProductosApplication
         try
         {
             var repository = new ProductoRepository(new CosmoDB());
+            if (!string.IsNullOrEmpty(producto.Id))
+            {
+                await repository.Update(producto);
+                return;
+            }
+            producto.Id = Guid.NewGuid().ToString();
+            
             var azureHelper = new AzureHelper("DefaultEndpointsProtocol=https;AccountName=stgactincentivos;AccountKey=mtBoBaUJu8BKcHuCfdWzk1au7Upgif0rlzD+BlfAJZBsvQ02CiGzCNG5gj1li10GF8RpUwz6h+Mj+AStMOwyTA==;EndpointSuffix=core.windows.net");
             //antes de guardar se debe subir la imagen
 
