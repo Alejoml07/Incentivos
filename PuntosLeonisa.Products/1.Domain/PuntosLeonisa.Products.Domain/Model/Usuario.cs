@@ -15,29 +15,29 @@ namespace PuntosLeonisa.Products.Domain.Model
 
         public string? Nombres { get; set; }
 
-        public string Apellidos { get; set; }
+        public string? Apellidos { get; set; }
 
-        public string Genero { get; set; }
+        public string? Genero { get; set; }
 
-        public string Correo { get; set; }
+        public string? Correo { get; set; }
 
-        public string Celular { get; set; }
+        public string? Celular { get; set; }
 
-        public string TipoUsuario { get; set; }
+        public string? TipoUsuario { get; set; }
 
-        public string Estado { get; set; }
+        public string? Estado { get; set; }
 
-        public string FechaCambioEstado { get; set; }
+        public string? FechaCambioEstado { get; set; }
 
-        public DateTime FechaCreacion { get; set; }
+        public DateTime? FechaCreacion { get; set; }
 
-        public DateTime FechaActualizacion { get; set; }
+        public DateTime? FechaActualizacion { get; set; }
 
-        public string Agencia { get; set; }
+        public string? Agencia { get; set; }
 
-        public string Empresa { get; set; }
+        public string? Empresa { get; set; }
 
-        public string contraseña { get; set; }
+        public string? contraseña { get; set; }
 
         public void Dispose()
         {
