@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Xml;
 
-namespace PuntosLeonisa.Products.Domain.Service.DTO
+namespace PuntosLeonisa.Products.Domain.Service.DTO.Productos
 {
-	public class ProductoDto
-	{
+    public class ProductoDto
+    {
         public string Id { get; set; }
 
         public string? Referencia { get; set; }
@@ -90,7 +90,7 @@ namespace PuntosLeonisa.Products.Domain.Service.DTO
         public string? Tamaño { get; set; }
 
 
-     
+
     }
 }
 

@@ -1,10 +1,12 @@
 ﻿using PuntosLeonisa.Products.Application.Core.Interfaces;
-using PuntosLeonisa.Products.Domain.Service.DTO;
+using PuntosLeonisa.Products.Domain.Service.DTO.Productos;
+using PuntosLeonisa.Products.Infrasctructure.Common.Communication;
 
 namespace PuntosLeonisa.Products.Application.Core;
 
-public interface IProductApplication: IApplicationCore<ProductoDto>
+public interface IProductApplication : IApplicationCore<ProductoDto>
 {
-
+    Task<GenericResponse<bool>> AddProductoInventario(ProductoInventarioDto[] products);
+    Task<GenericResponse<bool>> AddProductoPrecios(ProductoPreciosDto[] productoPrecios);
 }
 

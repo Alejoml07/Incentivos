@@ -1,11 +1,11 @@
 ﻿using System;
 namespace PuntosLeonisa.Products.Infrasctructure.Common.Communication
 {
-	public class GenericResponse<T> where T:class
+	public class GenericResponse<T> 
 	{
         public bool IsSuccess { get; set; } 
         public string Message { get; set; } = null!;
-        public T Result { get; set; } = null!;
+        public T Result { get; set; } 
 
         public GenericResponse()
         {

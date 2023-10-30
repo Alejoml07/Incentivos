@@ -90,16 +90,15 @@ public class Producto :IDisposable
 
     public string? Tamaño { get; set; }
 
+    public string? Inventario { get; set; }
 
-    public void Dispose()
-    {
-        throw new NotImplementedException();
-    }
-      
+
+
+    public void Dispose() => throw new NotImplementedException();
+
 
     public override string ToString()
     {
-        
         return JsonConvert.SerializeObject(this, Formatting.Indented);
     }
 

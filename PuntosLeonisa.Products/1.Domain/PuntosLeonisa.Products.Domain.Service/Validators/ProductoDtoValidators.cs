@@ -1,10 +1,10 @@
 ﻿using System;
 using FluentValidation;
-using PuntosLeonisa.Products.Domain.Service.DTO;
+using PuntosLeonisa.Products.Domain.Service.DTO.Productos;
 
 namespace PuntosLeonisa.Products.Domain.Service.Validators
 {
-	public class ProductoDtoValidators: AbstractValidator<ProductoDto>
+    public class ProductoDtoValidators: AbstractValidator<ProductoDto>
     {
 		public ProductoDtoValidators()
 		{

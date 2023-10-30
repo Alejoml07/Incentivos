@@ -3,7 +3,7 @@ using AutoMapper;
 using PuntosLeonisa.Products.Application.Core;
 using PuntosLeonisa.Products.Domain;
 using PuntosLeonisa.Products.Domain.Interfaces;
-using PuntosLeonisa.Products.Domain.Service.DTO;
+using PuntosLeonisa.Products.Domain.Service.DTO.Productos;
 using PuntosLeonisa.Products.Infrasctructure.Common;
 using PuntosLeonisa.Products.Infrasctructure.Common.Communication;
 
@@ -89,8 +89,10 @@ public class ProductosApplication : IProductApplication
             }
 
             await this.productoRepository.AddRange(productos);
-            var responseOnly = new GenericResponse<ProductoDto[]>();
-            responseOnly.Result = value;
+            var responseOnly = new GenericResponse<ProductoDto[]>
+            {
+                Result = value
+            };
 
             return responseOnly;
 
@@ -110,11 +112,7 @@ public class ProductosApplication : IProductApplication
     {
         try
         {
-            var ToDelete = await this.GetById(id);
-            if (ToDelete == null)
-            {
-                throw new ArgumentException("Producto no encontrado");
-            }
+            var ToDelete = await this.GetById(id) ?? throw new ArgumentException("Producto no encontrado");
             var productoToDelete = this.mapper.Map<Producto>(ToDelete.Result);
             await this.productoRepository.Delete(productoToDelete);
 
@@ -131,8 +129,10 @@ public class ProductosApplication : IProductApplication
     {
         var productos = await this.productoRepository.GetAll();
         var productoDto = this.mapper.Map<ProductoDto[]>(productos);
-        var responseOnly = new GenericResponse<IEnumerable<ProductoDto>>();
-        responseOnly.Result = productoDto;
+        var responseOnly = new GenericResponse<IEnumerable<ProductoDto>>
+        {
+            Result = productoDto
+        };
 
         return responseOnly;
     }
@@ -165,6 +165,44 @@ public class ProductosApplication : IProductApplication
         }
     }
 
+    public async Task<GenericResponse<bool>> AddProductoInventario(ProductoInventarioDto[] productos)
+    {
+        try
+        {
+            foreach (var producto in productos)
+            {
+                var productoExist = await this.productoRepository.GetById(producto.EAN ?? "");
+                productoExist.Cantidad = producto.Cantidad;
+                await this.productoRepository.Update(productoExist);
+            }
 
+            return new GenericResponse<bool>() { Result = true };
+        }
+        catch (Exception)
+        {
 
+            throw;
+        }
+    }
+
+    public async  Task<GenericResponse<bool>> AddProductoPrecios(ProductoPreciosDto[] productoPrecios)
+    {
+        try
+        {
+            foreach (var producto in productoPrecios)
+            {
+                var productoExist = await this.productoRepository.GetById(producto.EAN ?? "");
+                productoExist.Precio = producto.Precio;
+                productoExist.PrecioOferta = producto.Precio;
+                await this.productoRepository.Update(productoExist);
+            }
+
+            return new GenericResponse<bool>() { Result = true };
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
 }
