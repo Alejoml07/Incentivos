@@ -92,6 +92,13 @@ namespace PuntosLeonisa.Infrasctructure.Core.Repository
             return lastId;
 #pragma warning restore CS8603
         }
+
+        public async Task AddRange(T[] entities)
+        {
+            DetachAllEntities();
+            await _context.Set<T>().AddRangeAsync(entities);
+            await _context.SaveChangesAsync();
+        }
     }
 }
 

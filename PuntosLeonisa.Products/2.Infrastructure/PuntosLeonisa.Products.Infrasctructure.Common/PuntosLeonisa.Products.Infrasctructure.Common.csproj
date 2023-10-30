@@ -8,9 +8,11 @@
 
   <ItemGroup>
     <None Remove="Helpers\" />
+    <None Remove="Communication\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Helpers\" />
+    <Folder Include="Communication\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.18.0" />

@@ -106,7 +106,7 @@ namespace Usuarios
             try
             {
                 var aplication = new UsuariosApplication();
-                var usuarios = aplication.GetById(id).GetAwaiter().GetResult();
+                var usuarios = await aplication.GetById(id);
 
                 return new OkObjectResult(new { usuarios = usuarios, status = 200 });
             }

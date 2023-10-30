@@ -20,13 +20,13 @@ public class UsuariosApplication
 
     public async Task<Usuario> GetById(string id)
     {
-        var repository = new UsuarioRepository(new CosmoDB());
+        var repository = new UsuarioRepository(new CosmoDBContext());
         return await repository.GetById(id);
     }
 
     public async Task<Usuario> Delete(string id)
     {
-        var repository = new UsuarioRepository(new CosmoDB());
+        var repository = new UsuarioRepository(new CosmoDBContext());
         var ToDelete = await this.GetById(id);
         if (ToDelete == null)
         {
@@ -40,7 +40,7 @@ public class UsuariosApplication
 
     public async Task<IEnumerable<Usuario>> GetAll()
     {
-        var repository = new UsuarioRepository(new CosmoDB());
+        var repository = new UsuarioRepository(new CosmoDBContext());
         return await repository.GetAll();
     }
 
@@ -50,7 +50,7 @@ public class UsuariosApplication
 
         try
         {
-            var repository = new UsuarioRepository(new CosmoDB());
+            var repository = new UsuarioRepository(new CosmoDBContext());
             if (!string.IsNullOrEmpty(usuario.Id))
             {
                 await repository.Update(usuario);
@@ -78,7 +78,7 @@ public class UsuariosApplication
 
         try
         {
-            var repository = new UsuarioRepository(new CosmoDB());
+            var repository = new UsuarioRepository(new CosmoDBContext());
             foreach (var usuario in usuarios)
             {
                 usuario.Id = Guid.NewGuid().ToString();

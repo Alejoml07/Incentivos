@@ -5,9 +5,8 @@ using PuntosLeonisa.Products.Domain;
 namespace PuntosLeonisa.infrastructure.Persistence.CosmoDb;
 
 
-public class CosmoDB : DbContext
+public class CosmoDBContext : DbContext
 {
-    //public DbSet<Producto>? Productos { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

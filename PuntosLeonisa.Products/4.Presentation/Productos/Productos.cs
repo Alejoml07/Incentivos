@@ -7,17 +7,24 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using PuntosLeonisa.Products.Application;
-using PuntosLeonisa.Products.Domain;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using PuntosLeonisa.Products.Application.Core;
+using PuntosLeonisa.Products.Domain.Service.DTO;
 
 namespace Productos
 {
-    public static class Productos
+    public class Productos
     {
+        private readonly IProductApplication productoApplication;
+
+        public Productos(IProductApplication productoApplication)
+        {
+            this.productoApplication = productoApplication;
+        }
+
         [FunctionName("Productos")]
-        public static async Task<IActionResult> Run(
+        public  async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
@@ -26,10 +33,9 @@ namespace Productos
             try
             {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var data = JsonConvert.DeserializeObject<Producto>(requestBody);
-                var aplication = new ProductosApplication();
+                var data = JsonConvert.DeserializeObject<ProductoDto>(requestBody);              
 
-                aplication.GuardarProducto(data);
+                await this.productoApplication.Add(data);
                 return new OkResult();
 
             }
@@ -42,7 +48,7 @@ namespace Productos
         }
 
         [FunctionName("GetProductos")]
-        public static async Task<IActionResult> GetProductos(
+        public  async Task<IActionResult> GetProductos(
            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
            ILogger log)
         {
@@ -55,11 +61,10 @@ namespace Productos
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 dynamic data = JsonConvert.DeserializeObject(requestBody);
 
-                var aplication = new ProductosApplication();
 
-                var productos = aplication.GetAll().GetAwaiter().GetResult();
+                var productos = this.productoApplication.GetAll();
 
-                return new OkObjectResult(new { productos = productos, status = 200 });
+                return new OkObjectResult(productos);
             }
             catch (Exception ex)
             {
@@ -109,23 +114,20 @@ namespace Productos
         }
 
         [FunctionName("LoadProducts")]
-        public static async Task<IActionResult> LoadProducts(
+        public  async Task<IActionResult> LoadProducts(
            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
            ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            //string name = req.Query["name"];
             try
             {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var products = JsonConvert.DeserializeObject<Producto[]>(requestBody);
-                //name = name ?? data?.name;
-                var aplication = new ProductosApplication();
+                var products = JsonConvert.DeserializeObject<ProductoDto[]>(requestBody);    
 
-                aplication.LoadProducts(products);
+                await this.productoApplication.AddRange(products);
 
-                return new OkObjectResult(new { });
+                return new OkResult();
 
             }
             catch (Exception ex)
@@ -135,7 +137,7 @@ namespace Productos
         }
 
         [FunctionName("GetProduct")]
-        public static async Task<IActionResult> GetProduct(
+        public  async Task<IActionResult> GetProduct(
            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetProduct/{id}")] HttpRequest req,
            string id,  // <-- Parámetro adicional
            ILogger log)
@@ -144,10 +146,10 @@ namespace Productos
 
             try
             {
-                var aplication = new ProductosApplication();
-                var productos = aplication.GetById(id).GetAwaiter().GetResult();
 
-                return new OkObjectResult(new { productos = productos, status = 200 });
+                var producto = await this.productoApplication.GetById(id);
+
+                return new OkObjectResult(producto);
             }
             catch (Exception ex)
             {
@@ -156,7 +158,7 @@ namespace Productos
         }
 
         [FunctionName("DeleteProduct")]
-        public static async Task<IActionResult> DeleteProduct(
+        public  async Task<IActionResult> DeleteProduct(
            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "DeleteProduct/{id}")] HttpRequest req,
            string id,  // <-- Parámetro adicional
            ILogger log)
@@ -165,10 +167,9 @@ namespace Productos
 
             try
             {
-                var aplication = new ProductosApplication();
-                var productos = aplication.Delete(id).GetAwaiter().GetResult();
+                var productos = await this.productoApplication.DeleteById(id);
 
-                return new OkObjectResult(new { productos = productos, status = 200 });
+                return new OkObjectResult(productos);
             }
             catch (Exception ex)
             {

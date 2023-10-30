@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "K3w8063Wwwbr/M7RUeXBITkYk2aAxw6QV3UspHXDXv1CxVMo5dC5OZxrBfQdvmZybWDzBzPC93qUGmnZq1rcoQ==",
+  "dgSpecHash": "Auy1sS8YA4Ju6OYGcfpMXOXKgCVb5hcz48H8jWOcTU36RcVevez9x/g5iQIMAezNiWtPMc+oITf68z+lLwa2tQ==",
   "success": true,
-  "projectFilePath": "C:\\SourceCode\\IncentivosService\\PuntosLeonisa.Products\\1.Domain\\PuntosLeonisa.Domain.Core\\PuntosLeonisa.Domain.Core.csproj",
+  "projectFilePath": "/Users/danielgarcia/sourcecode/IncentivosService/PuntosLeonisa.Products/1.Domain/PuntosLeonisa.Domain.Core/PuntosLeonisa.Domain.Core.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
