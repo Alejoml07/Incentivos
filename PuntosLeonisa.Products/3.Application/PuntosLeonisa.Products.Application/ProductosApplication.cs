@@ -1,17 +1,11 @@
 ﻿
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Linq;
-using PuntosLeonisa.Infrasctructure.Core.Repository;
-using PuntosLeonisa.infrastructure.Persistence.CosmoDb;
 using PuntosLeonisa.Products.Application.Core;
-using PuntosLeonisa.Products.Application.Core.Interfaces;
 using PuntosLeonisa.Products.Domain;
 using PuntosLeonisa.Products.Domain.Interfaces;
 using PuntosLeonisa.Products.Domain.Service.DTO;
 using PuntosLeonisa.Products.Infrasctructure.Common;
 using PuntosLeonisa.Products.Infrasctructure.Common.Communication;
-using PuntosLeonisa.Products.Infrasctructure.Repositorie;
 
 namespace PuntosLeonisa.Products.Application;
 
@@ -121,7 +115,7 @@ public class ProductosApplication : IProductApplication
             {
                 throw new ArgumentException("Producto no encontrado");
             }
-            var productoToDelete = this.mapper.Map<Producto>(ToDelete);
+            var productoToDelete = this.mapper.Map<Producto>(ToDelete.Result);
             await this.productoRepository.Delete(productoToDelete);
 
             return ToDelete;
@@ -156,10 +150,11 @@ public class ProductosApplication : IProductApplication
     {
         try
         {
-            if (!string.IsNullOrEmpty(value.Id))
+            var response = await this.productoRepository.GetById(value.EAN ?? "");
+            if (response != null)
             {
-                var producto = this.mapper.Map<Producto>(value);
-                await this.productoRepository.Update(producto);
+                this.mapper.Map(value, response);
+                await this.productoRepository.Update(response);
             }
             this.response.Result = value;
             return this.response;

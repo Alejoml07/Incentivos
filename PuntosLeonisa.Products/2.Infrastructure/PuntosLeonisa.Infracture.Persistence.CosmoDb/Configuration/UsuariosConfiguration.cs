@@ -9,7 +9,7 @@ namespace PuntosLeonisa.Infrasctructure.Core.Configuration
         public void Configure(EntityTypeBuilder<Usuario> builder)
         {
             builder.ToContainer("Usuario")
-                .HasPartitionKey(e => e.Id);
+                .HasPartitionKey(e => e.Cedula).HasKey(p=> p.Cedula);
         }
 
     }

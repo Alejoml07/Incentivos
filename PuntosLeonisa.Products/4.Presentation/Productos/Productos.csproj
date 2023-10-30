@@ -7,10 +7,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Usuarios.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi" Version="1.5.1" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.2.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.18.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="7.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="6.0.24" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
@@ -22,6 +26,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\2.Infrastructure\PuntosLeonisa.Products.Infrasctructure.Repositorie\PuntosLeonisa.Products.Infrasctructure.Repositorie.csproj" />
+    <ProjectReference Include="..\..\3.Application\PuntosLeonisa.Products.Application.Core\PuntosLeonisa.Products.Application.Core.csproj" />
     <ProjectReference Include="..\..\3.Application\PuntosLeonisa.Products.Application\PuntosLeonisa.Products.Application.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>

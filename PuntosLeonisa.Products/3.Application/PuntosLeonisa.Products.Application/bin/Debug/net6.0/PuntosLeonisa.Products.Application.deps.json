@@ -12,7 +12,7 @@
           "PuntosLeonisa.Products.Application.Core": "1.0.0",
           "PuntosLeonisa.Products.Infrasctructure.Common": "1.0.0",
           "PuntosLeonisa.Products.Infrasctructure.Repositorie": "1.0.0",
-          "PuntosLeonisa.infrastructure.Persistence.CosmoDb": "1.0.0"
+          "PuntosLeonisa.infrastructure.Persistence": "1.0.0"
         },
         "runtime": {
           "PuntosLeonisa.Products.Application.dll": {}
@@ -127,12 +127,12 @@
           "runtimes/win-x64/native/Cosmos.CRTCompat.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "0.0.0.0"
+            "fileVersion": "2.0.0.0"
           },
           "runtimes/win-x64/native/Microsoft.Azure.Cosmos.ServiceInterop.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "0.0.0.0"
+            "fileVersion": "2.17.0.0"
           }
         }
       },
@@ -481,13 +481,14 @@
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "6.0.23",
           "PuntosLeonisa.Domain.Core": "1.0.0",
-          "PuntosLeonisa.Products.Domain": "1.0.0"
+          "PuntosLeonisa.Products.Domain": "1.0.0",
+          "PuntosLeonisa.infrastructure.Persistence": "1.0.0"
         },
         "runtime": {
           "PuntosLeonisa.Infrasctructure.Core.dll": {}
         }
       },
-      "PuntosLeonisa.infrastructure.Persistence.CosmoDb/1.0.0": {
+      "PuntosLeonisa.infrastructure.Persistence/1.0.0": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "6.0.23",
           "Microsoft.EntityFrameworkCore.Cosmos": "6.0.23",
@@ -495,7 +496,7 @@
           "PuntosLeonisa.Products.Domain": "1.0.0"
         },
         "runtime": {
-          "PuntosLeonisa.infrastructure.Persistence.CosmoDb.dll": {}
+          "PuntosLeonisa.infrastructure.Persistence.dll": {}
         }
       },
       "PuntosLeonisa.Products.Application.Core/1.0.0": {
@@ -539,7 +540,8 @@
         "dependencies": {
           "PuntosLeonisa.Domain.Core": "1.0.0",
           "PuntosLeonisa.Infrasctructure.Core": "1.0.0",
-          "PuntosLeonisa.Products.Domain": "1.0.0"
+          "PuntosLeonisa.Products.Domain": "1.0.0",
+          "PuntosLeonisa.infrastructure.Persistence": "1.0.0"
         },
         "runtime": {
           "PuntosLeonisa.Products.Infrasctructure.Repositorie.dll": {}
@@ -913,7 +915,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "PuntosLeonisa.infrastructure.Persistence.CosmoDb/1.0.0": {
+    "PuntosLeonisa.infrastructure.Persistence/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

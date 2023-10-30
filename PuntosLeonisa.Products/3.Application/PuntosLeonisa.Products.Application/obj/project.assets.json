@@ -1186,7 +1186,8 @@
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "6.0.23",
           "PuntosLeonisa.Domain.Core": "1.0.0",
-          "PuntosLeonisa.Products.Domain": "1.0.0"
+          "PuntosLeonisa.Products.Domain": "1.0.0",
+          "PuntosLeonisa.infrastructure.Persistence": "1.0.0"
         },
         "compile": {
           "bin/placeholder/PuntosLeonisa.Infrasctructure.Core.dll": {}
@@ -1195,7 +1196,7 @@
           "bin/placeholder/PuntosLeonisa.Infrasctructure.Core.dll": {}
         }
       },
-      "PuntosLeonisa.infrastructure.Persistence.CosmoDb/1.0.0": {
+      "PuntosLeonisa.infrastructure.Persistence/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
@@ -1205,10 +1206,10 @@
           "PuntosLeonisa.Products.Domain": "1.0.0"
         },
         "compile": {
-          "bin/placeholder/PuntosLeonisa.infrastructure.Persistence.CosmoDb.dll": {}
+          "bin/placeholder/PuntosLeonisa.infrastructure.Persistence.dll": {}
         },
         "runtime": {
-          "bin/placeholder/PuntosLeonisa.infrastructure.Persistence.CosmoDb.dll": {}
+          "bin/placeholder/PuntosLeonisa.infrastructure.Persistence.dll": {}
         }
       },
       "PuntosLeonisa.Products.Application.Core/1.0.0": {
@@ -1274,7 +1275,8 @@
         "dependencies": {
           "PuntosLeonisa.Domain.Core": "1.0.0",
           "PuntosLeonisa.Infrasctructure.Core": "1.0.0",
-          "PuntosLeonisa.Products.Domain": "1.0.0"
+          "PuntosLeonisa.Products.Domain": "1.0.0",
+          "PuntosLeonisa.infrastructure.Persistence": "1.0.0"
         },
         "compile": {
           "bin/placeholder/PuntosLeonisa.Products.Infrasctructure.Repositorie.dll": {}
@@ -2945,10 +2947,10 @@
       "path": "../../2.Infrastructure/PuntosLeonisa.Infrasctructure.Core/PuntosLeonisa.Infrasctructure.Core.csproj",
       "msbuildProject": "../../2.Infrastructure/PuntosLeonisa.Infrasctructure.Core/PuntosLeonisa.Infrasctructure.Core.csproj"
     },
-    "PuntosLeonisa.infrastructure.Persistence.CosmoDb/1.0.0": {
+    "PuntosLeonisa.infrastructure.Persistence/1.0.0": {
       "type": "project",
-      "path": "../../2.Infrastructure/PuntosLeonisa.Infracture.Persistence.CosmoDb/PuntosLeonisa.infrastructure.Persistence.CosmoDb.csproj",
-      "msbuildProject": "../../2.Infrastructure/PuntosLeonisa.Infracture.Persistence.CosmoDb/PuntosLeonisa.infrastructure.Persistence.CosmoDb.csproj"
+      "path": "../../2.Infrastructure/PuntosLeonisa.Infracture.Persistence.CosmoDb/PuntosLeonisa.infrastructure.Persistence.csproj",
+      "msbuildProject": "../../2.Infrastructure/PuntosLeonisa.Infracture.Persistence.CosmoDb/PuntosLeonisa.infrastructure.Persistence.csproj"
     },
     "PuntosLeonisa.Products.Application.Core/1.0.0": {
       "type": "project",
@@ -2982,45 +2984,47 @@
       "PuntosLeonisa.Products.Application.Core >= 1.0.0",
       "PuntosLeonisa.Products.Infrasctructure.Common >= 1.0.0",
       "PuntosLeonisa.Products.Infrasctructure.Repositorie >= 1.0.0",
-      "PuntosLeonisa.infrastructure.Persistence.CosmoDb >= 1.0.0"
+      "PuntosLeonisa.infrastructure.Persistence >= 1.0.0"
     ]
   },
   "packageFolders": {
-    "/Users/danielgarcia/.nuget/packages/": {}
+    "C:\\Users\\danie\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/danielgarcia/sourcecode/IncentivosService/PuntosLeonisa.Products/3.Application/PuntosLeonisa.Products.Application/PuntosLeonisa.Products.Application.csproj",
+      "projectUniqueName": "C:\\sourcecode\\IncentivosService\\PuntosLeonisa.Products\\3.Application\\PuntosLeonisa.Products.Application\\PuntosLeonisa.Products.Application.csproj",
       "projectName": "PuntosLeonisa.Products.Application",
-      "projectPath": "/Users/danielgarcia/sourcecode/IncentivosService/PuntosLeonisa.Products/3.Application/PuntosLeonisa.Products.Application/PuntosLeonisa.Products.Application.csproj",
-      "packagesPath": "/Users/danielgarcia/.nuget/packages/",
-      "outputPath": "/Users/danielgarcia/sourcecode/IncentivosService/PuntosLeonisa.Products/3.Application/PuntosLeonisa.Products.Application/obj/",
+      "projectPath": "C:\\sourcecode\\IncentivosService\\PuntosLeonisa.Products\\3.Application\\PuntosLeonisa.Products.Application\\PuntosLeonisa.Products.Application.csproj",
+      "packagesPath": "C:\\Users\\danie\\.nuget\\packages\\",
+      "outputPath": "C:\\sourcecode\\IncentivosService\\PuntosLeonisa.Products\\3.Application\\PuntosLeonisa.Products.Application\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/danielgarcia/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\danie\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "/Users/danielgarcia/sourcecode/IncentivosService/PuntosLeonisa.Products/2.Infrastructure/PuntosLeonisa.Infracture.Persistence.CosmoDb/PuntosLeonisa.infrastructure.Persistence.CosmoDb.csproj": {
-              "projectPath": "/Users/danielgarcia/sourcecode/IncentivosService/PuntosLeonisa.Products/2.Infrastructure/PuntosLeonisa.Infracture.Persistence.CosmoDb/PuntosLeonisa.infrastructure.Persistence.CosmoDb.csproj"
+            "C:\\sourcecode\\IncentivosService\\PuntosLeonisa.Products\\2.Infrastructure\\PuntosLeonisa.Infracture.Persistence.CosmoDb\\PuntosLeonisa.infrastructure.Persistence.csproj": {
+              "projectPath": "C:\\sourcecode\\IncentivosService\\PuntosLeonisa.Products\\2.Infrastructure\\PuntosLeonisa.Infracture.Persistence.CosmoDb\\PuntosLeonisa.infrastructure.Persistence.csproj"
             },
-            "/Users/danielgarcia/sourcecode/IncentivosService/PuntosLeonisa.Products/2.Infrastructure/PuntosLeonisa.Products.Infrasctructure.Common/PuntosLeonisa.Products.Infrasctructure.Common.csproj": {
-              "projectPath": "/Users/danielgarcia/sourcecode/IncentivosService/PuntosLeonisa.Products/2.Infrastructure/PuntosLeonisa.Products.Infrasctructure.Common/PuntosLeonisa.Products.Infrasctructure.Common.csproj"
+            "C:\\sourcecode\\IncentivosService\\PuntosLeonisa.Products\\2.Infrastructure\\PuntosLeonisa.Products.Infrasctructure.Common\\PuntosLeonisa.Products.Infrasctructure.Common.csproj": {
+              "projectPath": "C:\\sourcecode\\IncentivosService\\PuntosLeonisa.Products\\2.Infrastructure\\PuntosLeonisa.Products.Infrasctructure.Common\\PuntosLeonisa.Products.Infrasctructure.Common.csproj"
             },
-            "/Users/danielgarcia/sourcecode/IncentivosService/PuntosLeonisa.Products/2.Infrastructure/PuntosLeonisa.Products.Infrasctructure.Repositorie/PuntosLeonisa.Products.Infrasctructure.Repositorie.csproj": {
-              "projectPath": "/Users/danielgarcia/sourcecode/IncentivosService/PuntosLeonisa.Products/2.Infrastructure/PuntosLeonisa.Products.Infrasctructure.Repositorie/PuntosLeonisa.Products.Infrasctructure.Repositorie.csproj"
+            "C:\\sourcecode\\IncentivosService\\PuntosLeonisa.Products\\2.Infrastructure\\PuntosLeonisa.Products.Infrasctructure.Repositorie\\PuntosLeonisa.Products.Infrasctructure.Repositorie.csproj": {
+              "projectPath": "C:\\sourcecode\\IncentivosService\\PuntosLeonisa.Products\\2.Infrastructure\\PuntosLeonisa.Products.Infrasctructure.Repositorie\\PuntosLeonisa.Products.Infrasctructure.Repositorie.csproj"
             },
-            "/Users/danielgarcia/sourcecode/IncentivosService/PuntosLeonisa.Products/3.Application/PuntosLeonisa.Products.Application.Core/PuntosLeonisa.Products.Application.Core.csproj": {
-              "projectPath": "/Users/danielgarcia/sourcecode/IncentivosService/PuntosLeonisa.Products/3.Application/PuntosLeonisa.Products.Application.Core/PuntosLeonisa.Products.Application.Core.csproj"
+            "C:\\sourcecode\\IncentivosService\\PuntosLeonisa.Products\\3.Application\\PuntosLeonisa.Products.Application.Core\\PuntosLeonisa.Products.Application.Core.csproj": {
+              "projectPath": "C:\\sourcecode\\IncentivosService\\PuntosLeonisa.Products\\3.Application\\PuntosLeonisa.Products.Application.Core\\PuntosLeonisa.Products.Application.Core.csproj"
             }
           }
         }
@@ -3056,7 +3060,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.310/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
       }
     }
   }

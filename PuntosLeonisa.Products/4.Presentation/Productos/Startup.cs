@@ -1,7 +1,12 @@
 ﻿using System;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
-using Microsoft.DotNet.PlatformAbstractions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using PuntosLeonisa.infrastructure.Persistence.CosmoDb;
+using PuntosLeonisa.Products.Application;
+using PuntosLeonisa.Products.Application.Core;
+using PuntosLeonisa.Products.Domain.Interfaces;
+using PuntosLeonisa.Products.Infrasctructure.Repositorie;
 
 [assembly: FunctionsStartup(typeof(Productos.Startup))]
 namespace Productos
@@ -11,12 +16,20 @@ namespace Productos
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
+
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            var stringConnection = Environment.GetEnvironmentVariable("ConnectionStrings");
-            builder.Services.AddDbContext<PlatformContext>(x => x.UseSqlServer(stringConnection));
+            var stringConnection = Environment.GetEnvironmentVariable("accountCosmoName");
+            var bd = Environment.GetEnvironmentVariable("db");
+
+            builder.Services.AddDbContext<ProductContext>(x => x.UseCosmos(stringConnection, bd));
+
+            //builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            builder.Services.AddTransient<IProductoRepository, ProductoRepository>();
+            builder.Services.AddScoped<IProductApplication, ProductosApplication>();
+
 
             //Add ServiceProxy
-            builder.Services.AddScoped<IHttpClientAgent, HttpClientAgents>();
+            //builder.Services.AddScoped<IHttpClientAgent, HttpClientAgents>();
             //builder.Services.AddScoped<ICircuitBreaker, CircuitBreaker>();
             //builder.Services.AddScoped<ITransientRetry, TransientRetry>();
         }

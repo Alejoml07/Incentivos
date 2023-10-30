@@ -17,7 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{5FE414
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Persistence", "Persistence", "{7AD93F93-D9FE-48DB-8872-C2FAB1C7D6A8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PuntosLeonisa.infrastructure.Persistence.CosmoDb", "2.Infrastructure\PuntosLeonisa.Infracture.Persistence.CosmoDb\PuntosLeonisa.infrastructure.Persistence.CosmoDb.csproj", "{AA4F8EB6-B236-4130-88E2-0D57E078346B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PuntosLeonisa.infrastructure.Persistence", "2.Infrastructure\PuntosLeonisa.Infracture.Persistence.CosmoDb\PuntosLeonisa.infrastructure.Persistence.csproj", "{AA4F8EB6-B236-4130-88E2-0D57E078346B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{A3744808-97B5-4028-A579-51FFC8F84F1A}"
 EndProject
@@ -26,35 +26,35 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Productos", "4.Presentation\Productos\Productos.csproj", "{B841F7CF-084C-4BC6-A7D4-01D470FA18FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Productos", "4.Presentation\Productos\Productos.csproj", "{B841F7CF-084C-4BC6-A7D4-01D470FA18FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuntosLeonisa.Products.Application", "3.Application\PuntosLeonisa.Products.Application\PuntosLeonisa.Products.Application.csproj", "{91601326-6A22-4948-B457-554A239679E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PuntosLeonisa.Products.Application", "3.Application\PuntosLeonisa.Products.Application\PuntosLeonisa.Products.Application.csproj", "{91601326-6A22-4948-B457-554A239679E1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{B01ADB15-9860-474D-82C0-63A71E851CC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuntosLeonisa.Infrasctructure.Core", "2.Infrastructure\PuntosLeonisa.Infrasctructure.Core\PuntosLeonisa.Infrasctructure.Core.csproj", "{46CE46EC-74E1-4375-A017-AD5E74CD4529}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PuntosLeonisa.Infrasctructure.Core", "2.Infrastructure\PuntosLeonisa.Infrasctructure.Core\PuntosLeonisa.Infrasctructure.Core.csproj", "{46CE46EC-74E1-4375-A017-AD5E74CD4529}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Repository", "Repository", "{5D5B1CA4-EC85-43DE-A437-7F1A06E19328}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuntosLeonisa.Domain.Core", "1.Domain\PuntosLeonisa.Domain.Core\PuntosLeonisa.Domain.Core.csproj", "{814E5F28-DC91-4A97-901C-316E8E073A46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PuntosLeonisa.Domain.Core", "1.Domain\PuntosLeonisa.Domain.Core\PuntosLeonisa.Domain.Core.csproj", "{814E5F28-DC91-4A97-901C-316E8E073A46}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Context", "Context", "{2B22E872-1357-4732-9B68-3C008F7F0BDA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Model", "Model", "{28089D02-93C3-44FB-B2BD-4D8C19E5B0BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuntosLeonisa.Products.Infrasctructure.Repositorie", "2.Infrastructure\PuntosLeonisa.Products.Infrasctructure.Repositorie\PuntosLeonisa.Products.Infrasctructure.Repositorie.csproj", "{BD840E64-E805-4C71-B941-DF02E9F1827A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PuntosLeonisa.Products.Infrasctructure.Repositorie", "2.Infrastructure\PuntosLeonisa.Products.Infrasctructure.Repositorie\PuntosLeonisa.Products.Infrasctructure.Repositorie.csproj", "{BD840E64-E805-4C71-B941-DF02E9F1827A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuntosLeonisa.Products.Infrasctructure.Common", "2.Infrastructure\PuntosLeonisa.Products.Infrasctructure.Common\PuntosLeonisa.Products.Infrasctructure.Common.csproj", "{D33E37D8-F9EA-4C2D-A7AF-0F56CDFB499B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PuntosLeonisa.Products.Infrasctructure.Common", "2.Infrastructure\PuntosLeonisa.Products.Infrasctructure.Common\PuntosLeonisa.Products.Infrasctructure.Common.csproj", "{D33E37D8-F9EA-4C2D-A7AF-0F56CDFB499B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{F7E639DC-E501-4D75-A615-6B57EB10F956}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Appplication", "Appplication", "{137614D0-3EA5-432F-A99F-DD702A5C2427}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuntosLeonisa.Products.Application.Core", "3.Application\PuntosLeonisa.Products.Application.Core\PuntosLeonisa.Products.Application.Core.csproj", "{9239D92F-F240-49CC-8A8B-FB11AD4253CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PuntosLeonisa.Products.Application.Core", "3.Application\PuntosLeonisa.Products.Application.Core\PuntosLeonisa.Products.Application.Core.csproj", "{9239D92F-F240-49CC-8A8B-FB11AD4253CE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ServicesDomain", "ServicesDomain", "{504B7CCA-412E-4363-BB03-B11114465D36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuntosLeonisa.Products.Domain.Service", "1.Domain\PuntosLeonisa.Products.Domain.Service\PuntosLeonisa.Products.Domain.Service.csproj", "{4B4B1308-7F3B-4EA9-9187-FEC3447AB460}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PuntosLeonisa.Products.Domain.Service", "1.Domain\PuntosLeonisa.Products.Domain.Service\PuntosLeonisa.Products.Domain.Service.csproj", "{4B4B1308-7F3B-4EA9-9187-FEC3447AB460}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

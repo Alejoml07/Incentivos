@@ -21,3 +21,14 @@ C:/SourceCode/IncentivosService/PuntosLeonisa.Products/1.Domain/PuntosLeonisa.Do
 /Users/danielgarcia/sourcecode/IncentivosService/PuntosLeonisa.Products/1.Domain/PuntosLeonisa.Domain.Core/obj/Debug/net6.0/refint/PuntosLeonisa.Domain.Core.dll
 /Users/danielgarcia/sourcecode/IncentivosService/PuntosLeonisa.Products/1.Domain/PuntosLeonisa.Domain.Core/obj/Debug/net6.0/PuntosLeonisa.Domain.Core.pdb
 /Users/danielgarcia/sourcecode/IncentivosService/PuntosLeonisa.Products/1.Domain/PuntosLeonisa.Domain.Core/obj/Debug/net6.0/ref/PuntosLeonisa.Domain.Core.dll
+C:\sourcecode\IncentivosService\PuntosLeonisa.Products\1.Domain\PuntosLeonisa.Domain.Core\bin\Debug\net6.0\PuntosLeonisa.Domain.Core.deps.json
+C:\sourcecode\IncentivosService\PuntosLeonisa.Products\1.Domain\PuntosLeonisa.Domain.Core\bin\Debug\net6.0\PuntosLeonisa.Domain.Core.dll
+C:\sourcecode\IncentivosService\PuntosLeonisa.Products\1.Domain\PuntosLeonisa.Domain.Core\bin\Debug\net6.0\PuntosLeonisa.Domain.Core.pdb
+C:\sourcecode\IncentivosService\PuntosLeonisa.Products\1.Domain\PuntosLeonisa.Domain.Core\obj\Debug\net6.0\PuntosLeonisa.Domain.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\sourcecode\IncentivosService\PuntosLeonisa.Products\1.Domain\PuntosLeonisa.Domain.Core\obj\Debug\net6.0\PuntosLeonisa.Domain.Core.AssemblyInfoInputs.cache
+C:\sourcecode\IncentivosService\PuntosLeonisa.Products\1.Domain\PuntosLeonisa.Domain.Core\obj\Debug\net6.0\PuntosLeonisa.Domain.Core.AssemblyInfo.cs
+C:\sourcecode\IncentivosService\PuntosLeonisa.Products\1.Domain\PuntosLeonisa.Domain.Core\obj\Debug\net6.0\PuntosLeonisa.Domain.Core.csproj.CoreCompileInputs.cache
+C:\sourcecode\IncentivosService\PuntosLeonisa.Products\1.Domain\PuntosLeonisa.Domain.Core\obj\Debug\net6.0\PuntosLeonisa.Domain.Core.dll
+C:\sourcecode\IncentivosService\PuntosLeonisa.Products\1.Domain\PuntosLeonisa.Domain.Core\obj\Debug\net6.0\refint\PuntosLeonisa.Domain.Core.dll
+C:\sourcecode\IncentivosService\PuntosLeonisa.Products\1.Domain\PuntosLeonisa.Domain.Core\obj\Debug\net6.0\PuntosLeonisa.Domain.Core.pdb
+C:\sourcecode\IncentivosService\PuntosLeonisa.Products\1.Domain\PuntosLeonisa.Domain.Core\obj\Debug\net6.0\ref\PuntosLeonisa.Domain.Core.dll

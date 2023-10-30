@@ -7,8 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="UsuariosApplication.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\2.Infrastructure\PuntosLeonisa.Products.Infrasctructure.Repositorie\PuntosLeonisa.Products.Infrasctructure.Repositorie.csproj" />
-    <ProjectReference Include="..\..\2.Infrastructure\PuntosLeonisa.Infracture.Persistence.CosmoDb\PuntosLeonisa.infrastructure.Persistence.CosmoDb.csproj" />
+    <ProjectReference Include="..\..\2.Infrastructure\PuntosLeonisa.Infracture.Persistence.CosmoDb\PuntosLeonisa.infrastructure.Persistence.csproj" />
     <ProjectReference Include="..\..\2.Infrastructure\PuntosLeonisa.Products.Infrasctructure.Common\PuntosLeonisa.Products.Infrasctructure.Common.csproj" />
     <ProjectReference Include="..\PuntosLeonisa.Products.Application.Core\PuntosLeonisa.Products.Application.Core.csproj" />
   </ItemGroup>

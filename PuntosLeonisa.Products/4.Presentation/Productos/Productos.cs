@@ -11,21 +11,30 @@ using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using PuntosLeonisa.Products.Application.Core;
 using PuntosLeonisa.Products.Domain.Service.DTO;
+using PuntosLeonisa.Products.Infrasctructure.Common.Communication;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using System.Net;
 
 namespace Productos
 {
     public class Productos
     {
         private readonly IProductApplication productoApplication;
+        private readonly GenericResponse<ProductoDto> responseError;
+        private readonly BadRequestObjectResult productoApplicationErrorResult;
 
         public Productos(IProductApplication productoApplication)
         {
             this.productoApplication = productoApplication;
+            this.responseError = new GenericResponse<ProductoDto>();
+            this.productoApplicationErrorResult = new BadRequestObjectResult(this.responseError);
         }
 
         [FunctionName("Productos")]
-        public  async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
+        [OpenApiOperation(operationId: "Productos", tags: new[] { "Productos" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Guarda el producto")]
+        public async Task<IActionResult> Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
@@ -33,7 +42,7 @@ namespace Productos
             try
             {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var data = JsonConvert.DeserializeObject<ProductoDto>(requestBody);              
+                var data = JsonConvert.DeserializeObject<ProductoDto>(requestBody);
 
                 await this.productoApplication.Add(data);
                 return new OkResult();
@@ -41,35 +50,40 @@ namespace Productos
             }
             catch (Exception ex)
             {
-                return new BadRequestObjectResult(ex);
+                return GetFunctionError(log, "Error al obtener los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
 
 
         }
 
         [FunctionName("GetProductos")]
-        public  async Task<IActionResult> GetProductos(
-           [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
+        [OpenApiOperation(operationId: "GetProductos", tags: new[] { "GetProductos" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
+        public async Task<IActionResult> GetProductos(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
            ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
 
-            //string name = req.Query["name"];
             try
             {
 
-                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                dynamic data = JsonConvert.DeserializeObject(requestBody);
-
-
-                var productos = this.productoApplication.GetAll();
-
+                log.LogInformation($"Product:GetProductos Inicia obtener todos los productos. Fecha:{DateTime.UtcNow}");
+                var productos = await productoApplication.GetAll();
+                log.LogInformation($"Product:GetProductos finaliza obtener todos los productos sin errores. Fecha:{DateTime.UtcNow}");
                 return new OkObjectResult(productos);
             }
             catch (Exception ex)
             {
-                return new BadRequestObjectResult(ex);
+                return GetFunctionError(log, "Error al obtener los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
+        }
+
+        private IActionResult GetFunctionError(ILogger log, string logMessage, Exception ex)
+        {
+            log.LogError(ex, logMessage, null);
+            this.responseError.Message = ex.Message;
+            this.responseError.IsSuccess = false;
+            return this.productoApplicationErrorResult;
         }
 
         [FunctionName("UploadImageToBlob")]
@@ -114,7 +128,9 @@ namespace Productos
         }
 
         [FunctionName("LoadProducts")]
-        public  async Task<IActionResult> LoadProducts(
+        [OpenApiOperation(operationId: "LoadProducts", tags: new[] { "LoadProducts" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
+        public async Task<IActionResult> LoadProducts(
            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
            ILogger log)
         {
@@ -123,7 +139,7 @@ namespace Productos
             try
             {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var products = JsonConvert.DeserializeObject<ProductoDto[]>(requestBody);    
+                var products = JsonConvert.DeserializeObject<ProductoDto[]>(requestBody);
 
                 await this.productoApplication.AddRange(products);
 
@@ -132,12 +148,14 @@ namespace Productos
             }
             catch (Exception ex)
             {
-                return new BadRequestObjectResult(ex);
+                return GetFunctionError(log, "Error al obtener los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
         }
 
         [FunctionName("GetProduct")]
-        public  async Task<IActionResult> GetProduct(
+        [OpenApiOperation(operationId: "GetProduct", tags: new[] { "GetProduct" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
+        public async Task<IActionResult> GetProduct(
            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetProduct/{id}")] HttpRequest req,
            string id,  // <-- Parámetro adicional
            ILogger log)
@@ -153,12 +171,15 @@ namespace Productos
             }
             catch (Exception ex)
             {
-                return new BadRequestObjectResult(ex);
+                return GetFunctionError(log, "Error al obtener los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
         }
 
         [FunctionName("DeleteProduct")]
-        public  async Task<IActionResult> DeleteProduct(
+        [OpenApiOperation(operationId: "DeleteProduct", tags: new[] { "DeleteProduct" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
+
+        public async Task<IActionResult> DeleteProduct(
            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "DeleteProduct/{id}")] HttpRequest req,
            string id,  // <-- Parámetro adicional
            ILogger log)
@@ -173,10 +194,10 @@ namespace Productos
             }
             catch (Exception ex)
             {
-                return new BadRequestObjectResult(ex);
+                return GetFunctionError(log, "Error al eliminar el productos Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
         }
-        
+
     }
 }
 
