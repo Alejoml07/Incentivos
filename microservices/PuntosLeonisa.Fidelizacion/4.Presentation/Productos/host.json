@@ -1,0 +1,14 @@
+﻿{
+  "accountCosmoName": "AccountEndpoint=https://adminbd.documents.azure.com:443/;AccountKey=ksJmbXM8eBepSYgTYRbXKRRDguumy8hp3vnOIiKprPyuZ9zWBYtv4iB54oD8JpPLRbM2l22zrDshACDbzjm6Og==;",
+  "db": "puntosleonisa_dllo",
+  "version": "2.0",
+  "logging": {
+    "applicationInsights": {
+      "samplingSettings": {
+        "isEnabled": true,
+        "excludedTypes": "Request"
+      }
+    }
+  }
+
+}

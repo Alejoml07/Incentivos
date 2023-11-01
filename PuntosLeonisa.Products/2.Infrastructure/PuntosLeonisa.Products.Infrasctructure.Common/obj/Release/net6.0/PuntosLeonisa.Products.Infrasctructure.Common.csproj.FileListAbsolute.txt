@@ -1,0 +1,12 @@
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Products.Infrasctructure.Common\bin\Release\net6.0\PuntosLeonisa.Products.Infrasctructure.Common.deps.json
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Products.Infrasctructure.Common\bin\Release\net6.0\PuntosLeonisa.Products.Infrasctructure.Common.dll
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Products.Infrasctructure.Common\bin\Release\net6.0\PuntosLeonisa.Products.Infrasctructure.Common.pdb
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Products.Infrasctructure.Common\obj\Release\net6.0\PuntosLeonisa.Products.Infrasctructure.Common.csproj.AssemblyReference.cache
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Products.Infrasctructure.Common\obj\Release\net6.0\PuntosLeonisa.Products.Infrasctructure.Common.GeneratedMSBuildEditorConfig.editorconfig
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Products.Infrasctructure.Common\obj\Release\net6.0\PuntosLeonisa.Products.Infrasctructure.Common.AssemblyInfoInputs.cache
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Products.Infrasctructure.Common\obj\Release\net6.0\PuntosLeonisa.Products.Infrasctructure.Common.AssemblyInfo.cs
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Products.Infrasctructure.Common\obj\Release\net6.0\PuntosLeonisa.Products.Infrasctructure.Common.csproj.CoreCompileInputs.cache
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Products.Infrasctructure.Common\obj\Release\net6.0\PuntosLeonisa.Products.Infrasctructure.Common.dll
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Products.Infrasctructure.Common\obj\Release\net6.0\refint\PuntosLeonisa.Products.Infrasctructure.Common.dll
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Products.Infrasctructure.Common\obj\Release\net6.0\PuntosLeonisa.Products.Infrasctructure.Common.pdb
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Products.Infrasctructure.Common\obj\Release\net6.0\ref\PuntosLeonisa.Products.Infrasctructure.Common.dll
