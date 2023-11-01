@@ -30,10 +30,22 @@ public class SeguridadApplication : IUsuarioApplication
     {
         try
         {
-            //TODO: Hacer las validaciones
-            var usuario = mapper.Map<Usuario>(value);
-            await usuarioRepository.Add(usuario);
+            var usuarioExist = await this.usuarioRepository.GetById(value.Cedula ?? "");
+            if (usuarioExist != null)
+            {
+                mapper.Map(value,usuarioExist);
+                await usuarioRepository.Update(usuarioExist);
+
+            }
+            else
+            {
+
+                //TODO: Hacer las validaciones
+                var usuario = mapper.Map<Usuario>(value);
+                await usuarioRepository.Add(usuario);
+            }
             response.Result = value;
+
             return response;
         }
         catch (Exception ex)
@@ -42,7 +54,7 @@ public class SeguridadApplication : IUsuarioApplication
         }
     }
 
-    
+
 
     public async Task<GenericResponse<UsuarioDto[]>> AddRange(UsuarioDto[] value)
     {
@@ -79,11 +91,11 @@ public class SeguridadApplication : IUsuarioApplication
     {
         try
         {
-            var ToDelete = await GetById(id) ?? throw new ArgumentException("Usuario no encontrado");
-            var usuarioToDelete = mapper.Map<Usuario>(ToDelete.Result);
-            await usuarioRepository.Delete(usuarioToDelete);
-
-            return ToDelete;
+            var ToDelete = await this.usuarioRepository.GetById(id) ?? throw new ArgumentException("Usuario no encontrado");
+        
+            await usuarioRepository.Delete(ToDelete);
+            response.Result = mapper.Map<UsuarioDto>(ToDelete);
+            return response;
         }
         catch (Exception)
         {

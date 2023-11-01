@@ -14,6 +14,8 @@ using System.Net;
 using PuntosLeonisa.Seguridad.Infrasctructure.Common.Communication;
 using PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios;
 using PuntosLeonisa.Seguridad.Application.Core;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Usuarioos
 {
@@ -31,8 +33,8 @@ namespace Usuarioos
         }
 
         [FunctionName("Usuarios")]
-        [OpenApiOperation(operationId: "Usuarioos", tags: new[] { "Usuarioos" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Guarda el producto")]
+        [OpenApiOperation(operationId: "Usuarios", tags: new[] { "Usuario/Usuarios" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<UsuarioDto>), Description = "Guarda el producto")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
             ILogger log)
@@ -57,10 +59,10 @@ namespace Usuarioos
         }
 
         [FunctionName("GetUsuarios")]
-        [OpenApiOperation(operationId: "GetUsuarioos", tags: new[] { "GetUsuarioos" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los usuarios")]
+        [OpenApiOperation(operationId: "GetUsuarios", tags: new[] { "Usuario/GetUsuarios" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<IEnumerable<UsuarioDto>>), Description = "Lista de dtos con los usuarios")]
         public async Task<IActionResult> GetUsuarioos(
-           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Usuario/GetUsuarios")] HttpRequest req,
            ILogger log)
         {
            
@@ -98,10 +100,10 @@ namespace Usuarioos
 
  
         [FunctionName("LoadUsuarios")]
-        [OpenApiOperation(operationId: "LoadUsuarios", tags: new[] { "LoadUsuarios" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los usuarios")]
+        [OpenApiOperation(operationId: "LoadUsuarios", tags: new[] { "Usuario/LoadUsuarios" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(IEnumerable<UsuarioDto>), Description = "Carga masiva de usuarios")]
         public async Task<IActionResult> LoadUsuarios(
-           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Usuario/LoadUsuarios")] HttpRequest req,
            ILogger log)
         {
             
@@ -124,10 +126,10 @@ namespace Usuarioos
         }
 
         [FunctionName("GetUsuario")]
-        [OpenApiOperation(operationId: "GetUsuario", tags: new[] { "GetUsuario" })]
+        [OpenApiOperation(operationId: "Usuarios/GetUsuario", tags: new[] { "GetUsuario" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los usuarios")]
         public async Task<IActionResult> GetUsuario(
-           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetUsuario/{id}")] HttpRequest req,
+           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Usuario/GetUsuario/{id}")] HttpRequest req,
            string id,  // <-- Parámetro adicional
            ILogger log)
         {
@@ -167,7 +169,7 @@ namespace Usuarioos
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los usuarios")]
 
         public async Task<IActionResult> DeleteUsuario(
-           [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "DeleteUsuario/{id}")] HttpRequest req,
+           [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "Usuario/DeleteUsuario/{id}")] HttpRequest req,
            string id,  // <-- Parámetro adicional
            ILogger log)
         {

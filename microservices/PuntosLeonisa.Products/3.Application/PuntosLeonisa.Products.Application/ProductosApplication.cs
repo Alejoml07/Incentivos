@@ -113,7 +113,8 @@ public class ProductosApplication : IProductApplication
         try
         {
             var ToDelete = await this.GetById(id) ?? throw new ArgumentException("Producto no encontrado");
-            var productoToDelete = this.mapper.Map<Producto>(ToDelete.Result);
+            var productoToDelete = this.productoRepository.GetById(id).Result;
+
             await this.productoRepository.Delete(productoToDelete);
 
             return ToDelete;

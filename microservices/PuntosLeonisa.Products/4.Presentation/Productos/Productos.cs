@@ -1,22 +1,23 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
-using PuntosLeonisa.Products.Application.Core;
-using PuntosLeonisa.Products.Infrasctructure.Common.Communication;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
-using System.Net;
-using PuntosLeonisa.Products.Domain.Service.DTO.Productos;
+﻿
 
 namespace Productos
 {
+    using System;
+    using System.IO;
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Azure.WebJobs;
+    using Microsoft.Azure.WebJobs.Extensions.Http;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.Extensions.Logging;
+    using Newtonsoft.Json;
+    using Azure.Storage.Blobs;
+    using Azure.Storage.Blobs.Models;
+    using PuntosLeonisa.Products.Application.Core;
+    using PuntosLeonisa.Products.Infrasctructure.Common.Communication;
+    using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+    using System.Net;
+    using PuntosLeonisa.Products.Domain.Service.DTO.Productos;
     public class Productos
     {
         private readonly IProductApplication productoApplication;
@@ -31,10 +32,10 @@ namespace Productos
         }
 
         [FunctionName("Productos")]
-        [OpenApiOperation(operationId: "Productos", tags: new[] { "Productos" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Guarda el producto")]
+        [OpenApiOperation(operationId: "Productos", tags: new[] { "Productos/Producto" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Guarda el producto")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Productos/Producto")] HttpRequest req,
             ILogger log)
         {
 
@@ -57,10 +58,10 @@ namespace Productos
         }
 
         [FunctionName("GetProductos")]
-        [OpenApiOperation(operationId: "GetProductos", tags: new[] { "GetProductos" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
+        [OpenApiOperation(operationId: "GetProductos", tags: new[] { "Productos/GetProductos" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
         public async Task<IActionResult> GetProductos(
-           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Productos/GetProductos")] HttpRequest req,
            ILogger log)
         {
            
@@ -137,10 +138,10 @@ namespace Productos
         }
 
         [FunctionName("LoadProducts")]
-        [OpenApiOperation(operationId: "LoadProducts", tags: new[] { "LoadProducts" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
+        [OpenApiOperation(operationId: "LoadProducts", tags: new[] { "Productos/LoadProducts" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
         public async Task<IActionResult> LoadProducts(
-           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Productos/LoadProducts")] HttpRequest req,
            ILogger log)
         {
             
@@ -163,10 +164,10 @@ namespace Productos
         }
 
         [FunctionName("GetProduct")]
-        [OpenApiOperation(operationId: "GetProduct", tags: new[] { "GetProduct" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
+        [OpenApiOperation(operationId: "GetProduct", tags: new[] { "Productos/GetProduct" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
         public async Task<IActionResult> GetProduct(
-           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetProduct/{id}")] HttpRequest req,
+           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Productos/GetProduct/{id}")] HttpRequest req,
            string id,  // <-- Parámetro adicional
            ILogger log)
         {
@@ -202,11 +203,11 @@ namespace Productos
         }
 
         [FunctionName("DeleteProduct")]
-        [OpenApiOperation(operationId: "DeleteProduct", tags: new[] { "DeleteProduct" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
+        [OpenApiOperation(operationId: "DeleteProduct", tags: new[] { "Productos/DeleteProduct" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
 
         public async Task<IActionResult> DeleteProduct(
-           [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "DeleteProduct/{id}")] HttpRequest req,
+           [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "Productos/DeleteProduct/{id}")] HttpRequest req,
            string id,  // <-- Parámetro adicional
            ILogger log)
         {
@@ -242,11 +243,11 @@ namespace Productos
         }
 
         [FunctionName("ProductInventory")]
-        [OpenApiOperation(operationId: "ProductInventory", tags: new[] { "ProductInventory" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
+        [OpenApiOperation(operationId: "ProductInventory", tags: new[] { "Productos/Codificacion/ProductInventory" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
 
         public async Task<IActionResult> ProductInventory(
-           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "ProductInventory")] HttpRequest req,
+           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Productos/Codificacion/ProductInventory")] HttpRequest req,
            ILogger log)
         {
 
@@ -270,11 +271,11 @@ namespace Productos
 
 
         [FunctionName("ProductPrices")]
-        [OpenApiOperation(operationId: "ProductPrices", tags: new[] { "ProductPrices" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
+        [OpenApiOperation(operationId: "ProductPrices", tags: new[] { "Productos/Codificacion/ProductPrices" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
 
         public async Task<IActionResult> ProductPrices(
-          [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "ProductPrices")] HttpRequest req,
+          [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Productos/Codificacion/ProductPrices")] HttpRequest req,
           ILogger log)
         {
 

@@ -12,6 +12,7 @@ namespace PuntosLeonisa.Products.Domain.Service.DTO.Productos
         public string? Nombre { get; set; }
 
         public string? Video { get; set; }
+        public int? Cantidad { get; set; }
 
         public string? Caracteristicas { get; set; }
 

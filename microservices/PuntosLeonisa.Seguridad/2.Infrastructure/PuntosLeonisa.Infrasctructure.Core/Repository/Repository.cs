@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
+using PuntosLeonisa.Domain.Core.Repository;
 using PuntosLeonisa.infrastructure.Persistence.CosmoDb;
 
 namespace PuntosLeonisa.Infrasctructure.Core.Repository
