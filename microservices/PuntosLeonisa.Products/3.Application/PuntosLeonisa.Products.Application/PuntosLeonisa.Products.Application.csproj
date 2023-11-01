@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="UsuariosApplication.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\2.Infrastructure\PuntosLeonisa.Products.Infrasctructure.Repositorie\PuntosLeonisa.Products.Infrasctructure.Repositorie.csproj" />
+    <ProjectReference Include="..\..\2.Infrastructure\PuntosLeonisa.Infracture.Persistence.CosmoDb\PuntosLeonisa.infrastructure.Persistence.csproj" />
+    <ProjectReference Include="..\..\2.Infrastructure\PuntosLeonisa.Products.Infrasctructure.Common\PuntosLeonisa.Products.Infrasctructure.Common.csproj" />
+    <ProjectReference Include="..\PuntosLeonisa.Products.Application.Core\PuntosLeonisa.Products.Application.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+  </ItemGroup>
+</Project>
