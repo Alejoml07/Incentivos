@@ -25,7 +25,7 @@ namespace Usuarioos
 
         public Fidelizacion(IPuntosManualApplication usuarioApplication)
         {
-            this.puntosApplication = puntosApplication;
+            puntosApplication = usuarioApplication;
             this.responseError = new GenericResponse<PuntosManualDto>();
             this.puntosApplicationErrorResult = new BadRequestObjectResult(this.responseError);
         }
