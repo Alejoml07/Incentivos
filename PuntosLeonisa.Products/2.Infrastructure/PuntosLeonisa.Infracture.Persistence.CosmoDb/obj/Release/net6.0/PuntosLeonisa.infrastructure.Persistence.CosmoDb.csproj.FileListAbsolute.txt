@@ -1,0 +1,17 @@
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Infracture.Persistence.CosmoDb\bin\Release\net6.0\PuntosLeonisa.infrastructure.Persistence.CosmoDb.deps.json
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Infracture.Persistence.CosmoDb\bin\Release\net6.0\PuntosLeonisa.infrastructure.Persistence.CosmoDb.dll
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Infracture.Persistence.CosmoDb\bin\Release\net6.0\PuntosLeonisa.infrastructure.Persistence.CosmoDb.pdb
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Infracture.Persistence.CosmoDb\bin\Release\net6.0\PuntosLeonisa.Domain.Core.dll
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Infracture.Persistence.CosmoDb\bin\Release\net6.0\PuntosLeonisa.Products.Domain.dll
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Infracture.Persistence.CosmoDb\bin\Release\net6.0\PuntosLeonisa.Products.Domain.pdb
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Infracture.Persistence.CosmoDb\bin\Release\net6.0\PuntosLeonisa.Domain.Core.pdb
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Infracture.Persistence.CosmoDb\obj\Release\net6.0\PuntosLeonisa.infrastructure.Persistence.CosmoDb.csproj.AssemblyReference.cache
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Infracture.Persistence.CosmoDb\obj\Release\net6.0\PuntosLeonisa.infrastructure.Persistence.CosmoDb.GeneratedMSBuildEditorConfig.editorconfig
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Infracture.Persistence.CosmoDb\obj\Release\net6.0\PuntosLeonisa.infrastructure.Persistence.CosmoDb.AssemblyInfoInputs.cache
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Infracture.Persistence.CosmoDb\obj\Release\net6.0\PuntosLeonisa.infrastructure.Persistence.CosmoDb.AssemblyInfo.cs
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Infracture.Persistence.CosmoDb\obj\Release\net6.0\PuntosLeonisa.infrastructure.Persistence.CosmoDb.csproj.CoreCompileInputs.cache
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Infracture.Persistence.CosmoDb\obj\Release\net6.0\PuntosLeonisa.infrastructure.Persistence.CosmoDb.csproj.CopyComplete
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Infracture.Persistence.CosmoDb\obj\Release\net6.0\PuntosLeonisa.infrastructure.Persistence.CosmoDb.dll
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Infracture.Persistence.CosmoDb\obj\Release\net6.0\refint\PuntosLeonisa.infrastructure.Persistence.CosmoDb.dll
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Infracture.Persistence.CosmoDb\obj\Release\net6.0\PuntosLeonisa.infrastructure.Persistence.CosmoDb.pdb
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\2.Infrastructure\PuntosLeonisa.Infracture.Persistence.CosmoDb\obj\Release\net6.0\ref\PuntosLeonisa.infrastructure.Persistence.CosmoDb.dll

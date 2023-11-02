@@ -1,0 +1,15 @@
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\1.Domain\PuntosLeonisa.Products.Domain\bin\Release\net6.0\PuntosLeonisa.Products.Domain.deps.json
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\1.Domain\PuntosLeonisa.Products.Domain\bin\Release\net6.0\PuntosLeonisa.Products.Domain.dll
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\1.Domain\PuntosLeonisa.Products.Domain\bin\Release\net6.0\PuntosLeonisa.Products.Domain.pdb
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\1.Domain\PuntosLeonisa.Products.Domain\bin\Release\net6.0\PuntosLeonisa.Domain.Core.dll
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\1.Domain\PuntosLeonisa.Products.Domain\bin\Release\net6.0\PuntosLeonisa.Domain.Core.pdb
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\1.Domain\PuntosLeonisa.Products.Domain\obj\Release\net6.0\PuntosLeonisa.Products.Domain.csproj.AssemblyReference.cache
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\1.Domain\PuntosLeonisa.Products.Domain\obj\Release\net6.0\PuntosLeonisa.Products.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\1.Domain\PuntosLeonisa.Products.Domain\obj\Release\net6.0\PuntosLeonisa.Products.Domain.AssemblyInfoInputs.cache
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\1.Domain\PuntosLeonisa.Products.Domain\obj\Release\net6.0\PuntosLeonisa.Products.Domain.AssemblyInfo.cs
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\1.Domain\PuntosLeonisa.Products.Domain\obj\Release\net6.0\PuntosLeonisa.Products.Domain.csproj.CoreCompileInputs.cache
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\1.Domain\PuntosLeonisa.Products.Domain\obj\Release\net6.0\PuntosLeonisa.Products.Domain.csproj.CopyComplete
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\1.Domain\PuntosLeonisa.Products.Domain\obj\Release\net6.0\PuntosLeonisa.Products.Domain.dll
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\1.Domain\PuntosLeonisa.Products.Domain\obj\Release\net6.0\refint\PuntosLeonisa.Products.Domain.dll
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\1.Domain\PuntosLeonisa.Products.Domain\obj\Release\net6.0\PuntosLeonisa.Products.Domain.pdb
+C:\SourceCode\IncentivosService\PuntosLeonisa.Products\1.Domain\PuntosLeonisa.Products.Domain\obj\Release\net6.0\ref\PuntosLeonisa.Products.Domain.dll
