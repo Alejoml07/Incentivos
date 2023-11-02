@@ -112,12 +112,14 @@ public class ProductosApplication : IProductApplication
     {
         try
         {
-            var ToDelete = await this.GetById(id) ?? throw new ArgumentException("Producto no encontrado");
-            var productoToDelete = this.productoRepository.GetById(id).Result;
-
+            var productoToDelete = await this.productoRepository.GetById(id);
+            if(productoToDelete is null)
+            {
+                throw new Exception("El producto no existe");
+            }   
+            this.response.Result = this.mapper.Map<ProductoDto>(productoToDelete);
             await this.productoRepository.Delete(productoToDelete);
-
-            return ToDelete;
+            return this.response;
         }
         catch (Exception)
         {
