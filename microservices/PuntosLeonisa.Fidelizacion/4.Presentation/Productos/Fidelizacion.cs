@@ -233,7 +233,7 @@ namespace Usuarioos
 
                 foreach (var punto in puntos)
                 {
-                     await puntosApplication.DeleteById(punto);
+                     await this.puntosApplication.DeleteById(punto);
                 }
 
                 return new OkObjectResult(new { });

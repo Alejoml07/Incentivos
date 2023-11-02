@@ -2,11 +2,11 @@
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using PuntosLeonisa.Fidelizacion.Application;
 using PuntosLeonisa.Fidelizacion.Domain.Interfaces;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie;
 using PuntosLeonisa.Infrasctructure.Core.Repository;
 using PuntosLeonisa.infrastructure.Persistence.CosmoDb;
-using PuntosLeonisa.Seguridad.Application;
 using PuntosLeonisa.Seguridad.Application.Core;
 
 [assembly: FunctionsStartup(typeof(Productos.Startup))]

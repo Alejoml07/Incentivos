@@ -6,8 +6,7 @@ using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using PuntosLeonisa.Seguridad.Application.Core;
 
-
-namespace PuntosLeonisa.Seguridad.Application;
+namespace PuntosLeonisa.Fidelizacion.Application;
 
 public class FidelizacionApplication : IPuntosManualApplication
 {
@@ -15,11 +14,11 @@ public class FidelizacionApplication : IPuntosManualApplication
     private readonly IPuntosManualRepository puntosRepository;
     private readonly GenericResponse<PuntosManualDto> response;
 
-    public FidelizacionApplication(IMapper mapper, IUsuarioRepository usuarioRepository)
+    public FidelizacionApplication(IMapper mapper, IPuntosManualRepository puntosRepository)
     {
-        if (usuarioRepository is null)
+        if (puntosRepository is null)
         {
-            throw new ArgumentNullException(nameof(usuarioRepository));
+            throw new ArgumentNullException(nameof(puntosRepository));
         }
 
         this.mapper = mapper;
