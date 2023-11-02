@@ -192,9 +192,9 @@ namespace Usuarioos
                 }
 
 
-                var usuarios = await this.puntosApplication.DeleteById(id);
+                var puntos = await this.puntosApplication.DeleteById(id);
 
-                return new OkObjectResult(usuarios);
+                return new OkObjectResult(puntos);
             }
             catch (Exception ex)
             {
@@ -202,7 +202,49 @@ namespace Usuarioos
             }
         }
 
+        [FunctionName("DeletePuntos")]
+        [OpenApiOperation(operationId: "DeletePuntos", tags: new[] { "DeletePuntos" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los usuarios")]
 
+        public async Task<IActionResult> DeletePuntos(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "DeletePuntos/")] HttpRequest req,
+             // <-- Parámetro adicional
+           ILogger log)
+        {
+
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var puntos = JsonConvert.DeserializeObject<string[]>(requestBody);
+        
+
+                foreach (var punto in puntos)
+                {
+                     await puntosApplication.DeleteById(punto);
+                }
+
+                return new OkObjectResult(new { });
+
+            }
+            
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al eliminar los puntos Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 
