@@ -14,6 +14,7 @@ using System.Net;
 using PuntosLeonisa.Seguridad.Application.Core;
 using PuntosLeonisa.fidelizacion.Domain.Service.DTO.PuntosManuales;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
+using System.Collections.Generic;
 
 namespace Usuarioos
 {
@@ -63,7 +64,7 @@ namespace Usuarioos
            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
            ILogger log)
         {
-           
+
 
             try
             {
@@ -96,7 +97,7 @@ namespace Usuarioos
             return this.puntosApplicationErrorResult;
         }
 
- 
+
         [FunctionName("LoadPuntos")]
         [OpenApiOperation(operationId: "LoadPuntos", tags: new[] { "LoadPuntos" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los usuarios")]
@@ -104,7 +105,7 @@ namespace Usuarioos
            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
            ILogger log)
         {
-            
+
 
             try
             {
@@ -131,7 +132,7 @@ namespace Usuarioos
            string id,  // <-- Parámetro adicional
            ILogger log)
         {
-            
+
 
             log.LogInformation("C# HTTP trigger function processed a request.");
 
@@ -171,7 +172,7 @@ namespace Usuarioos
            string id,  // <-- Parámetro adicional
            ILogger log)
         {
-            
+
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             try
@@ -207,8 +208,8 @@ namespace Usuarioos
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los usuarios")]
 
         public async Task<IActionResult> DeletePuntos(
-           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "DeletePuntos/")] HttpRequest req,
-             // <-- Parámetro adicional
+           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "DeletePuntos")] HttpRequest req,
+           // <-- Parámetro adicional
            ILogger log)
         {
 
@@ -229,17 +230,17 @@ namespace Usuarioos
 
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var puntos = JsonConvert.DeserializeObject<string[]>(requestBody);
-        
-
+                var response = new GenericResponse<IList<PuntosManualDto>>();
+                response.Result = new List<PuntosManualDto>();
                 foreach (var punto in puntos)
                 {
-                     await this.puntosApplication.DeleteById(punto);
+                    response.Result.Add(this.puntosApplication.DeleteById(punto).GetAwaiter().GetResult().Result);
                 }
 
-                return new OkObjectResult(new { });
+                return new OkObjectResult(response);
 
             }
-            
+
             catch (Exception ex)
             {
                 return GetFunctionError(log, "Error al eliminar los puntos Fecha:" + DateTime.UtcNow.ToString(), ex);

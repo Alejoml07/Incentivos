@@ -79,11 +79,12 @@ public class FidelizacionApplication : IPuntosManualApplication
     {
         try
         {
-            var ToDelete = await GetById(id) ?? throw new ArgumentException("Puntos no encontrados");
-            var puntosToDelete = mapper.Map<PuntosManual>(ToDelete.Result);
-            await puntosRepository.Delete(puntosToDelete);
+            var ToDelete = await this.puntosRepository.GetById(id) ?? throw new ArgumentException("Puntos no encontrados");
+            var puntosToDelete = mapper.Map<PuntosManualDto>(ToDelete);
 
-            return ToDelete;
+            await puntosRepository.Delete(ToDelete);
+            this.response.Result = puntosToDelete;
+            return this.response;
         }
         catch (Exception)
         {

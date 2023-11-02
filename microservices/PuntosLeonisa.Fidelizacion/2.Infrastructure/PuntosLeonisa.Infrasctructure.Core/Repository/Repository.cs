@@ -31,6 +31,7 @@ namespace PuntosLeonisa.Infrasctructure.Core.Repository
         /// <returns></returns>
         public async Task Delete(T entity)
         {
+            DetachAllEntities();
             _context.Set<T>().Remove(entity);
             await _context.SaveChangesAsync();
         }
@@ -41,7 +42,7 @@ namespace PuntosLeonisa.Infrasctructure.Core.Repository
         /// <returns>Lista con la información encontrada</returns>
         public async Task<IEnumerable<T>> GetAll()
         {
-            //DetachAllEntities();
+            DetachAllEntities();
             return await _context.Set<T>().ToListAsync();
         }
 
@@ -65,7 +66,7 @@ namespace PuntosLeonisa.Infrasctructure.Core.Repository
         /// <returns></returns>
         public async Task Update(T entity)
         {
-            //DetachAllEntities();
+            DetachAllEntities();
             _context.Set<T>().Update(entity);
             await _context.SaveChangesAsync();
         }
@@ -73,7 +74,7 @@ namespace PuntosLeonisa.Infrasctructure.Core.Repository
         /// <summary>
         /// Método para limpiar contexto y se tomen los cambios en la base de datos
         /// </summary>
-        //private void DetachAllEntities() => _context.ChangeTracker.Clear();
+        private void DetachAllEntities() => _context.ChangeTracker.Clear();
 
         /// <summary>
         /// Método que obtiene el id siguiente para insertar en la tabla de la base de datos
@@ -92,7 +93,7 @@ namespace PuntosLeonisa.Infrasctructure.Core.Repository
 
         public async Task AddRange(T[] entities)
         {
-            //DetachAllEntities();
+            DetachAllEntities();
             await _context.Set<T>().AddRangeAsync(entities);
             await _context.SaveChangesAsync();
         }
