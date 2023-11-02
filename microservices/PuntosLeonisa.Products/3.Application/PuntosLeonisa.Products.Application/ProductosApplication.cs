@@ -32,7 +32,13 @@ public class ProductosApplication : IProductApplication
         try
         {
             //TODO: Hacer las validaciones
-
+            var productoExist = await this.productoRepository.GetById(value.EAN);
+            if(productoExist != null)
+            {
+                this.mapper.Map(value, productoExist);
+                await this.productoRepository.Update(productoExist);
+                return this.response;
+            }
             //antes de guardar se debe subir la imagen
             await UploadImageToProducts(value);
             var producto = this.mapper.Map<Producto>(value);
@@ -175,6 +181,10 @@ public class ProductosApplication : IProductApplication
             foreach (var producto in productos)
             {
                 var productoExist = await this.productoRepository.GetById(producto.EAN ?? "");
+                if(productoExist == null)
+                {
+                    continue;
+                }
                 productoExist.Cantidad = producto.Cantidad;
                 await this.productoRepository.Update(productoExist);
             }
@@ -195,8 +205,12 @@ public class ProductosApplication : IProductApplication
             foreach (var producto in productoPrecios)
             {
                 var productoExist = await this.productoRepository.GetById(producto.EAN ?? "");
+                if(productoExist == null)
+                {
+                    continue;
+                }
                 productoExist.Precio = producto.Precio;
-                productoExist.PrecioOferta = producto.Precio;
+                productoExist.PrecioOferta = producto.PrecioOferta;
                 await this.productoRepository.Update(productoExist);
             }
 
