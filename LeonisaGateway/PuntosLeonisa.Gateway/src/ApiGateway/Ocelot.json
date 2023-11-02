@@ -1,0 +1,433 @@
+//{
+
+
+//  "Routes": [
+//    {
+//      "AuthenticationOptions": {
+//        "AuthenticationProviderKey": "Bearer",
+//        "AllowedScopes": []
+//      },
+//      "UpstreamPathTemplate": "/GetDocuments",
+//      "DownstreamPathTemplate": "/api/GetDocuments",
+//      "DownstreamScheme": "httpss",
+//      "UpstreamHttpMethod": [ "Post" ], //si se deja vacio el array. Indica que acepta todos los verbos
+//      "DownstreamHostAndPorts": [
+//        {
+//          "Host": "func-diaco-document-dev.azurewebsites.net",
+//          "Port": 443
+
+//        }
+//      ],
+//      "Key": "documents",
+//      "RateLimitOptions": {
+//        "ClientWhitelist": [],
+//        "EnableRateLimiting": true,
+//        "Period": "3s",
+//        "PeriodTimespan": 5,
+//        "Limit": 3
+//      }
+//    },
+//    {
+//      "AuthenticationOptions": {
+//        "AuthenticationProviderKey": "Bearer",
+//        "AllowedScopes": []
+//      },
+//      "UpstreamPathTemplate": "/ChangeSpecificStateDocuments",
+//      "DownstreamPathTemplate": "/api/ChangeSpecificStateDocuments",
+//      "DownstreamScheme": "httpss",
+//      "UpstreamHttpMethod": [ "Post" ], //si se deja vacio el array. Indica que acepta todos los verbos
+//      "DownstreamHostAndPorts": [
+//        {
+//          "Host": "func-diaco-document-dev.azurewebsites.net",
+//          "Port": 443
+
+//        }
+//      ],
+//      "Key": "documents",
+//      "RateLimitOptions": {
+//        "ClientWhitelist": [],
+//        "EnableRateLimiting": true,
+//        "Period": "3s",
+//        "PeriodTimespan": 5,
+//        "Limit": 3
+//      }
+//    },
+//    {
+//      "AuthenticationOptions": {
+//        "AuthenticationProviderKey": "Bearer",
+//        "AllowedScopes": []
+//      },
+//      "UpstreamPathTemplate": "/ChangeStateDocuments",
+//      "DownstreamPathTemplate": "/api/ChangeStateDocuments",
+//      "DownstreamScheme": "httpss",
+//      "UpstreamHttpMethod": [ "Post" ], //si se deja vacio el array. Indica que acepta todos los verbos
+//      "DownstreamHostAndPorts": [
+//        {
+//          "Host": "func-diaco-document-dev.azurewebsites.net",
+//          "Port": 443
+
+//        }
+//      ],
+//      "Key": "documents",
+//      "RateLimitOptions": {
+//        "ClientWhitelist": [],
+//        "EnableRateLimiting": true,
+//        "Period": "3s",
+//        "PeriodTimespan": 5,
+//        "Limit": 3
+//      }
+//    },
+//    {
+//      "AuthenticationOptions": {
+//        "AuthenticationProviderKey": "Bearer",
+//        "AllowedScopes": []
+//      },
+//      "UpstreamPathTemplate": "/GetDocumentMultipleFilePdf",
+//      "DownstreamPathTemplate": "/api/GetDocumentMultipleFilePdf",
+//      "DownstreamScheme": "httpss",
+//      "UpstreamHttpMethod": [ "Get" ], //si se deja vacio el array. Indica que acepta todos los verbos
+//      "DownstreamHostAndPorts": [
+//        {
+//          "Host": "func-diaco-document-dev.azurewebsites.net",
+//          "Port": 443
+
+//        }
+//      ],
+//      "Key": "documents",
+//      "RateLimitOptions": {
+//        "ClientWhitelist": [],
+//        "EnableRateLimiting": true,
+//        "Period": "3s",
+//        "PeriodTimespan": 5,
+//        "Limit": 3
+//      }
+//    },
+//    {
+//      "AuthenticationOptions": {
+//        "AuthenticationProviderKey": "Bearer",
+//        "AllowedScopes": []
+//      },
+//      "UpstreamPathTemplate": "/GetDocumentMultipleFileXML",
+//      "DownstreamPathTemplate": "/api/GetDocumentMultipleFileXML",
+//      "DownstreamScheme": "httpss",
+//      "UpstreamHttpMethod": [ "Get" ], //si se deja vacio el array. Indica que acepta todos los verbos
+//      "DownstreamHostAndPorts": [
+//        {
+//          "Host": "func-diaco-document-dev.azurewebsites.net",
+//          "Port": 443
+
+//        }
+//      ],
+//      "Key": "documents",
+//      "RateLimitOptions": {
+//        "ClientWhitelist": [],
+//        "EnableRateLimiting": true,
+//        "Period": "3s",
+//        "PeriodTimespan": 5,
+//        "Limit": 3
+//      }
+//    },
+//    {
+//      "AuthenticationOptions": {
+//        "AuthenticationProviderKey": "Bearer",
+//        "AllowedScopes": []
+//      },
+//      "UpstreamPathTemplate": "/GetDocumentSingleFilePdf",
+//      "DownstreamPathTemplate": "/api/GetDocumentSingleFilePdf",
+//      "DownstreamScheme": "httpss",
+//      "UpstreamHttpMethod": [ "Get" ], //si se deja vacio el array. Indica que acepta todos los verbos
+//      "DownstreamHostAndPorts": [
+//        {
+//          "Host": "func-diaco-document-dev.azurewebsites.net",
+//          "Port": 443
+
+//        }
+//      ],
+//      "Key": "documents",
+//      "RateLimitOptions": {
+//        "ClientWhitelist": [],
+//        "EnableRateLimiting": true,
+//        "Period": "3s",
+//        "PeriodTimespan": 5,
+//        "Limit": 3
+//      }
+//    },
+//    {
+//      "AuthenticationOptions": {
+//        "AuthenticationProviderKey": "Bearer",
+//        "AllowedScopes": []
+//      },
+//      "UpstreamPathTemplate": "/GetDocumentSingleFileXML",
+//      "DownstreamPathTemplate": "/api/GetDocumentSingleFileXML",
+//      "DownstreamScheme": "httpss",
+//      "UpstreamHttpMethod": [ "Get" ], //si se deja vacio el array. Indica que acepta todos los verbos
+//      "DownstreamHostAndPorts": [
+//        {
+//          "Host": "func-diaco-document-dev.azurewebsites.net",
+//          "Port": 443
+
+//        }
+//      ],
+//      "Key": "documents",
+//      "RateLimitOptions": {
+//        "ClientWhitelist": [],
+//        "EnableRateLimiting": true,
+//        "Period": "3s",
+//        "PeriodTimespan": 5,
+//        "Limit": 3
+//      }
+//    }
+//  ],
+//  "GlobalConfiguration": {
+
+//  }
+//}
+
+{
+  "Routes": [
+    // Empieza Usuarios
+    {
+      "UpstreamPathTemplate": "/api/Usuario/Usuarios",
+      "DownstreamPathTemplate": "/api/Usuarios",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plseguridad.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "usuariosRoute"
+    },
+    {
+      "UpstreamPathTemplate": "/api/Usuario/GetUsuarios",
+      "DownstreamPathTemplate": "/api/Usuario/GetUsuarios",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plseguridad.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "getUsuariosRoute"
+    },
+    {
+      "UpstreamPathTemplate": "/api/Usuario/LoadUsuarios",
+      "DownstreamPathTemplate": "/api/Usuario/LoadUsuarios",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plseguridad.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "loadUsuariosRoute"
+    },
+    {
+      "UpstreamPathTemplate": "/api/Usuario/GetUsuario/{id}",
+      "DownstreamPathTemplate": "/api/Usuario/GetUsuario/{id}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plseguridad.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "getUsuarioByIdRoute"
+    },
+    {
+      "UpstreamPathTemplate": "/api/Usuario/DeleteUsuario/{id}",
+      "DownstreamPathTemplate": "/api/Usuario/DeleteUsuario/{id}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plseguridad.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "deleteUsuarioRoute"
+    },
+
+    //Termina Usuario
+    //Empieza productos
+    {
+      "UpstreamPathTemplate": "/api/Productos/Producto",
+      "DownstreamPathTemplate": "/api/Productos/Producto",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "incentivosproductos.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "productoRoute"
+    },
+    {
+      "UpstreamPathTemplate": "/api/Productos/GetProductos",
+      "DownstreamPathTemplate": "/api/Productos/GetProductos",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "incentivosproductos.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "getProductosRoute"
+    },
+    {
+      "UpstreamPathTemplate": "/api/Productos/LoadProducts",
+      "DownstreamPathTemplate": "/api/Productos/LoadProducts",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "incentivosproductos.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "loadProductsRoute"
+    },
+    {
+      "UpstreamPathTemplate": "/api/Productos/GetProduct/{id}",
+      "DownstreamPathTemplate": "/api/Productos/GetProduct/{id}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "incentivosproductos.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "getProductByIdRoute"
+    },
+    {
+      "UpstreamPathTemplate": "/api/Productos/DeleteProduct/{id}",
+      "DownstreamPathTemplate": "/api/Productos/DeleteProduct/{id}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "incentivosproductos.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "deleteProductRoute"
+    },
+    {
+      "UpstreamPathTemplate": "/api/Productos/Codificacion/ProductInventory",
+      "DownstreamPathTemplate": "/api/Productos/Codificacion/ProductInventory",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "incentivosproductos.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "productInventoryRoute"
+    },
+    {
+      "UpstreamPathTemplate": "/api/Productos/Codificacion/ProductPrices",
+      "DownstreamPathTemplate": "/api/Productos/Codificacion/ProductPrices",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "incentivosproductos.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "productPricesRoute"
+    },
+    // fin productos
+    {
+      "UpstreamPathTemplate": "/api/fidelizacion/PuntosManuales",
+      "DownstreamPathTemplate": "/api/Puntos",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "puntosRoute"
+    },
+    {
+      "UpstreamPathTemplate": "/api/fidelizacion/GetPuntosManuales",
+      "DownstreamPathTemplate": "/api/GetPuntos",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "getPuntosRoute"
+    },
+    {
+      "UpstreamPathTemplate": "/api/fidelizacion/LoadPuntosManuales",
+      "DownstreamPathTemplate": "/api/LoadPuntos",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "loadPuntosRoute"
+    },
+    {
+      "UpstreamPathTemplate": "/api/fidelizacion/GetPuntoManual/{id}",
+      "DownstreamPathTemplate": "/api/GetPunto/{id}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "getPuntoRoute"
+    },
+    {
+      "UpstreamPathTemplate": "/api/fidelizacion/DeletePuntoManual/{id}",
+      "DownstreamPathTemplate": "/api/DeletePunto/{id}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "deletePuntoRoute"
+    },
+    {
+      "UpstreamPathTemplate": "/api/fidelizacion/DeletePuntoManuales",
+      "DownstreamPathTemplate": "/api/DeletePuntos",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "deletePuntosRoute"
+    }
+
+    // fin puntos
+  ],
+  "GlobalConfiguration": {
+
+  }
+}

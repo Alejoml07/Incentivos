@@ -1,0 +1,72 @@
+{
+    "Routes": [
+        {
+            "UpstreamPathTemplate": "/api/Usuarios",
+            "DownstreamPathTemplate": "/api/Usuarios",
+            "DownstreamScheme": "http",
+            "UpstreamHttpMethod": ["Post"],
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 7060
+                }
+            ],
+            "Key": "usuariosRoute"
+        },
+        {
+            "UpstreamPathTemplate": "/api/Usuario/GetUsuarios",
+            "DownstreamPathTemplate": "/api/Usuario/GetUsuarios",
+            "DownstreamScheme": "http",
+            "UpstreamHttpMethod": ["Get"],
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 7060
+                }
+            ],
+            "Key": "getUsuariosRoute"
+        },
+        {
+            "UpstreamPathTemplate": "/api/Usuario/LoadUsuario",
+            "DownstreamPathTemplate": "/api/Usuario/LoadUsuario",
+            "DownstreamScheme": "http",
+            "UpstreamHttpMethod": ["Post"],
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 7060
+                }
+            ],
+            "Key": "loadUsuariosRoute"
+        },
+        {
+            "UpstreamPathTemplate": "/api/Usuario/GetUsuario/{id}",
+            "DownstreamPathTemplate": "/api/Usuario/GetUsuario/{id}",
+            "DownstreamScheme": "http",
+            "UpstreamHttpMethod": ["Get"],
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 7060
+                }
+            ],
+            "Key": "getUsuarioByIdRoute"
+        },
+        {
+            "UpstreamPathTemplate": "/api/Usuario/DeleteUsuario/{id}",
+            "DownstreamPathTemplate": "/api/Usuario/DeleteUsuario/{id}",
+            "DownstreamScheme": "http",
+            "UpstreamHttpMethod": ["Delete"],
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 7060
+                }
+            ],
+            "Key": "deleteUsuarioRoute"
+        }
+    ],
+    "GlobalConfiguration": {
+        "BaseUrl": "http://localhost:7000"
+    }
+}
