@@ -8,8 +8,8 @@ namespace PuntosLeonisa.Products.Domain.Service.DTO.Productos
 {
     public class ProductoPreciosDto
     {
-        public string EAN { get; set; }
-        public double Precio { get; set; }
-        public double PrecioOferta { get; set; }
+        public string? EAN { get; set; }
+        public double? Precio { get; set; }
+        public double? PrecioOferta { get; set; }
     }
 }
