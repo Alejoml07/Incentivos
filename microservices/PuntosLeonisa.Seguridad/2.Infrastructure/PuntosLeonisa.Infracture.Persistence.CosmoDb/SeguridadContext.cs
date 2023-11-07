@@ -31,6 +31,7 @@ public class SeguridadContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new UsuariosConfiguration());
+        modelBuilder.ApplyConfiguration(new ProveedorConfiguration());
 
     }
 

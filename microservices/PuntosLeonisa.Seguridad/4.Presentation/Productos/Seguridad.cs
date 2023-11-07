@@ -7,22 +7,20 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using System.Net;
 using PuntosLeonisa.Seguridad.Infrasctructure.Common.Communication;
 using PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios;
 using PuntosLeonisa.Seguridad.Application.Core;
-using System.Collections;
 using System.Collections.Generic;
 
-namespace Usuarioos
+namespace Usuarios
 {
     public class Seguridad
     {
         private readonly IUsuarioApplication usuarioApplication;
         private readonly GenericResponse<UsuarioDto> responseError;
+
         private readonly BadRequestObjectResult productoApplicationErrorResult;
 
         public Seguridad(IUsuarioApplication usuarioApplication)
