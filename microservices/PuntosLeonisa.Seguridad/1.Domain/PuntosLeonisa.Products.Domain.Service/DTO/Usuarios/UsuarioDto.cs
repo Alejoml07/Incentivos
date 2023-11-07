@@ -10,6 +10,8 @@ namespace PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios
 
         public string? Cedula { get; set; }
 
+        public string NitProveedor { get; set; }
+
         public string? Nombres { get; set; }
 
         public string? Apellidos { get; set; }
