@@ -41,6 +41,7 @@ public class ProveedorApplication : IProveedorApplication
 
                 //TODO: Hacer las validaciones
                 var proveedor = mapper.Map<Proveedor>(value);
+                proveedor.Id = Guid.NewGuid().ToString();
                 await proveedorRepository.Add(proveedor);
             }
             response.Result = value;

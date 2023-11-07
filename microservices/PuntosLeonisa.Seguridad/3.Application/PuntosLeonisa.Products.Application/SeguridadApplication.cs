@@ -30,9 +30,11 @@ public class SeguridadApplication : IUsuarioApplication
     {
         try
         {
+            
             var usuarioExist = await this.usuarioRepository.GetById(value.Cedula ?? "");
             if (usuarioExist != null)
             {
+          
                 mapper.Map(value,usuarioExist);
                 await usuarioRepository.Update(usuarioExist);
 
@@ -42,6 +44,7 @@ public class SeguridadApplication : IUsuarioApplication
 
                 //TODO: Hacer las validaciones
                 var usuario = mapper.Map<Usuario>(value);
+                usuario.Id = Guid.NewGuid().ToString();
                 await usuarioRepository.Add(usuario);
             }
             response.Result = value;
