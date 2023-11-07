@@ -20,14 +20,13 @@ namespace Usuarios
     {
         private readonly IProveedorApplication proveedorApplication;
         private readonly GenericResponse<ProveedorDto> responseError;
+        private readonly BadRequestObjectResult productoApplicationErrorResult;
 
-        private readonly BadRequestObjectResult proveedorApplicationErrorResult;
-
-        public Proveedor(IUsuarioApplication usuarioApplication)
+        public Proveedor(IProveedorApplication proveedorApplication)
         {
             this.proveedorApplication = proveedorApplication;
             this.responseError = new GenericResponse<ProveedorDto>();
-            this.proveedorApplicationErrorResult = new BadRequestObjectResult(this.responseError);
+            this.productoApplicationErrorResult = new BadRequestObjectResult(this.responseError);
         }
 
         [FunctionName("Proveedor")]
@@ -93,7 +92,7 @@ namespace Usuarios
             log.LogError(ex, logMessage, null);
             this.responseError.Message = ex.Message;
             this.responseError.IsSuccess = false;
-            return this.proveedorApplicationErrorResult;
+            return this.productoApplicationErrorResult;
         }
 
         [FunctionName("GetProveedor")]

@@ -27,8 +27,10 @@ namespace Productos
 
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            builder.Services.AddScoped<IProveedorRepository, ProveedorRepository>();
 
             builder.Services.AddScoped<IUsuarioApplication, SeguridadApplication>();
+            builder.Services.AddScoped<IProveedorApplication, ProveedorApplication>();
 
 
             //Add ServiceProxy

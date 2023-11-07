@@ -20,7 +20,6 @@ namespace Usuarios
     {
         private readonly IUsuarioApplication usuarioApplication;
         private readonly GenericResponse<UsuarioDto> responseError;
-
         private readonly BadRequestObjectResult productoApplicationErrorResult;
 
         public Seguridad(IUsuarioApplication usuarioApplication)

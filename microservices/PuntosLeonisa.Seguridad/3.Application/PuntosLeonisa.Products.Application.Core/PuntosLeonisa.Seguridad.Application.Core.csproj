@@ -10,9 +10,6 @@
     <None Remove="Interfaces\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\1.Domain\PuntosLeonisa.Products.Domain.Service\PuntosLeonisa.Seguridad.Domain.Service.csproj" />
     <ProjectReference Include="..\..\2.Infrastructure\PuntosLeonisa.Products.Infrasctructure.Common\PuntosLeonisa.Seguridad.Infrasctructure.Common.csproj" />
   </ItemGroup>
