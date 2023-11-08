@@ -13,7 +13,9 @@ namespace PuntosLeonisa.Products.Domain.Model
 
         public string? Cedula { get; set; }
 
-        public string NitProveedor { get; set; }
+        public string? NitProveedor { get; set; }
+
+        public string? Proveedor { get; set; }
 
         public string? Nombres { get; set; }
 
