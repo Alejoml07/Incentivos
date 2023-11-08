@@ -67,6 +67,8 @@ public class Producto :IDisposable
     //TODO:Revisar
     public string? Categoria { get; set; }
 
+    public string? SubCategoria { get; set; }
+
     //TODO:Revisar posible inventario
     public int? Cantidad { get; set; }
 

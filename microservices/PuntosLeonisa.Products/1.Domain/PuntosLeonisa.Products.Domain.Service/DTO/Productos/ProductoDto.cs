@@ -70,6 +70,7 @@ namespace PuntosLeonisa.Products.Domain.Service.DTO.Productos
         //TODO:Revisar
         public string? Categoria { get; set; }
 
+        public string? SubCategoria { get; set; }
 
         public string? PalabrasClaves { get; set; }
 
