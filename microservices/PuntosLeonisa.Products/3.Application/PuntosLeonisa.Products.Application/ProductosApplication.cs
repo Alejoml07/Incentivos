@@ -6,6 +6,7 @@ using PuntosLeonisa.Products.Domain.Interfaces;
 using PuntosLeonisa.Products.Domain.Service.DTO.Productos;
 using PuntosLeonisa.Products.Infrasctructure.Common;
 using PuntosLeonisa.Products.Infrasctructure.Common.Communication;
+using PuntosLeonisa.Products.Infrasctructure.Repositorie;
 
 namespace PuntosLeonisa.Products.Application;
 
@@ -42,6 +43,7 @@ public class ProductosApplication : IProductApplication
             //antes de guardar se debe subir la imagen
             await UploadImageToProducts(value);
             var producto = this.mapper.Map<Producto>(value);
+            producto.Puntos = ((float?)(producto.Precio / 87));
             await this.productoRepository.Add(producto);
             this.response.Result = value;
             return this.response;
@@ -210,6 +212,7 @@ public class ProductosApplication : IProductApplication
                     continue;
                 }
                 productoExist.Precio = producto.Precio;
+                productoExist.Puntos = (int)Math.Round((float)(producto.Precio / 87));
                 productoExist.PrecioOferta = producto.PrecioOferta;
                 await this.productoRepository.Update(productoExist);
             }
@@ -222,4 +225,9 @@ public class ProductosApplication : IProductApplication
             throw;
         }
     }
+
+    //Task <GenericResponse<ProductoDto>> IProductApplication.GetFiltro(string categoria, double? precioMin, double? precioMax, string genero, string proveedor)
+    //{
+        
+    //}
 }

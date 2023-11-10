@@ -12,7 +12,6 @@ namespace PuntosLeonisa.Products.Infrasctructure.Common.Communication
             this.Message = "Proceso realizado correctamente";
             this.IsSuccess = true;
         }
-  
     }
 }
 

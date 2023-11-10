@@ -8,5 +8,7 @@ public interface IProductApplication : IApplicationCore<ProductoDto>
 {
     Task<GenericResponse<bool>> AddProductoInventario(ProductoInventarioDto[] products);
     Task<GenericResponse<bool>> AddProductoPrecios(ProductoPreciosDto[] productoPrecios);
+    //Task<GenericResponse<ProductoDto>> GetFiltro(string categoria, double? precioMin, double? precioMax, string genero, string proveedor);
+    
 }
 

@@ -62,12 +62,10 @@ public class Producto :IDisposable
 
     public string? UsuarioModificacion { get; set; }
 
-    public int? IdCategoria { get; set; }
-
     //TODO:Revisar
-    public string? Categoria { get; set; }
+    public string? CategoriaNombre { get; set; }
 
-    public string? SubCategoria { get; set; }
+    public string? SubCategoriaNombre { get; set; }
 
     //TODO:Revisar posible inventario
     public int? Cantidad { get; set; }

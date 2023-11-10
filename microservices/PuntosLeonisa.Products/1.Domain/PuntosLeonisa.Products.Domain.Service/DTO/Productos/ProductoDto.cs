@@ -65,12 +65,9 @@ namespace PuntosLeonisa.Products.Domain.Service.DTO.Productos
 
         public string? UsuarioModificacion { get; set; }
 
-        public int? IdCategoria { get; set; }
+        public string? CategoriaNombre { get; set; }
 
-        //TODO:Revisar
-        public string? Categoria { get; set; }
-
-        public string? SubCategoria { get; set; }
+        public string? SubCategoriaNombre { get; set; }
 
         public string? PalabrasClaves { get; set; }
 
