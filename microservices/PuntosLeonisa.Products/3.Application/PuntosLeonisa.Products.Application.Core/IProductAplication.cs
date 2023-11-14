@@ -1,4 +1,5 @@
 ﻿using PuntosLeonisa.Products.Application.Core.Interfaces;
+using PuntosLeonisa.Products.Domain.Service.DTO.Genericos;
 using PuntosLeonisa.Products.Domain.Service.DTO.Productos;
 using PuntosLeonisa.Products.Infrasctructure.Common.Communication;
 
@@ -8,7 +9,8 @@ public interface IProductApplication : IApplicationCore<ProductoDto>
 {
     Task<GenericResponse<bool>> AddProductoInventario(ProductoInventarioDto[] products);
     Task<GenericResponse<bool>> AddProductoPrecios(ProductoPreciosDto[] productoPrecios);
-    //Task<GenericResponse<ProductoDto>> GetFiltro(string categoria, double? precioMin, double? precioMax, string genero, string proveedor);
-    
+
+    Task<GenericResponse<PagedResult<ProductoDto>>> GetProductosByFiltersAndRange(ProductosFilters filtros);
+
 }
 

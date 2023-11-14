@@ -297,6 +297,43 @@ namespace Productos
             }
         }
 
+
+        //TODO: Function azure para filtrar productos por filtros
+        [FunctionName("GetProductsByFilters")]
+        [OpenApiOperation(operationId: "GetProductsByFilters", tags: new[] { "Productos/GetProductsByFilters" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
+        public async Task<IActionResult> GetProductsByFilters(
+                      [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Productos/GetProductsByFilters")] HttpRequest req,
+                                ILogger log)
+        {
+            
+
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+                log.LogInformation($"Product:GetProductsByFilters Inicia obtener todos los productos. Fecha:{DateTime.UtcNow}");
+                var body = req.Body;
+                string requestBody = await new StreamReader(body).ReadToEndAsync();
+                var filtros = JsonConvert.DeserializeObject<ProductosFilters>(requestBody);
+                var productos = await productoApplication.GetProductosByFiltersAndRange(filtros);
+                log.LogInformation($"Product:GetProductsByFilters finaliza obtener todos los productos sin errores. Fecha:{DateTime.UtcNow}");
+                return new OkObjectResult(productos);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
     }
 }
 

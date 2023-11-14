@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using PuntosLeonisa.Products.Application.Core;
 using PuntosLeonisa.Products.Domain;
 using PuntosLeonisa.Products.Domain.Interfaces;
+using PuntosLeonisa.Products.Domain.Service.DTO.Genericos;
 using PuntosLeonisa.Products.Domain.Service.DTO.Productos;
 using PuntosLeonisa.Products.Infrasctructure.Common;
 using PuntosLeonisa.Products.Infrasctructure.Common.Communication;
@@ -34,7 +35,8 @@ public class ProductosApplication : IProductApplication
         try
         {
             //TODO: Hacer las validaciones
-            var productoExist = await this.productoRepository.GetById(value.EAN);
+            var productoExist = await this.productoRepository.GetById(value.EAN ?? string.Empty);
+            var parametroEquivalenciaEnPuntos  = 87d;
             if (productoExist != null)
             {
                 this.mapper.Map(value, productoExist);
@@ -44,7 +46,8 @@ public class ProductosApplication : IProductApplication
             //antes de guardar se debe subir la imagen
             await UploadImageToProducts(value);
             var producto = this.mapper.Map<Producto>(value);
-            producto.Puntos = ((float?)(producto.Precio / 87));
+            //TODO: Colocar el parametro de puntos y su equivalencia 87
+            producto.Puntos = ((int?)(producto.Precio / parametroEquivalenciaEnPuntos));
             await this.productoRepository.Add(producto);
             this.response.Result = value;
             return this.response;
@@ -121,11 +124,7 @@ public class ProductosApplication : IProductApplication
     {
         try
         {
-            var productoToDelete = await this.productoRepository.GetById(id);
-            if (productoToDelete is null)
-            {
-                throw new Exception("El producto no existe");
-            }
+            var productoToDelete = await this.productoRepository.GetById(id) ?? throw new Exception("El producto no existe");
             this.response.Result = this.mapper.Map<ProductoDto>(productoToDelete);
             await this.productoRepository.Delete(productoToDelete);
             return this.response;
@@ -213,7 +212,8 @@ public class ProductosApplication : IProductApplication
                     continue;
                 }
                 productoExist.Precio = producto.Precio;
-                productoExist.Puntos = (int)Math.Round((float)(producto.Precio / 87));
+                //TODO: Colocar el parametro de puntos y su equivalencia 87
+                productoExist.Puntos = (int)Math.Round((float)(producto.Precio ?? 0 / 87));
                 productoExist.PrecioOferta = producto.PrecioOferta;
                 await this.productoRepository.Update(productoExist);
             }
@@ -227,24 +227,21 @@ public class ProductosApplication : IProductApplication
         }
     }
 
-    public async Task<GenericResponse<ProductoDto>> GetFiltro(string categoria, double? precioMin, double? precioMax, string? genero, string? proveedor)
-
+    public async Task<GenericResponse<PagedResult<ProductoDto>>> GetProductosByFiltersAndRange(ProductosFilters filtros)
     {
         try
         {
-            var response = await this.productoRepository.GetFiltro(categoria, precioMin, precioMax, genero, proveedor);
-            return new GenericResponse<ProductoDto>
+            var response = await this.productoRepository.GetProductsByFiltersAndRange(filtros);
+
+            return new GenericResponse<PagedResult<ProductoDto>>()
             {
-                Message = "Operación exitosa"
+                Result = this.mapper.Map<PagedResult<ProductoDto>>(response)
             };
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            
-            return new GenericResponse<ProductoDto>
-            {
-                Message = $"Se produjo un error: {ex.Message}"
-            };
+
+            throw;
         }
     }
 }
