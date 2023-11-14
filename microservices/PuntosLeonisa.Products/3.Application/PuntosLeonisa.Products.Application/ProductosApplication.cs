@@ -1,5 +1,6 @@
 ﻿
 using AutoMapper;
+using Newtonsoft.Json.Linq;
 using PuntosLeonisa.Products.Application.Core;
 using PuntosLeonisa.Products.Domain;
 using PuntosLeonisa.Products.Domain.Interfaces;
@@ -34,7 +35,7 @@ public class ProductosApplication : IProductApplication
         {
             //TODO: Hacer las validaciones
             var productoExist = await this.productoRepository.GetById(value.EAN);
-            if(productoExist != null)
+            if (productoExist != null)
             {
                 this.mapper.Map(value, productoExist);
                 await this.productoRepository.Update(productoExist);
@@ -121,10 +122,10 @@ public class ProductosApplication : IProductApplication
         try
         {
             var productoToDelete = await this.productoRepository.GetById(id);
-            if(productoToDelete is null)
+            if (productoToDelete is null)
             {
                 throw new Exception("El producto no existe");
-            }   
+            }
             this.response.Result = this.mapper.Map<ProductoDto>(productoToDelete);
             await this.productoRepository.Delete(productoToDelete);
             return this.response;
@@ -183,7 +184,7 @@ public class ProductosApplication : IProductApplication
             foreach (var producto in productos)
             {
                 var productoExist = await this.productoRepository.GetById(producto.EAN ?? "");
-                if(productoExist == null)
+                if (productoExist == null)
                 {
                     continue;
                 }
@@ -200,14 +201,14 @@ public class ProductosApplication : IProductApplication
         }
     }
 
-    public async  Task<GenericResponse<bool>> AddProductoPrecios(ProductoPreciosDto[] productoPrecios)
+    public async Task<GenericResponse<bool>> AddProductoPrecios(ProductoPreciosDto[] productoPrecios)
     {
         try
         {
             foreach (var producto in productoPrecios)
             {
                 var productoExist = await this.productoRepository.GetById(producto.EAN ?? "");
-                if(productoExist == null)
+                if (productoExist == null)
                 {
                     continue;
                 }
@@ -226,8 +227,24 @@ public class ProductosApplication : IProductApplication
         }
     }
 
-    //Task <GenericResponse<ProductoDto>> IProductApplication.GetFiltro(string categoria, double? precioMin, double? precioMax, string genero, string proveedor)
-    //{
-        
-    //}
+    public async Task<GenericResponse<ProductoDto>> GetFiltro(string categoria, double? precioMin, double? precioMax, string? genero, string? proveedor)
+
+    {
+        try
+        {
+            var response = await this.productoRepository.GetFiltro(categoria, precioMin, precioMax, genero, proveedor);
+            return new GenericResponse<ProductoDto>
+            {
+                Message = "Operación exitosa"
+            };
+        }
+        catch (Exception ex)
+        {
+            
+            return new GenericResponse<ProductoDto>
+            {
+                Message = $"Se produjo un error: {ex.Message}"
+            };
+        }
+    }
 }

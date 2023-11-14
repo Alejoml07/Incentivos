@@ -13,7 +13,7 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
        
     }
 
-    public async Task<IEnumerable<Producto>> GetFiltro(string categoria, double? precioMin, double? precioMax, string genero, string proveedor)
+    public async Task<IEnumerable<Producto>> GetFiltro(Producto filter)
     {
         var query = _context.Set<Producto>().AsQueryable();
 

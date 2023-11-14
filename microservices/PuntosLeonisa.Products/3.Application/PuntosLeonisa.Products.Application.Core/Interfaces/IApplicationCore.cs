@@ -1,4 +1,5 @@
 ﻿using System;
+using PuntosLeonisa.Products.Domain.Service.DTO.Productos;
 using PuntosLeonisa.Products.Infrasctructure.Common.Communication;
 
 namespace PuntosLeonisa.Products.Application.Core.Interfaces
@@ -13,7 +14,7 @@ namespace PuntosLeonisa.Products.Application.Core.Interfaces
         Task<GenericResponse<T>> Delete(T value);
         Task<GenericResponse<T>> DeleteById(string id);
         Task<GenericResponse<IEnumerable<T>>>   GetAll();
-
-	}
+        Task<GenericResponse<ProductoDto>> GetFiltro(string categoria, double? precioMin, double? precioMax, string? genero, string? proveedor);
+    }
 }
 
