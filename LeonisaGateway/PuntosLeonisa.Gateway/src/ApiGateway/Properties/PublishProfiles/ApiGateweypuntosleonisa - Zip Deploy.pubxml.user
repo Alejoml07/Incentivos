@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-This file is used by the publish/package process of your Web project. You can customize the behavior of this process
-by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+Este archivo se usa en el proceso de publicación y empaquetado del proyecto web. Para personalizar el comportamiento de este proceso,
+edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 para obtener más información. 
 -->
 <Project>
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAV/pFui6U4kmzgDg17XuZwQAAAAACAAAAAAAQZgAAAAEAACAAAACIOt8+8YyPUGOIbnSA2VNjWdE9v1LByTEeqHeMkQdWEwAAAAAOgAAAAAIAACAAAABxpz8PGYxVCzFu7pLwSs9cJTM1Fh7Jxj5RHvFpc3f0gYAAAAB8hOoMJ1x1wx5usF/LQe678AaipWvkXiYMon7ReEu2QDA5IQqRiEZKrkNJcc0/txTNSaUzWJuIlCsmqc1cGhbvJxzK925sILgL5evqbG8mkq8sRW5R1IowXqpLBNR5nxOTlhxL/dbD3DvhRvndnNchcxkM+wI5XXqhWgTvWFOKXUAAAABEkW66CDn91ezYlBSr+crr2tZ7Ctl9iX8gHZZ236KsMqtWoQTZgI33+hhMCa7ftaZ/7Q9bO92+D1CWAd+fQEhj</EncryptedPassword>
-    <History>True|2023-11-02T16:46:44.0874492Z;True|2023-11-02T11:40:34.8650380-05:00;True|2023-11-02T11:04:56.4246535-05:00;True|2023-11-02T10:43:50.7095397-05:00;True|2023-11-01T15:05:33.0661324-05:00;True|2023-11-01T14:56:57.0383132-05:00;True|2023-11-01T14:45:28.4213461-05:00;True|2023-11-01T14:39:46.7678843-05:00;True|2023-11-01T14:38:17.2682822-05:00;True|2023-11-01T14:36:41.8761744-05:00;True|2023-11-01T14:22:53.3238900-05:00;True|2023-11-01T13:57:27.1710181-05:00;True|2023-11-01T13:50:06.4211873-05:00;True|2023-11-01T13:44:10.6172649-05:00;True|2023-11-01T13:22:25.7059869-05:00;</History>
-    <LastFailureDetails />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAIMp9KnSP30a5dIkECYzGcQAAAAACAAAAAAAQZgAAAAEAACAAAAAZtdvBS2LSXOjh8rGgg1bG8/nrnR2O52WyyxaxjBa4QgAAAAAOgAAAAAIAACAAAACFGIWMzAZFWV5xRf3rIuGBQ6VqMujJhFbwlZPeRxeae4AAAABgPxFnsGHJSON1O5AYFiUumpnKrw8bSr1fe1SEf//b5VW6zNRDueJA1gIbo7eFKo5gG4d3HOF3Zb7MI6un0KtwGtg5DtSq8myawsvAgdP1D3XmnNb4C/PGlh8LTqmUueXBDt435LwhhjiuKpeZLL5qj6ta8phFxXU2gHglXQpv20AAAABFuAqvZO62fevLXJrOtU7PqU5AGUo7ttuE6tc8VfREvg1Y+XSz2t63jXSNs7HJQliuavBnAnN7ipQnYBaDMe3q</EncryptedPassword>
   </PropertyGroup>
 </Project>

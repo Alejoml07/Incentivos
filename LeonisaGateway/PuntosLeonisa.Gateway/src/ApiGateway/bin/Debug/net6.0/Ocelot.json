@@ -257,12 +257,12 @@
     {
       "UpstreamPathTemplate": "/api/Productos/Producto",
       "DownstreamPathTemplate": "/api/Productos/Producto",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "incentivosproductos.azurewebsites.net",
-          "Port": 443
+          "Host": "localhost",
+          "Port": 7060
         }
       ],
       "Key": "productoRoute"
@@ -270,12 +270,12 @@
     {
       "UpstreamPathTemplate": "/api/Productos/GetProductos",
       "DownstreamPathTemplate": "/api/Productos/GetProductos",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "incentivosproductos.azurewebsites.net",
-          "Port": 443
+          "Host": "localhost",
+          "Port": 7060
         }
       ],
       "Key": "getProductosRoute"
@@ -283,12 +283,12 @@
     {
       "UpstreamPathTemplate": "/api/Productos/LoadProducts",
       "DownstreamPathTemplate": "/api/Productos/LoadProducts",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "incentivosproductos.azurewebsites.net",
-          "Port": 443
+          "Host": "localhost",
+          "Port": 7060
         }
       ],
       "Key": "loadProductsRoute"
@@ -296,12 +296,12 @@
     {
       "UpstreamPathTemplate": "/api/Productos/GetProduct/{id}",
       "DownstreamPathTemplate": "/api/Productos/GetProduct/{id}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "incentivosproductos.azurewebsites.net",
-          "Port": 443
+          "Host": "localhost",
+          "Port": 7060
         }
       ],
       "Key": "getProductByIdRoute"
@@ -309,12 +309,12 @@
     {
       "UpstreamPathTemplate": "/api/Productos/DeleteProduct/{id}",
       "DownstreamPathTemplate": "/api/Productos/DeleteProduct/{id}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "UpstreamHttpMethod": [ "Delete" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "incentivosproductos.azurewebsites.net",
-          "Port": 443
+          "Host": "localhost",
+          "Port": 7060
         }
       ],
       "Key": "deleteProductRoute"
@@ -322,12 +322,12 @@
     {
       "UpstreamPathTemplate": "/api/Productos/Codificacion/ProductInventory",
       "DownstreamPathTemplate": "/api/Productos/Codificacion/ProductInventory",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "incentivosproductos.azurewebsites.net",
-          "Port": 443
+          "Host": "localhost",
+          "Port": 7060
         }
       ],
       "Key": "productInventoryRoute"
@@ -335,12 +335,12 @@
     {
       "UpstreamPathTemplate": "/api/Productos/Codificacion/ProductPrices",
       "DownstreamPathTemplate": "/api/Productos/Codificacion/ProductPrices",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "incentivosproductos.azurewebsites.net",
-          "Port": 443
+          "Host": "localhost",
+          "Port": 7060
         }
       ],
       "Key": "productPricesRoute"
@@ -410,9 +410,76 @@
         }
       ],
       "Key": "deletePuntoRoute"
-    }
+    },
+    {
+      "UpstreamPathTemplate": "/api/fidelizacion/DeletePuntoManuales",
+      "DownstreamPathTemplate": "/api/DeletePuntos",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "deletePuntosRoute"
+    },
 
-    // fin puntos
+    // fin puntos,
+    //proveedores
+    {
+      "DownstreamPathTemplate": "/api/Proveedor",
+      "UpstreamPathTemplate": "/api/Proveedor",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plseguridad.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "ProveedorRoute"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Proveedor/GetProveedores",
+      "UpstreamPathTemplate": "/api/Proveedor/GetProveedores",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plseguridad.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "GetProveedoresRoute"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Proveedor/GetProveedor/{Nit}",
+      "UpstreamPathTemplate": "/api/Proveedor/GetProveedor/{Nit}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plseguridad.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "GetProveedorRoute"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Proveedor/DeleteProveedor/{Nit}",
+      "UpstreamPathTemplate": "/api/Proveedor/DeleteProveedor/{Nit}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plseguridad.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "DeleteProveedorRoute"
+    }
+    //fin proveedores
   ],
   "GlobalConfiguration": {
 

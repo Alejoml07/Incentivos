@@ -8,10 +8,16 @@ namespace PuntosLeonisa.Products.Domain.Service.DTO.Productos
 {
     public class FiltroDto
     {
-        public List<string> CategoriaNombre { get; set; }
+        public List<Categoria> Categorias { get; set; }
         public List<int> Puntos { get; set; }
         public List<string> SubCategoriaNombre { get; set; }
-        public List<string> Marca { get; set; }
+        public List<string> Marca { get; set; } 
 
+    }
+
+    public class Categoria
+    {
+        public string CategoriaNombre { get; set; }
+        public List<string> Subcategorias { get; set; }
     }
 }

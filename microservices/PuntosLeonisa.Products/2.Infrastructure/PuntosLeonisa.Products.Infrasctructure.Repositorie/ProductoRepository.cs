@@ -128,41 +128,36 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
 
     }
 
- 
+
 
     public async Task<FiltroDto> ObtenerFiltros()
     {
         // Obtén todos los productos
         var productos = await _context.Set<Producto>().ToListAsync();
 
-        // Lista para nombres de categorías únicas
-        var nombresPorCategoria = productos
-            .Select(p => p.CategoriaNombre)
-            .Distinct()
+        // Agrupar en memoria
+        var categoriasConSubcategorias = productos
+            .GroupBy(p => p.CategoriaNombre)
+            .Select(group => new Categoria
+            {
+                CategoriaNombre = group.Key,
+                Subcategorias = group.Select(g => g.SubCategoriaNombre).Distinct().ToList()
+            })
             .ToList();
 
-        // Lista para nombres de subcategorías únicas
-        var nombresPorSubCategoria = productos
-            .Select(p => p.SubCategoriaNombre)
-            .Distinct()
-            .ToList();
-
-        // Lista para nombres de marcas únicas
-        var nombresPorMarca = productos
+        var marcas = productos
             .Select(p => p.Marca)
             .Distinct()
             .ToList();
 
-        // Crea una lista de listas para almacenar cada conjunto de filtros
-        FiltroDto listasDeNombresFiltrados = new()
+        FiltroDto filtroDto = new FiltroDto
         {
-            CategoriaNombre = nombresPorCategoria ,
-            SubCategoriaNombre = nombresPorSubCategoria,
-            Marca = nombresPorMarca
+            Categorias = categoriasConSubcategorias,
+            Marca = marcas
         };
 
-        // Retorna el conjunto de listas de nombres
-        return listasDeNombresFiltrados;
+        return filtroDto;
     }
+
     #endregion
 }
