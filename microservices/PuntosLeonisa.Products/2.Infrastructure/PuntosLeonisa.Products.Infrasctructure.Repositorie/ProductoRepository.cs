@@ -51,7 +51,7 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
         var query = _context.Set<Producto>().AsQueryable();
         Expression? combinedExpression = null;
         var parameter = Expression.Parameter(typeof(Producto), "p");
-        var maxPropertyEnd = queryObject.MaxRangePropertyNameEnd; 
+        var maxPropertyEnd = queryObject.MaxRangePropertyNameEnd;
         var minPropertyEnd = queryObject.MinRangePropertyNameEnd;
         // Construyendo filtros
         foreach (var filter in queryObject.Filters)
@@ -126,6 +126,43 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
 
         return pagedResult;
 
-    } 
+    }
+
+ 
+
+    public async Task<FiltroDto> ObtenerFiltros()
+    {
+        // Obtén todos los productos
+        var productos = await _context.Set<Producto>().ToListAsync();
+
+        // Lista para nombres de categorías únicas
+        var nombresPorCategoria = productos
+            .Select(p => p.CategoriaNombre)
+            .Distinct()
+            .ToList();
+
+        // Lista para nombres de subcategorías únicas
+        var nombresPorSubCategoria = productos
+            .Select(p => p.SubCategoriaNombre)
+            .Distinct()
+            .ToList();
+
+        // Lista para nombres de marcas únicas
+        var nombresPorMarca = productos
+            .Select(p => p.Marca)
+            .Distinct()
+            .ToList();
+
+        // Crea una lista de listas para almacenar cada conjunto de filtros
+        FiltroDto listasDeNombresFiltrados = new()
+        {
+            CategoriaNombre = nombresPorCategoria ,
+            SubCategoriaNombre = nombresPorSubCategoria,
+            Marca = nombresPorMarca
+        };
+
+        // Retorna el conjunto de listas de nombres
+        return listasDeNombresFiltrados;
+    }
     #endregion
 }

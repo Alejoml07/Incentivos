@@ -244,4 +244,16 @@ public class ProductosApplication : IProductApplication
             throw;
         }
     }
+
+
+    public async Task<GenericResponse<FiltroDto>> ObtenerFiltros()
+    {
+        var filtros = await this.productoRepository.ObtenerFiltros();
+        var responseOnly = new GenericResponse<FiltroDto>
+        {
+            Result = filtros
+        };
+
+        return responseOnly;
+    }
 }

@@ -333,6 +333,37 @@ namespace Productos
                 return GetFunctionError(log, "Error al obtener los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+        [FunctionName("ObtenerFiltros")]
+        [OpenApiOperation(operationId: "ObtenerFiltros", tags: new[] { "Productos/ObtenerFiltros" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
+        public async Task<IActionResult> ObtenerFiltros(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Productos/ObtenerFiltros")] HttpRequest req,
+           ILogger log)
+        {
+
+
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+                log.LogInformation($"Product:ObtenerFiltros Inicia obtener todos los filtros. Fecha:{DateTime.UtcNow}");
+                var filtros = await productoApplication.ObtenerFiltros();
+                log.LogInformation($"Product:ObtenerFiltros finaliza obtener todos los filtros sin errores. Fecha:{DateTime.UtcNow}");
+                return new OkObjectResult(filtros);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
 
     }
 }

@@ -10,6 +10,7 @@ public interface IProductApplication : IApplicationCore<ProductoDto>
     Task<GenericResponse<bool>> AddProductoInventario(ProductoInventarioDto[] products);
     Task<GenericResponse<bool>> AddProductoPrecios(ProductoPreciosDto[] productoPrecios);
 
+    Task<GenericResponse<FiltroDto>> ObtenerFiltros();
     Task<GenericResponse<PagedResult<ProductoDto>>> GetProductosByFiltersAndRange(ProductosFilters filtros);
 
 }
