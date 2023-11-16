@@ -15,6 +15,8 @@ namespace PuntosLeonisa.Products.Domain.Service.Mapping
             CreateMap<Producto, ProductoDto>();
             CreateMap<ProductoDto, Producto>();
             CreateMap<PagedResult<Producto>, PagedResult<ProductoDto>>();
+            CreateMap<Producto, FiltroDto>();
+            CreateMap<FiltroDto, Producto>();
 
 
             //TODO: Hacer el de usuario

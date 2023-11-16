@@ -261,7 +261,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "incentivosproductos.azurewebsites.net",
+          "Host": "plproductos.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -274,7 +274,7 @@
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "incentivosproductos.azurewebsites.net",
+          "Host": "plproductos.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -287,7 +287,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "incentivosproductos.azurewebsites.net",
+          "Host": "plproductos.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -300,7 +300,7 @@
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "incentivosproductos.azurewebsites.net",
+          "Host": "plproductos.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -313,7 +313,7 @@
       "UpstreamHttpMethod": [ "Delete" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "incentivosproductos.azurewebsites.net",
+          "Host": "plproductos.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -326,7 +326,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "incentivosproductos.azurewebsites.net",
+          "Host": "plproductos.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -339,7 +339,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "incentivosproductos.azurewebsites.net",
+          "Host": "plproductos.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -436,9 +436,63 @@
         }
       ],
       "Key": "deletePuntosRoute"
-    }
+    },
 
-    // fin puntos
+    // fin puntos,
+    //proveedores
+    {
+      "DownstreamPathTemplate": "/api/Proveedor",
+      "UpstreamPathTemplate": "/api/Proveedor",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plseguridad.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "ProveedorRoute"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Proveedor/GetProveedores",
+      "UpstreamPathTemplate": "/api/Proveedor/GetProveedores",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plseguridad.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "GetProveedoresRoute"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Proveedor/GetProveedor/{Nit}",
+      "UpstreamPathTemplate": "/api/Proveedor/GetProveedor/{Nit}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plseguridad.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "GetProveedorRoute"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Proveedor/DeleteProveedor/{Nit}",
+      "UpstreamPathTemplate": "/api/Proveedor/DeleteProveedor/{Nit}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plseguridad.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "DeleteProveedorRoute"
+    }
+    //fin proveedores
   ],
   "GlobalConfiguration": {
 

@@ -51,7 +51,7 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
         var query = _context.Set<Producto>().AsQueryable();
         Expression? combinedExpression = null;
         var parameter = Expression.Parameter(typeof(Producto), "p");
-        var maxPropertyEnd = queryObject.MaxRangePropertyNameEnd; 
+        var maxPropertyEnd = queryObject.MaxRangePropertyNameEnd;
         var minPropertyEnd = queryObject.MinRangePropertyNameEnd;
         // Construyendo filtros
         foreach (var filter in queryObject.Filters)
@@ -126,6 +126,56 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
 
         return pagedResult;
 
-    } 
+    }
+
+    public async Task<FiltroDto> ObtenerFiltros(GeneralFiltersWithResponseDto generalFiltersWithResponseDto)
+    {
+        List<Producto>? productos = null;
+        if (generalFiltersWithResponseDto?.ApplyFiltro != null)
+        {
+           var pagedResult = await this.GetProductsByFiltersAndRange(generalFiltersWithResponseDto.ApplyFiltro);
+            productos = pagedResult.Data.ToList();
+        }
+        else
+        {
+            // Obtén todos los productos
+            productos = await _context.Set<Producto>().ToListAsync();
+        }
+        // Agrupar categorías y subcategorías en memoria
+        var categoriasConSubcategorias = productos
+            .GroupBy(p => p.CategoriaNombre)
+            .Select(group => new Categoria
+            {
+                CategoriaNombre = group.Key,
+                Subcategorias = group.Select(g => g.SubCategoriaNombre).Distinct().ToList()
+            })
+            .ToList();
+
+        // Obtener marcas únicas
+        var marcas = productos
+            .Select(p => p.Marca)
+            .Distinct()
+            .ToList();
+
+        // Calcular los puntos máximos y mínimos, ignorando los nulos
+        var puntosValidos = productos
+            .Select(p => p.Puntos)
+            .Where(p => p.HasValue)
+            .Select(p => p.Value);
+
+        int puntosMin = puntosValidos.Any() ? (int)puntosValidos.Min() : 0;
+        int puntosMax = puntosValidos.Any() ? (int)puntosValidos.Max() : 0;
+
+        FiltroDto filtroDto = new FiltroDto
+        {
+            Categorias = categoriasConSubcategorias,
+            Marca = marcas,
+            PuntosMin = puntosMin,
+            PuntosMax = puntosMax
+        };
+
+        return filtroDto;
+    }
+
     #endregion
 }
