@@ -130,12 +130,13 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
 
 
 
+   
     public async Task<FiltroDto> ObtenerFiltros()
     {
         // Obtén todos los productos
         var productos = await _context.Set<Producto>().ToListAsync();
 
-        // Agrupar en memoria
+        // Agrupar categorías y subcategorías en memoria
         var categoriasConSubcategorias = productos
             .GroupBy(p => p.CategoriaNombre)
             .Select(group => new Categoria
@@ -145,25 +146,27 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
             })
             .ToList();
 
+        // Obtener marcas únicas
         var marcas = productos
             .Select(p => p.Marca)
             .Distinct()
             .ToList();
 
-        // Obtener puntos únicos
-        var puntos = productos
-        .Select(p => p.Puntos)
-        .Where(p => p.HasValue) // Ignora los valores nulos
-        .Select(p => (int)p.Value) // Convierte a int
-        .OrderBy(p => p)
-        .Distinct()
-        .ToList();
+        // Calcular los puntos máximos y mínimos, ignorando los nulos
+        var puntosValidos = productos
+            .Select(p => p.Puntos)
+            .Where(p => p.HasValue)
+            .Select(p => p.Value);
+
+        int puntosMin = puntosValidos.Any() ? (int)puntosValidos.Min() : 0;
+        int puntosMax = puntosValidos.Any() ? (int)puntosValidos.Max() : 0;
 
         FiltroDto filtroDto = new FiltroDto
         {
             Categorias = categoriasConSubcategorias,
             Marca = marcas,
-            Puntos = puntos
+            PuntosMin = puntosMin,
+            PuntosMax = puntosMax
         };
 
         return filtroDto;
