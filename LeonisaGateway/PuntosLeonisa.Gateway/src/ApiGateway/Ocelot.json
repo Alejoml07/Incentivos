@@ -345,6 +345,19 @@
       ],
       "Key": "productPricesRoute"
     },
+    {
+      "UpstreamPathTemplate": "/api/Productos/Mk/GetAndApplyFilters",
+      "DownstreamPathTemplate": "/api/Productos/Mk/GetAndApplyFilters",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "incentivosproductos.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "productPricesRoute"
+    },
     // fin productos
     {
       "UpstreamPathTemplate": "/api/fidelizacion/PuntosManuales",
