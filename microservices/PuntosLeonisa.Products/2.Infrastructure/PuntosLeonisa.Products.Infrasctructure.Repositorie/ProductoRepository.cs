@@ -128,14 +128,19 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
 
     }
 
-
-
-   
-    public async Task<FiltroDto> ObtenerFiltros()
+    public async Task<FiltroDto> ObtenerFiltros(GeneralFiltersWithResponseDto generalFiltersWithResponseDto)
     {
-        // Obtén todos los productos
-        var productos = await _context.Set<Producto>().ToListAsync();
-
+        List<Producto>? productos = null;
+        if (generalFiltersWithResponseDto?.ApplyFiltro != null)
+        {
+           var pagedResult = await this.GetProductsByFiltersAndRange(generalFiltersWithResponseDto.ApplyFiltro);
+            productos = pagedResult.Data.ToList();
+        }
+        else
+        {
+            // Obtén todos los productos
+            productos = await _context.Set<Producto>().ToListAsync();
+        }
         // Agrupar categorías y subcategorías en memoria
         var categoriasConSubcategorias = productos
             .GroupBy(p => p.CategoriaNombre)

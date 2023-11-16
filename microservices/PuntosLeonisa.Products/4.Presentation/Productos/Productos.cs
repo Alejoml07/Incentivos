@@ -298,46 +298,11 @@ namespace Productos
         }
 
 
-        //TODO: Function azure para filtrar productos por filtros
-        [FunctionName("GetProductsByFilters")]
-        [OpenApiOperation(operationId: "GetProductsByFilters", tags: new[] { "Productos/GetProductsByFilters" })]
+        [FunctionName("GetAndApplyFilters")]
+        [OpenApiOperation(operationId: "GetAndApplyFilters", tags: new[] { "Productos/Mk/GetAndApplyFilters" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
-        public async Task<IActionResult> GetProductsByFilters(
-                      [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Productos/GetProductsByFilters")] HttpRequest req,
-                                ILogger log)
-        {
-            
-
-            try
-            {
-                if (req is null)
-                {
-                    throw new ArgumentNullException(nameof(req));
-                }
-
-                if (log is null)
-                {
-                    throw new ArgumentNullException(nameof(log));
-                }
-
-                log.LogInformation($"Product:GetProductsByFilters Inicia obtener todos los productos. Fecha:{DateTime.UtcNow}");
-                var body = req.Body;
-                string requestBody = await new StreamReader(body).ReadToEndAsync();
-                var filtros = JsonConvert.DeserializeObject<ProductosFilters>(requestBody);
-                var productos = await productoApplication.GetProductosByFiltersAndRange(filtros);
-                log.LogInformation($"Product:GetProductsByFilters finaliza obtener todos los productos sin errores. Fecha:{DateTime.UtcNow}");
-                return new OkObjectResult(productos);
-            }
-            catch (Exception ex)
-            {
-                return GetFunctionError(log, "Error al obtener los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
-            }
-        }
-        [FunctionName("ObtenerFiltros")]
-        [OpenApiOperation(operationId: "ObtenerFiltros", tags: new[] { "Productos/ObtenerFiltros" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
-        public async Task<IActionResult> ObtenerFiltros(
-           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Productos/ObtenerFiltros")] HttpRequest req,
+        public async Task<IActionResult> GetAndApplyFilters(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Productos/Mk/GetAndApplyFilters")] HttpRequest req,
            ILogger log)
         {
 
@@ -355,7 +320,10 @@ namespace Productos
                 }
 
                 log.LogInformation($"Product:ObtenerFiltros Inicia obtener todos los filtros. Fecha:{DateTime.UtcNow}");
-                var filtros = await productoApplication.ObtenerFiltros();
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var generalFiltersWithResponses = JsonConvert.DeserializeObject<GeneralFiltersWithResponseDto>(requestBody);
+
+                var filtros = await productoApplication.GetAndApplyFilters(generalFiltersWithResponses);
                 log.LogInformation($"Product:ObtenerFiltros finaliza obtener todos los filtros sin errores. Fecha:{DateTime.UtcNow}");
                 return new OkObjectResult(filtros);
             }

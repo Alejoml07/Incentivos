@@ -1,5 +1,6 @@
 ﻿
 using AutoMapper;
+using Microsoft.Azure.Cosmos.Serialization.HybridRow.Schemas;
 using Newtonsoft.Json.Linq;
 using PuntosLeonisa.Products.Application.Core;
 using PuntosLeonisa.Products.Domain;
@@ -36,7 +37,7 @@ public class ProductosApplication : IProductApplication
         {
             //TODO: Hacer las validaciones
             var productoExist = await this.productoRepository.GetById(value.EAN ?? string.Empty);
-            var parametroEquivalenciaEnPuntos  = 87d;
+            var parametroEquivalenciaEnPuntos = 87d;
             if (productoExist != null)
             {
                 this.mapper.Map(value, productoExist);
@@ -243,12 +244,12 @@ public class ProductosApplication : IProductApplication
 
             throw;
         }
+
     }
 
-
-    public async Task<GenericResponse<FiltroDto>> ObtenerFiltros()
+    public async Task<GenericResponse<FiltroDto>> ObtenerFiltros(GeneralFiltersWithResponseDto generalFiltersWithResponseDto)
     {
-        var filtros = await this.productoRepository.ObtenerFiltros();
+        var filtros = await this.productoRepository.ObtenerFiltros(generalFiltersWithResponseDto);
         var responseOnly = new GenericResponse<FiltroDto>
         {
             Result = filtros
@@ -256,4 +257,51 @@ public class ProductosApplication : IProductApplication
 
         return responseOnly;
     }
+    public async Task<GenericResponse<GeneralFiltersWithResponseDto>> GetAndApplyFilters(GeneralFiltersWithResponseDto generalFiltersWithResponseDto)
+    {
+        try
+        {
+            PagedResult<ProductoDto>? productosResponse = null;
+            if (generalFiltersWithResponseDto?.ApplyFiltro != null)
+            {
+                // Utilizar ApplyFiltro para obtener los productos
+                var resultApplied = await this.GetProductosByFiltersAndRange(generalFiltersWithResponseDto?.ApplyFiltro);
+                productosResponse = resultApplied.Result;
+            }
+            else
+            {
+                var response = await this.GetAll();
+                productosResponse = new PagedResult<ProductoDto>()
+                {
+                    PageNumber = 1,
+                    Data = response.Result,
+                    PageSize = 10,
+                    TotalCount = response.Result.Count()
+                };
+
+            }
+
+            // Opcional: Determinar o ajustar filtros adicionales basados en productos obtenidos
+            // ..
+            // Obtener o ajustar filtros usando GetFiltro
+            var filtrosResponse = await this.ObtenerFiltros(generalFiltersWithResponseDto); // O alguna lógica que involucre GetFiltro
+
+            // Combinar productos y filtros en una respuesta
+            return new GenericResponse<GeneralFiltersWithResponseDto>
+            {
+                Result = new GeneralFiltersWithResponseDto
+                {
+                    DataByFilter = productosResponse,
+                    FiltrosFromProductos = filtrosResponse.Result // Ajustar según la lógica de negocio
+                }
+            };
+        }
+        catch (Exception)
+        {
+            // Manejar excepciones
+            throw;
+        }
+    }
+
+
 }
