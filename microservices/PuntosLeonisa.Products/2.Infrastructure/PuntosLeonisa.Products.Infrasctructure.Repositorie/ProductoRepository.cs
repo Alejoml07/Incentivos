@@ -150,10 +150,20 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
             .Distinct()
             .ToList();
 
+        // Obtener puntos únicos
+        var puntos = productos
+        .Select(p => p.Puntos)
+        .Where(p => p.HasValue) // Ignora los valores nulos
+        .Select(p => (int)p.Value) // Convierte a int
+        .OrderBy(p => p)
+        .Distinct()
+        .ToList();
+
         FiltroDto filtroDto = new FiltroDto
         {
             Categorias = categoriasConSubcategorias,
-            Marca = marcas
+            Marca = marcas,
+            Puntos = puntos
         };
 
         return filtroDto;
