@@ -37,7 +37,7 @@ public class ProductosApplication : IProductApplication
         {
             //TODO: Hacer las validaciones
             var productoExist = await this.productoRepository.GetById(value.EAN ?? string.Empty);
-            var parametroEquivalenciaEnPuntos = 87d;
+            var parametroEquivalenciaEnPuntos = 87;
             if (productoExist != null)
             {
                 this.mapper.Map(value, productoExist);
@@ -214,7 +214,7 @@ public class ProductosApplication : IProductApplication
                 }
                 productoExist.Precio = producto.Precio;
                 //TODO: Colocar el parametro de puntos y su equivalencia 87
-                productoExist.Puntos = (int)Math.Round((float)(producto.Precio ?? 0 / 87));
+                productoExist.Puntos = (int)Math.Round((float)(producto.Precio / 87));
                 productoExist.PrecioOferta = producto.PrecioOferta;
                 await this.productoRepository.Update(productoExist);
             }
