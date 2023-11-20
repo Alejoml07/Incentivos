@@ -11,6 +11,7 @@ namespace PuntosLeonisa.Products.Domain.Service.DTO.Productos
         public List<Categoria> Categorias { get; set; }
         public int PuntosMin { get; set; }
         public int PuntosMax { get; set; }
+        public int Precio { get; set; }
         public List<string> SubCategoriaNombre { get; set; }
         public List<string> Marca { get; set; } 
 

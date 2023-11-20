@@ -21,7 +21,7 @@ namespace PuntosLeonisa.Products.Domain.Service.DTO.Productos
 
         public int PageCount { get; set; }
 
-        public Dictionary<string, string> Filters { get; set; }
+        public Dictionary<string, dynamic> Filters { get; set; }
 
         public ProductosFilters() { }
 
