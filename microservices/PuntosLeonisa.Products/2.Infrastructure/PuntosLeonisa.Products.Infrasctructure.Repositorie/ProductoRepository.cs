@@ -8,6 +8,7 @@ using PuntosLeonisa.Products.Domain.Service.DTO.Genericos;
 using System.Linq;
 using PuntosLeonisa.Products.Domain.Service.DTO.Productos;
 using System.Reflection.Metadata;
+using System.Collections;
 
 namespace PuntosLeonisa.Products.Infrasctructure.Repositorie;
 public class ProductoRepository : Repository<Producto>, IProductoRepository
@@ -46,7 +47,33 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
             throw new InvalidCastException($"No se puede convertir el valor '{value}' al tipo '{targetType.Name}'.");
         }
     }
+    private  int CheckDynamicType(dynamic dynamicObject)
+    {
+        // Chequea si el objeto es nulo
+        if (dynamicObject == null)
+        {
+            Console.WriteLine("El objeto es nulo.");
+            throw new ArgumentException("objeto nulo");
+        }
 
+        Type type = dynamicObject.GetType();
+
+        // Chequea si es un string
+        if (type == typeof(string))
+        {
+            return 1;
+        }
+        // Chequea si es una colección (por ejemplo, listas, arrays, etc.)
+        else if (typeof(IEnumerable).IsAssignableFrom(type))
+        {
+            return 2;
+        }
+        else
+        {
+            Console.WriteLine($"El objeto es de tipo: {type}");
+            return 3;
+        }
+    }
     #endregion
 
     #region Publicos
@@ -67,20 +94,58 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
             if (propertyInfo == null) continue;
 
             Expression? orExpression = null;
-            foreach (var value in values)
+            var type = CheckDynamicType(values);
+           switch(type)
             {
-                // Convertir el valor char a string
-                string stringValue = value.ToString();
+                case 1:
+                    // Convertir el valor char a string
+                    string stringValue = values.ToString();
 
-                // Ahora llama a ConvertToType con una cadena
-                var convertedValue = ConvertToType(stringValue, propertyInfo.PropertyType);
+                    // Ahora llama a ConvertToType con una cadena
+                    var convertedValue = ConvertToType(stringValue, propertyInfo.PropertyType);
 
-                var member = Expression.Property(parameter, propertyInfo);
-                var constant = Expression.Constant(convertedValue, propertyInfo.PropertyType);
-                var equalExpression = Expression.Equal(member, constant);
+                    var member = Expression.Property(parameter, propertyInfo);
+                    var constant = Expression.Constant(convertedValue, propertyInfo.PropertyType);
+                    var equalExpression = Expression.Equal(member, constant);
 
-                orExpression = orExpression == null ? equalExpression : Expression.OrElse(orExpression, equalExpression);
+                    orExpression = orExpression == null ? equalExpression : Expression.AndAlso(orExpression, equalExpression);
+                    break;
+                case 2:
+                    var valuesList = values as IEnumerable;
+                    foreach (var value in valuesList)
+                    {
+                        // Convertir el valor char a string
+                        string stringValue2 = value.ToString();
+
+                        // Ahora llama a ConvertToType con una cadena
+                        var convertedValue2 = ConvertToType(stringValue2, propertyInfo.PropertyType);
+
+                        var member2 = Expression.Property(parameter, propertyInfo);
+                        var constant2 = Expression.Constant(convertedValue2, propertyInfo.PropertyType);
+                        var equalExpression2 = Expression.Equal(member2, constant2);
+
+                        orExpression = orExpression == null ? equalExpression2 : Expression.OrElse(orExpression, equalExpression2);
+                    }
+                    break;
+                case 3:
+                    break;
+                default:
+                    break;
             }
+            //foreach (var value in values)
+            //{
+            //    // Convertir el valor char a string
+            //    string stringValue = value.ToString();
+
+            //    // Ahora llama a ConvertToType con una cadena
+            //    var convertedValue = ConvertToType(stringValue, propertyInfo.PropertyType);
+
+            //    var member = Expression.Property(parameter, propertyInfo);
+            //    var constant = Expression.Constant(convertedValue, propertyInfo.PropertyType);
+            //    var equalExpression = Expression.Equal(member, constant);
+
+            //    orExpression = orExpression == null ? equalExpression : Expression.OrElse(orExpression, equalExpression);
+            //}
 
             if (orExpression != null)
             {
