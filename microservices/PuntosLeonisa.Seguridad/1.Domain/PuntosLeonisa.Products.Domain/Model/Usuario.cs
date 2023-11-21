@@ -41,7 +41,7 @@ namespace PuntosLeonisa.Products.Domain.Model
 
         public string? Empresa { get; set; }
 
-        public string? contraseña { get; set; }
+        public string? Contrasena { get; set; }
 
         public void Dispose()
         {

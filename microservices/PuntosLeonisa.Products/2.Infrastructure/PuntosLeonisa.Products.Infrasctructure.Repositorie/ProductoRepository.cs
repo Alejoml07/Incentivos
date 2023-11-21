@@ -83,6 +83,8 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
         var query = _context.Set<Producto>().AsQueryable();
         Expression? combinedExpression = null;
         var parameter = Expression.Parameter(typeof(Producto), "p");
+        var maxPropertyEnd = queryObject.MaxRangePropertyNameEnd;
+        var minPropertyEnd = queryObject.MinRangePropertyNameEnd;
 
         // Construyendo filtros
         foreach (var filter in queryObject.Filters)
@@ -90,25 +92,40 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
             var key = filter.Key;
             var values = filter.Value; // Lista de valores
 
-            var propertyInfo = typeof(Producto).GetProperty(key);
-            if (propertyInfo == null) continue;
+            var propertyInfo = typeof(Producto).GetProperty(filter.Key.Replace(maxPropertyEnd, "").Replace(minPropertyEnd, ""));
+            if (propertyInfo == null)
+            {
+                continue; // La propiedad no existe en el modelo, se ignora el filtro
+            }
+
+
+
+
+            Expression expression;
 
             Expression? orExpression = null;
             var type = CheckDynamicType(values);
-           switch(type)
+            switch (type)
             {
                 case 1:
-                    // Convertir el valor char a string
-                    string stringValue = values.ToString();
+                   var  convertedValue = ConvertToType(values, propertyInfo.PropertyType);
 
-                    // Ahora llama a ConvertToType con una cadena
-                    var convertedValue = ConvertToType(stringValue, propertyInfo.PropertyType);
+                    if (key.EndsWith(maxPropertyEnd) || key.EndsWith(minPropertyEnd))
+                    {
+                        var actualKey = key.Replace(maxPropertyEnd, "").Replace(minPropertyEnd, "");
+                        var member = Expression.Property(parameter, actualKey);
+                        var constant = Expression.Constant(convertedValue, propertyInfo.PropertyType);
 
-                    var member = Expression.Property(parameter, propertyInfo);
-                    var constant = Expression.Constant(convertedValue, propertyInfo.PropertyType);
-                    var equalExpression = Expression.Equal(member, constant);
+                        expression = key.EndsWith(maxPropertyEnd) ? Expression.LessThanOrEqual(member, constant) : Expression.GreaterThanOrEqual(member, constant);
+                    }
+                    else
+                    {
+                        var member = Expression.Property(parameter, propertyInfo);
+                        expression = Expression.Equal(member, Expression.Constant(convertedValue, propertyInfo.PropertyType));
+                    }
 
-                    orExpression = orExpression == null ? equalExpression : Expression.AndAlso(orExpression, equalExpression);
+                    //combinedExpression = combinedExpression == null ? expression : Expression.AndAlso(combinedExpression, expression);
+                    orExpression = orExpression == null ? expression : Expression.AndAlso(orExpression, expression);
                     break;
                 case 2:
                     var valuesList = values as IEnumerable;
@@ -132,20 +149,6 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
                 default:
                     break;
             }
-            //foreach (var value in values)
-            //{
-            //    // Convertir el valor char a string
-            //    string stringValue = value.ToString();
-
-            //    // Ahora llama a ConvertToType con una cadena
-            //    var convertedValue = ConvertToType(stringValue, propertyInfo.PropertyType);
-
-            //    var member = Expression.Property(parameter, propertyInfo);
-            //    var constant = Expression.Constant(convertedValue, propertyInfo.PropertyType);
-            //    var equalExpression = Expression.Equal(member, constant);
-
-            //    orExpression = orExpression == null ? equalExpression : Expression.OrElse(orExpression, equalExpression);
-            //}
 
             if (orExpression != null)
             {
@@ -191,6 +194,7 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
 
         return pagedResult;
     }
+
 
     public async Task<FiltroDto> ObtenerFiltros(GeneralFiltersWithResponseDto generalFiltersWithResponseDto)
     {

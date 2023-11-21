@@ -48,7 +48,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PuntosLeonisa.Seguridad.Inf
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{F7E639DC-E501-4D75-A615-6B57EB10F956}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Appplication", "Appplication", "{137614D0-3EA5-432F-A99F-DD702A5C2427}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{137614D0-3EA5-432F-A99F-DD702A5C2427}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PuntosLeonisa.Seguridad.Application.Core", "3.Application\PuntosLeonisa.Products.Application.Core\PuntosLeonisa.Seguridad.Application.Core.csproj", "{9239D92F-F240-49CC-8A8B-FB11AD4253CE}"
 EndProject
