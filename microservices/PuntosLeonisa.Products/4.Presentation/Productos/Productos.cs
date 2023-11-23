@@ -202,6 +202,7 @@ namespace Productos
             }
         }
 
+
         [FunctionName("DeleteProduct")]
         [OpenApiOperation(operationId: "DeleteProduct", tags: new[] { "Productos/DeleteProduct" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
@@ -326,6 +327,45 @@ namespace Productos
                 var filtros = await productoApplication.GetAndApplyFilters(generalFiltersWithResponses);
                 log.LogInformation($"Product:ObtenerFiltros finaliza obtener todos los filtros sin errores. Fecha:{DateTime.UtcNow}");
                 return new OkObjectResult(filtros);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("GetByRef")]
+        [OpenApiOperation(operationId: "GetByRef", tags: new[] { "Productos/GetByRef" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
+        public async Task<IActionResult> GetByRef(
+          [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Productos/GetByRef/{referencia}")] HttpRequest req,
+          string referencia,  // <-- Parámetro adicional
+          ILogger log)
+        {
+
+
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+
+                if (string.IsNullOrEmpty(referencia))
+                {
+                    throw new ArgumentException($"'{nameof(referencia)}' cannot be null or empty.", nameof(referencia));
+                }
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+                var producto = await this.productoApplication.GetByRef(referencia);
+
+                return new OkObjectResult(producto);
             }
             catch (Exception ex)
             {

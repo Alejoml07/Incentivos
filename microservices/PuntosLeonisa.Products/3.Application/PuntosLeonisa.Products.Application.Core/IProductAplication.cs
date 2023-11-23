@@ -12,5 +12,6 @@ public interface IProductApplication : IApplicationCore<ProductoDto>
     Task<GenericResponse<FiltroDto>> ObtenerFiltros(GeneralFiltersWithResponseDto generalFiltersWithResponseDto);
     Task<GenericResponse<PagedResult<ProductoDto>>> GetProductosByFiltersAndRange(ProductosFilters filtros);
     Task<GenericResponse<GeneralFiltersWithResponseDto>> GetAndApplyFilters(GeneralFiltersWithResponseDto filtrosDto);
+    Task<GenericResponse<IEnumerable<ProductoDto>>> GetByRef(string referencia);
 }
 

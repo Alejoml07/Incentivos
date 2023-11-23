@@ -158,6 +158,16 @@ public class ProductosApplication : IProductApplication
         return this.response;
     }
 
+    public async Task<GenericResponse<IEnumerable<ProductoDto>>> GetByRef(string referencia)
+    {
+        var responseRawData = await this.productoRepository.GetByRef(referencia);
+        var responseData = this.mapper.Map<IEnumerable<ProductoDto>>(responseRawData);
+        var newResponse = new GenericResponse<IEnumerable<ProductoDto>>();
+        newResponse.Result = responseData;
+
+        return newResponse;
+    }
+
     public async Task<GenericResponse<ProductoDto>> Update(ProductoDto value)
     {
         try

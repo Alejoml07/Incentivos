@@ -98,9 +98,6 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
                 continue; // La propiedad no existe en el modelo, se ignora el filtro
             }
 
-
-
-
             Expression expression;
 
             Expression? orExpression = null;
@@ -243,6 +240,14 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
         };
 
         return filtroDto;
+    }
+
+    public async Task<IEnumerable<Producto>> GetByRef(string referencia)
+    {
+        {
+            var response = await _context.Set<Producto>().Where(p=>p.Referencia==referencia).ToListAsync();
+            return response;
+        }
     }
 
     #endregion
