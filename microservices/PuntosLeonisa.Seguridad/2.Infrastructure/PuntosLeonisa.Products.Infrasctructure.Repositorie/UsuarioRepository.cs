@@ -4,25 +4,26 @@ using PuntosLeonisa.Products.Domain.Model;
 using PuntosLeonisa.infrastructure.Persistence.CosmoDb;
 using PuntosLeonisa.Seguridad.Domain.Interfaces;
 using PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios;
-using Microsoft.AspNet.Identity;
-using System.Threading.Tasks;
+using PuntosLeonisa.Seguridad.Domain.Service.Interfaces;
+using PuntosLeonisa.Seguridad.Domain.Service.Enum;
 
 namespace PuntosLeonisa.Seguridad.Infrasctructure.Repositorie;
 public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
 {
     internal SeguridadContext _context;
-    private PasswordHasher passwordHasher = new PasswordHasher();
+    private readonly ISecurityService securityService;
 
-    public UsuarioRepository(SeguridadContext context) : base(context)
+    public UsuarioRepository(SeguridadContext context, ISecurityService securityService) : base(context)
     {
         _context = context;
+        this.securityService = securityService;
     }
 
-    public async Task<LoginDto> Login(string correo, string contrasena)
+    public async Task<Usuario?> Login(LoginDto loginDto)
     {
         // Buscar el usuario por correo
-        
-        Usuario usuario = await _context.Set<Usuario>().FirstOrDefaultAsync(u => u.Correo == correo);
+
+        var usuario = await _context.Set<Usuario>().FirstOrDefaultAsync(u => u.Correo == loginDto.Email);
 
         if (usuario == null)
         {
@@ -31,21 +32,18 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
         }
 
         // Verificar la contraseña
-        PasswordVerificationResult result = passwordHasher.VerifyHashedPassword(usuario.Contrasena, contrasena);
 
-        if (result != PasswordVerificationResult.Success)
+        var result = securityService.VerifyPassword(loginDto.Pwd, usuario.Pwd);
+
+        if (result != PasswordVerifyResult.Success)
         {
             // Contraseña incorrecta
             return null;
         }
 
-        // Si todo es correcto, construir y devolver el DTO
-        LoginDto loginDto = new LoginDto
-        {
-            // Asignar las propiedades necesarias al DTO
-        };
 
-        return loginDto;
+
+        return usuario;
     }
 }
 

@@ -8,6 +8,8 @@ using PuntosLeonisa.infrastructure.Persistence.CosmoDb;
 using PuntosLeonisa.Seguridad.Application;
 using PuntosLeonisa.Seguridad.Application.Core;
 using PuntosLeonisa.Seguridad.Domain.Interfaces;
+using PuntosLeonisa.Seguridad.Domain.Service.Interfaces;
+using PuntosLeonisa.Seguridad.Infrasctructure.Common.Helpers;
 using PuntosLeonisa.Seguridad.Infrasctructure.Repositorie;
 
 [assembly: FunctionsStartup(typeof(Productos.Startup))]
@@ -21,6 +23,7 @@ namespace Productos
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             var stringConnection = Environment.GetEnvironmentVariable("accountCosmoName");
+            var key = Environment.GetEnvironmentVariable("keySecret");
             var bd = Environment.GetEnvironmentVariable("db");
 
             builder.Services.AddDbContext<SeguridadContext>(x => x.UseCosmos(stringConnection, bd));
@@ -29,14 +32,14 @@ namespace Productos
             builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             builder.Services.AddScoped<IProveedorRepository, ProveedorRepository>();
 
+            //Add Service
+            builder.Services.AddScoped<ISecurityService>(provider => new SecurityHelper(key));
+            //builder.Services.AddScoped<ICircuitBreaker, CircuitBreaker>();
+            //builder.Services.AddScoped<ITransientRetry, TransientRetry>();
+
             builder.Services.AddScoped<IUsuarioApplication, SeguridadApplication>();
             builder.Services.AddScoped<IProveedorApplication, ProveedorApplication>();
 
-
-            //Add ServiceProxy
-            //builder.Services.AddScoped<IHttpClientAgent, HttpClientAgents>();
-            //builder.Services.AddScoped<ICircuitBreaker, CircuitBreaker>();
-            //builder.Services.AddScoped<ITransientRetry, TransientRetry>();
         }
     }
 }

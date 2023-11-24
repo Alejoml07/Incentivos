@@ -4,6 +4,7 @@ using PuntosLeonisa.Products.Domain.Model;
 using PuntosLeonisa.Seguridad.Application.Core;
 using PuntosLeonisa.Seguridad.Domain.Interfaces;
 using PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios;
+using PuntosLeonisa.Seguridad.Domain.Service.Interfaces;
 using PuntosLeonisa.Seguridad.Infrasctructure.Common.Communication;
 
 namespace PuntosLeonisa.Seguridad.Application;
@@ -12,9 +13,10 @@ public class SeguridadApplication : IUsuarioApplication
 {
     private readonly IMapper mapper;
     private readonly IUsuarioRepository usuarioRepository;
+    private readonly ISecurityService securityService;
     private readonly GenericResponse<UsuarioDto> response;
 
-    public SeguridadApplication(IMapper mapper, IUsuarioRepository usuarioRepository)
+    public SeguridadApplication(IMapper mapper, IUsuarioRepository usuarioRepository, ISecurityService securityService)
     {
         if (usuarioRepository is null)
         {
@@ -23,6 +25,7 @@ public class SeguridadApplication : IUsuarioApplication
 
         this.mapper = mapper;
         this.usuarioRepository = usuarioRepository;
+        this.securityService = securityService;
         response = new GenericResponse<UsuarioDto>();
     }
 
@@ -30,12 +33,14 @@ public class SeguridadApplication : IUsuarioApplication
     {
         try
         {
-            
+
             var usuarioExist = await this.usuarioRepository.GetById(value.Cedula ?? "");
             if (usuarioExist != null)
             {
-          
-                mapper.Map(value,usuarioExist);
+
+                mapper.Map(value, usuarioExist);
+                usuarioExist.Pwd = securityService.HasPassword(usuarioExist.Cedula);
+
                 await usuarioRepository.Update(usuarioExist);
 
             }
@@ -85,6 +90,29 @@ public class SeguridadApplication : IUsuarioApplication
         }
     }
 
+    public async Task<GenericResponse<UsuarioResponseLiteDto>> Authentication(LoginDto login)
+    {
+        try
+        {
+            var usuario = await this.usuarioRepository.Login(login) ?? throw new UnauthorizedAccessException("Usuario no encontrado o Contraseña errada");
+            var usuarioDto = mapper.Map<UsuarioResponseLiteDto>(usuario);
+
+            var responseOnly = new GenericResponse<UsuarioResponseLiteDto>
+            {
+                Result = usuarioDto
+            };
+
+            return responseOnly;
+
+
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
     public Task<GenericResponse<UsuarioDto>> Delete(UsuarioDto value)
     {
         throw new NotImplementedException();
@@ -95,7 +123,7 @@ public class SeguridadApplication : IUsuarioApplication
         try
         {
             var ToDelete = await this.usuarioRepository.GetById(id) ?? throw new ArgumentException("Usuario no encontrado");
-        
+
             await usuarioRepository.Delete(ToDelete);
             response.Result = mapper.Map<UsuarioDto>(ToDelete);
             return response;

@@ -26,20 +26,20 @@ builder.Services.AddCors(c =>
     }); 
 });
 
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddJwtBearer(options =>
-//    {
-//        options.TokenValidationParameters = new TokenValidationParameters
-//        {
-//            ValidateIssuerSigningKey = true,
-//            ValidateIssuer = false,
-//            ValidateAudience = false,
-//            ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
-//            ValidAudience = builder.Configuration["JwtSettings:Audience"],
-//            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration.GetSection("JwtSettings:SecuredSecretKey").Value)),
-//            ClockSkew = new System.TimeSpan(0)
-//        };
-//    });
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+            ValidAudience = builder.Configuration["JwtSettings:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration.GetSection("JwtSettings:SecuredSecretKey").Value)),
+            ClockSkew = new System.TimeSpan(0)
+        };
+    });
 
 // Configure the HTTP request pipeline.
 
@@ -63,7 +63,7 @@ if (env.Equals("relese"))
 }
 app.UseHttpsRedirection();
 
-//app.UseAuthentication();
+app.UseAuthentication();
 app.UseCors();
 app.UseOcelot().Wait();
 

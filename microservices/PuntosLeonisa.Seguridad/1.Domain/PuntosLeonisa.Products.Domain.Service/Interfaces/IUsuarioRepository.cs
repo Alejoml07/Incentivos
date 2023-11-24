@@ -6,7 +6,9 @@ namespace PuntosLeonisa.Seguridad.Domain.Interfaces
 {
     public interface IUsuarioRepository : IRepository<Usuario>
     {
-        Task<LoginDto> Login(string correo, string contrasena);
+        Task<Usuario?> Login(LoginDto loginDto);
+
+
     }
 
 

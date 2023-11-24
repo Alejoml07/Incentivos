@@ -7,12 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
-    <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.4" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\1.Domain\PuntosLeonisa.Domain.Core\PuntosLeonisa.Domain.Core.csproj" />
     <ProjectReference Include="..\..\1.Domain\PuntosLeonisa.Products.Domain.Service\PuntosLeonisa.Seguridad.Domain.Service.csproj" />
     <ProjectReference Include="..\..\1.Domain\PuntosLeonisa.Products.Domain\PuntosLeonisa.Seguridad.Domain.csproj" />
