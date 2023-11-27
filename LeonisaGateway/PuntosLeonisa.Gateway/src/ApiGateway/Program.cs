@@ -1,5 +1,6 @@
 using ApiGateway.Aggregators;
 using ApiGateway.Handlers;
+using ApiGateway.Middlerware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Ocelot.DependencyInjection;
@@ -26,24 +27,43 @@ builder.Services.AddCors(c =>
     }); 
 });
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuerSigningKey = true,
-            ValidateIssuer = false,
-            ValidateAudience = false,
+
             ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
             ValidAudience = builder.Configuration["JwtSettings:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration.GetSection("JwtSettings:SecuredSecretKey").Value)),
-            ClockSkew = new System.TimeSpan(0)
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Convert.ToBase64String(Encoding.UTF8.GetBytes("C3Fg6@2pLm8!pQrS0tVwX2zY&fUjWnZ1")))) // Clave secreta
+
+            //ClockSkew = new System.TimeSpan(0)
         };
     });
 
 // Configure the HTTP request pipeline.
 
 var app = builder.Build();
+
+app.Use(async (context, next) =>
+{
+    if (context.Request.Headers.TryGetValue("Authorization", out var authHeader))
+    {
+        var token = authHeader.ToString().Substring("Bearer ".Length).Trim();
+        if (!JwtValidator.ValidateToken(token, "C3Fg6@2pLm8!pQrS0tVwX2zY&fUjWnZ1"))
+        {
+            context.Response.StatusCode = 401; // No autorizado
+            await context.Response.WriteAsync("Token inválido o expirado");
+            return;
+        }
+            
+    }
+
+    await next.Invoke();
+});
 
 //Obtengo la variable de ambiente.
 var env = builder.Configuration.GetSection("env").Value;
@@ -65,6 +85,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseCors();
+
+
 app.UseOcelot().Wait();
 
 app.Run();

@@ -193,8 +193,8 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7060
+          "Host": "plseguridad.azurewebsites.net",
+          "Port": 443
         }
       ],
       "Key": "authenticateRoute"

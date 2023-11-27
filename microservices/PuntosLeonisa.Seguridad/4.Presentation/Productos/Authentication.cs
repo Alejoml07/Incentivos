@@ -1,16 +1,16 @@
 using System;
-using System.IdentityModel.Tokens.Jwt;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Jose;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Productos.FunctionHelper;
@@ -57,8 +57,6 @@ namespace PuntosLeonisa.Seguridad.Function
         public async Task<IActionResult> Authenticate(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Seguridad/Authenticate")] HttpRequest req)
         {
-            _logger.LogInformation("C# HTTP trigger function processed a request.");
-
             try
             {
                 if (req is null)
@@ -66,31 +64,11 @@ namespace PuntosLeonisa.Seguridad.Function
                     throw new ArgumentNullException(nameof(req));
                 }
 
-
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var login = JsonConvert.DeserializeObject<LoginDto>(requestBody);
+                GenericResponse<UsuarioResponseLiteDto> usuarioAuth = await usuarioApplication.Authentication(login);
 
-                var usuarioAuth = await this.usuarioApplication.Authentication(login);
-
-
-                //var tokenHandler = new JwtSecurityTokenHandler();
-                //var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("keySecret"));
-                //var tokenDescriptor = new SecurityTokenDescriptor
-                //{
-                //    Subject = new ClaimsIdentity(new[]
-                //    {
-                //    new Claim(ClaimTypes.Email, usuarioAuth.Result.Correo),
-                //    // Agrega más claims si es necesario
-                //}),
-                //    Expires = DateTime.UtcNow.AddDays(7), // Expiración del token
-                //    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-                //};
-
-                //var token = tokenHandler.CreateToken(tokenDescriptor);
-                //usuarioAuth.Result.Tkn = tokenHandler.WriteToken(token);
-                usuarioAuth.Result.Tkn = this.GenerateToken("dasd", Environment.GetEnvironmentVariable("keySecret"), null, "dasda", null);
-                //= functionHelper.GenerateToken(usuarioAuth.Result.Correo);
-
+                usuarioAuth.Result.Tkn = CreateToken(login.Email, "Public", "arbems.com" );
 
                 return new OkObjectResult(usuarioAuth);
             }
@@ -110,30 +88,22 @@ namespace PuntosLeonisa.Seguridad.Function
         }
 
 
-        private  string GenerateToken(string tenantId, string key, string[] scopes, string? documentId, dynamic user, int lifetime = 3600, string ver = "1.0")
+        public static string CreateToken(string email, string audience, string issuer)
         {
-            string docId = documentId ?? "";
-            DateTime now = DateTime.Now;
+            var payload = new Dictionary<string, object>
+                {
+                    { "sub", email },
+                    { "aud", audience },
+                    { "iss", issuer },
+                    { "exp", DateTimeOffset.UtcNow.AddHours(2).ToUnixTimeSeconds() }
+                };
 
-            SigningCredentials credentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)), SecurityAlgorithms.HmacSha256);
+            var secretKey = Convert.ToBase64String(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("keySecret") ?? "defaultSecret")); // Clave secreta
 
-            JwtHeader header = new JwtHeader(credentials);
-            JwtPayload payload = new JwtPayload
-            {
-                { "documentId", docId },
-                { "scopes", scopes },
-                { "tenantId", tenantId },
-                { "user", user },
-                { "iat", new DateTimeOffset(now).ToUnixTimeSeconds() },
-                { "exp", new DateTimeOffset(now.AddSeconds(lifetime)).ToUnixTimeSeconds() },
-                { "ver", ver },
-                { "jti", Guid.NewGuid() }
-            };
-
-            JwtSecurityToken token = new JwtSecurityToken(header, payload);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            string token = JWT.Encode(payload, Encoding.UTF8.GetBytes(secretKey), JwsAlgorithm.HS256);
+            return token;
         }
+
 
 
     }

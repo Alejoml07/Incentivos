@@ -23,7 +23,7 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
     {
         // Buscar el usuario por correo
 
-        var usuario = await _context.Set<Usuario>().FirstOrDefaultAsync(u => u.Correo == loginDto.Email);
+        var usuario = await _context.Set<Usuario>().FirstOrDefaultAsync(u => u.Email == loginDto.Email);
 
         if (usuario == null)
         {
