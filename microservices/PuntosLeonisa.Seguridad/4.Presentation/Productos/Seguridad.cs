@@ -13,18 +13,21 @@ using PuntosLeonisa.Seguridad.Infrasctructure.Common.Communication;
 using PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios;
 using PuntosLeonisa.Seguridad.Application.Core;
 using System.Collections.Generic;
+using PuntosLeonisa.Seguridad.Domain.Service.Interfaces;
 
 namespace Usuarios
 {
     public class Seguridad
     {
         private readonly IUsuarioApplication usuarioApplication;
+        private readonly ISecurityService securityService;
         private readonly GenericResponse<UsuarioDto> responseError;
         private readonly BadRequestObjectResult productoApplicationErrorResult;
 
-        public Seguridad(IUsuarioApplication usuarioApplication)
+        public Seguridad(IUsuarioApplication usuarioApplication, ISecurityService securityService)
         {
             this.usuarioApplication = usuarioApplication;
+            this.securityService = securityService;
             this.responseError = new GenericResponse<UsuarioDto>();
             this.productoApplicationErrorResult = new BadRequestObjectResult(this.responseError);
         }
@@ -42,7 +45,7 @@ namespace Usuarios
                 log.LogInformation($"Usuario:GetUsuarioos Inicia obtener todos los usuarios. Fecha:{DateTime.UtcNow}");
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var data = JsonConvert.DeserializeObject<UsuarioDto>(requestBody);
-
+                data.Pwd = securityService.HasPassword(data.Pwd.Trim());
                 await this.usuarioApplication.Add(data);
                 return new OkResult();
 
@@ -62,7 +65,7 @@ namespace Usuarios
            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Usuario/GetUsuarios")] HttpRequest req,
            ILogger log)
         {
-           
+
 
             try
             {
@@ -95,7 +98,7 @@ namespace Usuarios
             return this.productoApplicationErrorResult;
         }
 
- 
+
         [FunctionName("LoadUsuarios")]
         [OpenApiOperation(operationId: "LoadUsuarios", tags: new[] { "Usuario/LoadUsuarios" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(IEnumerable<UsuarioDto>), Description = "Carga masiva de usuarios")]
@@ -103,15 +106,20 @@ namespace Usuarios
            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Usuario/LoadUsuarios")] HttpRequest req,
            ILogger log)
         {
-            
+
 
             try
             {
                 log.LogInformation($"Usuario:LoadUsuarios Inicia agregar usuarios masivos. Fecha:{DateTime.UtcNow}");
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var products = JsonConvert.DeserializeObject<UsuarioDto[]>(requestBody);
+                var usuarios = JsonConvert.DeserializeObject<UsuarioDto[]>(requestBody);
 
-                await this.usuarioApplication.AddRange(products);
+                foreach (var item in usuarios)
+                {
+                    item.Pwd = securityService.HasPassword(item.Pwd.Trim());
+                }
+
+                await this.usuarioApplication.AddRange(usuarios);
 
                 return new OkResult();
 
@@ -130,7 +138,7 @@ namespace Usuarios
            string id,  // <-- Parámetro adicional
            ILogger log)
         {
-            
+
 
             log.LogInformation("C# HTTP trigger function processed a request.");
 
@@ -170,7 +178,7 @@ namespace Usuarios
            string id,  // <-- Parámetro adicional
            ILogger log)
         {
-            
+
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             try
