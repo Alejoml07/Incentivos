@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-Este archivo se usa en el proceso de publicación y empaquetado del proyecto web. Para personalizar el comportamiento de este proceso,
-edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 para obtener más información. 
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
 -->
 <Project>
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAIMp9KnSP30a5dIkECYzGcQAAAAACAAAAAAAQZgAAAAEAACAAAAAZtdvBS2LSXOjh8rGgg1bG8/nrnR2O52WyyxaxjBa4QgAAAAAOgAAAAAIAACAAAACFGIWMzAZFWV5xRf3rIuGBQ6VqMujJhFbwlZPeRxeae4AAAABgPxFnsGHJSON1O5AYFiUumpnKrw8bSr1fe1SEf//b5VW6zNRDueJA1gIbo7eFKo5gG4d3HOF3Zb7MI6un0KtwGtg5DtSq8myawsvAgdP1D3XmnNb4C/PGlh8LTqmUueXBDt435LwhhjiuKpeZLL5qj6ta8phFxXU2gHglXQpv20AAAABFuAqvZO62fevLXJrOtU7PqU5AGUo7ttuE6tc8VfREvg1Y+XSz2t63jXSNs7HJQliuavBnAnN7ipQnYBaDMe3q</EncryptedPassword>
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAJbg0CYK6fECkw/FmBRcx+gAAAAACAAAAAAAQZgAAAAEAACAAAAAU9p7J99wBuFck6VnUnV1Hw2KU36B53EszUruzwSwpNwAAAAAOgAAAAAIAACAAAAAVd3HOMWqd8YGIMjjEqRJ/7Jh4PrkY//mPWXfQgBa6/oAAAABJVgBTCLLRGwodFgEvYCZYnyWXky2K8nydi/1tn88DOT4djgiPm6S9FH55bS6Vg1Oy1KrVe2KU78xhubwm+5sk/EaZBLjXIr5iBRJ+8Qkvpdm4em/OSyoxe4BfaammjWUjAYmfT0ewDStQ3+S/IDpztz9TA06DZ6gZKNpviStzKUAAAABL8L9FMfAZplP6pm+NXOlfr87kfSzhzV26UWYejPmbt8rDzWvgWt3rWMPSNLRFBBhENlGXD0DBkorag4vEvhyv</EncryptedPassword>
+    <History>True|2023-11-28T15:49:31.7693147Z;True|2023-11-28T10:15:12.2363738-05:00;True|2023-11-28T09:25:11.1437786-05:00;</History>
+    <LastFailureDetails />
   </PropertyGroup>
 </Project>

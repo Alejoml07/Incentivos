@@ -47,6 +47,10 @@
             "Ocelot": {
               "target": "Package",
               "version": "[18.0.0, )"
+            },
+            "jose-jwt": {
+              "target": "Package",
+              "version": "[4.1.0, )"
             }
           },
           "imports": [

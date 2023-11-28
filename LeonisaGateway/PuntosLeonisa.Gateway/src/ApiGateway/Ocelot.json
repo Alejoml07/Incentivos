@@ -296,7 +296,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plproductos.azurewebsites.net",
+          "Host": "incentivosproductos.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -313,7 +313,20 @@
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plproductos.azurewebsites.net",
+          "Host": "incentivosproductos.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "getProductosRoute"
+    },
+    {
+      "UpstreamPathTemplate": "/api/Productos/Mk/GetByRef/{referencia}",
+      "DownstreamPathTemplate": "/api/Productos/GetByRef/{referencia}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "incentivosproductos.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -326,7 +339,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plproductos.azurewebsites.net",
+          "Host": "incentivosproductos.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -343,7 +356,7 @@
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plproductos.azurewebsites.net",
+          "Host": "incentivosproductos.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -356,7 +369,7 @@
       "UpstreamHttpMethod": [ "Delete" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plproductos.azurewebsites.net",
+          "Host": "incentivosproductos.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -373,7 +386,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plproductos.azurewebsites.net",
+          "Host": "incentivosproductos.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -390,7 +403,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plproductos.azurewebsites.net",
+          "Host": "incentivosproductos.azurewebsites.net",
           "Port": 443
         }
       ],
