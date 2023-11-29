@@ -218,15 +218,13 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
 
         // Obtener marcas únicas
         var marcas = productos
-            .Select(p => p.Marca)
+            .GroupBy(p => p.Marca)
+            .Select(p => p.Key)
             .Distinct()
             .ToList();
 
         // Calcular los puntos máximos y mínimos, ignorando los nulos
-        var puntosValidos = productos
-            .Select(p => p.Puntos)
-            .Where(p => p.HasValue)
-            .Select(p => p.Value);
+        var puntosValidos = await _context.Set<Producto>().Select(p => p.Puntos).ToListAsync();
 
         int puntosMin = puntosValidos.Any() ? (int)puntosValidos.Min() : 0;
         int puntosMax = puntosValidos.Any() ? (int)puntosValidos.Max() : 0;
