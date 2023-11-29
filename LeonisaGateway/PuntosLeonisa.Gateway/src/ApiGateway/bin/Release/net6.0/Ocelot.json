@@ -189,7 +189,7 @@
     {
       "UpstreamPathTemplate": "/api/Authentication/authenticate",
       "DownstreamPathTemplate": "/api/Seguridad/Authenticate",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
