@@ -107,6 +107,11 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
                 case 1:
                    var  convertedValue = ConvertToType(values, propertyInfo.PropertyType);
 
+                    if (propertyInfo.PropertyType == typeof(string))
+                    {
+                        convertedValue = convertedValue.ToString().ToUpper();
+                    }
+
                     if (key.EndsWith(maxPropertyEnd) || key.EndsWith(minPropertyEnd))
                     {
                         var actualKey = key.Replace(maxPropertyEnd, "").Replace(minPropertyEnd, "");
@@ -118,7 +123,10 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
                     else
                     {
                         var member = Expression.Property(parameter, propertyInfo);
-                        expression = Expression.Equal(member, Expression.Constant(convertedValue, propertyInfo.PropertyType));
+                        // Convertir el valor de la propiedad a mayúsculas para la comparación
+                        var upperMember = Expression.Call(member, typeof(string).GetMethod("ToUpper", new Type[] { }));
+                        var constant = Expression.Constant(convertedValue, typeof(string));
+                        expression = Expression.Equal(upperMember, constant);
                     }
 
                     //combinedExpression = combinedExpression == null ? expression : Expression.AndAlso(combinedExpression, expression);
@@ -129,14 +137,21 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
                     foreach (var value in valuesList)
                     {
                         // Convertir el valor char a string
-                        string stringValue2 = value.ToString();
+                        string stringValue2 = value.ToString().ToUpper();
 
                         // Ahora llama a ConvertToType con una cadena
                         var convertedValue2 = ConvertToType(stringValue2, propertyInfo.PropertyType);
 
+                        if (propertyInfo.PropertyType == typeof(string))
+                        {
+                            convertedValue2 = convertedValue2.ToString().ToUpper();
+                        }
+
                         var member2 = Expression.Property(parameter, propertyInfo);
-                        var constant2 = Expression.Constant(convertedValue2, propertyInfo.PropertyType);
-                        var equalExpression2 = Expression.Equal(member2, constant2);
+                        // Convertir el valor de la propiedad a mayúsculas para la comparación
+                        var upperMember2 = Expression.Call(member2, typeof(string).GetMethod("ToUpper", new Type[] { }));
+                        var constant2 = Expression.Constant(stringValue2, typeof(string));
+                        var equalExpression2 = Expression.Equal(upperMember2, constant2);
 
                         orExpression = orExpression == null ? equalExpression2 : Expression.OrElse(orExpression, equalExpression2);
                     }
@@ -218,8 +233,8 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
 
         // Obtener marcas únicas
         var marcas = productos
-            .GroupBy(p => p.Marca)
-            .Select(p => p.Key)
+            .GroupBy(p => p.Marca.ToUpper())
+            .Select(p => p.Key.ToUpper())
             .Distinct()
             .ToList();
 
