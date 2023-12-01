@@ -1,4 +1,4 @@
-﻿using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Usuarios;
+﻿using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
 using PuntosLeonisa.Products.Domain.Model;
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,5 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Interfaces
 {
     public interface IWishListRepository : IRepository<WishListDto>
     {
-        Task<IEnumerable<WishListDto>> WishList(WishListDto wishList);
     }
 }

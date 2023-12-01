@@ -4,13 +4,13 @@ using Newtonsoft.Json.Linq;
 using PuntosLeonisa.fidelizacion.Domain.Service.DTO.PuntosManuales;
 using PuntosLeonisa.Fidelizacion.Domain.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
-using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Usuarios;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using PuntosLeonisa.Seguridad.Application.Core;
 
 namespace PuntosLeonisa.Fidelizacion.Application;
 
-public class FidelizacionApplication : IPuntosManualApplication
+public class FidelizacionApplication : IFidelizacionApplication
 {
     private readonly IMapper mapper;
     private readonly IPuntosManualRepository puntosRepository;
@@ -143,14 +143,39 @@ public class FidelizacionApplication : IPuntosManualApplication
         }
     }
 
-    public async Task<IEnumerable<WishListDto>> WishList(WishListDto wishList)
+    public async Task<GenericResponse<WishListDto>> WishListAdd(WishListDto wishList)
     {
-        var wish = await wishRepository.WishList(wishList);
-        if(wishList != null)
+        try
         {
             wishList.Id = Guid.NewGuid().ToString();
-            this.response2.Result = wishList;
+            await this.wishRepository.Add(wishList);
+            response2.Result = wishList;
+            return response2;
         }
-        return wish;
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    public async Task<bool> WishListDeleteById(string id)
+    {
+        try
+        {
+            var wishlist = await this.wishRepository.GetById(id);
+            if (wishlist != null)
+            {
+                await this.wishRepository.Delete(wishlist);
+                return true;
+            }
+            return false;
+
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
     }
 }

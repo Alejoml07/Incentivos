@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Usuarios;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
 
 namespace PuntosLeonisa.infrastructure.Persistence.Configuration
 {

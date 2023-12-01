@@ -525,7 +525,23 @@
       },
       "Key": "deletePuntosRoute"
     },
-
+    {
+      "UpstreamPathTemplate": "/api/fidelizacion/DeleteWishList/{id}",
+      "DownstreamPathTemplate": "/api/fidelizacion/DeleteWishList/{id}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "deletePuntosRoute"
+    },
     // fin puntos,
     //proveedores
     {

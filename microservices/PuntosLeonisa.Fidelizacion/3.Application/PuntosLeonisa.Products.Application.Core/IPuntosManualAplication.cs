@@ -1,11 +1,13 @@
 ﻿using PuntosLeonisa.fidelizacion.Domain.Service.DTO.PuntosManuales;
-using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Usuarios;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
+using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using PuntosLeonisa.Products.Application.Core.Interfaces;
 
 namespace PuntosLeonisa.Seguridad.Application.Core;
 
-public interface IPuntosManualApplication : IApplicationCore<PuntosManualDto>
+public interface IFidelizacionApplication : IApplicationCore<PuntosManualDto>
 {
-    Task<IEnumerable<WishListDto>> WishList(WishListDto wishList);
+    Task<GenericResponse<WishListDto>> WishListAdd(WishListDto wishList);
+    Task<bool> WishListDeleteById(string id);
 }
 

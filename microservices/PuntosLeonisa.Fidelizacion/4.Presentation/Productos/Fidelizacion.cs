@@ -16,18 +16,18 @@ using PuntosLeonisa.fidelizacion.Domain.Service.DTO.PuntosManuales;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using System.Collections.Generic;
 using PuntosLeonisa.Fidelizacion.Domain.Interfaces;
-using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Usuarios;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
 
 namespace Usuarioos
 {
     public class Fidelizacion
     {
-        private readonly IPuntosManualApplication puntosApplication;
+        private readonly IFidelizacionApplication puntosApplication;
         private readonly GenericResponse<PuntosManualDto> responseError;
         private readonly GenericResponse<WishListDto> responseError2;
         private readonly BadRequestObjectResult puntosApplicationErrorResult;
 
-        public Fidelizacion(IPuntosManualApplication usuarioApplication)
+        public Fidelizacion(IFidelizacionApplication usuarioApplication)
         {
             puntosApplication = usuarioApplication;
             this.responseError = new GenericResponse<PuntosManualDto>();
@@ -265,8 +265,8 @@ namespace Usuarioos
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var data = JsonConvert.DeserializeObject<WishListDto>(requestBody);
 
-                await this.puntosApplication.WishList(data);
-                return new OkResult();
+                var result = await this.puntosApplication.WishListAdd(data);
+                return new OkObjectResult(result);
 
             }
             catch (Exception ex)
@@ -274,8 +274,46 @@ namespace Usuarioos
                 return GetFunctionError(log, "Error al obtener el user y product, Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
 
-
         }
+
+        // delete wishlist
+        [FunctionName("DeleteWishList")]
+        [OpenApiOperation(operationId: "DeleteWishList", tags: new[] { "DeleteWishList" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Guarda la wishlist")]
+        public async Task<IActionResult> DeleteWishList(
+                       [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "/fidelizacion/DeleteWishList/{id}")] HttpRequest req,
+                                  string id,  // <-- Parámetro adicional
+                                                          ILogger log)
+        {
+
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+
+                if (string.IsNullOrEmpty(id))
+                {
+                    throw new ArgumentException($"'{nameof(id)}' cannot be null or empty.", nameof(id));
+                }
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+                await this.puntosApplication.WishListDeleteById(id);
+                return new OkResult();
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al eliminar los puntos Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
     }
 }
 

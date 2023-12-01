@@ -27,7 +27,7 @@ namespace Productos
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped<IPuntosManualRepository, PuntosManualRepository>();
             builder.Services.AddScoped<IWishListRepository, WishListRepository>();
-            builder.Services.AddScoped<IPuntosManualApplication, FidelizacionApplication>();
+            builder.Services.AddScoped<IFidelizacionApplication, FidelizacionApplication>();
 
 
             //Add ServiceProxy
