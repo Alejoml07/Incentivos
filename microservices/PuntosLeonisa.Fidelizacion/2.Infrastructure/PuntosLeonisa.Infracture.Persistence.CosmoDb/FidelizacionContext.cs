@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PuntosLeonisa.Infrasctructure.Core.Configuration;
+using PuntosLeonisa.infrastructure.Persistence.Configuration;
 
 namespace PuntosLeonisa.infrastructure.Persistence.CosmoDb;
 
@@ -31,6 +32,7 @@ public class FidelizacionContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new PuntosManualConfiguration());
+        modelBuilder.ApplyConfiguration(new WishListConfiguration());
 
     }
 

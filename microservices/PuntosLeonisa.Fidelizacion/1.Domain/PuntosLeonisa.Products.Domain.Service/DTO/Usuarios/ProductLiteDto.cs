@@ -1,9 +1,12 @@
 ﻿using System;
-using System.Xml;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace PuntosLeonisa.Products.Domain.Service.DTO.Productos
+namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Usuarios
 {
-    public class ProductoDto
+    public class ProductLiteDto
     {
         public string Id { get; set; }
 

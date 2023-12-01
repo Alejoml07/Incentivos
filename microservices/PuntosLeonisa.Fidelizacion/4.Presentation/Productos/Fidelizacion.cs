@@ -15,6 +15,8 @@ using PuntosLeonisa.Seguridad.Application.Core;
 using PuntosLeonisa.fidelizacion.Domain.Service.DTO.PuntosManuales;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using System.Collections.Generic;
+using PuntosLeonisa.Fidelizacion.Domain.Interfaces;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Usuarios;
 
 namespace Usuarioos
 {
@@ -22,12 +24,14 @@ namespace Usuarioos
     {
         private readonly IPuntosManualApplication puntosApplication;
         private readonly GenericResponse<PuntosManualDto> responseError;
+        private readonly GenericResponse<WishListDto> responseError2;
         private readonly BadRequestObjectResult puntosApplicationErrorResult;
 
         public Fidelizacion(IPuntosManualApplication usuarioApplication)
         {
             puntosApplication = usuarioApplication;
             this.responseError = new GenericResponse<PuntosManualDto>();
+            this.responseError2 = new GenericResponse<WishListDto>();
             this.puntosApplicationErrorResult = new BadRequestObjectResult(this.responseError);
         }
 
@@ -245,6 +249,32 @@ namespace Usuarioos
             {
                 return GetFunctionError(log, "Error al eliminar los puntos Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
+        }
+
+        [FunctionName("WishList")]
+        [OpenApiOperation(operationId: "WishList", tags: new[] { "WishList" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Guarda la wishlist")]
+        public async Task<IActionResult> WishList(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+            ILogger log)
+        {
+
+            try
+            {
+                log.LogInformation($"WishList : WishList Inicia obtener todos los productos. Fecha:{DateTime.UtcNow}");
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<WishListDto>(requestBody);
+
+                await this.puntosApplication.WishList(data);
+                return new OkResult();
+
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener el user y product, Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+
+
         }
     }
 }

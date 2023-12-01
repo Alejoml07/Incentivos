@@ -40,7 +40,7 @@ public class Producto :IDisposable
 
     public string? Correo { get; set; }
 
-    public int? TipoPremio { get; set; }
+    public string? TipoPremio { get; set; }
 
     public DateTime? FechaModificacion { get; set; }
 

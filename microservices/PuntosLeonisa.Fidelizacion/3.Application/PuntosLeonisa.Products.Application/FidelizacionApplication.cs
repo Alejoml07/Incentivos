@@ -1,8 +1,10 @@
 ﻿
 using AutoMapper;
+using Newtonsoft.Json.Linq;
 using PuntosLeonisa.fidelizacion.Domain.Service.DTO.PuntosManuales;
 using PuntosLeonisa.Fidelizacion.Domain.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Usuarios;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using PuntosLeonisa.Seguridad.Application.Core;
 
@@ -13,16 +15,24 @@ public class FidelizacionApplication : IPuntosManualApplication
     private readonly IMapper mapper;
     private readonly IPuntosManualRepository puntosRepository;
     private readonly GenericResponse<PuntosManualDto> response;
-
-    public FidelizacionApplication(IMapper mapper, IPuntosManualRepository puntosRepository)
+    private readonly IWishListRepository wishRepository;
+    private readonly GenericResponse<WishListDto> response2;
+    public FidelizacionApplication(IMapper mapper, IPuntosManualRepository puntosRepository, IWishListRepository wishRepository)
     {
         if (puntosRepository is null)
         {
             throw new ArgumentNullException(nameof(puntosRepository));
         }
 
+        if(wishRepository is null)
+        {
+            throw new ArgumentNullException(nameof(wishRepository));
+        }
+
         this.mapper = mapper;
         this.puntosRepository = puntosRepository;
+        this.wishRepository = wishRepository;
+        response2 = new GenericResponse<WishListDto>();
         response = new GenericResponse<PuntosManualDto>();
     }
 
@@ -133,5 +143,14 @@ public class FidelizacionApplication : IPuntosManualApplication
         }
     }
 
-
+    public async Task<IEnumerable<WishListDto>> WishList(WishListDto wishList)
+    {
+        var wish = await wishRepository.WishList(wishList);
+        if(wishList != null)
+        {
+            wishList.Id = Guid.NewGuid().ToString();
+            this.response2.Result = wishList;
+        }
+        return wish;
+    }
 }

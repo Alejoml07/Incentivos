@@ -116,6 +116,7 @@ namespace Usuarios
 
                 foreach (var item in usuarios)
                 {
+                    
                     item.Pwd = securityService.HasPassword(item.Pwd.Trim());
                 }
 
