@@ -281,7 +281,7 @@ namespace Usuarioos
         [OpenApiOperation(operationId: "DeleteWishList", tags: new[] { "DeleteWishList" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Guarda la wishlist")]
         public async Task<IActionResult> DeleteWishList(
-                       [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "/fidelizacion/DeleteWishList/{id}")] HttpRequest req,
+                       [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "fidelizacion/DeleteWishList/{id}")] HttpRequest req,
                                   string id,  // <-- Parámetro adicional
                                                           ILogger log)
         {
