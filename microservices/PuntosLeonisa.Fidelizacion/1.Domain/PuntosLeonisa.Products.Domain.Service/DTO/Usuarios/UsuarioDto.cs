@@ -16,7 +16,7 @@ namespace PuntosLeonisa.fidelizacion.Domain.Service.DTO.Usuarios
 
         public string? Genero { get; set; }
 
-        public string? Correo { get; set; }
+        public string? Email { get; set; }
 
         public string? Celular { get; set; }
 
