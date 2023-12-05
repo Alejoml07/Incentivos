@@ -5,7 +5,8 @@ namespace PuntosLeonisa.Products.Domain.Interfaces
 {
     public interface IProductoRepository : IRepository<Producto>
     {
-        Task<PagedResult<Producto>> GetProductsByFiltersAndRange(ProductosFilters filter);
+        //Task<PagedResult<Producto>> GetProductsByFiltersAndRange(ProductosFilters filter);
+        Task<PagedResult<IGrouping<string, Producto>>> GetProductsByFiltersAndRange(ProductosFilters queryObject);
         Task<FiltroDto> ObtenerFiltros(GeneralFiltersWithResponseDto generalFiltersWithResponseDto);
         Task<IEnumerable<Producto>> GetByRef(string referencia);
     }

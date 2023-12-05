@@ -243,10 +243,16 @@ public class ProductosApplication : IProductApplication
         try
         {
             var response = await this.productoRepository.GetProductsByFiltersAndRange(filtros);
+            var productos = response.Data.SelectMany(group => group.ToList()).ToList();
+            var pageresult = new PagedResult<Producto>();
+            pageresult.PageNumber = response.PageNumber;
+            pageresult.PageSize = response.PageSize;
+            pageresult.TotalCount = response.TotalCount;
+            pageresult.Data = productos;
 
             return new GenericResponse<PagedResult<ProductoDto>>()
             {
-                Result = this.mapper.Map<PagedResult<ProductoDto>>(response)
+                Result = this.mapper.Map<PagedResult<ProductoDto>>(pageresult)
             };
         }
         catch (Exception)
