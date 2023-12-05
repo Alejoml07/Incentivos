@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using PuntosLeonisa.infrastructure.Persistence.CosmoDb;
 
@@ -97,6 +98,19 @@ namespace PuntosLeonisa.Infrasctructure.Core.Repository
             await _context.Set<T>().AddRangeAsync(entities);
             await _context.SaveChangesAsync();
         }
+
+        /// <summary>
+        /// Método que obtiene los datos por un predicado
+        /// </summary>
+        /// <param name="entity">Type: T - Entidad a validar </param>
+        /// <returns></returns>
+        public async Task<IEnumerable<T>> GetByPredicateAsync(Expression<Func<T, bool>> predicate)
+        {
+            // Asynchronously get all data by predicate
+            var data = await _context.Set<T>().Where(predicate).ToListAsync();
+            return data;
+        }
+
     }
 }
 

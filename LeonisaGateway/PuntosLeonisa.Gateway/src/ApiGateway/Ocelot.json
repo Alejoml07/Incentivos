@@ -196,6 +196,10 @@
           "Host": "plseguridad.azurewebsites.net",
           "Port": 443
         }
+        //{
+        //  "Host": "localhost",
+        //  "Port": 7060
+        //}
       ],
       "Key": "authenticateRoute"
     },
@@ -427,6 +431,8 @@
       "Key": "productPricesRoute"
     },
     // fin productos
+
+    //inicio fidelizacion
     {
       "UpstreamPathTemplate": "/api/fidelizacion/PuntosManuales",
       "DownstreamPathTemplate": "/api/Puntos",
@@ -526,6 +532,23 @@
       "Key": "deletePuntosRoute"
     },
     {
+      "UpstreamPathTemplate": "/api/fidelizacion/WishList/Create",
+      "DownstreamPathTemplate": "/api/fidelizacion/WishList/Create",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "deleteWishListRoute"
+    },
+    {
       "UpstreamPathTemplate": "/api/fidelizacion/DeleteWishList/{id}",
       "DownstreamPathTemplate": "/api/fidelizacion/DeleteWishList/{id}",
       "DownstreamScheme": "https",
@@ -540,8 +563,27 @@
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       },
-      "Key": "deletePuntosRoute"
+      "Key": "deleteWishListRoute"
     },
+    {
+      "UpstreamPathTemplate": "/api/fidelizacion/GetWishListByUser",
+      "DownstreamPathTemplate": "/api/fidelizacion/GetWishListByUser",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "deleteWishListRoute"
+    },
+
+    // fin fidelizacion
     // fin puntos,
     //proveedores
     {

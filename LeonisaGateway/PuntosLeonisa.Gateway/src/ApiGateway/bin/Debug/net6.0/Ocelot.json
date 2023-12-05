@@ -192,6 +192,10 @@
       "DownstreamScheme": "http",
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
+        //{
+        //  "Host": "plseguridad.azurewebsites.net",
+        //  "Port": 443
+        //}
         {
           "Host": "localhost",
           "Port": 7060
@@ -296,7 +300,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plproductos.azurewebsites.net",
+          "Host": "incentivosproductos.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -313,7 +317,20 @@
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plproductos.azurewebsites.net",
+          "Host": "incentivosproductos.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "getProductosRoute"
+    },
+    {
+      "UpstreamPathTemplate": "/api/Productos/Mk/GetByRef/{referencia}",
+      "DownstreamPathTemplate": "/api/Productos/GetByRef/{referencia}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "incentivosproductos.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -326,7 +343,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plproductos.azurewebsites.net",
+          "Host": "incentivosproductos.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -343,7 +360,7 @@
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plproductos.azurewebsites.net",
+          "Host": "incentivosproductos.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -356,7 +373,7 @@
       "UpstreamHttpMethod": [ "Delete" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plproductos.azurewebsites.net",
+          "Host": "incentivosproductos.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -373,7 +390,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plproductos.azurewebsites.net",
+          "Host": "incentivosproductos.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -390,7 +407,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plproductos.azurewebsites.net",
+          "Host": "incentivosproductos.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -414,6 +431,8 @@
       "Key": "productPricesRoute"
     },
     // fin productos
+
+    //inicio fidelizacion
     {
       "UpstreamPathTemplate": "/api/fidelizacion/PuntosManuales",
       "DownstreamPathTemplate": "/api/Puntos",
@@ -512,7 +531,59 @@
       },
       "Key": "deletePuntosRoute"
     },
+    {
+      "UpstreamPathTemplate": "/api/fidelizacion/WishList/Create",
+      "DownstreamPathTemplate": "/api/fidelizacion/WishList/Create",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "deleteWishListRoute"
+    },
+    {
+      "UpstreamPathTemplate": "/api/fidelizacion/DeleteWishList/{id}",
+      "DownstreamPathTemplate": "/api/fidelizacion/DeleteWishList/{id}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "deleteWishListRoute"
+    },
+    {
+      "UpstreamPathTemplate": "/api/fidelizacion/GetWishListByUser",
+      "DownstreamPathTemplate": "/api/fidelizacion/GetWishListByUser",
+      "DownstreamScheme": "http",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7060
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "deleteWishListRoute"
+    },
 
+    // fin fidelizacion
     // fin puntos,
     //proveedores
     {

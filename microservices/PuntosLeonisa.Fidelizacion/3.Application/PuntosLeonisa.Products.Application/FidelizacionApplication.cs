@@ -24,7 +24,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             throw new ArgumentNullException(nameof(puntosRepository));
         }
 
-        if(wishRepository is null)
+        if (wishRepository is null)
         {
             throw new ArgumentNullException(nameof(wishRepository));
         }
@@ -52,7 +52,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
     }
 
-    
+
 
     public async Task<GenericResponse<PuntosManualDto[]>> AddRange(PuntosManualDto[] value)
     {
@@ -177,5 +177,26 @@ public class FidelizacionApplication : IFidelizacionApplication
 
             throw;
         }
+    }
+
+    public async Task<GenericResponse<IEnumerable<WishListDto>>> WishListGetByUser(string id)
+    {
+        try
+        {
+            var wishList = await this.wishRepository.GetByPredicateAsync(wishRepository => wishRepository.User.Email == id);
+            var response = new GenericResponse<IEnumerable<WishListDto>>();
+            if (wishList != null)
+            {
+                response.Result = wishList;
+            }
+            return response;
+        }
+        catch (Exception ex)
+        {
+
+            throw;
+        }
+
+
     }
 }

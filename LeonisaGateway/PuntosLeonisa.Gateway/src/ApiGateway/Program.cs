@@ -53,11 +53,15 @@ app.Use(async (context, next) =>
     if (context.Request.Headers.TryGetValue("Authorization", out var authHeader))
     {
         var token = authHeader.ToString().Substring("Bearer ".Length).Trim();
-        if (!JwtValidator.ValidateToken(token, "C3Fg6@2pLm8!pQrS0tVwX2zY&fUjWnZ1"))
+        if (!JwtValidator.ValidateToken(token, "C3Fg6@2pLm8!pQrS0tVwX2zY&fUjWnZ1",ref context))
         {
             context.Response.StatusCode = 401; // No autorizado
             await context.Response.WriteAsync("Token inválido o expirado");
             return;
+        }
+        else
+        {
+           
         }
             
     }

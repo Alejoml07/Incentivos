@@ -255,7 +255,7 @@ namespace Usuarioos
         [OpenApiOperation(operationId: "WishList", tags: new[] { "WishList" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Guarda la wishlist")]
         public async Task<IActionResult> WishList(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/WishList/Create")] HttpRequest req,
             ILogger log)
         {
 
@@ -307,6 +307,46 @@ namespace Usuarioos
 
                 await this.puntosApplication.WishListDeleteById(id);
                 return new OkResult();
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al eliminar los puntos Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        //Get wishlist by user
+        [FunctionName("GetWishListByUser")]
+        [OpenApiOperation(operationId: "GetWishListByUser", tags: new[] { "GetWishListByUser" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Guarda la wishlist")]
+        public async Task<IActionResult> GetWishListByUser(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "fidelizacion/GetWishListByUser")] HttpRequest req,
+            ILogger log)
+        {
+
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+               
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+
+                var id = req.Headers["em"].ToString();
+
+                if (string.IsNullOrEmpty(id))
+                {
+                    throw new ArgumentException($"'{nameof(id)}' cannot be null or empty.", nameof(id));
+                }
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+                var result = await this.puntosApplication.WishListGetByUser(id);
+                return new OkObjectResult(result);
             }
             catch (Exception ex)
             {

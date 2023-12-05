@@ -1,5 +1,7 @@
 ﻿
 
+using System.Linq.Expressions;
+
 public interface IRepository<T> where T: class
 {
     Task<IEnumerable<T>> GetAll();
@@ -9,5 +11,8 @@ public interface IRepository<T> where T: class
     Task Update(T entity);
     Task Delete(T entity);
     Task<T> GetSequence(T entity);
+
+    // Get By Predicate 
+    Task<IEnumerable<T>> GetByPredicateAsync(Expression<Func<T, bool>> predicate);
 }
 

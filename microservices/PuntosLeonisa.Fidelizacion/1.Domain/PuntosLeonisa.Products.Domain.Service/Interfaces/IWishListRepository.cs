@@ -10,5 +10,6 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Interfaces
 {
     public interface IWishListRepository : IRepository<WishListDto>
     {
+        
     }
 }

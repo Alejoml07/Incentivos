@@ -9,5 +9,6 @@ public interface IFidelizacionApplication : IApplicationCore<PuntosManualDto>
 {
     Task<GenericResponse<WishListDto>> WishListAdd(WishListDto wishList);
     Task<bool> WishListDeleteById(string id);
+    Task<GenericResponse<IEnumerable<WishListDto>>> WishListGetByUser(string id);
 }
 
