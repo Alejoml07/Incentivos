@@ -305,44 +305,70 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
             query = query.Where(lambda);
         }
 
-        // Ordenamiento
-        if (queryObject.OrderBy != null)
-        {
-            var orderMode = queryObject.OrderMode.ToUpper() == "ASC" ? "OrderBy" : "OrderByDescending";
-            var propertyInfo = typeof(Producto).GetProperty(queryObject.OrderBy);
-            if (propertyInfo != null)
-            {
-                var propertyAccess = Expression.MakeMemberAccess(parameter, propertyInfo);
-                var orderByExp = Expression.Lambda(propertyAccess, parameter);
-                MethodCallExpression resultExp = Expression.Call(typeof(Queryable), orderMode, new Type[] { typeof(Producto), propertyInfo.PropertyType }, query.Expression, Expression.Quote(orderByExp));
-                query = query.Provider.CreateQuery<Producto>(resultExp);
-            }
-        }
+        //// Ordenamiento
+        //if (queryObject.OrderBy != null)
+        //{
+        //    var orderMode = queryObject.OrderMode.ToUpper() == "ASC" ? "OrderBy" : "OrderByDescending";
+        //    var propertyInfo = typeof(Producto).GetProperty(queryObject.OrderBy);
+        //    if (propertyInfo != null)
+        //    {
+        //        var propertyAccess = Expression.MakeMemberAccess(parameter, propertyInfo);
+        //        var orderByExp = Expression.Lambda(propertyAccess, parameter);
+        //        MethodCallExpression resultExp = Expression.Call(typeof(Queryable), orderMode, new Type[] { typeof(Producto), propertyInfo.PropertyType }, query.Expression, Expression.Quote(orderByExp));
+        //        query = query.Provider.CreateQuery<Producto>(resultExp);
+        //    }
+        //}
 
-        // Paginación
-        var skip = (queryObject.Page - 1) * queryObject.PageSize;
-        var take = queryObject.PageSize;
+        //// Paginación
+        //var skip = (queryObject.Page - 1) * queryObject.PageSize;
+        //var take = queryObject.PageSize;
 
 
-        // Ordenamiento y paginación
-        // [El código para ordenamiento y paginación permanece igual]
+        //// Ordenamiento y paginación
+        //// [El código para ordenamiento y paginación permanece igual]
 
-        var pagedData = await query.Skip(skip).Take(take).ToListAsync();
+        //var pagedData = await query.Skip(skip).Take(take).ToListAsync();
 
-        // Agrupar por referencia
-        var groupedData = pagedData.GroupBy(p => p.Referencia).ToList();
+        //// Agrupar por referencia
+        //var groupedData = pagedData.GroupBy(p => p.Referencia).ToList();
+
+        //// Resultado paginado con agrupación
+        //var pagedResult = new PagedResult<IGrouping<string, Producto>>
+        //{
+        //    Data = groupedData,
+        //    TotalCount = groupedData.Count(),
+        //    PageNumber = queryObject.Page,
+        //    PageSize = queryObject.PageSize
+        //};
+
+        //return pagedResult;
+
+        // Agrupar por referencia y luego aplicar paginación en los grupos
+        // Realizar la agrupación en la base de datos y recuperar solo los identificadores de grupo
+        // Recuperar los datos filtrados en memoria
+        var allFilteredData = await query.ToListAsync();
+
+        // Agrupar los datos en memoria
+        var groupedData = allFilteredData.GroupBy(p => p.Referencia)
+                                         .Skip((queryObject.Page - 1) * queryObject.PageSize)
+                                         .Take(queryObject.PageSize)
+                                         .ToList();
+
+        // Calcular el total de grupos
+        int totalGroups = allFilteredData.GroupBy(p => p.Referencia).Count();
 
         // Resultado paginado con agrupación
         var pagedResult = new PagedResult<IGrouping<string, Producto>>
         {
             Data = groupedData,
-            TotalCount = groupedData.Count(),
+            TotalCount = totalGroups,
             PageNumber = queryObject.Page,
             PageSize = queryObject.PageSize
         };
 
         return pagedResult;
     }
+
 
 
     public async Task<FiltroDto> ObtenerFiltros(GeneralFiltersWithResponseDto generalFiltersWithResponseDto)
