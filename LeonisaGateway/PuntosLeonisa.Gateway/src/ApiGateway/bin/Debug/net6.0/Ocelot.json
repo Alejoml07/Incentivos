@@ -189,17 +189,17 @@
     {
       "UpstreamPathTemplate": "/api/Authentication/authenticate",
       "DownstreamPathTemplate": "/api/Seguridad/Authenticate",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
-        //{
-        //  "Host": "plseguridad.azurewebsites.net",
-        //  "Port": 443
-        //}
         {
-          "Host": "localhost",
-          "Port": 7060
+          "Host": "plseguridad.azurewebsites.net",
+          "Port": 443
         }
+        //{
+        //  "Host": "localhost",
+        //  "Port": 7060
+        //}
       ],
       "Key": "authenticateRoute"
     },
@@ -568,12 +568,12 @@
     {
       "UpstreamPathTemplate": "/api/fidelizacion/GetWishListByUser",
       "DownstreamPathTemplate": "/api/fidelizacion/GetWishListByUser",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7060
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
         }
       ],
       "AuthenticationOptions": {
@@ -649,8 +649,63 @@
         "AllowedScopes": []
       },
       "Key": "DeleteProveedorRoute"
-    }
+    },
     //fin proveedores
+
+    //Inicio Carrito
+    {
+      "DownstreamPathTemplate": "/api/fidelizacion/GetCarritoByUser",
+      "UpstreamPathTemplate": "/api/fidelizacion/GetCarritoByUser",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetCarritoByUserRoute"
+    },
+    {
+      "DownstreamPathTemplate": "/api/fidelizacion/DeleteCarrito/{id}",
+      "UpstreamPathTemplate": "/api/fidelizacion/DeleteCarrito/{id}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "DeleteCarritoRoute"
+    },
+    {
+      "DownstreamPathTemplate": "/api/fidelizacion/Carrito/Create",
+      "UpstreamPathTemplate": "/api/fidelizacion/Carrito/Create",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "CreateCarritoByUserRoute"
+    }
+
+    // fin carrito
   ],
   "GlobalConfiguration": {
 

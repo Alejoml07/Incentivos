@@ -210,3 +210,4 @@ C:\sourcecode\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGate
 C:\sourcecode\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\obj\Debug\net6.0\ApiGateway.genruntimeconfig.cache
 C:\sourcecode\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\obj\Debug\net6.0\ref\ApiGateway.dll
 C:\sourcecode\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\bin\Debug\net6.0\jose-jwt.dll
+C:\sourcecode\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\obj\Debug\net6.0\ApiGateway.sourcelink.json
