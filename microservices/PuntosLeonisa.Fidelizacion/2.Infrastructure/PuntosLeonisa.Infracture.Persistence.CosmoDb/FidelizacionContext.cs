@@ -33,6 +33,7 @@ public class FidelizacionContext : DbContext
     {
         modelBuilder.ApplyConfiguration(new PuntosManualConfiguration());
         modelBuilder.ApplyConfiguration(new WishListConfiguration());
+        modelBuilder.ApplyConfiguration(new CarritoConfiguration());
 
     }
 

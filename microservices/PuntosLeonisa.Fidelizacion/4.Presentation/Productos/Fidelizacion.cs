@@ -17,6 +17,7 @@ using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using System.Collections.Generic;
 using PuntosLeonisa.Fidelizacion.Domain.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Carrito;
 
 namespace Usuarioos
 {
@@ -25,6 +26,7 @@ namespace Usuarioos
         private readonly IFidelizacionApplication puntosApplication;
         private readonly GenericResponse<PuntosManualDto> responseError;
         private readonly GenericResponse<WishListDto> responseError2;
+        private readonly GenericResponse<CarritoDto> responseError3;
         private readonly BadRequestObjectResult puntosApplicationErrorResult;
 
         public Fidelizacion(IFidelizacionApplication usuarioApplication)
@@ -32,6 +34,7 @@ namespace Usuarioos
             puntosApplication = usuarioApplication;
             this.responseError = new GenericResponse<PuntosManualDto>();
             this.responseError2 = new GenericResponse<WishListDto>();
+            this.responseError3 = new GenericResponse<CarritoDto>();
             this.puntosApplicationErrorResult = new BadRequestObjectResult(this.responseError);
         }
 
@@ -354,6 +357,106 @@ namespace Usuarioos
             }
         }
 
+        [FunctionName("Carrito")]
+        [OpenApiOperation(operationId: "Carrito", tags: new[] { "Carrito" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Guarda el Carrito")]
+        public async Task<IActionResult> Carrito(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/Carrito/Create")] HttpRequest req,
+            ILogger log)
+        {
+
+            try
+            {
+                log.LogInformation($"Carrito : Carrito Inicia obtener todos los productos. Fecha:{DateTime.UtcNow}");
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<CarritoDto>(requestBody);
+
+                var result = await this.puntosApplication.CarritoAdd(data);
+                return new OkObjectResult(result);
+
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener el user y product, Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+
+        }
+
+        [FunctionName("DeleteCarrito")]
+        [OpenApiOperation(operationId: "DeleteCarrito", tags: new[] { "DeleteCarrito" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Guarda el carrito")]
+        public async Task<IActionResult> DeleteCarrito(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "fidelizacion/DeleteCarrito/{id}")] HttpRequest req,
+        string id,  // <-- Parámetro adicional
+        ILogger log)
+        {
+
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+
+                if (string.IsNullOrEmpty(id))
+                {
+                    throw new ArgumentException($"'{nameof(id)}' cannot be null or empty.", nameof(id));
+                }
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+                await this.puntosApplication.CarritoDeleteById(id);
+                return new OkResult();
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al eliminar el carrito:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("GetCarritoByUser")]
+        [OpenApiOperation(operationId: "GetCarritoByUser", tags: new[] { "GetCarritoByUser" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Guarda el carrito")]
+        public async Task<IActionResult> GetCarritoByUser(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "fidelizacion/GetCarritoByUser")] HttpRequest req,
+        ILogger log)
+        {
+
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+
+                var id = req.Headers["em"].ToString();
+
+                if (string.IsNullOrEmpty(id))
+                {
+                    throw new ArgumentException($"'{nameof(id)}' cannot be null or empty.", nameof(id));
+                }
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+                var result = await this.puntosApplication.CarritoGetByUser(id);
+                return new OkObjectResult(result);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al eliminar el carrito Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 

@@ -4,7 +4,9 @@ using Newtonsoft.Json.Linq;
 using PuntosLeonisa.fidelizacion.Domain.Service.DTO.PuntosManuales;
 using PuntosLeonisa.Fidelizacion.Domain.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Carrito;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
+using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using PuntosLeonisa.Seguridad.Application.Core;
 
@@ -17,7 +19,9 @@ public class FidelizacionApplication : IFidelizacionApplication
     private readonly GenericResponse<PuntosManualDto> response;
     private readonly IWishListRepository wishRepository;
     private readonly GenericResponse<WishListDto> response2;
-    public FidelizacionApplication(IMapper mapper, IPuntosManualRepository puntosRepository, IWishListRepository wishRepository)
+    private readonly ICarritoRepository carritoRepository;
+    private readonly GenericResponse<CarritoDto> response3;
+    public FidelizacionApplication(IMapper mapper, IPuntosManualRepository puntosRepository, IWishListRepository wishRepository, ICarritoRepository carritoRepository)
     {
         if (puntosRepository is null)
         {
@@ -32,8 +36,10 @@ public class FidelizacionApplication : IFidelizacionApplication
         this.mapper = mapper;
         this.puntosRepository = puntosRepository;
         this.wishRepository = wishRepository;
-        response2 = new GenericResponse<WishListDto>();
+        this.carritoRepository = carritoRepository;
         response = new GenericResponse<PuntosManualDto>();
+        response2 = new GenericResponse<WishListDto>();
+        response3 = new GenericResponse<CarritoDto>();
     }
 
     public async Task<GenericResponse<PuntosManualDto>> Add(PuntosManualDto value)
@@ -77,6 +83,61 @@ public class FidelizacionApplication : IFidelizacionApplication
         catch (Exception ex)
         {
             throw new Exception(ex.Message);
+        }
+    }
+
+    public async Task<GenericResponse<CarritoDto>> CarritoAdd(CarritoDto carrito)
+    {
+        try
+        {
+            carrito.Id = Guid.NewGuid().ToString();
+            await this.carritoRepository.Add(carrito);
+            response3.Result = carrito;
+            return response3;
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    public async Task<bool> CarritoDeleteById(string id)
+    {
+        try
+        {
+            var carrito = await this.carritoRepository.GetById(id);
+            if (carrito != null)
+            {
+                await this.carritoRepository.Delete(carrito);
+                return true;
+            }
+            return false;
+
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    public async Task<GenericResponse<IEnumerable<CarritoDto>>> CarritoGetByUser(string id)
+    {
+        try
+        {
+            var carrito = await this.carritoRepository.GetByPredicateAsync(carritoRepository => carritoRepository.User.Email == id);
+            var response3 = new GenericResponse<IEnumerable<CarritoDto>>();
+            if (carrito != null)
+            {
+                response3.Result = carrito;
+            }
+            return response3;
+        }
+        catch (Exception ex)
+        {
+
+            throw;
         }
     }
 
