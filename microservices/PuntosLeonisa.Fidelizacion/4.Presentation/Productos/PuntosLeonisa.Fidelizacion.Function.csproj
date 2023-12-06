@@ -26,7 +26,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\2.Infrastructure\ExternalService\PuntosLeonisa.Fd.Infrastructure.ExternalService\PuntosLeonisa.Fd.Infrastructure.ExternalService.csproj" />
+    <ProjectReference Include="..\..\2.Infrastructure\PuntosLeonisa.Fd.Infrastructure.ExternalService\PuntosLeonisa.Fd.Infrastructure.ExternalService.csproj" />
     <ProjectReference Include="..\..\2.Infrastructure\PuntosLeonisa.Products.Infrasctructure.Repositorie\PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie.csproj" />
     <ProjectReference Include="..\..\3.Application\PuntosLeonisa.Products.Application.Core\PuntosLeonisa.Fidelizacion.Application.Core.csproj" />
     <ProjectReference Include="..\..\3.Application\PuntosLeonisa.Products.Application\PuntosLeonisa.Fidelizacion.Application.csproj">

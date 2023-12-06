@@ -60,9 +60,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExternalService", "External
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Agents", "Agents", "{927721D1-847B-45D2-A892-B31E7E8792E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuntosLeonisa.Infraestructure.Core.Agent", "PuntosLeonisa.Infraestructure.Core.Agent\PuntosLeonisa.Infraestructure.Core.Agent.csproj", "{C89253AD-E2FD-4E68-87ED-709537B37BC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PuntosLeonisa.Infraestructure.Core.Agent", "PuntosLeonisa.Infraestructure.Core.Agent\PuntosLeonisa.Infraestructure.Core.Agent.csproj", "{C89253AD-E2FD-4E68-87ED-709537B37BC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuntosLeonisa.Fd.Infrastructure.ExternalService", "2.Infrastructure\ExternalService\PuntosLeonisa.Fd.Infrastructure.ExternalService\PuntosLeonisa.Fd.Infrastructure.ExternalService.csproj", "{52C7C02E-2CAC-4A1A-ADA2-6F4551AA79C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PuntosLeonisa.Fd.Infrastructure.ExternalService", "2.Infrastructure\PuntosLeonisa.Fd.Infrastructure.ExternalService\PuntosLeonisa.Fd.Infrastructure.ExternalService.csproj", "{5F8097F7-D7DA-4CAB-96E7-4DB3B6084968}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -114,10 +114,10 @@ Global
 		{C89253AD-E2FD-4E68-87ED-709537B37BC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C89253AD-E2FD-4E68-87ED-709537B37BC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C89253AD-E2FD-4E68-87ED-709537B37BC6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{52C7C02E-2CAC-4A1A-ADA2-6F4551AA79C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{52C7C02E-2CAC-4A1A-ADA2-6F4551AA79C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{52C7C02E-2CAC-4A1A-ADA2-6F4551AA79C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{52C7C02E-2CAC-4A1A-ADA2-6F4551AA79C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F8097F7-D7DA-4CAB-96E7-4DB3B6084968}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F8097F7-D7DA-4CAB-96E7-4DB3B6084968}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F8097F7-D7DA-4CAB-96E7-4DB3B6084968}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F8097F7-D7DA-4CAB-96E7-4DB3B6084968}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -146,7 +146,7 @@ Global
 		{A4A64D25-1364-47D1-A42A-8614D0AF52FE} = {D537E72A-2429-4F78-A150-5B7F103D42F5}
 		{927721D1-847B-45D2-A892-B31E7E8792E2} = {B01ADB15-9860-474D-82C0-63A71E851CC3}
 		{C89253AD-E2FD-4E68-87ED-709537B37BC6} = {927721D1-847B-45D2-A892-B31E7E8792E2}
-		{52C7C02E-2CAC-4A1A-ADA2-6F4551AA79C6} = {A4A64D25-1364-47D1-A42A-8614D0AF52FE}
+		{5F8097F7-D7DA-4CAB-96E7-4DB3B6084968} = {A4A64D25-1364-47D1-A42A-8614D0AF52FE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FB257B6C-643D-471A-9C61-07206CC87817}

@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\PuntosLeonisa.Infraestructure.Core.Agent\PuntosLeonisa.Infraestructure.Core.Agent.csproj" />
+    <ProjectReference Include="..\PuntosLeonisa.Infrasctructure.Core\PuntosLeonisa.Infrasctructure.Core.csproj" />
+  </ItemGroup>
+
+</Project>
