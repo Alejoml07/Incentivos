@@ -13,8 +13,9 @@
     <ProjectReference Include="..\..\1.Domain\PuntosLeonisa.Domain.Core\PuntosLeonisa.Domain.Core.csproj" />
     <ProjectReference Include="..\..\1.Domain\PuntosLeonisa.Products.Domain\PuntosLeonisa.Fidelizacion.Domain.csproj" />
     <ProjectReference Include="..\PuntosLeonisa.Infracture.Persistence.CosmoDb\PuntosLeonisa.infrastructure.Persistence.csproj" />
+    <ProjectReference Include="..\PuntosLeonisa.Products.Infrasctructure.Common\PuntosLeonisa.Fidelizacion.Infrasctructure.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.23" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.25" />
   </ItemGroup>
 </Project>

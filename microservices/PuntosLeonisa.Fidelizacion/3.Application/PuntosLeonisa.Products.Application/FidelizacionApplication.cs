@@ -8,6 +8,8 @@ using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Carrito;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
+using PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces;
+using PuntosLeonisa.Products.Domain.Model;
 using PuntosLeonisa.Seguridad.Application.Core;
 
 namespace PuntosLeonisa.Fidelizacion.Application;
@@ -20,8 +22,13 @@ public class FidelizacionApplication : IFidelizacionApplication
     private readonly IWishListRepository wishRepository;
     private readonly GenericResponse<WishListDto> response2;
     private readonly ICarritoRepository carritoRepository;
+    private readonly IUsuarioExternalService usuarioExternalService;
     private readonly GenericResponse<CarritoDto> response3;
-    public FidelizacionApplication(IMapper mapper, IPuntosManualRepository puntosRepository, IWishListRepository wishRepository, ICarritoRepository carritoRepository)
+    public FidelizacionApplication(IMapper mapper, 
+        IPuntosManualRepository puntosRepository,
+        IWishListRepository wishRepository,
+        ICarritoRepository carritoRepository,
+        IUsuarioExternalService usuarioExternalService)
     {
         if (puntosRepository is null)
         {
@@ -37,6 +44,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         this.puntosRepository = puntosRepository;
         this.wishRepository = wishRepository;
         this.carritoRepository = carritoRepository;
+        this.usuarioExternalService = usuarioExternalService;
         response = new GenericResponse<PuntosManualDto>();
         response2 = new GenericResponse<WishListDto>();
         response3 = new GenericResponse<CarritoDto>();
@@ -64,14 +72,46 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
-            var puntos = mapper.Map<PuntosManual[]>(value);
+            var usersByEmail = new List<Usuario>();
+            var puntos = new List<PuntosManual>();
 
-            foreach (var punto in puntos)
+            foreach (var punto in value)
             {
                 punto.Id = Guid.NewGuid().ToString();
+                if (usersByEmail.Any(x => x.Cedula == punto.Cedula))
+                {
+                    var puntosUsuarioExistente = usersByEmail.Where(x => x.Cedula == punto.Cedula).FirstOrDefault();
+                    puntos.Add(new PuntosManual
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Puntos = punto.Puntos,
+                        Month = punto.Month,
+                        Year = punto.Year,
+                        Observaciones = punto.Observaciones,
+                        Usuario = puntosUsuarioExistente
+                    });
+                }
+                else
+                {
+                    var response = await this.usuarioExternalService.GetUserLiteByCedula(punto.Cedula);
+                    if (response.Result != null)
+                    {
+                        var user = mapper.Map<Usuario>(response.Result);
+                        usersByEmail.Add(user);
+                        puntos.Add(new PuntosManual
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            Puntos = punto.Puntos,
+                            Month = punto.Month,
+                            Year = punto.Year,
+                            Observaciones = punto.Observaciones,
+                            Usuario = user
+                        });
+                    }
+                }
             }
 
-            await puntosRepository.AddRange(puntos);
+            await puntosRepository.AddRange(puntos.ToArray());
             var responseOnly = new GenericResponse<PuntosManualDto[]>
             {
                 Result = value

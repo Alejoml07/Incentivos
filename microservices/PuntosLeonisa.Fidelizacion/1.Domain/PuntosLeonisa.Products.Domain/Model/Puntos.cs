@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PuntosLeonisa.Products.Domain.Model;
 
 namespace PuntosLeonisa.Fidelizacion.Domain.Model
 {
@@ -6,9 +7,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
     {
         public string? Id { get; set; }
 
-        public string? Nombre { get; set; }
-
-        public string? Cedula { get; set; }
+        public Usuario Usuario { get; set; }
 
         public string? Puntos { get; set; }
 

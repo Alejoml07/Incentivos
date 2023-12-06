@@ -120,9 +120,9 @@ namespace Usuarioos
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var points = JsonConvert.DeserializeObject<PuntosManualDto[]>(requestBody);
 
-                await this.puntosApplication.AddRange(points);
+                var puntos = await this.puntosApplication.AddRange(points);
 
-                return new OkResult();
+                return new OkObjectResult(puntos);
 
             }
             catch (Exception ex)

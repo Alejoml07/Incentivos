@@ -1,10 +1,16 @@
 ﻿using System;
+using Logistic.Infrastructure.Agents.AgentsImpl;
+using Logistic.Infrastructure.Agents.Interfaces;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using PuntosLeonisa.Fd.Infrastructure.ExternalService.Services;
 using PuntosLeonisa.Fidelizacion.Application;
 using PuntosLeonisa.Fidelizacion.Domain.Interfaces;
+using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie;
+using PuntosLeonisa.Infraestructure.Core.Agent.AgentsImpl;
+using PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces;
 using PuntosLeonisa.Infrasctructure.Core.Repository;
 using PuntosLeonisa.infrastructure.Persistence.CosmoDb;
 using PuntosLeonisa.Seguridad.Application.Core;
@@ -17,6 +23,11 @@ namespace Productos
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
+            //Add ServiceProxy
+            builder.Services.AddScoped<IHttpClientAgent, HttpClientAgents>();
+            builder.Services.AddScoped<IUsuarioExternalService, UsuarioExternalServices>();
+            builder.Services.AddScoped<ICircuitBreaker, CircuitBreaker>();
+            builder.Services.AddScoped<ITransientRetry, TransientRetry>();
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             var stringConnection = Environment.GetEnvironmentVariable("accountCosmoName");
@@ -27,13 +38,12 @@ namespace Productos
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped<IPuntosManualRepository, PuntosManualRepository>();
             builder.Services.AddScoped<IWishListRepository, WishListRepository>();
+            builder.Services.AddScoped<ICarritoRepository, CarritoRepository>();
             builder.Services.AddScoped<IFidelizacionApplication, FidelizacionApplication>();
 
 
-            //Add ServiceProxy
-            //builder.Services.AddScoped<IHttpClientAgent, HttpClientAgents>();
-            //builder.Services.AddScoped<ICircuitBreaker, CircuitBreaker>();
-            //builder.Services.AddScoped<ITransientRetry, TransientRetry>();
+          
+
         }
     }
 }

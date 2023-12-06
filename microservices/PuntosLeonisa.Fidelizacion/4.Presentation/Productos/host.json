@@ -5,6 +5,7 @@
   "extensions": {
     "http": {
       "routePrefix": "api",
+      "port": 7071,
       "maxOutstandingRequests": 20,
       "maxConcurrentRequests": 10,
       "dynamicThrottlesEnabled": false,
