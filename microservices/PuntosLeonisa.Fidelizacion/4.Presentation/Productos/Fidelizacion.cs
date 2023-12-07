@@ -450,6 +450,43 @@ namespace Usuarioos
                 return GetFunctionError(log, "Error al eliminar el carrito Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("GetUsuarioInfoPuntosById")]
+        [OpenApiOperation(operationId: "GetUsuarioInfoPuntosById", tags: new[] { "GetUsuarioInfoPuntosById" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los puntos por Id")]
+        public async Task<IActionResult> GetUsuarioInfoPuntosById(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "fidelizacion/GetUsuarioInfoPuntosById/{id}")] HttpRequest req,
+        string id,  // <-- Parámetro adicional
+        ILogger log)
+        {
+
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+
+                if (string.IsNullOrEmpty(id))
+                {
+                    throw new ArgumentException($"'{nameof(id)}' cannot be null or empty.", nameof(id));
+                }
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+                var response = await this.puntosApplication.GetUsuarioInfoPuntosById(id);
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los puntos:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 

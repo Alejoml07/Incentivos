@@ -274,7 +274,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             }
             return response3;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
 
             throw;
