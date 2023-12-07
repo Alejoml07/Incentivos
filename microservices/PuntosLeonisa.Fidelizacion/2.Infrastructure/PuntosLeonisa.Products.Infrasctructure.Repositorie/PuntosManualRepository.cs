@@ -1,6 +1,4 @@
 ﻿using PuntosLeonisa.Infrasctructure.Core.Repository;
-using Microsoft.EntityFrameworkCore;
-using PuntosLeonisa.Products.Domain.Model;
 using PuntosLeonisa.infrastructure.Persistence.CosmoDb;
 using PuntosLeonisa.Fidelizacion.Domain.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Model;

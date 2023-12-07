@@ -18,7 +18,6 @@ using PuntosLeonisa.Seguridad.Application.Core;
 [assembly: FunctionsStartup(typeof(Productos.Startup))]
 namespace Productos
 {
-
     public class Startup : FunctionsStartup
     {
         public override void Configure(IFunctionsHostBuilder builder)
@@ -41,9 +40,6 @@ namespace Productos
             builder.Services.AddScoped<ICarritoRepository, CarritoRepository>();
             builder.Services.AddScoped<IUsuarioInfoPuntosRepository, UsuarioInfoPuntosRepository>();
             builder.Services.AddScoped<IFidelizacionApplication, FidelizacionApplication>();
-
-
-          
 
         }
     }

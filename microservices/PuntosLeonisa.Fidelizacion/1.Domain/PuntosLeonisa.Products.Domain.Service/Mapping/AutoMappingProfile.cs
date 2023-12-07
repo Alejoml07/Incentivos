@@ -1,5 +1,4 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using PuntosLeonisa.fidelizacion.Domain.Service.DTO.Usuarios;
 using PuntosLeonisa.fidelizacion.Domain.Service.DTO.PuntosManuales;
 using PuntosLeonisa.Products.Domain.Model;

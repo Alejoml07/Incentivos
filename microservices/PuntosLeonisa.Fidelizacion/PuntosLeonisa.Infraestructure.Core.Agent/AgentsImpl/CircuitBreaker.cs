@@ -2,11 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using Polly;
 using Polly.CircuitBreaker;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PuntosLeonisa.Infraestructure.Core.Agent.AgentsImpl
 {

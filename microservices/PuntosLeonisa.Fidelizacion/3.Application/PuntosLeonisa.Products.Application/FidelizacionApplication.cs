@@ -1,6 +1,4 @@
-﻿
-using AutoMapper;
-using Newtonsoft.Json.Linq;
+﻿using AutoMapper;
 using PuntosLeonisa.fidelizacion.Domain.Service.DTO.PuntosManuales;
 using PuntosLeonisa.Fidelizacion.Domain.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
@@ -9,7 +7,6 @@ using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces;
-using PuntosLeonisa.Products.Application.Core.Interfaces;
 using PuntosLeonisa.Products.Domain.Model;
 using PuntosLeonisa.Seguridad.Application.Core;
 
@@ -71,8 +68,6 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
     }
 
-
-
     public async Task<GenericResponse<PuntosManualDto[]>> AddRange(PuntosManualDto[] value)
     {
         try
@@ -129,8 +124,6 @@ public class FidelizacionApplication : IFidelizacionApplication
                     }
                 }
             }
-
-
             //Agrupar puntos por usuario y sumar puntos en UsuarioInfoPuntos
             var puntosPorUsuario = puntos.GroupBy(x => x.Usuario?.Cedula).Select(x => new UsuarioInfoPuntos
             {
@@ -161,7 +154,6 @@ public class FidelizacionApplication : IFidelizacionApplication
             throw new Exception(ex.Message);
         }
     }
-
 
     public async Task<GenericResponse<UsuarioInfoPuntos>> AddUsuarioInfoPuntos(UsuarioInfoPuntos value)
     {
@@ -530,9 +522,5 @@ public class FidelizacionApplication : IFidelizacionApplication
 
 
     }
-
-
-
-
 
 }

@@ -1,6 +1,4 @@
-﻿
-using Microsoft.EntityFrameworkCore;
-using PuntosLeonisa.Fidelizacion.Domain.Interfaces;
+﻿using PuntosLeonisa.Fidelizacion.Domain.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
 using PuntosLeonisa.Infrasctructure.Core.Repository;
 using PuntosLeonisa.infrastructure.Persistence.CosmoDb;

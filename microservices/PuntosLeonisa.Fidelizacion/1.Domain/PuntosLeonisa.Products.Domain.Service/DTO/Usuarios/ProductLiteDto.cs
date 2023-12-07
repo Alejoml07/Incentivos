@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Usuarios
+﻿namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Usuarios
 {
     public class ProductLiteDto
     {
@@ -91,8 +85,6 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Usuarios
         public string? Genero { get; set; }
 
         public string? Tamaño { get; set; }
-
-
 
     }
 }

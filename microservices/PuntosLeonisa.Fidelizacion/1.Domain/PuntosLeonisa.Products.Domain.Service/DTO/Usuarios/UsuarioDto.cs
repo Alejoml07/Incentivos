@@ -1,8 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Xml;
-
-namespace PuntosLeonisa.fidelizacion.Domain.Service.DTO.Usuarios
+﻿namespace PuntosLeonisa.fidelizacion.Domain.Service.DTO.Usuarios
 {
     public class UsuarioDto
     {

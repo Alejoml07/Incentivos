@@ -7,15 +7,12 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using System.Net;
 using PuntosLeonisa.Seguridad.Application.Core;
 using PuntosLeonisa.fidelizacion.Domain.Service.DTO.PuntosManuales;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using System.Collections.Generic;
-using PuntosLeonisa.Fidelizacion.Domain.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Carrito;
 
@@ -25,16 +22,12 @@ namespace Usuarioos
     {
         private readonly IFidelizacionApplication puntosApplication;
         private readonly GenericResponse<PuntosManualDto> responseError;
-        private readonly GenericResponse<WishListDto> responseError2;
-        private readonly GenericResponse<CarritoDto> responseError3;
         private readonly BadRequestObjectResult puntosApplicationErrorResult;
 
         public Fidelizacion(IFidelizacionApplication usuarioApplication)
         {
             puntosApplication = usuarioApplication;
             this.responseError = new GenericResponse<PuntosManualDto>();
-            this.responseError2 = new GenericResponse<WishListDto>();
-            this.responseError3 = new GenericResponse<CarritoDto>();
             this.puntosApplicationErrorResult = new BadRequestObjectResult(this.responseError);
         }
 
