@@ -582,6 +582,23 @@
       },
       "Key": "deleteWishListRoute"
     },
+    {
+      "UpstreamPathTemplate": "/api/fidelizacion/GetUsuarioInfoPuntosById/{id}",
+      "DownstreamPathTemplate": "/api/fidelizacion/GetUsuarioInfoPuntosById/{id}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetUsuarioInfoPuntosByIdRoute"
+    },
 
     // fin fidelizacion
     // fin puntos,

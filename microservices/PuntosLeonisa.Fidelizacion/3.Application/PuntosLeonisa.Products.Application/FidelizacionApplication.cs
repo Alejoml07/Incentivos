@@ -131,6 +131,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                 PuntosAcumulados = x.Sum(x => int.Parse(x.Puntos ?? "0")),
                 PuntosRedimidos = 0,
                 PuntosEnCarrito = 0,
+                PuntosDisponibles = x.Sum(x => int.Parse(x.Puntos ?? "0")),
                 Nombres = x.FirstOrDefault().Usuario?.Nombres,
                 Email = x.FirstOrDefault().Usuario?.Email,
                 Apellidos = x.FirstOrDefault().Usuario?.Apellidos,
@@ -164,6 +165,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             if (usuario != null)
             {
                 usuario.PuntosAcumulados += value.PuntosAcumulados;
+                usuario.PuntosDisponibles += value.PuntosDisponibles;
                 await this.usuarioInfoPuntosRepository.Update(usuario);
                 return new GenericResponse<UsuarioInfoPuntos>
                 {
@@ -400,10 +402,10 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
-            var usuario = await this.usuarioInfoPuntosRepository.GetById(id);
+            var usuario = await this.usuarioInfoPuntosRepository.GetByPredicateAsync(p=> p.Email == id);
             return new GenericResponse<UsuarioInfoPuntos>
             {
-                Result = usuario
+                Result = usuario.FirstOrDefault()
             };
         }
         catch (Exception)
