@@ -290,6 +290,23 @@
       },
       "Key": "deleteUsuarioRoute"
     },
+    {
+      "UpstreamPathTemplate": "/api/Usuario/CambioPwd",
+      "DownstreamPathTemplate": "/api/Usuario/CambioPwd",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plseguridad.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "CambioPwdRoute"
+    },
 
     //Termina Usuario
     //Empieza productos

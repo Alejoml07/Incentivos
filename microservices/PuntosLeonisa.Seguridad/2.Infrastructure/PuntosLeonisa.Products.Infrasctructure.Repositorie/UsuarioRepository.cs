@@ -51,13 +51,16 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
         var usuario = await _context.Set<Usuario>().FirstOrDefaultAsync(u => u.Email == cambioContraseñaDto.Email);
         if (usuario != null)
         {
-            var resultadoVerificacion = securityService.VerifyPassword(cambioContraseñaDto.ContraseñaActual, usuario.Pwd);
-            if (resultadoVerificacion == PasswordVerifyResult.Success)
-            {
-                usuario.Pwd = securityService.HasPassword(cambioContraseñaDto.NuevaContraseña);
-                _context.Update(usuario);
-                await _context.SaveChangesAsync();
-                return true;
+            if (cambioContraseñaDto.NuevaContraseña == cambioContraseñaDto.ConfirmarNuevaContraseña)
+            {           
+                var resultadoVerificacion = securityService.VerifyPassword(cambioContraseñaDto.ContraseñaActual, usuario.Pwd);
+                if (resultadoVerificacion == PasswordVerifyResult.Success)
+                {
+                    usuario.Pwd = securityService.HasPassword(cambioContraseñaDto.NuevaContraseña);
+                    _context.Update(usuario);
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
             }
         }
         return false;
