@@ -3,6 +3,7 @@ using PuntosLeonisa.Seguridad.Domain.Service.Enum;
 using PuntosLeonisa.Seguridad.Domain.Service.Interfaces;
 using System.Text;
 using System.Security.Cryptography;
+using PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios;
 
 namespace PuntosLeonisa.Seguridad.Infrasctructure.Common.Helpers
 {
@@ -13,7 +14,6 @@ namespace PuntosLeonisa.Seguridad.Infrasctructure.Common.Helpers
         {
             this.key = key;
         }
-       
 
         public string HasPassword(string? password)
         {

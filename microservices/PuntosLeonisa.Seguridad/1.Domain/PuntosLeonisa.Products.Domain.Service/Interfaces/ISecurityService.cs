@@ -1,4 +1,5 @@
-﻿using PuntosLeonisa.Seguridad.Domain.Service.Enum;
+﻿using PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios;
+using PuntosLeonisa.Seguridad.Domain.Service.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace PuntosLeonisa.Seguridad.Domain.Service.Interfaces
     {
         string HasPassword(string? password);
         PasswordVerifyResult VerifyPassword(string password, string? pwd);
+
     }
 }
