@@ -362,7 +362,7 @@ namespace Usuarioos
             {
                 log.LogInformation($"Carrito : Carrito Inicia obtener todos los productos. Fecha:{DateTime.UtcNow}");
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var data = JsonConvert.DeserializeObject<CarritoDto>(requestBody);
+                var data = JsonConvert.DeserializeObject<Carrito>(requestBody);
 
                 var result = await this.puntosApplication.CarritoAdd(data);
                 return new OkObjectResult(result);

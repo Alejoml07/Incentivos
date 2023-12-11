@@ -5,51 +5,36 @@ using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Carrito;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
+using PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces;
 using PuntosLeonisa.Products.Domain.Model;
 using PuntosLeonisa.Seguridad.Application.Core;
+using System.Transactions;
 
 namespace PuntosLeonisa.Fidelizacion.Application;
 
 public class FidelizacionApplication : IFidelizacionApplication
 {
     private readonly IMapper mapper;
-    private readonly IPuntosManualRepository puntosRepository;
     private readonly GenericResponse<PuntosManualDto> response;
-    private readonly IWishListRepository wishRepository;
     private readonly GenericResponse<WishListDto> response2;
-    private readonly ICarritoRepository carritoRepository;
     private readonly IUsuarioExternalService usuarioExternalService;
-    private readonly IUsuarioInfoPuntosRepository usuarioInfoPuntosRepository;
-    private readonly GenericResponse<CarritoDto> response3;
+    private readonly IUnitOfWork unitOfWork;
+    private readonly GenericResponse<Carrito> response3;
     public FidelizacionApplication(IMapper mapper,
-        IPuntosManualRepository puntosRepository,
-        IWishListRepository wishRepository,
-        ICarritoRepository carritoRepository,
         IUsuarioExternalService usuarioExternalService,
-        IUsuarioInfoPuntosRepository usuarioInfoPuntosRepository
+        IUnitOfWork unitOfWork
         )
     {
-        if (puntosRepository is null)
-        {
-            throw new ArgumentNullException(nameof(puntosRepository));
-        }
 
-        if (wishRepository is null)
-        {
-            throw new ArgumentNullException(nameof(wishRepository));
-        }
 
         this.mapper = mapper;
-        this.puntosRepository = puntosRepository;
-        this.wishRepository = wishRepository;
-        this.carritoRepository = carritoRepository;
         this.usuarioExternalService = usuarioExternalService;
-        this.usuarioInfoPuntosRepository = usuarioInfoPuntosRepository;
+        this.unitOfWork = unitOfWork;
         response = new GenericResponse<PuntosManualDto>();
         response2 = new GenericResponse<WishListDto>();
-        response3 = new GenericResponse<CarritoDto>();
+        response3 = new GenericResponse<Carrito>();
     }
 
     public async Task<GenericResponse<PuntosManualDto>> Add(PuntosManualDto value)
@@ -58,7 +43,8 @@ public class FidelizacionApplication : IFidelizacionApplication
         {
             //TODO: Hacer las validaciones
             var puntos = mapper.Map<PuntosManual>(value);
-            await puntosRepository.Add(puntos);
+            await this.unitOfWork.PuntosRepository.Add(puntos);
+            await this.unitOfWork.SaveChangesAsync();
             response.Result = value;
             return response;
         }
@@ -90,11 +76,11 @@ public class FidelizacionApplication : IFidelizacionApplication
                         Observaciones = punto.Observaciones,
                         Usuario = new Usuario()
                         {
-                             Cedula = puntosUsuarioExistente.Cedula,
-                             Nombres = puntosUsuarioExistente.Nombres,
-                             Apellidos = puntosUsuarioExistente.Apellidos,
-                             Email = puntosUsuarioExistente.Email,
-                             Celular = puntosUsuarioExistente.Celular                             
+                            Cedula = puntosUsuarioExistente.Cedula,
+                            Nombres = puntosUsuarioExistente.Nombres,
+                            Apellidos = puntosUsuarioExistente.Apellidos,
+                            Email = puntosUsuarioExistente.Email,
+                            Celular = puntosUsuarioExistente.Celular
                         }
                     });
                 }
@@ -140,7 +126,8 @@ public class FidelizacionApplication : IFidelizacionApplication
 
 
             await this.AddUsuarioInfoPuntosRange(puntosPorUsuario);
-            await puntosRepository.AddRange(puntos.ToArray());
+            await this.unitOfWork.PuntosRepository.AddRange(puntos.ToArray());
+            await this.unitOfWork.SaveChangesAsync();
 
             var responseOnly = new GenericResponse<PuntosManualDto[]>
             {
@@ -161,12 +148,13 @@ public class FidelizacionApplication : IFidelizacionApplication
         try
         {
             // validar si existe y si si actualiza y sino agrega
-            var usuario = await this.usuarioInfoPuntosRepository.GetById(value.Cedula);
+            var usuario = await this.unitOfWork.UsuarioInfoPuntosRepository.GetById(value.Cedula);
             if (usuario != null)
             {
                 usuario.PuntosAcumulados += value.PuntosAcumulados;
                 usuario.PuntosDisponibles += value.PuntosDisponibles;
-                await this.usuarioInfoPuntosRepository.Update(usuario);
+                await this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuario);
+                await this.unitOfWork.SaveChangesAsync();
                 return new GenericResponse<UsuarioInfoPuntos>
                 {
                     Result = value
@@ -174,7 +162,8 @@ public class FidelizacionApplication : IFidelizacionApplication
             }
             else
             {
-                await this.usuarioInfoPuntosRepository.Add(value);
+                await this.unitOfWork.UsuarioInfoPuntosRepository.Add(value);
+                await this.unitOfWork.SaveChangesAsync();
                 return new GenericResponse<UsuarioInfoPuntos>
                 {
                     Result = value
@@ -208,7 +197,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
     }
 
-    public async Task<GenericResponse<CarritoDto>> CarritoAdd(CarritoDto carrito)
+    public async Task<GenericResponse<Carrito>> CarritoAdd(Carrito carrito)
     {
         try
         {
@@ -216,18 +205,19 @@ public class FidelizacionApplication : IFidelizacionApplication
             {
 
                 carrito.Id = Guid.NewGuid().ToString();
-                await this.carritoRepository.Add(carrito);
+                await this.unitOfWork.CarritoRepository.Add(carrito);
+                await this.unitOfWork.SaveChangesAsync();
                 response3.Result = carrito;
                 return response3;
             }
             else
             {
                 // Update
-                var carritoToUpdate = await this.carritoRepository.GetById(carrito.Id);
+                var carritoToUpdate = await this.unitOfWork.CarritoRepository.GetById(carrito.Id);
                 if (carritoToUpdate != null)
                 {
                     mapper.Map(carrito, carritoToUpdate);
-                    await this.carritoRepository.Update(carritoToUpdate);
+                    await this.unitOfWork.CarritoRepository.Update(carritoToUpdate);
                     response3.Result = carrito;
                     return response3;
                 }
@@ -248,10 +238,10 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
-            var carrito = await this.carritoRepository.GetById(id);
+            var carrito = await this.unitOfWork.CarritoRepository.GetById(id);
             if (carrito != null)
             {
-                await this.carritoRepository.Delete(carrito);
+                await this.unitOfWork.CarritoRepository.Delete(carrito);
                 return true;
             }
             return false;
@@ -264,12 +254,12 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
     }
 
-    public async Task<GenericResponse<IEnumerable<CarritoDto>>> CarritoGetByUser(string id)
+    public async Task<GenericResponse<IEnumerable<Carrito>>> CarritoGetByUser(string id)
     {
         try
         {
-            var carrito = await this.carritoRepository.GetByPredicateAsync(carritoRepository => carritoRepository.User.Email == id);
-            var response3 = new GenericResponse<IEnumerable<CarritoDto>>();
+            var carrito = await this.unitOfWork.CarritoRepository.GetByPredicateAsync(carritoRepository => carritoRepository.User.Email == id);
+            var response3 = new GenericResponse<IEnumerable<Carrito>>();
             if (carrito != null)
             {
                 response3.Result = carrito;
@@ -287,7 +277,7 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
-            await puntosRepository.Delete(mapper.Map<PuntosManual>(value));
+            await this.unitOfWork.PuntosRepository.Delete(mapper.Map<PuntosManual>(value));
             response.Result = value;
             return response;
         }
@@ -302,7 +292,7 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
-            await this.usuarioInfoPuntosRepository.Delete(value);
+            await this.unitOfWork.UsuarioInfoPuntosRepository.Delete(value);
             return new GenericResponse<UsuarioInfoPuntos>
             {
                 Result = value
@@ -319,10 +309,10 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
-            var ToDelete = await this.puntosRepository.GetById(id) ?? throw new ArgumentException("Puntos no encontrados");
+            var ToDelete = await this.unitOfWork.UsuarioInfoPuntosRepository.GetById(id) ?? throw new ArgumentException("Puntos no encontrados");
             var puntosToDelete = mapper.Map<PuntosManualDto>(ToDelete);
 
-            await puntosRepository.Delete(ToDelete);
+            await this.unitOfWork.UsuarioInfoPuntosRepository.Delete(ToDelete);
             this.response.Result = puntosToDelete;
             return this.response;
         }
@@ -342,10 +332,10 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
-            var usuario = await this.usuarioInfoPuntosRepository.GetById(id);
+            var usuario = await this.unitOfWork.UsuarioInfoPuntosRepository.GetById(id);
             if (usuario != null)
             {
-                this.usuarioInfoPuntosRepository.Delete(usuario);
+                await this.unitOfWork.UsuarioInfoPuntosRepository.Delete(usuario);
                 return new GenericResponse<UsuarioInfoPuntos>
                 {
                     Result = usuario
@@ -363,7 +353,7 @@ public class FidelizacionApplication : IFidelizacionApplication
 
     public async Task<GenericResponse<IEnumerable<PuntosManualDto>>> GetAll()
     {
-        var puntos = await puntosRepository.GetAll();
+        var puntos = await this.unitOfWork.UsuarioInfoPuntosRepository.GetAll();
         var puntosDto = mapper.Map<PuntosManualDto[]>(puntos);
         var responseOnly = new GenericResponse<IEnumerable<PuntosManualDto>>
         {
@@ -375,7 +365,7 @@ public class FidelizacionApplication : IFidelizacionApplication
 
     public async Task<GenericResponse<PuntosManualDto>> GetById(string id)
     {
-        var responseRawData = await puntosRepository.GetById(id);
+        var responseRawData = await this.unitOfWork.UsuarioInfoPuntosRepository.GetById(id);
         var responseData = mapper.Map<PuntosManualDto>(responseRawData);
         response.Result = responseData;
 
@@ -387,7 +377,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         var response = new GenericResponse<IEnumerable<UsuarioInfoPuntos>>();
         try
         {
-            var usuario = await this.usuarioInfoPuntosRepository.GetAll();
+            var usuario = await this.unitOfWork.UsuarioInfoPuntosRepository.GetAll();
             response.Result = usuario;
             return response;
         }
@@ -402,10 +392,42 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
-            var usuario = await this.usuarioInfoPuntosRepository.GetByPredicateAsync(p=> p.Email == id);
+            var usuario = await this.unitOfWork.UsuarioInfoPuntosRepository.GetByPredicateAsync(p => p.Email == id);
             return new GenericResponse<UsuarioInfoPuntos>
             {
                 Result = usuario.FirstOrDefault()
+            };
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    public async Task<GenericResponse<bool>> RedencionPuntos(UsuarioRedencion data)
+    {
+        try
+        {
+
+            var usuarioInfoPuntos = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(data.Usuario.Email);
+
+
+            if (usuarioInfoPuntos != null)
+            {
+                usuarioInfoPuntos.PuntosDisponibles -= data.PuntosRedimidos;
+                usuarioInfoPuntos.PuntosRedimidos += data.PuntosRedimidos;
+                await this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuarioInfoPuntos);
+                unitOfWork.SaveChangesSync();
+            }
+            else
+            {
+                throw new Exception("Usuario no encontrado");
+            }
+
+            return new GenericResponse<bool>
+            {
+                Result = true
             };
         }
         catch (Exception)
@@ -419,11 +441,11 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
-            var response = await puntosRepository.GetById(value.Id ?? "");
+            var response = await this.unitOfWork.UsuarioInfoPuntosRepository.GetById(value.Id ?? "");
             if (response != null)
             {
                 mapper.Map(value, response);
-                await puntosRepository.Update(response);
+                await this.unitOfWork.UsuarioInfoPuntosRepository.Update(response);
             }
             this.response.Result = value;
             return this.response;
@@ -438,7 +460,7 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
-            await this.usuarioInfoPuntosRepository.Update(value);
+            await this.unitOfWork.UsuarioInfoPuntosRepository.Update(value);
             return new GenericResponse<UsuarioInfoPuntos>
             {
                 Result = value
@@ -455,7 +477,7 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
-            await this.usuarioInfoPuntosRepository.Update(value);
+            await this.unitOfWork.UsuarioInfoPuntosRepository.Update(value);
             return new GenericResponse<UsuarioInfoPuntos>
             {
                 Result = value
@@ -473,7 +495,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         try
         {
             wishList.Id = Guid.NewGuid().ToString();
-            await this.wishRepository.Add(wishList);
+            await this.unitOfWork.WishListRepository.Add(wishList);
             response2.Result = wishList;
             return response2;
         }
@@ -488,10 +510,10 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
-            var wishlist = await this.wishRepository.GetById(id);
+            var wishlist = await this.unitOfWork.WishListRepository.GetById(id);
             if (wishlist != null)
             {
-                await this.wishRepository.Delete(wishlist);
+                await this.unitOfWork.WishListRepository.Delete(wishlist);
                 return true;
             }
             return false;
@@ -508,7 +530,7 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
-            var wishList = await this.wishRepository.GetByPredicateAsync(wishRepository => wishRepository.User.Email == id);
+            var wishList = await this.unitOfWork.WishListRepository.GetByPredicateAsync(wishRepository => wishRepository.User.Email == id);
             var response = new GenericResponse<IEnumerable<WishListDto>>();
             if (wishList != null)
             {

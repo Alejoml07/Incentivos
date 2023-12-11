@@ -5,7 +5,7 @@ using PuntosLeonisa.infrastructure.Persistence.Configuration;
 namespace PuntosLeonisa.infrastructure.Persistence.CosmoDb;
 
 
-public class FidelizacionContext : DbContext
+public class FidelizacionContext : DbContext, IDisposable
 {
     public FidelizacionContext()
     {
@@ -17,7 +17,7 @@ public class FidelizacionContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        
+
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

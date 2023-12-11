@@ -1,5 +1,6 @@
 ﻿using PuntosLeonisa.fidelizacion.Domain.Service.DTO.PuntosManuales;
 using PuntosLeonisa.Fidelizacion.Application.Core.Interfaces;
+using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Carrito;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
@@ -12,8 +13,9 @@ public interface IFidelizacionApplication : IApplicationCore<PuntosManualDto>, I
     Task<GenericResponse<WishListDto>> WishListAdd(WishListDto wishList);
     Task<bool> WishListDeleteById(string id);
     Task<GenericResponse<IEnumerable<WishListDto>>> WishListGetByUser(string id);
-    Task<GenericResponse<CarritoDto>> CarritoAdd(CarritoDto carrito);
+
+    Task<GenericResponse<Carrito>> CarritoAdd(Carrito carrito);
     Task<bool> CarritoDeleteById(string id);
-    Task<GenericResponse<IEnumerable<CarritoDto>>> CarritoGetByUser(string id);
+    Task<GenericResponse<IEnumerable<Carrito>>> CarritoGetByUser(string id);
 }
 

@@ -2,7 +2,7 @@
 
 namespace PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces
 {
-    public interface ICarritoRepository : IRepository<CarritoDto>
+    public interface ICarritoRepository : IRepository<Carrito>
     {
 
     }
