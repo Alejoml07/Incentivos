@@ -8,7 +8,7 @@ namespace PuntosLeonisa.Seguridad.Domain.Interfaces
     {
         Task<Usuario?> Login(LoginDto loginDto);
 
-
+        Task<bool> CambiarPwd(CambioPwdDto cambioContraseñaDto);
     }
 
 

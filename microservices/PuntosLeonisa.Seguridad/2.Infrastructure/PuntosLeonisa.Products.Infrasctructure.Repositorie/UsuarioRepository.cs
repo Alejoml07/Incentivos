@@ -45,5 +45,25 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
 
         return usuario;
     }
+
+    public async Task<bool> CambiarPwd(CambioPwdDto cambioContraseñaDto)
+    {
+        var usuario = await _context.Set<Usuario>().FirstOrDefaultAsync(u => u.Email == cambioContraseñaDto.Email);
+        if (usuario != null)
+        {
+            if (cambioContraseñaDto.NuevaContraseña == cambioContraseñaDto.ConfirmarNuevaContraseña)
+            {           
+                var resultadoVerificacion = securityService.VerifyPassword(cambioContraseñaDto.ContraseñaActual, usuario.Pwd);
+                if (resultadoVerificacion == PasswordVerifyResult.Success)
+                {
+                    usuario.Pwd = securityService.HasPassword(cambioContraseñaDto.NuevaContraseña);
+                    _context.Update(usuario);
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
 

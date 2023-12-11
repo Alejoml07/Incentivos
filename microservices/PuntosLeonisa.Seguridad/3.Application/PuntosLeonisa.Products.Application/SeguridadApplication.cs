@@ -188,5 +188,10 @@ public class SeguridadApplication : IUsuarioApplication
         }
     }
 
-
+    public async Task<GenericResponse<bool>> CambiarPwd(CambioPwdDto cambioContraseñaDto)
+    {
+        var resultado = await usuarioRepository.CambiarPwd(cambioContraseñaDto);
+        return new GenericResponse<bool> { Result = resultado };
+    }
 }
+

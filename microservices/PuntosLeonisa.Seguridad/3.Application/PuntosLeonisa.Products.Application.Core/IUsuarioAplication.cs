@@ -7,5 +7,7 @@ namespace PuntosLeonisa.Seguridad.Application.Core;
 public interface IUsuarioApplication : IApplicationCore<UsuarioDto>
 {
     Task<GenericResponse<UsuarioResponseLiteDto>> Authentication(LoginDto login);
+
+    Task<GenericResponse<bool>> CambiarPwd(CambioPwdDto cambioContraseñaDto);
 }
 
