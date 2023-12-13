@@ -8,6 +8,7 @@ using PuntosLeonisa.Fd.Infrastructure.ExternalService.Services;
 using PuntosLeonisa.Fidelizacion.Application;
 using PuntosLeonisa.Fidelizacion.Domain.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
+using PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie;
 using PuntosLeonisa.Infraestructure.Core.Agent.AgentsImpl;
 using PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces;
@@ -32,8 +33,9 @@ namespace Productos
             var stringConnection = Environment.GetEnvironmentVariable("accountCosmoName");
             var bd = Environment.GetEnvironmentVariable("db");
 
-            builder.Services.AddDbContext<FidelizacionContext>(x => x.UseCosmos(stringConnection, bd));
 
+            builder.Services.AddDbContext<FidelizacionContext>(x => x.UseCosmos(stringConnection, bd));
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped<IPuntosManualRepository, PuntosManualRepository>();
             builder.Services.AddScoped<IWishListRepository, WishListRepository>();
