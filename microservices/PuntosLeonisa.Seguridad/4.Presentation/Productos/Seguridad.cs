@@ -211,20 +211,19 @@ namespace Usuarios
             }
         }
 
-
-
         [FunctionName("CambioPwd")]
         [OpenApiOperation(operationId: "CambioPwd", tags: new[] { "Usuario/CambioPwd" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(IEnumerable<CambioPwdDto>), Description = "Cambio de Pwd")]
         public async Task<IActionResult> CambioPwd(
-               [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Usuario/CambioPwd")] HttpRequest req,
-               ILogger log)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Usuario/CambioPwd")] HttpRequest req,
+        ILogger log)
         {
             var cambioContraseñaDto = JsonConvert.DeserializeObject<CambioPwdDto>(await new StreamReader(req.Body).ReadToEndAsync());
             var response = await usuarioApplication.CambiarPwd(cambioContraseñaDto);
             return new OkObjectResult(response);
         }
-    }
 
+
+    }
 }
 

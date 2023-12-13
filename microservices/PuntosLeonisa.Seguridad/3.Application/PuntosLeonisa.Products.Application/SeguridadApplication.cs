@@ -6,6 +6,10 @@ using PuntosLeonisa.Seguridad.Domain.Interfaces;
 using PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios;
 using PuntosLeonisa.Seguridad.Domain.Service.Interfaces;
 using PuntosLeonisa.Seguridad.Infrasctructure.Common.Communication;
+using System.Text;
+using Jose;
+using System.Net.Mail;
+using System.Net;
 
 namespace PuntosLeonisa.Seguridad.Application;
 
@@ -193,5 +197,56 @@ public class SeguridadApplication : IUsuarioApplication
         var resultado = await usuarioRepository.CambiarPwd(cambioContraseñaDto);
         return new GenericResponse<bool> { Result = resultado };
     }
+
+    public static string CreateToken(string email, string audience, string issuer)
+    {
+        var payload = new Dictionary<string, object>
+                {
+                    { "sub", email },
+                    { "aud", audience },
+                    { "iss", issuer },
+                    { "exp", DateTimeOffset.UtcNow.AddHours(2).ToUnixTimeSeconds() }
+                };
+
+        var secretKey = Convert.ToBase64String(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("keySecret") ?? "defaultSecret")); // Clave secreta
+
+        string token = JWT.Encode(payload, Encoding.UTF8.GetBytes(secretKey), JwsAlgorithm.HS256);
+        return token;
+    }
+    public void SendEmail(string recipientEmail, string code)
+    {
+        try
+        {
+            var fromAddress = new MailAddress("tuemail@gmail.com", "Tu Nombre");
+            var toAddress = new MailAddress(recipientEmail, "Nombre del Destinatario");
+            const string fromPassword = "TuContraseñaDeGmail";
+            const string subject = "Tu Asunto Aquí";
+            string body = $"Aquí va el mensaje con el código: {code}";
+
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+            };
+            using (var message = new MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                Body = body
+            })
+            {
+                smtp.Send(message);
+            }
+        }
+        catch (Exception ex)
+        {
+            // Manejo de errores
+            Console.WriteLine($"No se pudo enviar el correo electrónico: {ex.Message}");
+        }
+    }
+
 }
 

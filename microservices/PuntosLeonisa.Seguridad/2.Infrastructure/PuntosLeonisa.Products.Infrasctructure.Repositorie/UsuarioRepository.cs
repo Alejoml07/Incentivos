@@ -6,6 +6,8 @@ using PuntosLeonisa.Seguridad.Domain.Interfaces;
 using PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios;
 using PuntosLeonisa.Seguridad.Domain.Service.Interfaces;
 using PuntosLeonisa.Seguridad.Domain.Service.Enum;
+using System.Net.Mail;
+using System.Net;
 
 namespace PuntosLeonisa.Seguridad.Infrasctructure.Repositorie;
 public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
@@ -17,6 +19,7 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
     {
         _context = context;
         this.securityService = securityService;
+
     }
 
     public async Task<Usuario?> Login(LoginDto loginDto)
@@ -65,5 +68,25 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
         }
         return false;
     }
+
+    public async Task<bool> RecuperarPwd(PasswordRecoveryRequestDto email)
+    {
+        var usuario = await _context.Set<Usuario>().FirstOrDefaultAsync(u => u.Email == email.Email);
+
+        if(usuario != null)
+        {
+            usuario.Pwd = usuario.Cedula;
+        }
+        
+        return true;
+        
+    }
+
+    public async Task<bool> SendCustomEmailToUser(string email)
+    {
+        throw new NotImplementedException();
+    }
 }
+
+
 
