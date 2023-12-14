@@ -86,6 +86,19 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
     {
         throw new NotImplementedException();
     }
+
+    public async Task<Usuario> GetUsuarioByEmail(string email)
+    {
+       var item = await _context.Set<Usuario>().FirstOrDefaultAsync(u => u.Email == email);
+        if(item != null)
+        {
+            return item;
+        }
+        else
+        {
+            throw new Exception("Usuario no encontrado");
+        }
+    }
 }
 
 

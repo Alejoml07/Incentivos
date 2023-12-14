@@ -171,6 +171,45 @@ namespace Usuarios
             }
         }
 
+        [FunctionName("GetUsuarioByEmail")]
+        [OpenApiOperation(operationId: "Usuarios/GetUsuarioByEmail", tags: new[] { "GetUsuarioByEmail" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Busca usuario por email")]
+        public async Task<IActionResult> GetUsuarioByEmail(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Usuario/GetUsuarioByEmail/{email}")] HttpRequest req,
+           string email,  // <-- Parámetro adicional
+           ILogger log)
+        {
+
+
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+
+                if (string.IsNullOrEmpty(email))
+                {
+                    throw new ArgumentException($"'{nameof(email)}' cannot be null or empty.", nameof(email));
+                }
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+                var producto = await this.usuarioApplication.GetByEmail(email);
+
+                return new OkObjectResult(producto);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
         [FunctionName("DeleteUsuario")]
         [OpenApiOperation(operationId: "DeleteUsuario", tags: new[] { "DeleteUsuario" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los usuarios")]

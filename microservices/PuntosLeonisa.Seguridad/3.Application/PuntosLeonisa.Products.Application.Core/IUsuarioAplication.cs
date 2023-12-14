@@ -9,5 +9,6 @@ public interface IUsuarioApplication : IApplicationCore<UsuarioDto>
     Task<GenericResponse<UsuarioResponseLiteDto>> Authentication(LoginDto login);
 
     Task<GenericResponse<bool>> CambiarPwd(CambioPwdDto cambioContraseñaDto);
+    Task<GenericResponse<UsuarioResponseLiteDto>> GetByEmail(string email);
 }
 

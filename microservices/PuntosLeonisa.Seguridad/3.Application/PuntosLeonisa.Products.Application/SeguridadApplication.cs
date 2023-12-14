@@ -248,5 +248,15 @@ public class SeguridadApplication : IUsuarioApplication
         }
     }
 
+    public async Task<GenericResponse<UsuarioResponseLiteDto>> GetByEmail(string email)
+    {
+        var responseRawData = await usuarioRepository.GetUsuarioByEmail(email);
+        var responseData = mapper.Map<UsuarioResponseLiteDto>(responseRawData);
+        var responseOnly = new GenericResponse<UsuarioResponseLiteDto>
+        {
+            Result = responseData
+        };
+        return responseOnly;
+    }
 }
 

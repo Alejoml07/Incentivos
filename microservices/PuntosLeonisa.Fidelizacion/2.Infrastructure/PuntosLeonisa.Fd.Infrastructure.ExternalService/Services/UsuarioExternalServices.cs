@@ -1,8 +1,11 @@
 ﻿using Logistic.Infrastructure.Agents.Interfaces;
 using Microsoft.Extensions.Configuration;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces;
 using PuntosLeonisa.Products.Domain.Model;
+using System.Net.Http;
+using System.Web;
 
 namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
 {
@@ -23,11 +26,43 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
             return response;
         }
 
-        public async Task<GenericResponse<Usuario>> GetUserLiteById(string id)
+        public async Task<GenericResponse<Usuario>> GetUserByEmail(string email)
         {
-            var azf = $"{_configuration["AzfBaseUser"]}{_configuration["GetUserLiteById"]}/{id}";
+            var azf = $"{_configuration["AzfBaseUser"]}{_configuration["GetUserLiteByEmail"]}/{email}";
             var response = await httpClientAgent.GetRequest<GenericResponse<Usuario>>(new Uri(azf));
             return response;
+        }
+
+        public async Task<bool> SendSmsWithCode(SmsDto data)
+        {
+
+            var urlSms = $"{_configuration["UrlSms"]}";
+            //return response;
+
+            var token = data.Codigo;
+            var mensajeToCode = $"Tu código de verificación es: {token}";
+            var message = HttpUtility.UrlEncode(mensajeToCode);
+
+            try
+            {
+                urlSms = urlSms.Replace("{phone}", data.Usuario.Celular);
+                urlSms = urlSms.Replace("{message}", message);
+                var response = await httpClientAgent.GetRequest<dynamic>(new Uri(urlSms));
+                if(response != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones
+                Console.WriteLine($"Error al enviar SMS: {ex.Message}");
+                return false;
+            }
         }
     }
 }

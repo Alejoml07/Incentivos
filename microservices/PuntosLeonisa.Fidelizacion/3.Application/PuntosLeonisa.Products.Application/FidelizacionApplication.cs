@@ -8,6 +8,7 @@ using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
 using PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
+using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Helpers;
 using PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces;
 using PuntosLeonisa.Products.Domain.Model;
 using PuntosLeonisa.Seguridad.Application.Core;
@@ -38,7 +39,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         response2 = new GenericResponse<WishListDto>();
         response3 = new GenericResponse<Carrito>();
         response4 = new GenericResponse<SmsDto>();
-        
+
     }
 
     public async Task<GenericResponse<PuntosManualDto>> Add(PuntosManualDto value)
@@ -355,7 +356,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
     }
 
-  
+
 
     public async Task<GenericResponse<IEnumerable<PuntosManualDto>>> GetAll()
     {
@@ -443,8 +444,8 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
     }
 
- 
-    
+
+
 
     public async Task<GenericResponse<PuntosManualDto>> Update(PuntosManualDto value)
     {
@@ -556,25 +557,36 @@ public class FidelizacionApplication : IFidelizacionApplication
 
     }
 
-    public static byte[] GenerateRandomSixDigitNumber()
-    {
 
-        Random random = new Random();
-        var ran = random.Next(100000, 1000000);
-        byte[] bytes = BitConverter.GetBytes(ran);
-        return bytes;
-    }
 
     public async Task<GenericResponse<SmsDto>> SaveCodeAndSendSms(SmsDto data)
     {
         try
         {
-            var usuario = await this.unitOfWork.SmsRepository.GetById(data.Id ?? "");
-            if (usuario != null)
+            var usuarioResponse = await this.usuarioExternalService.GetUserByEmail(data.Usuario?.Email ?? "");
+
+            if (usuarioResponse.IsSuccess && usuarioResponse.Result != null)
             {
+                data.Usuario = usuarioResponse.Result;
+                var usuario = usuarioResponse.Result;
+                if(usuario.Celular == null || usuario.Celular == "")
+                {
+                    throw new Exception("El usuario no tiene celular registrado");
+                }
                 usuario.Id = Guid.NewGuid().ToString();
-                usuario.Codigo = GenerateRandomSixDigitNumber().ToString();
-                await this.unitOfWork.SmsRepository.Add(usuario);
+                data.Codigo = FidelizacionHelper.GetCode();
+                data = await GetAndValidateCodigo(data);
+
+                var responseSms = await this.usuarioExternalService.SendSmsWithCode(data);
+                if (responseSms)
+                {
+                    await this.unitOfWork.SmsRepository.Add(data);
+                    await this.unitOfWork.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new Exception("Error al enviar el SMS");
+                }
             }
             this.response4.Result = data;
             return this.response4;
@@ -583,5 +595,19 @@ public class FidelizacionApplication : IFidelizacionApplication
         {
             throw;
         }
+    }
+
+    private async Task<SmsDto> GetAndValidateCodigo(SmsDto data)
+    {
+        var codigoExiste = await this.unitOfWork.SmsRepository.GetByPredicateAsync(x => x.Codigo == data.Codigo);
+
+        if (codigoExiste.Any())
+        {
+            data.Codigo = FidelizacionHelper.GetCode();
+            data = await this.GetAndValidateCodigo(data);
+        }
+
+        return data;
+
     }
 }
