@@ -22,5 +22,12 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
             var response = await httpClientAgent.GetRequest<GenericResponse<Usuario>>(new Uri(azf));
             return response;
         }
+
+        public async Task<GenericResponse<Usuario>> GetUserLiteById(string id)
+        {
+            var azf = $"{_configuration["AzfBaseUser"]}{_configuration["GetUserLiteById"]}/{id}";
+            var response = await httpClientAgent.GetRequest<GenericResponse<Usuario>>(new Uri(azf));
+            return response;
+        }
     }
 }

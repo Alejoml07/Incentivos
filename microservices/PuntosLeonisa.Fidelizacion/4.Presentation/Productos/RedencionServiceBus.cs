@@ -58,30 +58,31 @@ namespace PuntosLeonisa.Fidelizacion.Function
             }
         }
 
-        [FunctionName("ProcessMessageFunction")]
-        public void ProcessMessageFunction(
-        [ServiceBusTrigger("queueredenciones", Connection = "ServiceBusConnectionString")] string myQueueItem,
-        ILogger log)
+        //[FunctionName("ProcessMessageFunction")]
+        
+        //public void ProcessMessageFunction(
+        //[ServiceBusTrigger("queueredenciones", Connection = "ServiceBusConnectionString")] string myQueueItem,
+        //ILogger log)
 
-        {
-            try
-            {
-
-                log.LogInformation($"C# ServiceBus queue trigger function processed message: {myQueueItem}");
+        //{
+          //  try
+            //{
+            
+            //    log.LogInformation($"C# ServiceBus queue trigger function processed message: {myQueueItem}");
                 // Aquí puedes añadir la lógica para procesar el mensaje
                 // obtener el mensaje y deserializarlo
-                var data = JsonConvert.DeserializeObject<UsuarioRedencion>(myQueueItem);
+           //     var data = JsonConvert.DeserializeObject<UsuarioRedencion>(myQueueItem);
                 // aqui obtienes el usuarioinfopuntos y le restas los puntos
-                this.usuarioInfoPuntosApplication.RedencionPuntos(data);
+            //    this.usuarioInfoPuntosApplication.RedencionPuntos(data);
 
-                log.LogInformation("Mensaje procesado correctamente");
-            }
-            catch (Exception ex)
-            {
-                log.LogError(ex, "Error");
-            }
+             //   log.LogInformation("Mensaje procesado correctamente");
+            //}
+            //catch (Exception ex)
+            //{
+               // log.LogError(ex, "Error");
+            //}
 
-        }
+        //}
 
     }
 

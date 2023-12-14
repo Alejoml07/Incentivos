@@ -11,11 +11,10 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork
     public interface IUnitOfWork : IDisposable
     {
         IUsuarioInfoPuntosRepository UsuarioInfoPuntosRepository { get; }
-
         IPuntosManualRepository PuntosRepository { get; }
-
         ICarritoRepository CarritoRepository { get; }
         IWishListRepository WishListRepository { get; }
+        ISmsRepository SmsRepository { get; }
 
 
         // Otros repositorios relacionados...

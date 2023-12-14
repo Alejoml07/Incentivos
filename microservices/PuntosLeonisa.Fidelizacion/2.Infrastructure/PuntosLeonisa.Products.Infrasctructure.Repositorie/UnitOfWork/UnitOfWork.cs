@@ -11,6 +11,7 @@ public class UnitOfWork : IUnitOfWork
     private IPuntosManualRepository _puntosRepository;
     private ICarritoRepository _carritoRepository;
     private IWishListRepository _wishListRepository;
+    private ISmsRepository _smsRepository;
 
     public UnitOfWork(FidelizacionContext fidelizacionContext)
     {
@@ -53,6 +54,15 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
+    public ISmsRepository SmsRepository
+    {
+        get
+        {
+            _smsRepository ??= new SmsRepository(_fidelizacionContext);
+            return _smsRepository;
+        }
+    }
+
     public void SaveChangesSync()
     {
         _fidelizacionContext.SaveChanges();
@@ -63,8 +73,9 @@ public class UnitOfWork : IUnitOfWork
         _fidelizacionContext.Dispose();
     }
 
-    public async Task SaveChangesAsync()
+    public Task SaveChangesAsync()
     {
-        await _fidelizacionContext.SaveChangesAsync();
+        throw new NotImplementedException();
     }
+
 }

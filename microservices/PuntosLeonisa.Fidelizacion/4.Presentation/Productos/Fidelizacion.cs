@@ -15,6 +15,7 @@ using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using System.Collections.Generic;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Carrito;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
 
 namespace Usuarioos
 {
@@ -480,6 +481,38 @@ namespace Usuarioos
                 }
 
                 var response = await this.puntosApplication.GetUsuarioInfoPuntosById(id);
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los puntos:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("EnviarNotificacionRedencion")]
+        [OpenApiOperation(operationId: "EnviarNotificacionRedencion", tags: new[] { "EnviarNotificacionRedencion" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los puntos por Id")]
+        public async Task<IActionResult> EnviarNotificacionRedencion(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/EnviarNotificacionRedencion")] HttpRequest req,
+        ILogger log)
+        {
+
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<SmsDto>(requestBody);
+                var response = await this.puntosApplication.SaveCodeAndSendSms(data);
                 return new OkObjectResult(response);
             }
             catch (Exception ex)

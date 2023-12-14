@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
+using Newtonsoft.Json.Linq;
 using PuntosLeonisa.fidelizacion.Domain.Service.DTO.PuntosManuales;
-using PuntosLeonisa.Fidelizacion.Domain.Interfaces;
+using PuntosLeonisa.Fidelizacion.Application.Core.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Carrito;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
-using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces;
 using PuntosLeonisa.Products.Domain.Model;
 using PuntosLeonisa.Seguridad.Application.Core;
-using System.Transactions;
 
 namespace PuntosLeonisa.Fidelizacion.Application;
 
@@ -21,10 +21,12 @@ public class FidelizacionApplication : IFidelizacionApplication
     private readonly GenericResponse<WishListDto> response2;
     private readonly IUsuarioExternalService usuarioExternalService;
     private readonly IUnitOfWork unitOfWork;
+    private readonly IUsuarioInfoPuntosApplication usuarioInfoPuntosApplication;
     private readonly GenericResponse<Carrito> response3;
+    private readonly GenericResponse<SmsDto> response4;
     public FidelizacionApplication(IMapper mapper,
         IUsuarioExternalService usuarioExternalService,
-        IUnitOfWork unitOfWork
+        IUnitOfWork unitOfWork, IUsuarioInfoPuntosApplication usuarioInfoPuntosApplication
         )
     {
 
@@ -35,6 +37,8 @@ public class FidelizacionApplication : IFidelizacionApplication
         response = new GenericResponse<PuntosManualDto>();
         response2 = new GenericResponse<WishListDto>();
         response3 = new GenericResponse<Carrito>();
+        response4 = new GenericResponse<SmsDto>();
+        
     }
 
     public async Task<GenericResponse<PuntosManualDto>> Add(PuntosManualDto value)
@@ -351,6 +355,8 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
     }
 
+  
+
     public async Task<GenericResponse<IEnumerable<PuntosManualDto>>> GetAll()
     {
         var puntos = await this.unitOfWork.UsuarioInfoPuntosRepository.GetAll();
@@ -436,6 +442,9 @@ public class FidelizacionApplication : IFidelizacionApplication
             throw;
         }
     }
+
+ 
+    
 
     public async Task<GenericResponse<PuntosManualDto>> Update(PuntosManualDto value)
     {
@@ -547,4 +556,32 @@ public class FidelizacionApplication : IFidelizacionApplication
 
     }
 
+    public static byte[] GenerateRandomSixDigitNumber()
+    {
+
+        Random random = new Random();
+        var ran = random.Next(100000, 1000000);
+        byte[] bytes = BitConverter.GetBytes(ran);
+        return bytes;
+    }
+
+    public async Task<GenericResponse<SmsDto>> SaveCodeAndSendSms(SmsDto data)
+    {
+        try
+        {
+            var usuario = await this.unitOfWork.SmsRepository.GetById(data.Id ?? "");
+            if (usuario != null)
+            {
+                usuario.Id = Guid.NewGuid().ToString();
+                usuario.Codigo = GenerateRandomSixDigitNumber().ToString();
+                await this.unitOfWork.SmsRepository.Add(usuario);
+            }
+            this.response4.Result = data;
+            return this.response4;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
 }
