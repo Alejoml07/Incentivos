@@ -17,8 +17,10 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
 
         public IEnumerable<Carrito> ProductosCarrito { get; set; }
 
+        public UsuarioEnvio Envio { get; set; }
 
-        public int PuntosRedimidos
+
+        public int? PuntosRedimidos
         {
             get { return this.ProductosCarrito.Sum(p => Convert.ToInt32(p.Product.Puntos) * int.Parse(p.Cantidad)); }
         }
@@ -26,6 +28,19 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
 
         public DateTime FechaRedencion { get; set; }
 
+    }
+
+    public class UsuarioEnvio
+    {
+        public string Id { get; set; }
+        public string Nombres { get; set; }
+        public string Apellidos { get; set; }
+        public string Direccion { get; set; }
+        public string Celular { get; set; }
+        public string Email { get; set; }
+        public string Ciudad { get; set; }
+        public string Departamento { get; set; }
         public string Observaciones { get; set; }
+
     }
 }

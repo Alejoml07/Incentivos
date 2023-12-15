@@ -40,14 +40,14 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
             //return response;
 
             var token = data.Codigo;
-            var mensajeToCode = $"Tu código de verificación es: {token}";
+            var mensajeToCode = $"Mis suenos a un clic te dice que tu codigo para la redencion es: {token}";
             var message = HttpUtility.UrlEncode(mensajeToCode);
 
             try
             {
                 urlSms = urlSms.Replace("{phone}", data.Usuario.Celular);
                 urlSms = urlSms.Replace("{message}", message);
-                var response = await httpClientAgent.GetRequest<dynamic>(new Uri(urlSms));
+                var response = await httpClientAgent.GetRequestXml<Response>(new Uri(urlSms));
                 if(response != null)
                 {
                     return true;

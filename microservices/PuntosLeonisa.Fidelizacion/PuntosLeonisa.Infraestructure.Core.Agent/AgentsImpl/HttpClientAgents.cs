@@ -1,8 +1,12 @@
 ﻿using Logistic.Infrastructure.Agents.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
+using System.Data.SqlTypes;
 using System.Net;
 using System.Text;
+using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace Logistic.Infrastructure.Agents.AgentsImpl
 {
@@ -36,6 +40,38 @@ namespace Logistic.Infrastructure.Agents.AgentsImpl
                 var response = await resultData.Content.ReadAsStringAsync();
 #pragma warning disable CS8603 // Posible tipo de valor devuelto de referencia nulo
                 return JsonConvert.DeserializeObject<T1>(response);
+#pragma warning restore CS8603 // Posible tipo de valor devuelto de referencia nulo
+            }
+            catch (Exception ex)
+            {
+                Exception exception = new("Failed" + ex.InnerException + "\n" + ex.Message);
+                throw exception;
+            }
+        }
+
+
+
+        public async Task<T1> GetRequestXml<T1>(Uri requestUrl)
+        {
+            try
+            {
+                var CircuitBreakerPolicy = _circuitBreaker.GetCircuitBreaker();
+                var TransientErrorRetryPolicy = _transientRetry.GetTransientRetry();
+                var httpClient = _httpClientFactory.CreateClient();
+                httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+                var resultData = await CircuitBreakerPolicy.ExecuteAsync(() =>
+                        TransientErrorRetryPolicy.ExecuteAsync(() =>
+                        httpClient.GetAsync(requestUrl))
+                    );
+                var response = await resultData.Content.ReadAsStringAsync();
+                XmlSerializer serializer = new XmlSerializer(typeof(T1));
+                using (MemoryStream memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(response)))
+                {
+                    T1 responseData = (T1)serializer.Deserialize(memoryStream);
+
+                    return responseData;
+                }
+
 #pragma warning restore CS8603 // Posible tipo de valor devuelto de referencia nulo
             }
             catch (Exception ex)

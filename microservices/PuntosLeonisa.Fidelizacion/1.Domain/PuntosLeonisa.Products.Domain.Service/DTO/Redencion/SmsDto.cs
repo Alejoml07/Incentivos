@@ -12,5 +12,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
         public string Id { get; set; }
         public Usuario Usuario { get; set; }
         public string Codigo { get; set; }
+
+        public DateTime FechaCreacion { get; set; }
     }
 }

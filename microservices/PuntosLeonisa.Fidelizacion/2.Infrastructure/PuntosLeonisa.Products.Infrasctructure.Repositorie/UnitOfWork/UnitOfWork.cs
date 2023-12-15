@@ -73,9 +73,9 @@ public class UnitOfWork : IUnitOfWork
         _fidelizacionContext.Dispose();
     }
 
-    public Task SaveChangesAsync()
+    public async Task SaveChangesAsync()
     {
-        throw new NotImplementedException();
+        await _fidelizacionContext.SaveChangesAsync();
     }
 
 }

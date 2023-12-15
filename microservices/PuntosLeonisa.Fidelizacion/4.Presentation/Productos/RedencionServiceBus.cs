@@ -9,8 +9,10 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using PuntosLeonisa.fidelizacion.Domain.Service.DTO.PuntosManuales;
 using PuntosLeonisa.Fidelizacion.Application.Core.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
+using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using PuntosLeonisa.Seguridad.Application.Core;
 
 namespace PuntosLeonisa.Fidelizacion.Function
@@ -19,17 +21,22 @@ namespace PuntosLeonisa.Fidelizacion.Function
     {
         private readonly ILogger<RedencionServiceBus> _logger;
         private readonly IUsuarioInfoPuntosApplication usuarioInfoPuntosApplication;
+        private readonly IFidelizacionApplication puntosApplication;
+        private readonly GenericResponse<PuntosManualDto> responseError;
+        private readonly BadRequestObjectResult puntosApplicationErrorResult;
 
+        
         public RedencionServiceBus(ILogger<RedencionServiceBus> log, IFidelizacionApplication usuarioInfoPuntosApplication)
         {
             _logger = log;
             this.usuarioInfoPuntosApplication = usuarioInfoPuntosApplication;
+            this.puntosApplicationErrorResult = new BadRequestObjectResult(this.responseError);
         }
 
 
-        [FunctionName("SendMessageFunction")]
-        public async Task<IActionResult> SendMessageFunction(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
+        [FunctionName("CreateRedencion")]
+        public async Task<IActionResult> CreateRedencion(
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "fidelizacion/redencion/create")] HttpRequest req,
             ILogger log)
         {
             try
@@ -52,37 +59,46 @@ namespace PuntosLeonisa.Fidelizacion.Function
 
                 return new OkObjectResult($"Mensaje enviado a la cola: {queueName}");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return new BadRequestObjectResult("Error al enviar el mensaje");
+
+                return GetFunctionError(log, "Error al obtener los puntos:" + DateTime.UtcNow.ToString(), ex);
             }
         }
 
-        //[FunctionName("ProcessMessageFunction")]
-        
-        //public void ProcessMessageFunction(
-        //[ServiceBusTrigger("queueredenciones", Connection = "ServiceBusConnectionString")] string myQueueItem,
-        //ILogger log)
+        private IActionResult GetFunctionError(ILogger log, string logMessage, Exception ex)
+        {
+            log.LogError(ex, logMessage, null);
+            this.responseError.Message = ex.Message;
+            this.responseError.IsSuccess = false;
+            return this.puntosApplicationErrorResult;
+        }
 
-        //{
-          //  try
-            //{
-            
-            //    log.LogInformation($"C# ServiceBus queue trigger function processed message: {myQueueItem}");
-                // Aquí puedes añadir la lógica para procesar el mensaje
-                // obtener el mensaje y deserializarlo
-           //     var data = JsonConvert.DeserializeObject<UsuarioRedencion>(myQueueItem);
-                // aqui obtienes el usuarioinfopuntos y le restas los puntos
-            //    this.usuarioInfoPuntosApplication.RedencionPuntos(data);
 
-             //   log.LogInformation("Mensaje procesado correctamente");
-            //}
-            //catch (Exception ex)
-            //{
-               // log.LogError(ex, "Error");
-            //}
+        [FunctionName("ProcessMessageFunction")]
 
-        //}
+        public void ProcessMessageFunction(
+        [ServiceBusTrigger("queueredenciones", Connection = "ServiceBusConnectionString")] string myQueueItem,
+        ILogger log)
+
+        {
+            try
+            {
+
+                log.LogInformation($"C# ServiceBus queue trigger function processed message: {myQueueItem}");
+              
+                var data = JsonConvert.DeserializeObject<UsuarioRedencion>(myQueueItem);
+                //aqui obtienes el usuarioinfopuntos y le restas los puntos
+                this.usuarioInfoPuntosApplication.RedencionPuntos(data);
+
+                log.LogInformation("Mensaje procesado correctamente");
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex, "Error procesando la redencion");
+            }
+
+        }
 
     }
 

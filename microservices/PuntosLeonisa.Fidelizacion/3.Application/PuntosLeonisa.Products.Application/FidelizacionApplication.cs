@@ -558,7 +558,6 @@ public class FidelizacionApplication : IFidelizacionApplication
     }
 
 
-
     public async Task<GenericResponse<SmsDto>> SaveCodeAndSendSms(SmsDto data)
     {
         try
@@ -569,17 +568,19 @@ public class FidelizacionApplication : IFidelizacionApplication
             {
                 data.Usuario = usuarioResponse.Result;
                 var usuario = usuarioResponse.Result;
-                if(usuario.Celular == null || usuario.Celular == "")
+                if (usuario.Celular == null || usuario.Celular == "")
                 {
                     throw new Exception("El usuario no tiene celular registrado");
                 }
                 usuario.Id = Guid.NewGuid().ToString();
                 data.Codigo = FidelizacionHelper.GetCode();
+                data.FechaCreacion = DateTime.Now;
                 data = await GetAndValidateCodigo(data);
 
                 var responseSms = await this.usuarioExternalService.SendSmsWithCode(data);
                 if (responseSms)
                 {
+                    data.Id = Guid.NewGuid().ToString();
                     await this.unitOfWork.SmsRepository.Add(data);
                     await this.unitOfWork.SaveChangesAsync();
                 }
@@ -609,5 +610,37 @@ public class FidelizacionApplication : IFidelizacionApplication
 
         return data;
 
+    }
+
+    public async Task<GenericResponse<bool>> ValidateCodeRedencion(SmsDto data)
+    {
+        try
+        {
+            var codigoExiste = await this.unitOfWork.SmsRepository.GetByPredicateAsync(x => x.Codigo == data.Codigo
+            && x.Usuario.Email == data.Usuario.Email);
+
+            if (codigoExiste.Any())
+            {
+                //validar tiempo del token 
+                var codigo = codigoExiste.FirstOrDefault();
+                if (codigo.FechaCreacion.AddMinutes(5) < DateTime.Now)
+                {
+                    throw new Exception("Codigo expirado");
+                }
+                return new GenericResponse<bool>
+                {
+                    Result = true
+                };
+            }
+            else
+            {
+                throw new Exception("Codigo no valido");
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
     }
 }
