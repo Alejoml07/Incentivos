@@ -616,6 +616,23 @@
       },
       "Key": "GetUsuarioInfoPuntosByIdRoute"
     },
+    {
+      "UpstreamPathTemplate": "/api/fidelizacion/GuardarToken",
+      "DownstreamPathTemplate": "/api/fidelizacion/GuardarToken",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GuardarTokenRoute"
+    },
 
     // fin fidelizacion
     // fin puntos,
