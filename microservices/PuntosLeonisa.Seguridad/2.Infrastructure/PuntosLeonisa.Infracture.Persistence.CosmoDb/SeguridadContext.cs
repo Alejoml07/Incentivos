@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PuntosLeonisa.Infrasctructure.Core.Configuration;
+using PuntosLeonisa.infrastructure.Persistence.Configuration;
 
 namespace PuntosLeonisa.infrastructure.Persistence.CosmoDb;
 
@@ -32,6 +33,7 @@ public class SeguridadContext : DbContext
     {
         modelBuilder.ApplyConfiguration(new UsuariosConfiguration());
         modelBuilder.ApplyConfiguration(new ProveedorConfiguration());
+        modelBuilder.ApplyConfiguration(new TokenConfiguration());
 
     }
 
