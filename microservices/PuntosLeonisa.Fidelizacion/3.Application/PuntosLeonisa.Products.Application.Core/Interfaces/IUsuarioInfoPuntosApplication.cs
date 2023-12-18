@@ -16,6 +16,6 @@ namespace PuntosLeonisa.Fidelizacion.Application.Core.Interfaces
         Task<GenericResponse<IEnumerable<UsuarioInfoPuntos>>> GetUsuarioInfoPuntosAll();
         Task<GenericResponse<bool>> RedencionPuntos(UsuarioRedencion data);
         Task<GenericResponse<SmsDto>> SaveCodeAndSendSms(SmsDto data);
-
+        Task<GenericResponse<bool>> CreateRedencion(UsuarioRedencion data);
     }
 }

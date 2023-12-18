@@ -92,5 +92,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
         public string? Genero { get; set; }
 
         public string? Tamaño { get; set; }
+
+        public int? Quantity { get; set; }
     }
 }

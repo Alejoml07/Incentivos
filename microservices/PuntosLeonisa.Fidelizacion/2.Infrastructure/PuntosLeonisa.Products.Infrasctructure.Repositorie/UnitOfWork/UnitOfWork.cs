@@ -12,6 +12,7 @@ public class UnitOfWork : IUnitOfWork
     private ICarritoRepository _carritoRepository;
     private IWishListRepository _wishListRepository;
     private ISmsRepository _smsRepository;
+    private IUsuarioRedencionRepository  _usuarioRedencionRepository;
 
     public UnitOfWork(FidelizacionContext fidelizacionContext)
     {
@@ -42,6 +43,15 @@ public class UnitOfWork : IUnitOfWork
         {
             _carritoRepository ??= new CarritoRepository(_fidelizacionContext);
             return _carritoRepository;
+        }
+    }
+
+    public IUsuarioRedencionRepository UsuarioRedencionRepository
+    {
+        get
+        {
+            _usuarioRedencionRepository ??= new UsuarioRedencionRepository(_fidelizacionContext);
+            return _usuarioRedencionRepository;
         }
     }
 

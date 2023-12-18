@@ -643,4 +643,32 @@ public class FidelizacionApplication : IFidelizacionApplication
             throw;
         }
     }
+
+    public async Task<GenericResponse<bool>> CreateRedencion(UsuarioRedencion data)
+    {
+        try
+        {
+            data.Id = Guid.NewGuid().ToString();
+            data.FechaRedencion = DateTime.Now;
+            foreach (var item in data.ProductosCarrito)
+            {
+                item.Id = Guid.NewGuid().ToString();
+            }
+
+            //data.InfoPuntos = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(data.Usuario.Email);
+            await this.unitOfWork.UsuarioRedencionRepository.Add(data);
+            this.unitOfWork.SaveChangesSync();
+
+            return new GenericResponse<bool>
+            {
+                Result = true
+            };
+
+        }
+        catch (Exception ex)
+        {
+
+            throw;
+        }
+    }
 }

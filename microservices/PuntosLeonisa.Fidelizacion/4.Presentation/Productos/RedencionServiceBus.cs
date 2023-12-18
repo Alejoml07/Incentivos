@@ -25,7 +25,7 @@ namespace PuntosLeonisa.Fidelizacion.Function
         private readonly GenericResponse<PuntosManualDto> responseError;
         private readonly BadRequestObjectResult puntosApplicationErrorResult;
 
-        
+
         public RedencionServiceBus(ILogger<RedencionServiceBus> log, IFidelizacionApplication usuarioInfoPuntosApplication)
         {
             _logger = log;
@@ -36,7 +36,7 @@ namespace PuntosLeonisa.Fidelizacion.Function
 
         [FunctionName("CreateRedencion")]
         public async Task<IActionResult> CreateRedencion(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "fidelizacion/redencion/create")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/redencion/create")] HttpRequest req,
             ILogger log)
         {
             try
@@ -50,18 +50,19 @@ namespace PuntosLeonisa.Fidelizacion.Function
                 var data = JsonConvert.DeserializeObject<UsuarioRedencion>(requestBody);
 
                 var serviceBusClient = new QueueClient(connectionString, queueName);
-
+                 
                 var message = new Message(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data)));
+
+                var res = await this.usuarioInfoPuntosApplication.CreateRedencion(data);
 
                 await serviceBusClient.SendAsync(message);
 
                 log.LogInformation($"Mensaje enviado: {message}");
 
-                return new OkObjectResult($"Mensaje enviado a la cola: {queueName}");
+                return new OkObjectResult(res);
             }
             catch (Exception ex)
             {
-
                 return GetFunctionError(log, "Error al obtener los puntos:" + DateTime.UtcNow.ToString(), ex);
             }
         }
@@ -86,7 +87,7 @@ namespace PuntosLeonisa.Fidelizacion.Function
             {
 
                 log.LogInformation($"C# ServiceBus queue trigger function processed message: {myQueueItem}");
-              
+
                 var data = JsonConvert.DeserializeObject<UsuarioRedencion>(myQueueItem);
                 //aqui obtienes el usuarioinfopuntos y le restas los puntos
                 this.usuarioInfoPuntosApplication.RedencionPuntos(data);

@@ -777,23 +777,6 @@
       "Key": "EnviarNotificacionCodigoRedencionRoute"
     },
     {
-      "DownstreamPathTemplate": "/api/fidelizacion/redencion/notificacion/EnviarNotificacionCodigoRedencion",
-      "UpstreamPathTemplate": "/api/fidelizacion/redencion/notificacion/EnviarNotificacionCodigoRedencion",
-      "DownstreamScheme": "https",
-      "UpstreamHttpMethod": [ "Post" ],
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "plfidelizacion.azurewebsites.net",
-          "Port": 443
-        }
-      ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      },
-      "Key": "EnviarNotificacionCodigoRedencionRoute"
-    },
-    {
       "DownstreamPathTemplate": "/api/fidelizacion/redencion/Create",
       "UpstreamPathTemplate": "/api/fidelizacion/redencion/create",
       "DownstreamScheme": "https",

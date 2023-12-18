@@ -15,6 +15,8 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork
         ICarritoRepository CarritoRepository { get; }
         IWishListRepository WishListRepository { get; }
         ISmsRepository SmsRepository { get; }
+        IUsuarioRedencionRepository UsuarioRedencionRepository { get; }
+
 
 
         // Otros repositorios relacionados...

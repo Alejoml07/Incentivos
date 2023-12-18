@@ -27,7 +27,8 @@ public class FidelizacionContext : DbContext, IDisposable
         modelBuilder.ApplyConfiguration(new CarritoConfiguration());
         modelBuilder.ApplyConfiguration(new UsuarioInfoPuntosConfuguration());
         modelBuilder.ApplyConfiguration(new SmsConfiguration());
-
+        modelBuilder.ApplyConfiguration(new UsuarioRedencionConfiguration());
+        
     }
 
 }

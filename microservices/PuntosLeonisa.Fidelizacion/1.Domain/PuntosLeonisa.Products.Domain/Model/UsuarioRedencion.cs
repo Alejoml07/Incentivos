@@ -15,14 +15,14 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
 
         public UsuarioInfoPuntos? InfoPuntos { get; set; }
 
-        public IEnumerable<Carrito> ProductosCarrito { get; set; }
+        public IEnumerable<ProductoRefence> ProductosCarrito { get; set; }
 
         public UsuarioEnvio Envio { get; set; }
 
 
         public int? PuntosRedimidos
         {
-            get { return this.ProductosCarrito.Sum(p => Convert.ToInt32(p.Product.Puntos) * int.Parse(p.Cantidad)); }
+            get { return this.ProductosCarrito.Sum(p => Convert.ToInt32(p.Puntos) * p.Quantity); }
         }
 
 
