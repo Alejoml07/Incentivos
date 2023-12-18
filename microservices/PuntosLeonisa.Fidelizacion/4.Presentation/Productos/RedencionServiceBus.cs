@@ -53,13 +53,13 @@ namespace PuntosLeonisa.Fidelizacion.Function
                  
                 var message = new Message(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data)));
 
-                var res = await this.usuarioInfoPuntosApplication.CreateRedencion(data);
+               
 
                 await serviceBusClient.SendAsync(message);
 
                 log.LogInformation($"Mensaje enviado: {message}");
 
-                return new OkObjectResult(res);
+                return new OkObjectResult(new GenericResponse<bool>() { Result = true});
             }
             catch (Exception ex)
             {
@@ -90,6 +90,7 @@ namespace PuntosLeonisa.Fidelizacion.Function
 
                 var data = JsonConvert.DeserializeObject<UsuarioRedencion>(myQueueItem);
                 //aqui obtienes el usuarioinfopuntos y le restas los puntos
+                
                 this.usuarioInfoPuntosApplication.RedencionPuntos(data);
 
                 log.LogInformation("Mensaje procesado correctamente");

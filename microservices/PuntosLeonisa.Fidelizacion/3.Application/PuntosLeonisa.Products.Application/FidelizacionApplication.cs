@@ -416,21 +416,31 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
-
-            var usuarioInfoPuntos = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(data.Usuario.Email);
-
-
-            if (usuarioInfoPuntos != null)
+            var res = await this.CreateRedencion(data);
+            if (res.Result)
             {
-                usuarioInfoPuntos.PuntosDisponibles -= data.PuntosRedimidos;
-                usuarioInfoPuntos.PuntosRedimidos += data.PuntosRedimidos;
-                await this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuarioInfoPuntos);
-                unitOfWork.SaveChangesSync();
+
+                var usuarioInfoPuntos = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(data.Usuario.Email);
+
+                if (usuarioInfoPuntos != null)
+                {
+                    //validacion donde no los puntos a redimir no pueden ser mayores al disponible
+                    if (usuarioInfoPuntos.PuntosDisponibles < data.PuntosRedimidos)
+                    {
+                        throw new Exception("Puntos a redimir no pueden ser mayores a los disponibles");
+                    }
+                    usuarioInfoPuntos.PuntosDisponibles -= data.PuntosRedimidos;
+                    usuarioInfoPuntos.PuntosRedimidos += data.PuntosRedimidos;
+                    await this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuarioInfoPuntos);
+                    ClearWishlistAndCart(data.Usuario);
+                    unitOfWork.SaveChangesSync();
+                }
+                else
+                {
+                    throw new Exception("Usuario no encontrado");
+                }
             }
-            else
-            {
-                throw new Exception("Usuario no encontrado");
-            }
+
 
             return new GenericResponse<bool>
             {
@@ -444,8 +454,23 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
     }
 
+    private async void ClearWishlistAndCart(Usuario usuario)
+    {
+        // obtener los datos del carrito y wishlist
+        var carrito = await this.unitOfWork.CarritoRepository.GetByPredicateAsync(x => x.User.Email == usuario.Email);
+        var wishlist = await this.unitOfWork.WishListRepository.GetByPredicateAsync(x => x.User.Email == usuario.Email);
 
+        // eliminar los datos del carrito y wishlist
+        foreach (var item in carrito)
+        {
+            await this.unitOfWork.CarritoRepository.Delete(item);
+        }
+        foreach (var item in wishlist)
+        {
+            await this.unitOfWork.WishListRepository.Delete(item);
+        }
 
+    }
 
     public async Task<GenericResponse<PuntosManualDto>> Update(PuntosManualDto value)
     {
