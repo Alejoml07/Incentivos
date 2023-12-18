@@ -10,6 +10,7 @@ using System.Text;
 using Jose;
 using System.Net.Mail;
 using System.Net;
+using PuntosLeonisa.Seguridad.Infrasctructure.Common.Helpers;
 
 namespace PuntosLeonisa.Seguridad.Application;
 
@@ -18,9 +19,11 @@ public class SeguridadApplication : IUsuarioApplication
     private readonly IMapper mapper;
     private readonly IUsuarioRepository usuarioRepository;
     private readonly ISecurityService securityService;
+    private readonly ITokenRepository tokenRepository;
     private readonly GenericResponse<UsuarioDto> response;
+    private readonly GenericResponse<TokenDto> response2;
 
-    public SeguridadApplication(IMapper mapper, IUsuarioRepository usuarioRepository, ISecurityService securityService)
+    public SeguridadApplication(IMapper mapper, IUsuarioRepository usuarioRepository, ISecurityService securityService, ITokenRepository tokenRepository)
     {
         if (usuarioRepository is null)
         {
@@ -30,7 +33,9 @@ public class SeguridadApplication : IUsuarioApplication
         this.mapper = mapper;
         this.usuarioRepository = usuarioRepository;
         this.securityService = securityService;
+        this.tokenRepository = tokenRepository;
         response = new GenericResponse<UsuarioDto>();
+        response2 = new GenericResponse<TokenDto>();
     }
 
     public async Task<GenericResponse<UsuarioDto>> Add(UsuarioDto value)
@@ -257,6 +262,25 @@ public class SeguridadApplication : IUsuarioApplication
             Result = responseData
         };
         return responseOnly;
+    }
+
+    public async Task<GenericResponse<TokenDto>> GuardarToken(TokenDto data)
+    {
+        var res = await usuarioRepository.GetUsuarioByEmail(data.Usuario.Email);
+        var dto = this.mapper.Map<UsuarioDto>(res);
+        try
+        {
+            data.Id = Guid.NewGuid().ToString();
+            data.Token = SecurityHelper.GetCode();
+            data.Usuario = dto;
+            await this.tokenRepository.Add(data);
+            response2.Result = data;
+            return response2;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 }
 

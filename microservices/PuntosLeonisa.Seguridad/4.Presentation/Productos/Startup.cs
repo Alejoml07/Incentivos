@@ -31,7 +31,7 @@ namespace Productos
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             builder.Services.AddScoped<IProveedorRepository, ProveedorRepository>();
-
+            builder.Services.AddScoped<ITokenRepository, TokenRepository>();
             //Add Service
             builder.Services.AddScoped<ISecurityService>(provider => new SecurityHelper(key));
             //builder.Services.AddScoped<ICircuitBreaker, CircuitBreaker>();

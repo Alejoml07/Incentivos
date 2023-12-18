@@ -262,6 +262,30 @@ namespace Usuarios
             return new OkObjectResult(response);
         }
 
+        [FunctionName("GuardarToken")]
+        [OpenApiOperation(operationId: "GuardarToken", tags: new[] { "GuardarToken" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Guarda el token y user")]
+        public async Task<IActionResult> GuardarToken(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/GuardarToken")] HttpRequest req,
+            ILogger log)
+        {
+
+            try
+            {
+                log.LogInformation($"GuardarToken : GuardarToken guarda los tokens y users. Fecha:{DateTime.UtcNow}");
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<TokenDto>(requestBody);
+                var result = await this.usuarioApplication.GuardarToken(data);
+                return new OkObjectResult(result);
+
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener el user y Token, Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+
+        }
+
 
     }
 }
