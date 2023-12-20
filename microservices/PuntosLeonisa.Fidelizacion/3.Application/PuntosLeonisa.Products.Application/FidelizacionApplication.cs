@@ -420,8 +420,9 @@ public class FidelizacionApplication : IFidelizacionApplication
             if (res.Result)
             {
 
+                var usuarioCompleto = this.usuarioExternalService.GetUserByEmail(data.Usuario.Email ?? "").GetAwaiter().GetResult();
                 var usuarioInfoPuntos = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(data.Usuario.Email);
-
+                data.Usuario = usuarioCompleto.Result;
                 if (usuarioInfoPuntos != null)
                 {
                     //validacion donde no los puntos a redimir no pueden ser mayores al disponible
@@ -434,6 +435,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                     await this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuarioInfoPuntos);
                     ClearWishlistAndCart(data.Usuario);
                     unitOfWork.SaveChangesSync();
+                    SendNotify(data);
                 }
                 else
                 {
@@ -447,11 +449,18 @@ public class FidelizacionApplication : IFidelizacionApplication
                 Result = true
             };
         }
-        catch (Exception)
+        catch (Exception ex)
         {
 
-            throw;
+            throw ex;
         }
+    }
+
+    private async void SendNotify(UsuarioRedencion data)
+    {
+        string messageoCode = $"Mis suenos a un clic te dice que tu redencion de {data.PuntosRedimidos} puntos fue exitosa";
+        await usuarioExternalService.SendSmsWithMessage(data.Usuario, messageoCode);
+        await usuarioExternalService.UserSendEmailWithMessage(data);
     }
 
     private async void ClearWishlistAndCart(Usuario usuario)
@@ -680,7 +689,9 @@ public class FidelizacionApplication : IFidelizacionApplication
                 item.Id = Guid.NewGuid().ToString();
             }
 
-            //data.InfoPuntos = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(data.Usuario.Email);
+            data.PuntosRedimidos = data.GetSumPuntos();
+            var redenciones = unitOfWork.UsuarioRedencionRepository.GetNroPedido() +1;
+            data.NroPedido = redenciones;
             await this.unitOfWork.UsuarioRedencionRepository.Add(data);
             this.unitOfWork.SaveChangesSync();
 

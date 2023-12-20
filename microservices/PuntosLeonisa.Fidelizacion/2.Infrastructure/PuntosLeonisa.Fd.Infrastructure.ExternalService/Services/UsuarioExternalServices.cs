@@ -1,7 +1,9 @@
 ﻿using Logistic.Infrastructure.Agents.Interfaces;
 using Microsoft.Extensions.Configuration;
+using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
+using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.DTO;
 using PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces;
 using PuntosLeonisa.Products.Domain.Model;
 using System.Net.Http;
@@ -35,20 +37,23 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
 
         public async Task<bool> SendSmsWithCode(SmsDto data)
         {
-
-            var urlSms = $"{_configuration["UrlSms"]}";
-            //return response;
-
             var token = data.Codigo;
             var mensajeToCode = $"Mis suenos a un clic te dice que tu codigo para la redencion es: {token}";
-            var message = HttpUtility.UrlEncode(mensajeToCode);
+            return await this.SendSms(data.Usuario, mensajeToCode);
 
+        }
+
+        private async Task<bool> SendSms(Usuario usuario, string mensajeToCode)
+        {
             try
             {
-                urlSms = urlSms.Replace("{phone}", data.Usuario.Celular);
+                var urlSms = $"{_configuration["UrlSms"]}";
+                var message = HttpUtility.UrlEncode(mensajeToCode);
+
+                urlSms = urlSms.Replace("{phone}", usuario.Celular);
                 urlSms = urlSms.Replace("{message}", message);
                 var response = await httpClientAgent.GetRequestXml<Response>(new Uri(urlSms));
-                if(response != null)
+                if (response != null)
                 {
                     return true;
                 }
@@ -62,6 +67,35 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
                 // Manejo de excepciones
                 Console.WriteLine($"Error al enviar SMS: {ex.Message}");
                 return false;
+            }
+        }
+
+        public async Task<GenericResponse<bool>> SendSmsWithMessage(Usuario usuario,string message)
+        {
+            var response = new GenericResponse<bool>();
+            var result = await this.SendSms(usuario, message);
+            response.Result = result;
+            return response;
+        }
+
+        public Task<GenericResponse<bool>> UserSendEmailWithMessage(UsuarioRedencion data)
+        {
+            try
+            {
+                var email = new EmailDTO()
+                {
+                    Message = data.GenerarHTML(),
+                    Recipients = new string[] { data.Usuario.Email,"danielmg12361@gmail.com" },
+                    Subject = "Redención de premio"
+                };
+                var response = this.httpClientAgent.SendMail(email);
+
+                return Task.FromResult(new GenericResponse<bool>() { Result = true });
+            }
+            catch (Exception ex)
+            {
+
+                throw;
             }
         }
     }

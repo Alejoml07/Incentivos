@@ -7,8 +7,16 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
 {
     public class UsuarioRedencionRepository : Repository<UsuarioRedencion>, IUsuarioRedencionRepository
     {
+        private readonly FidelizacionContext context;
+
         public UsuarioRedencionRepository(FidelizacionContext context) : base(context)
         {
+            this.context = context;
+        }
+
+        public int GetNroPedido()
+        {
+            return this.context.Set<UsuarioRedencion>().Count();
         }
     }
 }

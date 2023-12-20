@@ -77,11 +77,9 @@ namespace PuntosLeonisa.Fidelizacion.Function
 
 
         [FunctionName("ProcessMessageFunction")]
-
         public void ProcessMessageFunction(
         [ServiceBusTrigger("queueredenciones", Connection = "ServiceBusConnectionString")] string myQueueItem,
         ILogger log)
-
         {
             try
             {

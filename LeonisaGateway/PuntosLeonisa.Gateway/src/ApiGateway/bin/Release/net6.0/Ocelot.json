@@ -737,9 +737,81 @@
         "AllowedScopes": []
       },
       "Key": "CreateCarritoByUserRoute"
-    }
+    },
 
     // fin carrito
+
+    //fidelizacion-notificaciones
+    {
+      "DownstreamPathTemplate": "/api/fidelizacion/redencion/notificacion/ValidacionNotificacionCodigoRedencion",
+      "UpstreamPathTemplate": "/api/fidelizacion/redencion/notificacion/ValidacionNotificacionCodigoRedencion",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "ValidacionNotificacionCodigoRedencionRoute"
+    },
+    {
+      "DownstreamPathTemplate": "/api/fidelizacion/redencion/notificacion/EnviarNotificacionCodigoRedencion",
+      "UpstreamPathTemplate": "/api/fidelizacion/redencion/notificacion/EnviarNotificacionCodigoRedencion",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "EnviarNotificacionCodigoRedencionRoute"
+    },
+    {
+      "DownstreamPathTemplate": "/api/fidelizacion/redencion/notificacion/EnviarNotificacionCodigoRedencion",
+      "UpstreamPathTemplate": "/api/fidelizacion/redencion/notificacion/EnviarNotificacionCodigoRedencion",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "EnviarNotificacionCodigoRedencionRoute"
+    },
+    {
+      "DownstreamPathTemplate": "/api/fidelizacion/redencion/Create",
+      "UpstreamPathTemplate": "/api/fidelizacion/redencion/create",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "EnviarNotificacionCodigoRedencionRoute"
+    }
+
+    // fin fidelizacion-notificaciones
   ],
   "GlobalConfiguration": {
 

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
+using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.DTO;
 using System.Data.SqlTypes;
 using System.Net;
 using System.Text;
@@ -148,7 +149,7 @@ namespace Logistic.Infrastructure.Agents.AgentsImpl
                 var httpClient = new HttpClient(httpClientHandler);
                 var resultData = await CircuitBreakerPolicy.ExecuteAsync(() =>
                         TransientErrorRetryPolicy.ExecuteAsync(() =>
-                        httpClient.PostAsync(requestUrl, new StringContent(content.ToString(), Encoding.UTF8, "text/xml")))
+                        httpClient.PostAsync(requestUrl, CreateHttpContent<T>(content)))
                     );
                 var response = await resultData.Content.ReadAsStringAsync();
                 return response;
@@ -184,6 +185,33 @@ namespace Logistic.Infrastructure.Agents.AgentsImpl
                 Exception exception = new("Failed" + ex.InnerException + "\n" + ex.Message);
                 throw exception;
             }
+        }
+
+        private HttpContent CreateHttpContent<T>(T content)
+        {
+            var json = JsonConvert.SerializeObject(content, MicrosoftDateFormatSettings);
+            return new StringContent(json, Encoding.UTF8, "application/json");
+        }
+        private static JsonSerializerSettings MicrosoftDateFormatSettings
+        {
+            get
+            {
+                return new JsonSerializerSettings
+                {
+                    DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
+                    Formatting = Formatting.Indented,
+                    ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver()
+                };
+            }
+        }
+
+        public Task<bool> SendMail(EmailDTO email)
+        {
+            var url = $"{_configuration["UrlMail"]}";
+            var result = this.PostStringAsync<dynamic>(new Uri(url), email);
+
+            return Task.FromResult(true);
+
         }
     }
 }

@@ -9,6 +9,7 @@ namespace PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios
     public  class UsuarioResponseLiteDto
     {
         public string? Nombres { get; set; }
+        public string? Cedula { get; set; }
 
         public string? Apellidos { get; set; }
 
