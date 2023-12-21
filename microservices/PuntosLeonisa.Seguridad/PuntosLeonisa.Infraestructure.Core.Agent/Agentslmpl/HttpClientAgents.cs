@@ -1,12 +1,17 @@
-﻿using Logistic.Infrastructure.Agents.Interfaces;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.DTO;
+using PuntosLeonisa.Infraestructure.Core.Agent.Interfaces;
+using PuntosLeonisa.Seguridad.Infrasctructure.Common.DTO;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace Logistic.Infrastructure.Agents.AgentsImpl
+namespace PuntosLeonisa.Infraestructure.Core.Agent.Agentslmpl
 {
     public class HttpClientAgents : IHttpClientAgent
     {
