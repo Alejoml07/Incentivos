@@ -35,5 +35,7 @@
     <ProjectReference Include="..\..\1.Domain\PuntosLeonisa.Products.Domain\PuntosLeonisa.Seguridad.Domain.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\..\PuntosLeonisa.Fd.Infrastructure.ExternalService\PuntosLeonisa.Fd.Infrastructure.ExternalService.csproj" />
+    <ProjectReference Include="..\..\PuntosLeonisa.Infraestructure.Core.Agent\PuntosLeonisa.Infraestructure.Core.Agent.csproj" />
   </ItemGroup>
 </Project>

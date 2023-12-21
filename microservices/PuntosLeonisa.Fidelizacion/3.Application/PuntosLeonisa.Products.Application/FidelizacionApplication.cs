@@ -247,6 +247,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             if (carrito != null)
             {
                 await this.unitOfWork.CarritoRepository.Delete(carrito);
+                await this.unitOfWork.SaveChangesAsync();
                 return true;
             }
             return false;
@@ -620,7 +621,8 @@ public class FidelizacionApplication : IFidelizacionApplication
                 }
                 else
                 {
-                    throw new Exception("Error al enviar el SMS");
+                    throw new Exception("Error al enviar el SMS , intente de nuevo , si persiste el problema contacte el administrador" +
+                        "");
                 }
             }
             this.response4.Result = data;

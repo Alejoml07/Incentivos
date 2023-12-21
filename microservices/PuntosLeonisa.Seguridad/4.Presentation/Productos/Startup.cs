@@ -3,6 +3,10 @@ using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PuntosLeonisa.Domain.Core.Repository;
+using PuntosLeonisa.Fd.Infrastructure.ExternalService;
+using PuntosLeonisa.Infraestructure.Core.Agent.Agentslmpl;
+using PuntosLeonisa.Infraestructure.Core.Agent.Interfaces;
+using PuntosLeonisa.Infrasctructure.Core.ExternalServiceInterfaces;
 using PuntosLeonisa.Infrasctructure.Core.Repository;
 using PuntosLeonisa.infrastructure.Persistence.CosmoDb;
 using PuntosLeonisa.Seguridad.Application;
@@ -33,9 +37,11 @@ namespace Productos
             builder.Services.AddScoped<IProveedorRepository, ProveedorRepository>();
             builder.Services.AddScoped<ITokenRepository, TokenRepository>();
             //Add Service
+            builder.Services.AddScoped<IHttpClientAgent, HttpClientAgents>();
+            builder.Services.AddScoped<IEmailExternalService, EmailExternalServices>();
             builder.Services.AddScoped<ISecurityService>(provider => new SecurityHelper(key));
-            //builder.Services.AddScoped<ICircuitBreaker, CircuitBreaker>();
-            //builder.Services.AddScoped<ITransientRetry, TransientRetry>();
+            builder.Services.AddScoped<ICircuitBreaker, CircuitBreaker>();
+            builder.Services.AddScoped<ITransientRetry, TransientRetry>();
 
             builder.Services.AddScoped<IUsuarioApplication, SeguridadApplication>();
             builder.Services.AddScoped<IProveedorApplication, ProveedorApplication>();

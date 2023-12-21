@@ -404,8 +404,8 @@ namespace Usuarioos
                     throw new ArgumentNullException(nameof(log));
                 }
 
-                await this.puntosApplication.CarritoDeleteById(id);
-                return new OkResult();
+                var result = await this.puntosApplication.CarritoDeleteById(id);
+                return new OkObjectResult(result);
             }
             catch (Exception ex)
             {

@@ -11,6 +11,7 @@ using Jose;
 using System.Net.Mail;
 using System.Net;
 using PuntosLeonisa.Seguridad.Infrasctructure.Common.Helpers;
+using PuntosLeonisa.Infrasctructure.Core.ExternalServiceInterfaces;
 
 namespace PuntosLeonisa.Seguridad.Application;
 
@@ -20,10 +21,11 @@ public class SeguridadApplication : IUsuarioApplication
     private readonly IUsuarioRepository usuarioRepository;
     private readonly ISecurityService securityService;
     private readonly ITokenRepository tokenRepository;
+    private readonly IEmailExternalService emailExternalService;
     private readonly GenericResponse<UsuarioDto> response;
     private readonly GenericResponse<TokenDto> response2;
 
-    public SeguridadApplication(IMapper mapper, IUsuarioRepository usuarioRepository, ISecurityService securityService, ITokenRepository tokenRepository)
+    public SeguridadApplication(IMapper mapper, IUsuarioRepository usuarioRepository, ISecurityService securityService, ITokenRepository tokenRepository ,IEmailExternalService emailExternalService)
     {
         if (usuarioRepository is null)
         {
@@ -34,6 +36,7 @@ public class SeguridadApplication : IUsuarioApplication
         this.usuarioRepository = usuarioRepository;
         this.securityService = securityService;
         this.tokenRepository = tokenRepository;
+        this.emailExternalService = emailExternalService;
         response = new GenericResponse<UsuarioDto>();
         response2 = new GenericResponse<TokenDto>();
     }
@@ -218,41 +221,7 @@ public class SeguridadApplication : IUsuarioApplication
         string token = JWT.Encode(payload, Encoding.UTF8.GetBytes(secretKey), JwsAlgorithm.HS256);
         return token;
     }
-    public void SendEmail(string recipientEmail, string code)
-    {
-        try
-        {
-            var fromAddress = new MailAddress("tuemail@gmail.com", "Tu Nombre");
-            var toAddress = new MailAddress(recipientEmail, "Nombre del Destinatario");
-            const string fromPassword = "TuContraseñaDeGmail";
-            const string subject = "Tu Asunto Aquí";
-            string body = $"Aquí va el mensaje con el código: {code}";
-
-            var smtp = new SmtpClient
-            {
-                Host = "smtp.gmail.com",
-                Port = 587,
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-            };
-            using (var message = new MailMessage(fromAddress, toAddress)
-            {
-                Subject = subject,
-                Body = body
-            })
-            {
-                smtp.Send(message);
-            }
-        }
-        catch (Exception ex)
-        {
-            // Manejo de errores
-            Console.WriteLine($"No se pudo enviar el correo electrónico: {ex.Message}");
-        }
-    }
-
+ 
     public async Task<GenericResponse<UsuarioResponseLiteDto>> GetByEmail(string email)
     {
         var responseRawData = await usuarioRepository.GetUsuarioByEmail(email);
@@ -264,7 +233,7 @@ public class SeguridadApplication : IUsuarioApplication
         return responseOnly;
     }
 
-    public async Task<GenericResponse<TokenDto>> GuardarToken(TokenDto data)
+    private async Task<GenericResponse<TokenDto>> GuardarToken(TokenDto data)
     {
         var res = await usuarioRepository.GetUsuarioByEmail(data.Usuario.Email);
         var dto = this.mapper.Map<UsuarioDto>(res);
@@ -279,6 +248,24 @@ public class SeguridadApplication : IUsuarioApplication
         }
         catch (Exception)
         {
+            throw;
+        }
+    }
+
+    public Task<GenericResponse<bool>> RecuperarPassword(UsuarioDto data)
+    {
+        try
+        {
+            var codeBase64 =  Convert.ToBase64String(SecurityHelper.GenerateRandomSixDigitNumber());
+            var resultToke =  this.GuardarToken(new TokenDto() { Usuario = data, Token = codeBase64,Tipo = "ResetPwd" });
+            var urlReset = "/" + data.Email+"?"+ codeBase64;
+             var response = this.emailExternalService.SendMailForResetPasswordByUser(data, urlReset);
+
+            return Task.FromResult(new GenericResponse<bool>() { Result = true });
+        }
+        catch (Exception)
+        {
+
             throw;
         }
     }

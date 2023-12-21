@@ -69,7 +69,7 @@ namespace PuntosLeonisa.Seguridad.Infrasctructure.Common.Helpers
             return bytes;
         }
 
-        public string GenerarHTML()
+        public string GenerarHTML(string urlRestablecer)
         {
             var sb = new StringBuilder();
 
@@ -88,7 +88,7 @@ namespace PuntosLeonisa.Seguridad.Infrasctructure.Common.Helpers
             sb.Append("</div>");
             sb.Append("<div class=\"content\">");
             sb.Append("<p>Hemos recibido una solicitud para restablecer tu contraseña. Si no has hecho esta solicitud, por favor ignora este correo. De lo contrario, puedes restablecer tu contraseña haciendo clic en el siguiente enlace:</p>");
-            sb.Append("<a href=\"#\">Restablecer mi contraseña</a>");
+            sb.Append($"<a href=\"{urlRestablecer}\">Restablecer mi contraseña</a>");
             sb.Append("<p>Este enlace solo será válido por las próximas 24 horas.<br> Si necesitas ayuda adicional, no dudes en contactar a nuestro equipo de soporte.</p>");
             sb.Append("  <p>Gracias,<br>" +
                 "Equipo de Mis Sueños A Un Clic</p>");

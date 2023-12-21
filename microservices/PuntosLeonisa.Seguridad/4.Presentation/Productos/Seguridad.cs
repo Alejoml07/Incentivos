@@ -262,20 +262,20 @@ namespace Usuarios
             return new OkObjectResult(response);
         }
 
-        [FunctionName("GuardarToken")]
-        [OpenApiOperation(operationId: "GuardarToken", tags: new[] { "GuardarToken" })]
+        [FunctionName("RecuperarPassword")]
+        [OpenApiOperation(operationId: "RecuperarPassword", tags: new[] { "RecuperarPassword" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Guarda el token y user")]
-        public async Task<IActionResult> GuardarToken(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/GuardarToken")] HttpRequest req,
+        public async Task<IActionResult> RecuperarPassword(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Usuario/RecuperarPassword")] HttpRequest req,
             ILogger log)
         {
 
             try
             {
-                log.LogInformation($"GuardarToken : GuardarToken guarda los tokens y users. Fecha:{DateTime.UtcNow}");
+                log.LogInformation($"RecuperarPassword : GuardarToken guarda los tokens y users. Fecha:{DateTime.UtcNow}");
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var data = JsonConvert.DeserializeObject<TokenDto>(requestBody);
-                var result = await this.usuarioApplication.GuardarToken(data);
+                var data = JsonConvert.DeserializeObject<UsuarioDto>(requestBody);
+                var result = await this.usuarioApplication.RecuperarPassword(data);
                 return new OkObjectResult(result);
 
             }

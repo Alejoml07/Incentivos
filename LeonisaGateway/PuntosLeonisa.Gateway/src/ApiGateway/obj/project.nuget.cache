@@ -1,11 +1,5 @@
 {
   "version": 2,
-<<<<<<< Updated upstream
-  "dgSpecHash": "xpF+fg3G7cfmq470x4t3sghCJImR+ulkeAQyQ4JobqjXlicQs712ukFGkqmcRG/DvaL+rT5Wxr+kb/aTSF92Eg==",
-  "success": true,
-  "projectFilePath": "C:\\SourceCode\\IncentivosService\\LeonisaGateway\\PuntosLeonisa.Gateway\\src\\ApiGateway\\ApiGateway.csproj",
-  "expectedPackageFiles": [],
-=======
   "dgSpecHash": "rhczWdhtQD0GvDjwyK/jJl16xB3MVRWRwcvwRXb6hIvtcs9Php3ay9wlOUnfPx2qvNwACiAOjP/wD/p0XqynoQ==",
   "success": true,
   "projectFilePath": "C:\\sourcecode\\IncentivosService\\LeonisaGateway\\PuntosLeonisa.Gateway\\src\\ApiGateway\\ApiGateway.csproj",
@@ -68,6 +62,12 @@
     "C:\\Users\\danie\\.nuget\\packages\\system.threading\\4.3.0\\system.threading.4.3.0.nupkg.sha512",
     "C:\\Users\\danie\\.nuget\\packages\\system.threading.tasks\\4.3.0\\system.threading.tasks.4.3.0.nupkg.sha512"
   ],
->>>>>>> Stashed changes
-  "logs": []
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file C:\\sourcecode\\IncentivosService\\LeonisaGateway\\PuntosLeonisa.Gateway\\src\\ApiGateway\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

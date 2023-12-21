@@ -1,4 +1,5 @@
-﻿using PuntosLeonisa.Seguridad.Infrasctructure.Common.Communication;
+﻿using PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios;
+using PuntosLeonisa.Seguridad.Infrasctructure.Common.Communication;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace PuntosLeonisa.Infrasctructure.Core.ExternalServiceInterfaces
 {
     public interface IEmailExternalService
     {
-        Task<GenericResponse<bool>> UserSendEmailWithMessage(UsuarioRedencion data);
+        Task<GenericResponse<bool>> SendMailForResetPasswordByUser(UsuarioDto data,string urlReset);
     }
 }

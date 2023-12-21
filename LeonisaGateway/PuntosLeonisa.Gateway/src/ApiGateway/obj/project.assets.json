@@ -1,9 +1,6 @@
 {
   "version": 3,
   "targets": {
-<<<<<<< Updated upstream
-    "net8.0": {}
-=======
     "net8.0": {
       "FluentValidation/10.3.6": {
         "type": "package",
@@ -2952,19 +2949,13 @@
         "system.threading.tasks.nuspec"
       ]
     }
->>>>>>> Stashed changes
   },
-  "libraries": {},
   "projectFileDependencyGroups": {
-<<<<<<< Updated upstream
-    "net8.0": []
-=======
     "net8.0": [
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 6.0.7",
       "Ocelot >= 18.0.0",
       "jose-jwt >= 4.1.0"
     ]
->>>>>>> Stashed changes
   },
   "packageFolders": {
     "C:\\Users\\danie\\.nuget\\packages\\": {}
@@ -3004,8 +2995,6 @@
     "frameworks": {
       "net8.0": {
         "targetAlias": "net8.0",
-<<<<<<< Updated upstream
-=======
         "dependencies": {
           "Microsoft.AspNetCore.Authentication.JwtBearer": {
             "target": "Package",
@@ -3020,7 +3009,6 @@
             "version": "[4.1.0, )"
           }
         },
->>>>>>> Stashed changes
         "imports": [
           "net461",
           "net462",
@@ -3032,9 +3020,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-<<<<<<< Updated upstream
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
-=======
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -3044,8 +3029,15 @@
           }
         },
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
->>>>>>> Stashed changes
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file C:\\sourcecode\\IncentivosService\\LeonisaGateway\\PuntosLeonisa.Gateway\\src\\ApiGateway\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

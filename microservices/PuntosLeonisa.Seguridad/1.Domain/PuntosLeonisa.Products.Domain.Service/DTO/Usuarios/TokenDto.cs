@@ -11,6 +11,8 @@ namespace PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios
     {
         public string Id { get; set; }
         public string Token { get; set; }
+
+        public string? Tipo { get; set; }
         public UsuarioDto Usuario { get; set; }
     }
 }

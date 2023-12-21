@@ -14,12 +14,17 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication
         [XmlElement("data")]
         public DataContainer Data { get; set; }
     }
-
+     
     public class DataContainer
     {
+        [XmlElement("errorcode")]
+        public int ErrorCode { get; set; }
         [XmlElement("acceptreport")]
         public AcceptReport AcceptReport { get; set; }
     }
+
+
+   
 
     public class AcceptReport
     {

@@ -13,5 +13,7 @@ namespace PuntosLeonisa.Seguridad.Domain.Service.Interfaces
         string HasPassword(string? password);
         PasswordVerifyResult VerifyPassword(string password, string? pwd);
 
+        string GenerarHTML(string urlRestablecer);
+
     }
 }

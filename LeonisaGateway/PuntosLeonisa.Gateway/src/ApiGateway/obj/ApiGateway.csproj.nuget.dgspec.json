@@ -39,8 +39,6 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-<<<<<<< Updated upstream
-=======
           "dependencies": {
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
@@ -55,7 +53,6 @@
               "version": "[4.1.0, )"
             }
           },
->>>>>>> Stashed changes
           "imports": [
             "net461",
             "net462",
@@ -67,9 +64,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-<<<<<<< Updated upstream
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
-=======
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -79,7 +73,6 @@
             }
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
->>>>>>> Stashed changes
         }
       }
     }
