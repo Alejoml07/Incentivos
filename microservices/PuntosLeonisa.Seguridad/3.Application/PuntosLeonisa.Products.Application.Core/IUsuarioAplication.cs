@@ -11,5 +11,7 @@ public interface IUsuarioApplication : IApplicationCore<UsuarioDto>
     Task<GenericResponse<UsuarioResponseLiteDto>> GetByEmail(string email);
 
     Task<GenericResponse<bool>> RecuperarPassword(UsuarioDto data);
+
+    Task<GenericResponse<bool>> CambioRecuperarPwd(CambioRecuperarPwdDto data);
 }
 

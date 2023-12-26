@@ -286,7 +286,17 @@ namespace Usuarios
 
         }
 
-
+        [FunctionName("CambioRecuperarPassword")]
+        [OpenApiOperation(operationId: "CambioRecuperarPassword", tags: new[] { "Usuario/CambioRecuperarPassword" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(IEnumerable<CambioRecuperarPwdDto>), Description = "Cambio de Pwd")]
+        public async Task<IActionResult> CambioRecuperarPassword(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Usuario/CambioRecuperarPassword")] HttpRequest req,
+        ILogger log)
+        {
+            var data = JsonConvert.DeserializeObject<CambioRecuperarPwdDto>(await new StreamReader(req.Body).ReadToEndAsync());
+            var response = await usuarioApplication.CambioRecuperarPwd(data);
+            return new OkObjectResult(response);
+        }
     }
 }
 

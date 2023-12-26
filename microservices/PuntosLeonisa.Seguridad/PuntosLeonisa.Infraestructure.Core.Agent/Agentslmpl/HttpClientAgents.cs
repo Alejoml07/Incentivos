@@ -207,12 +207,12 @@ namespace PuntosLeonisa.Infraestructure.Core.Agent.Agentslmpl
             }
         }
 
-        public Task<bool> SendMail(EmailDTO email)
+        public async Task<bool> SendMail(EmailDTO email)
         {
             var url = $"{_configuration["UrlMail"]}";
-            var result = this.PostStringAsync<dynamic>(new Uri(url), email);
+            var result = await this.PostStringAsync<dynamic>(new Uri(url), email);
 
-            return Task.FromResult(true);
+            return true;
 
         }
     }

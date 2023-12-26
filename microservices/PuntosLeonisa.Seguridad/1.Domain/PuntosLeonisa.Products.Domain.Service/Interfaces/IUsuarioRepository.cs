@@ -14,6 +14,8 @@ namespace PuntosLeonisa.Seguridad.Domain.Interfaces
 
         Task<bool> SendCustomEmailToUser(string email);
         Task<Usuario> GetUsuarioByEmail(string email);
+
+        Task<bool> CambioRecuperarPwd(CambioRecuperarPwdDto data);
     }
 
 

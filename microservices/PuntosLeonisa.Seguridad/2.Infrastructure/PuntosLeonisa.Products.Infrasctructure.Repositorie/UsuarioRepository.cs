@@ -99,6 +99,23 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
             throw new Exception("Usuario no encontrado");
         }
     }
+
+    public async Task<bool> CambioRecuperarPwd(CambioRecuperarPwdDto data)
+    {
+        var usuario = await _context.Set<Usuario>().FirstOrDefaultAsync(u => u.Email == data.Email);
+        if (usuario != null)
+        {
+            if (data.NuevaContrasena == data.ConfirmarNuevaContrasena)
+            {        
+                    usuario.Pwd = securityService.HasPassword(data.NuevaContrasena);
+                    _context.Update(usuario);
+                    await _context.SaveChangesAsync();
+                    return true;
+                
+            }
+        }
+        return false;
+    }
 }
 
 

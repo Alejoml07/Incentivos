@@ -22,20 +22,20 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService
             this.securityService = securityService;
         }
 
-        public Task<GenericResponse<bool>> SendMailForResetPasswordByUser(UsuarioDto data,string urlReset)
+        public async  Task<GenericResponse<bool>> SendMailForResetPasswordByUser(UsuarioDto data,string urlReset)
         {
             try
             {
                 var urlComplete = $"{_configuration["urlBaseReset"]}/{urlReset}";
                 var email = new EmailDTO()
                 {
-                    Message = this.securityService.GenerarHTML(urlComplete),
-                    Recipients = new string[] { data.Email, "danielmg12361@gmail.com" },
-                    Subject = "Restablecer contraseña"
+                    message = this.securityService.GenerarHTML(urlComplete),
+                    recipients = new string[] { data.Email, "danielmg12361@gmail.com" },
+                    subject = "Restablecer contraseña"
                 };
                 var response = this.httpClientAgent.SendMail(email);
 
-                return Task.FromResult(new GenericResponse<bool>() { Result = true });
+                return new GenericResponse<bool>() { Result = true };
             }
             catch (Exception ex)
             {

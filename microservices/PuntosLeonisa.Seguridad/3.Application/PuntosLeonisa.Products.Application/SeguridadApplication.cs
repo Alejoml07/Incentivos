@@ -25,7 +25,7 @@ public class SeguridadApplication : IUsuarioApplication
     private readonly GenericResponse<UsuarioDto> response;
     private readonly GenericResponse<TokenDto> response2;
 
-    public SeguridadApplication(IMapper mapper, IUsuarioRepository usuarioRepository, ISecurityService securityService, ITokenRepository tokenRepository ,IEmailExternalService emailExternalService)
+    public SeguridadApplication(IMapper mapper, IUsuarioRepository usuarioRepository, ISecurityService securityService, ITokenRepository tokenRepository, IEmailExternalService emailExternalService)
     {
         if (usuarioRepository is null)
         {
@@ -221,7 +221,7 @@ public class SeguridadApplication : IUsuarioApplication
         string token = JWT.Encode(payload, Encoding.UTF8.GetBytes(secretKey), JwsAlgorithm.HS256);
         return token;
     }
- 
+
     public async Task<GenericResponse<UsuarioResponseLiteDto>> GetByEmail(string email)
     {
         var responseRawData = await usuarioRepository.GetUsuarioByEmail(email);
@@ -252,22 +252,28 @@ public class SeguridadApplication : IUsuarioApplication
         }
     }
 
-    public Task<GenericResponse<bool>> RecuperarPassword(UsuarioDto data)
+    public async Task<GenericResponse<bool>> RecuperarPassword(UsuarioDto data)
     {
         try
         {
-            var codeBase64 =  Convert.ToBase64String(SecurityHelper.GenerateRandomSixDigitNumber());
-            var resultToke =  this.GuardarToken(new TokenDto() { Usuario = data, Token = codeBase64,Tipo = "ResetPwd" });
-            var urlReset = "/" + data.Email+"?"+ codeBase64;
-             var response = this.emailExternalService.SendMailForResetPasswordByUser(data, urlReset);
+            var codeBase64 = Convert.ToBase64String(SecurityHelper.GenerateRandomSixDigitNumber());
+            var resultToke = this.GuardarToken(new TokenDto() { Usuario = data, Token = codeBase64, Tipo = "ResetPwd" });
+            var urlReset = "/" + data.Email + "?" + codeBase64;
+            var response = await this.emailExternalService.SendMailForResetPasswordByUser(data, urlReset);
 
-            return Task.FromResult(new GenericResponse<bool>() { Result = true });
+            return new GenericResponse<bool>() { Result = true };
         }
         catch (Exception)
         {
 
             throw;
         }
+    }
+
+    public async Task<GenericResponse<bool>> CambioRecuperarPwd(CambioRecuperarPwdDto data)
+    {
+        var resultado = await usuarioRepository.CambioRecuperarPwd(data);
+        return new GenericResponse<bool> { Result = resultado };
     }
 }
 
