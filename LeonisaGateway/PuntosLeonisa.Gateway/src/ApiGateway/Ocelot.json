@@ -307,7 +307,32 @@
       },
       "Key": "CambioPwdRoute"
     },
-
+    {
+      "UpstreamPathTemplate": "/api/Usuario/RecuperarPassword",
+      "DownstreamPathTemplate": "/api/Usuario/RecuperarPassword",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plseguridad.azurewebsites.net",
+          "Port": 443
+        }
+      ] ,     
+      "Key": "RecuperarPasswordRoute"
+    },
+    {
+      "UpstreamPathTemplate": "/api/Usuario/CambioRecuperarPassword",
+      "DownstreamPathTemplate": "/api/Usuario/CambioRecuperarPassword",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plseguridad.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "CambioRecuperarPassword"
+    },
     //Termina Usuario
     //Empieza productos
     {
