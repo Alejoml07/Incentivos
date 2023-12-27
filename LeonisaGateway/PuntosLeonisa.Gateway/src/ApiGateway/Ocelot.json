@@ -317,7 +317,7 @@
           "Host": "plseguridad.azurewebsites.net",
           "Port": 443
         }
-      ] ,     
+      ],
       "Key": "RecuperarPasswordRoute"
     },
     {
@@ -332,6 +332,19 @@
         }
       ],
       "Key": "CambioRecuperarPassword"
+    },
+    {
+      "UpstreamPathTemplate": "/api/Usuario/ValidarTokenCambiarContrasena",
+      "DownstreamPathTemplate": "/api/Usuario/ValidarTokenCambiarContrasena",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plseguridad.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "ValidarTokenCambiarContrasenaRoute"
     },
     //Termina Usuario
     //Empieza productos
