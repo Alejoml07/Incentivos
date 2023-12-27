@@ -22,7 +22,7 @@ namespace PuntosLeonisa.Infrasctructure.Core.Repository
         public async Task Add(T entity)
         {
             _context.Set<T>().Add(entity);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
 
         /// <summary>

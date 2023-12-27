@@ -11,5 +11,6 @@ namespace PuntosLeonisa.Seguridad.Domain.Service.Interfaces
 {
     public interface ITokenRepository : IRepository<TokenDto>
     {
+        Task<TokenDto> GetUsuarioByToken(string token);
     }
 }

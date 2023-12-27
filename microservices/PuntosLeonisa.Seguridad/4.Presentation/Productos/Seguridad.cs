@@ -297,6 +297,18 @@ namespace Usuarios
             var response = await usuarioApplication.CambioRecuperarPwd(data);
             return new OkObjectResult(response);
         }
+
+        [FunctionName("ValidarTokenCambiarContrasena")]
+        [OpenApiOperation(operationId: "ValidarTokenCambiarContrasena", tags: new[] { "Usuario/ValidarTokenCambiarContrasena" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(IEnumerable<TokenDto>), Description = "Valida el token")]
+        public async Task<IActionResult> ValidarTokenCambiarContrasena(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Usuario/ValidarTokenCambiarContrasena")] HttpRequest req, ILogger log)
+        {
+            var data = JsonConvert.DeserializeObject<TokenDto>(await new StreamReader(req.Body).ReadToEndAsync());
+            var response = await usuarioApplication.ValidarTokenCambiarContrasena(data);
+            return new OkObjectResult(response);
+
+        }
     }
 }
 

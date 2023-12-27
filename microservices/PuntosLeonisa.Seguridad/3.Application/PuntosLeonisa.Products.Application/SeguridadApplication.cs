@@ -233,16 +233,20 @@ public class SeguridadApplication : IUsuarioApplication
         return responseOnly;
     }
 
-    private async Task<GenericResponse<TokenDto>> GuardarToken(TokenDto data)
+    private async Task<GenericResponse<TokenDto>> GuardarToken(TokenDto data, bool isTokenEmpty = true)
     {
-        var res = await usuarioRepository.GetUsuarioByEmail(data.Usuario.Email);
+        var res =  usuarioRepository.GetUsuarioByEmail(data.Usuario.Email).GetAwaiter().GetResult();
         var dto = this.mapper.Map<UsuarioDto>(res);
         try
         {
             data.Id = Guid.NewGuid().ToString();
-            data.Token = SecurityHelper.GetCode();
+            if (isTokenEmpty)
+            {
+                data.Token = SecurityHelper.GetCode();
+            }
             data.Usuario = dto;
-            await this.tokenRepository.Add(data);
+
+            this.tokenRepository.Add(data);
             response2.Result = data;
             return response2;
         }
@@ -256,17 +260,17 @@ public class SeguridadApplication : IUsuarioApplication
     {
         try
         {
-            var codeBase64 = Convert.ToBase64String(SecurityHelper.GenerateRandomSixDigitNumber());
-            var resultToke = this.GuardarToken(new TokenDto() { Usuario = data, Token = codeBase64, Tipo = "ResetPwd" });
-            var urlReset = "/" + data.Email + "?" + codeBase64;
+            var codeBase64 = Convert.ToBase64String(SecurityHelper.GenerateWithLargeCode());
+            var resultToke = this.GuardarToken(new TokenDto() { Usuario = data, Token = codeBase64, Tipo = "ResetPwd" }, false);
+            var urlReset = codeBase64.Replace("%", "");
             var response = await this.emailExternalService.SendMailForResetPasswordByUser(data, urlReset);
 
             return new GenericResponse<bool>() { Result = true };
         }
-        catch (Exception)
+        catch (Exception ex)
         {
 
-            throw;
+            throw ex;
         }
     }
 
@@ -274,6 +278,27 @@ public class SeguridadApplication : IUsuarioApplication
     {
         var resultado = await usuarioRepository.CambioRecuperarPwd(data);
         return new GenericResponse<bool> { Result = resultado };
+    }
+
+    public async Task<GenericResponse<UsuarioDto>> ValidarTokenCambiarContrasena(TokenDto token)
+    {
+        var usuario = await tokenRepository.GetUsuarioByToken(token.Token ?? "");
+        try
+        {
+            if (usuario != null)
+            {
+                return new GenericResponse<UsuarioDto>() { Result = usuario?.Usuario };
+            }
+            return new GenericResponse<UsuarioDto>() { Result = null, IsSuccess= false, Message = "Token invalido" };
+        }
+
+        catch (Exception ex)
+        {
+
+            throw ex;
+        }
+
+
     }
 }
 

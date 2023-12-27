@@ -55,7 +55,7 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
         if (usuario != null)
         {
             if (cambioContraseñaDto.NuevaContraseña == cambioContraseñaDto.ConfirmarNuevaContraseña)
-            {           
+            {
                 var resultadoVerificacion = securityService.VerifyPassword(cambioContraseñaDto.ContraseñaActual, usuario.Pwd);
                 if (resultadoVerificacion == PasswordVerifyResult.Success)
                 {
@@ -73,13 +73,13 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
     {
         var usuario = await _context.Set<Usuario>().FirstOrDefaultAsync(u => u.Email == email.Email);
 
-        if(usuario != null)
+        if (usuario != null)
         {
             usuario.Pwd = usuario.Cedula;
         }
-        
+
         return true;
-        
+
     }
 
     public async Task<bool> SendCustomEmailToUser(string email)
@@ -89,8 +89,8 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
 
     public async Task<Usuario> GetUsuarioByEmail(string email)
     {
-       var item = await _context.Set<Usuario>().FirstOrDefaultAsync(u => u.Email == email);
-        if(item != null)
+        var item = await _context.Set<Usuario>().FirstOrDefaultAsync(u => u.Email == email);
+        if (item != null)
         {
             return item;
         }
@@ -106,16 +106,17 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
         if (usuario != null)
         {
             if (data.NuevaContrasena == data.ConfirmarNuevaContrasena)
-            {        
-                    usuario.Pwd = securityService.HasPassword(data.NuevaContrasena);
-                    _context.Update(usuario);
-                    await _context.SaveChangesAsync();
-                    return true;
-                
+            {
+                usuario.Pwd = securityService.HasPassword(data.NuevaContrasena);
+                _context.Update(usuario);
+                await _context.SaveChangesAsync();
+                return true;
+
             }
         }
         return false;
     }
+    
 }
 
 

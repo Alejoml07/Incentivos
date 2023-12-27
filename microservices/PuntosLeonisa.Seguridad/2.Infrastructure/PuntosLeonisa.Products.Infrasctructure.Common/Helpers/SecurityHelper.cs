@@ -69,6 +69,15 @@ namespace PuntosLeonisa.Seguridad.Infrasctructure.Common.Helpers
             return bytes;
         }
 
+        // generate a 20 digit code
+        public static byte[] GenerateWithLargeCode()
+        {
+            var random = new Random();
+            var code = random.Next(100000000, 999999999);
+            byte[] bytes = BitConverter.GetBytes(code);
+            return bytes;
+        }   
+
         public string GenerarHTML(string urlRestablecer)
         {
             var sb = new StringBuilder();
