@@ -12,7 +12,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\1.Domain\PuntosLeonisa.Domain.Core\PuntosLeonisa.Domain.Core.csproj" />
     <ProjectReference Include="..\..\1.Domain\PuntosLeonisa.Products.Domain\PuntosLeonisa.Products.Domain.csproj" />
+    <ProjectReference Include="..\..\PuntosLeonisa.Infraestructure.Core.Agent\PuntosLeonisa.Infraestructure.Core.Agent.csproj" />
     <ProjectReference Include="..\PuntosLeonisa.Infracture.Persistence.CosmoDb\PuntosLeonisa.infrastructure.Persistence.csproj" />
+    <ProjectReference Include="..\PuntosLeonisa.Products.Infrasctructure.Common\PuntosLeonisa.Products.Infrasctructure.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.23" />

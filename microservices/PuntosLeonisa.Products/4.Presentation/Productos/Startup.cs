@@ -2,6 +2,10 @@
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using PuntosLeonisa.Fd.Infrastructure.ExternalService;
+using PuntosLeonisa.Infraestructure.Core.Agent.Agentslmpl;
+using PuntosLeonisa.Infraestructure.Core.Agent.Interfaces;
+using PuntosLeonisa.Infrasctructure.Core.ExternalServiceInterfaces;
 using PuntosLeonisa.infrastructure.Persistence.CosmoDb;
 using PuntosLeonisa.Products.Application;
 using PuntosLeonisa.Products.Application.Core;
@@ -29,9 +33,10 @@ namespace Productos
 
 
             //Add ServiceProxy
-            //builder.Services.AddScoped<IHttpClientAgent, HttpClientAgents>();
-            //builder.Services.AddScoped<ICircuitBreaker, CircuitBreaker>();
-            //builder.Services.AddScoped<ITransientRetry, TransientRetry>();
+            builder.Services.AddScoped<IHttpClientAgent, HttpClientAgents>();
+            builder.Services.AddScoped<ICircuitBreaker, CircuitBreaker>();
+            builder.Services.AddScoped<ITransientRetry, TransientRetry>();
+            builder.Services.AddScoped<IProveedorExternalService, ProveedorExternalServices>();
         }
     }
 }

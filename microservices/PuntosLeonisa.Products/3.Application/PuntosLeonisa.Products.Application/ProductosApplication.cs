@@ -2,6 +2,7 @@
 using AutoMapper;
 using Microsoft.Azure.Cosmos.Serialization.HybridRow.Schemas;
 using Newtonsoft.Json.Linq;
+using PuntosLeonisa.Infrasctructure.Core.ExternalServiceInterfaces;
 using PuntosLeonisa.Products.Application.Core;
 using PuntosLeonisa.Products.Domain;
 using PuntosLeonisa.Products.Domain.Interfaces;
@@ -17,9 +18,10 @@ public class ProductosApplication : IProductApplication
 {
     private readonly IMapper mapper;
     private readonly IProductoRepository productoRepository;
+    private readonly IProveedorExternalService proveedorExternalService;
     private readonly GenericResponse<ProductoDto> response;
 
-    public ProductosApplication(IMapper mapper, IProductoRepository productoRepository)
+    public ProductosApplication(IMapper mapper, IProductoRepository productoRepository, IProveedorExternalService proveedorExternalService)
     {
         if (productoRepository is null)
         {
@@ -28,7 +30,9 @@ public class ProductosApplication : IProductApplication
 
         this.mapper = mapper;
         this.productoRepository = productoRepository;
+        this.proveedorExternalService = proveedorExternalService;
         this.response = new GenericResponse<ProductoDto>();
+        
     }
 
     public async Task<GenericResponse<ProductoDto>> Add(ProductoDto value)
@@ -99,6 +103,7 @@ public class ProductosApplication : IProductApplication
             foreach (var producto in productos)
             {
                 producto.Id = Guid.NewGuid().ToString();
+                producto.ProveedorLite = this.proveedorExternalService.GetProveedorByNit(producto.Proveedor).GetAwaiter().GetResult().Result;
             }
 
             await this.productoRepository.AddRange(productos);

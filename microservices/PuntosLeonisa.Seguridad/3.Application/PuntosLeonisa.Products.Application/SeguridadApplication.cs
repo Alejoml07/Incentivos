@@ -262,7 +262,7 @@ public class SeguridadApplication : IUsuarioApplication
         {
             var codeBase64 = Convert.ToBase64String(SecurityHelper.GenerateWithLargeCode());
             var resultToke = this.GuardarToken(new TokenDto() { Usuario = data, Token = codeBase64, Tipo = "ResetPwd" }, false);
-            var urlReset = codeBase64.Replace("%", "");
+            var urlReset = codeBase64.Replace("%/", "");
             var response = await this.emailExternalService.SendMailForResetPasswordByUser(data, urlReset);
 
             return new GenericResponse<bool>() { Result = true };

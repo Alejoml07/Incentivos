@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PuntosLeonisa.Products.Domain.Model;
+using System;
 using System.Xml;
 
 namespace PuntosLeonisa.Products.Domain.Service.DTO.Productos
@@ -40,6 +41,8 @@ namespace PuntosLeonisa.Products.Domain.Service.DTO.Productos
         public string? UrlImagen5 { get; set; }
 
         public string? Proveedor { get; set; }
+
+        public ProveedorLiteDto ProveedorLite { get; set; }
 
         public string? Correo { get; set; }
 

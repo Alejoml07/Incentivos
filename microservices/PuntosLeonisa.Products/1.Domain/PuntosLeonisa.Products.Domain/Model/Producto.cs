@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
+using PuntosLeonisa.Products.Domain.Model;
+
 namespace PuntosLeonisa.Products.Domain;
 public class Producto :IDisposable
 {
@@ -37,6 +39,8 @@ public class Producto :IDisposable
     public string? UrlImagen5 { get; set; }
 
     public string? Proveedor { get; set; }
+
+    public ProveedorLiteDto? ProveedorLite { get; set; }
 
     public string? Correo { get; set; }
 
@@ -92,10 +96,7 @@ public class Producto :IDisposable
 
     public string? Inventario { get; set; }
 
-
-
     public void Dispose() => throw new NotImplementedException();
-
 
     public override string ToString()
     {

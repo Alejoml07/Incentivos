@@ -709,4 +709,23 @@ public class FidelizacionApplication : IFidelizacionApplication
             throw;
         }
     }
+
+    public async Task<GenericResponse<IEnumerable<OrdenDto>>> GetUsuariosRedencionPuntos()
+    {
+        try
+        {
+            var redenciones = await this.unitOfWork.UsuarioRedencionRepository.GetAll();
+            var OrdenesDto = mapper.Map<IEnumerable<OrdenDto>>(redenciones);
+            var response = new GenericResponse<IEnumerable<OrdenDto>>();
+            if (redenciones != null)
+            {
+                response.Result = OrdenesDto;
+            }
+            return response;
+        }
+        catch (Exception)
+        {
+            throw;
+        }         
+    }
 }

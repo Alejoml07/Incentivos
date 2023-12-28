@@ -1,10 +1,4 @@
-﻿using PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios;
-using PuntosLeonisa.Seguridad.Domain.Service.Enum;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PuntosLeonisa.Seguridad.Domain.Service.Enum;
 
 namespace PuntosLeonisa.Seguridad.Domain.Service.Interfaces
 {

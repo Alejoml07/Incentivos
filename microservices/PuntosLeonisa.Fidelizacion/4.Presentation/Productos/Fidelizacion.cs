@@ -489,7 +489,66 @@ namespace Usuarioos
             }
         }
 
-       
+        [FunctionName("GetUsuarioInfoPuntosAll")]
+        [OpenApiOperation(operationId: "GetUsuarioInfoPuntosAll", tags: new[] { "GetUsuarioInfoPuntosAll" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los puntos")]
+        public async Task<IActionResult> GetUsuarioInfoPuntosAll(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "fidelizacion/GetUsuarioInfoPuntosAll")] HttpRequest req,ILogger log)
+        {
+
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+                var response = await this.puntosApplication.GetUsuarioInfoPuntosAll();
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los puntos:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("GetUsuariosRedencionPuntos")]
+        [OpenApiOperation(operationId: "GetUsuariosRedencionPuntos", tags: new[] { "GetUsuariosRedencionPuntos" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene las redenciones")]
+        public async Task<IActionResult> GetUsuariosRedencionPuntos(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "fidelizacion/GetUsuariosRedencionPuntos")] HttpRequest req, ILogger log)
+        {
+
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+                var response = await this.puntosApplication.GetUsuariosRedencionPuntos();
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener las redenciones:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
     }
 }
 
