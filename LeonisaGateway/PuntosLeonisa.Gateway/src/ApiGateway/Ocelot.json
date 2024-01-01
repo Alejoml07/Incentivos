@@ -334,6 +334,23 @@
       "Key": "CambioRecuperarPassword"
     },
     {
+      "UpstreamPathTemplate": "/api/fidelizacion/GetUsuariosRedencionPuntos",
+      "DownstreamPathTemplate": "/api/fidelizacion/GetUsuariosRedencionPuntos",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //},
+      "Key": "GetUsuariosRedencionPuntosRoute"
+    },
+    {
       "UpstreamPathTemplate": "/api/Usuario/ValidarTokenCambiarContrasena",
       "DownstreamPathTemplate": "/api/Usuario/ValidarTokenCambiarContrasena",
       "DownstreamScheme": "https",
