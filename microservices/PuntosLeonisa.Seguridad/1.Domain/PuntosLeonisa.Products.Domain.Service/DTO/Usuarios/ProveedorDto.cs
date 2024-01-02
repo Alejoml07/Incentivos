@@ -14,5 +14,7 @@ namespace PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios
 
         public string? Nombres { get; set; }
 
+        public string? Email { get; set; }
+
     }
 }

@@ -549,6 +549,41 @@ namespace Usuarioos
             }
         }
 
+        [FunctionName("GetUsuariosRedencionPuntosById")]
+        [OpenApiOperation(operationId: "GetUsuariosRedencionPuntosById", tags: new[] { "GetUsuariosRedencionPuntosById" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene la redencion por id")]
+        public async Task<IActionResult> GetUsuariosRedencionPuntosById(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "fidelizacion/GetUsuariosRedencionPuntosById/{id}")] HttpRequest req, ILogger log, string id)
+        {
+
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+                if (string.IsNullOrEmpty(id))
+                {
+                    throw new ArgumentException($"'{nameof(id)}' cannot be null or empty.", nameof(id));
+                }
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+                var response = await this.puntosApplication.GetUsuariosRedencionPuntosById(id);
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener las redenciones:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+
     }
 }
 

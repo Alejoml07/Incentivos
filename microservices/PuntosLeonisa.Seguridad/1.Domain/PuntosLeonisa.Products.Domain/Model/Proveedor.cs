@@ -11,6 +11,8 @@ namespace PuntosLeonisa.Products.Domain.Model
 
         public string? Nombres { get; set; }
 
+        public string? Email { get; set; }
+
         public void Dispose()
         {
             throw new NotImplementedException();
