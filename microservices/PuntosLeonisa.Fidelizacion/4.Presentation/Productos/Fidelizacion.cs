@@ -549,11 +549,11 @@ namespace Usuarioos
             }
         }
 
-        [FunctionName("GetUsuariosRedencionPuntosById")]
-        [OpenApiOperation(operationId: "GetUsuariosRedencionPuntosById", tags: new[] { "GetUsuariosRedencionPuntosById" })]
+        [FunctionName("GetUsuariosRedencionPuntosByProveedor")]
+        [OpenApiOperation(operationId: "GetUsuariosRedencionPuntosByProveedor", tags: new[] { "GetUsuariosRedencionPuntosByProveedor" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene la redencion por id")]
         public async Task<IActionResult> GetUsuariosRedencionPuntosById(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "fidelizacion/GetUsuariosRedencionPuntosById/{id}")] HttpRequest req, ILogger log, string id)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "fidelizacion/GetUsuariosRedencionPuntosByProveedor/{id}")] HttpRequest req, ILogger log, string id)
         {
 
             log.LogInformation("C# HTTP trigger function processed a request.");
@@ -574,7 +574,7 @@ namespace Usuarioos
                     throw new ArgumentNullException(nameof(log));
                 }
 
-                var response = await this.puntosApplication.GetUsuariosRedencionPuntosById(id);
+                var response = await this.puntosApplication.GetUsuariosRedencionPuntosByProveedor(id);
                 return new OkObjectResult(response);
             }
             catch (Exception ex)

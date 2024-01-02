@@ -10,5 +10,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces
     public interface IUsuarioRedencionRepository : IRepository<UsuarioRedencion>
     {
         int GetNroPedido();
+
+        IEnumerable<UsuarioRedencion> GetRedencionesWithProductsByProveedor(string proveedor);
     }
 }
