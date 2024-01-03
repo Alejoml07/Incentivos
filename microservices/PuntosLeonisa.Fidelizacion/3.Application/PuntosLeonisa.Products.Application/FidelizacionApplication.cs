@@ -692,7 +692,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             }
 
             data.PuntosRedimidos = data.GetSumPuntos();
-            var redenciones = unitOfWork.UsuarioRedencionRepository.GetNroPedido() +1;
+            var redenciones = unitOfWork.UsuarioRedencionRepository.GetNroPedido() + 1;
             data.NroPedido = redenciones;
             await this.unitOfWork.UsuarioRedencionRepository.Add(data);
             this.unitOfWork.SaveChangesSync();
@@ -726,16 +726,40 @@ public class FidelizacionApplication : IFidelizacionApplication
         catch (Exception)
         {
             throw;
-        }         
+        }
     }
 
-    public async Task<GenericResponse<OrdenDto>> GetUsuariosRedencionPuntosById(string id)
+    public async Task<GenericResponse<IEnumerable<OrdenDto>>> GetUsuariosRedencionPuntosByProveedor(string proveedor)
     {
         try
         {
-            var redenciones = await this.unitOfWork.UsuarioRedencionRepository.GetById(id);
-            var OrdenesDto = mapper.Map<OrdenDto>(redenciones);
-            var response = new GenericResponse<OrdenDto>();
+            if (proveedor == null)
+            {
+                throw new Exception("Proveedor no puede ser nulo");
+            }
+            if (proveedor == "")
+            {
+                throw new Exception("Proveedor no puede ser vacio");
+            }
+
+            var redenciones = new List<UsuarioRedencion>();
+            if (proveedor != "0")
+            {
+                redenciones = this.unitOfWork.UsuarioRedencionRepository.GetRedencionesWithProductsByProveedor(proveedor).ToList();
+
+                foreach (var redencion in redenciones)
+                {
+                    redencion.ProductosCarrito = redencion.ProductosCarrito.Where(pc => pc.ProveedorLite.Nombres == proveedor).ToList();
+                }
+            }
+            else
+            {
+                redenciones = (await this.unitOfWork.UsuarioRedencionRepository.GetAll()).ToList();
+            }
+
+
+            var OrdenesDto = mapper.Map<IEnumerable<OrdenDto>>(redenciones);
+            var response = new GenericResponse<IEnumerable<OrdenDto>>();
             if (redenciones != null)
             {
                 response.Result = OrdenesDto;

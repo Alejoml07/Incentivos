@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PuntosLeonisa.Fidelizacion.Domain.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -59,6 +60,8 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
         public string? UrlImagen1 { get; set; }
 
         public string? Proveedor { get; set; }
+
+        public ProveedorLite? ProveedorLite { get; set; }
 
         public string? Correo { get; set; }
 

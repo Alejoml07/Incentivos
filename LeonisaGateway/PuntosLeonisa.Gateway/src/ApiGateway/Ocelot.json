@@ -688,6 +688,40 @@
       },
       "Key": "GuardarTokenRoute"
     },
+    {
+      "UpstreamPathTemplate": "/api/fidelizacion/AddNroGuiaYTransportadora",
+      "DownstreamPathTemplate": "/api/fidelizacion/AddNroGuiaYTransportadora",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "AddNroGuiaYTransportadoraRoute"
+    },
+    {
+      "UpstreamPathTemplate": "/api/fidelizacion/GetUsuariosRedencionPuntosByProveedor/{id}",
+      "DownstreamPathTemplate": "/api/fidelizacion/GetUsuariosRedencionPuntosByProveedor/{id}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetUsuariosRedencionPuntosByIdRoute"
+    },
 
     // fin fidelizacion
     // fin puntos,

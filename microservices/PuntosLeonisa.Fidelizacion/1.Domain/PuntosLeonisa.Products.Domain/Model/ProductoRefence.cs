@@ -87,6 +87,8 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
 
         public DateTime? FechaSincronizacion { get; set; }
 
+        public ProveedorLite? ProveedorLite { get; set; }
+
         public string? Invima { get; set; }
 
         public string? Genero { get; set; }
