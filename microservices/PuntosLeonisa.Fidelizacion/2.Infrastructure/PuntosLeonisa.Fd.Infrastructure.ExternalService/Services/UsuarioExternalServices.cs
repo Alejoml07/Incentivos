@@ -8,6 +8,7 @@ using PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces;
 using PuntosLeonisa.Products.Domain.Model;
 using System.Net.Http;
 using System.Web;
+using System.Xml;
 
 namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
 {
@@ -53,7 +54,12 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
                 urlSms = urlSms.Replace("{phone}", usuario.Celular);
                 urlSms = urlSms.Replace("{message}", message);
                 var response = await httpClientAgent.GetRequestXml<Response>(new Uri(urlSms));
-                if (response != null)
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml(response);
+
+                XmlNode statusMessageNode = xmlDoc.SelectSingleNode("//statusmessage[text()='Message acepted for delivery']");
+
+                if (statusMessageNode != null)
                 {
                     return true;
                 }
@@ -61,6 +67,14 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
                 {
                     return false;
                 }
+                //if (response != null)
+                //{
+                //    return true;
+                //}
+                //else
+                //{
+                //    return false;
+                //}
             }
             catch (Exception ex)
             {

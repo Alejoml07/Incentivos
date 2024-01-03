@@ -49,7 +49,7 @@ namespace Logistic.Infrastructure.Agents.AgentsImpl
 
 
 
-        public async Task<T1> GetRequestXml<T1>(Uri requestUrl)
+        public async Task<string> GetRequestXml<T1>(Uri requestUrl)
         {
             try
             {
@@ -63,12 +63,12 @@ namespace Logistic.Infrastructure.Agents.AgentsImpl
                     );
                 var response = await resultData.Content.ReadAsStringAsync();
                 XmlSerializer serializer = new XmlSerializer(typeof(T1));
-                using (MemoryStream memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(response)))
-                {
-                    T1 responseData = (T1)serializer.Deserialize(memoryStream);
+                //using (MemoryStream memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(response)))
+                //{
+                //    T1 responseData = (T1)serializer.Deserialize(memoryStream);
 
-                    return responseData;
-                }
+                return response;
+                //}
 
 #pragma warning restore CS8603 // Posible tipo de valor devuelto de referencia nulo
             }
