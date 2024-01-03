@@ -610,7 +610,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                 usuario.Id = Guid.NewGuid().ToString();
                 data.Codigo = FidelizacionHelper.GetCode();
                 data.FechaCreacion = DateTime.Now;
-                data = await GetAndValidateCodigo(data);
+                //data = await GetAndValidateCodigo(data);
 
                 var responseSms = await this.usuarioExternalService.SendSmsWithCode(data);
                 if (responseSms)
@@ -746,5 +746,35 @@ public class FidelizacionApplication : IFidelizacionApplication
         {
             throw;
         }
+    }
+
+    public async Task<GenericResponse<bool>> AddNroGuiaYTransportadora(OrdenDto data)
+    {
+
+        var redenciones = await this.unitOfWork.UsuarioRedencionRepository.GetById(data.Id);
+        try
+        {
+            if(redenciones != null)
+            {
+                redenciones.NroGuia = data.NroGuia;
+                redenciones.Transportadora = data.Transportadora;
+                await this.unitOfWork.UsuarioRedencionRepository.Update(redenciones);
+                await this.unitOfWork.SaveChangesAsync();
+                return new GenericResponse<bool>
+                {
+                    Result = true
+                };
+            }
+            return new GenericResponse<bool>
+            {
+                Result = false
+            };
+
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+
     }
 }
