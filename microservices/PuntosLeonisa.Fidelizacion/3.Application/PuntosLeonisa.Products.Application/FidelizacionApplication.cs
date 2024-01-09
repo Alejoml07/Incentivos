@@ -158,6 +158,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             {
                 usuario.PuntosAcumulados += value.PuntosAcumulados;
                 usuario.PuntosDisponibles += value.PuntosDisponibles;
+                usuario.PuntosEnCarrito += value.PuntosEnCarrito;
                 await this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuario);
                 await this.unitOfWork.SaveChangesAsync();
                 return new GenericResponse<UsuarioInfoPuntos>
@@ -800,5 +801,10 @@ public class FidelizacionApplication : IFidelizacionApplication
             throw;
         }
 
+    }
+
+    public Task<GenericResponse<OrdenDto>> GetUsuariosRedencionPuntosById(string id)
+    {
+        throw new NotImplementedException();
     }
 }

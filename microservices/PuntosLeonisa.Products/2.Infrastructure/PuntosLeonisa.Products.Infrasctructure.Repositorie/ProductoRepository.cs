@@ -89,6 +89,8 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
         var maxPropertyEnd = queryObject.MaxRangePropertyNameEnd;
         var minPropertyEnd = queryObject.MinRangePropertyNameEnd;
 
+
+
         //[El resto del código de construcción de filtros permanece igual]
         // Construyendo filtros
         foreach (var filter in queryObject.Filters)

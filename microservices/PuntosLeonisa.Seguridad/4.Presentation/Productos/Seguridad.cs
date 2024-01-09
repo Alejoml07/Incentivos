@@ -307,7 +307,6 @@ namespace Usuarios
             var data = JsonConvert.DeserializeObject<TokenDto>(await new StreamReader(req.Body).ReadToEndAsync());
             var response = await usuarioApplication.ValidarTokenCambiarContrasena(data);
             return new OkObjectResult(response);
-
         }
     }
 }

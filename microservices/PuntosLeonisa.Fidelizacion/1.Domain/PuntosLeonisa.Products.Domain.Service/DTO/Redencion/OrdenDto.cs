@@ -13,7 +13,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
 
         public int? NroPedido { get; set; }
 
-        public int? NroGuia { get; set; }
+        public string? NroGuia { get; set; }
 
         public string? Transportadora { get; set; }
 
@@ -63,7 +63,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
 
         public ProveedorLite? ProveedorLite { get; set; }
 
-        public string? Correo { get; set; }
+        public string? Email { get; set; }
 
         public string? TipoPremio { get; set; }
 
@@ -77,6 +77,8 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
     public class  UsuarioDtoLite
     {
         public string? Cedula { get; set; }
+
+        public string? Celular { get; set; }
 
         public string? Nombres { get; set; }
 
