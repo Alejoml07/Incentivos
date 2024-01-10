@@ -773,6 +773,49 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
     }
 
+    public async Task<GenericResponse<IEnumerable<OrdenDto>>> GetUsuariosRedencionPuntosByEmail(string email)
+    {
+        try
+        {
+            if (email == null)
+            {
+                throw new Exception("Email no puede ser nulo");
+            }
+            if (email == "")
+            {
+                throw new Exception("Email no puede ser vacio");
+            }
+
+            var redenciones = new List<UsuarioRedencion>();
+            if (email != "0")
+            {
+                redenciones = this.unitOfWork.UsuarioRedencionRepository.GetRedencionesWithProductsByEmail(email).ToList();
+
+                foreach (var redencion in redenciones)
+                {
+                    redencion.ProductosCarrito = redencion.ProductosCarrito.Where(pc => pc.Correo == email).ToList();
+                }
+            }
+            else
+            {
+                redenciones = (await this.unitOfWork.UsuarioRedencionRepository.GetAll()).ToList();
+            }
+
+
+            var OrdenesDto = mapper.Map<IEnumerable<OrdenDto>>(redenciones);
+            var response = new GenericResponse<IEnumerable<OrdenDto>>();
+            if (redenciones != null)
+            {
+                response.Result = OrdenesDto;
+            }
+            return response;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
     public async Task<GenericResponse<bool>> AddNroGuiaYTransportadora(OrdenDto data)
     {
 
@@ -783,6 +826,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             {
                 redenciones.NroGuia = data.NroGuia;
                 redenciones.Transportadora = data.Transportadora;
+                redenciones.Estado = data.Estado;
                 await this.unitOfWork.UsuarioRedencionRepository.Update(redenciones);
                 await this.unitOfWork.SaveChangesAsync();
                 return new GenericResponse<bool>
