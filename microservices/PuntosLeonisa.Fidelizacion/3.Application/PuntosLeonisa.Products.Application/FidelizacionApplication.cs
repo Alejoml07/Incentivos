@@ -471,6 +471,28 @@ public class FidelizacionApplication : IFidelizacionApplication
         string messageoCode = $"Mis suenos a un clic te dice que tu redencion de {data.PuntosRedimidos} puntos fue exitosa";
         await usuarioExternalService.SendSmsWithMessage(data.Usuario, messageoCode);
         await usuarioExternalService.UserSendEmailWithMessage(data);
+        SendNotifyToProveedores(data);
+
+    }
+
+    private void SendNotifyToProveedores(UsuarioRedencion data)
+    {
+        var emailProveedoresFromProductosCarrito = data.ProductosCarrito?.Select(x => new { email = x.ProveedorLite?.Email, proveedor = x.ProveedorLite?.Nombres }).Distinct().ToList();
+        if (emailProveedoresFromProductosCarrito == null)
+        {
+            return;
+        }
+
+        foreach (var item in emailProveedoresFromProductosCarrito)
+        {
+            var redencionPorProveedor = this.mapper.Map<UsuarioRedencion>(data);
+            redencionPorProveedor.ProductosCarrito = data.ProductosCarrito?.Where(x => x.ProveedorLite?.Nombres == item.proveedor).ToList();
+            redencionPorProveedor.Usuario = new Usuario
+            {
+                Email = item.email
+            };
+            this.usuarioExternalService.UserSendEmailWithMessage(redencionPorProveedor);
+        }
     }
 
     private async void ClearWishlistAndCart(Usuario usuario)
@@ -758,7 +780,7 @@ public class FidelizacionApplication : IFidelizacionApplication
 
                 foreach (var redencion in redenciones)
                 {
-                    redencion.ProductosCarrito = redencion.ProductosCarrito.Where(pc => pc.ProveedorLite.Nombres == proveedor).ToList();
+                    redencion.ProductosCarrito = redencion?.ProductosCarrito?.Where(pc => pc.ProveedorLite?.Nombres == proveedor).ToList();
                 }
             }
             else

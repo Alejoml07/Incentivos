@@ -1,9 +1,8 @@
-﻿{
+{
   "profiles": {
     "Productos": {
       "commandName": "Project",
-      "commandLineArgs": "--port 7060",
-      "launchBrowser": false
+      "commandLineArgs": "--port 7062"
     }
   }
 }

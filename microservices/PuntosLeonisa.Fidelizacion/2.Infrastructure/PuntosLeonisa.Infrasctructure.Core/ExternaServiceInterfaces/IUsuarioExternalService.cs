@@ -1,6 +1,7 @@
 ﻿using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
+using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.DTO;
 using PuntosLeonisa.Products.Domain.Model;
 
 namespace PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces
@@ -13,6 +14,7 @@ namespace PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces
         Task<GenericResponse<bool>> SendSmsWithMessage(Usuario data, string message);
 
         Task<GenericResponse<bool>> UserSendEmailWithMessage(UsuarioRedencion data);
-        
+        Task<GenericResponse<bool>> SendMailGeneric(EmailDTO emailData);
+
     }
 }

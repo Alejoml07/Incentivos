@@ -57,7 +57,7 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.LoadXml(response);
 
-                XmlNode statusMessageNode = xmlDoc.SelectSingleNode("//statusmessage[text()='Message acepted for delivery']");
+                XmlNode statusMessageNode = xmlDoc?.SelectSingleNode("//statusmessage[text()='Message acepted for delivery']");
 
                 if (statusMessageNode != null)
                 {
@@ -67,14 +67,6 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
                 {
                     return false;
                 }
-                //if (response != null)
-                //{
-                //    return true;
-                //}
-                //else
-                //{
-                //    return false;
-                //}
             }
             catch (Exception ex)
             {
@@ -99,7 +91,7 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
                 var email = new EmailDTO()
                 {
                     Message = data.GenerarHTML(),
-                    Recipients = new string[] { data.Usuario.Email,"danielmg12361@gmail.com" },
+                    Recipients = new string[] { data?.Usuario?.Email,"danielmg12361@gmail.com" },
                     Subject = "Redención de premio"
                 };
                 var response = this.httpClientAgent.SendMail(email);
@@ -107,6 +99,22 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
                 return Task.FromResult(new GenericResponse<bool>() { Result = true });
             }
             catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public Task<GenericResponse<bool>> SendMailGeneric(EmailDTO emailData)
+        {
+            try
+            {
+               
+                var response = this.httpClientAgent.SendMail(emailData);
+
+                return Task.FromResult(new GenericResponse<bool>() { Result = true });
+            }
+            catch (Exception)
             {
 
                 throw;
