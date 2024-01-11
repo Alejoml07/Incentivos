@@ -10,6 +10,10 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
 {
     public class UsuarioRedencion
     {
+        public UsuarioRedencion()
+        {
+           this.PuntosRedimidos = this.GetSumPuntos();
+        }
         public string? Id { get; set; }
 
         public int? NroPedido { get; set; }
@@ -23,13 +27,60 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
 
         public IEnumerable<ProductoRefence>? ProductosCarrito { get; set; }
 
-        public UsuarioEnvio? Envio { get; set; }
+        public UsuarioEnvio? Envio
+        {
+            get;
+            set;
+        }
 
-        public EstadoOrden? Estado { get; set; }
-    
+        public EstadoOrden? Estado
+        {
+            get
+            {
+                if(ProductosCarrito == null)
+                {
+                    return EstadoOrden.Pendiente;
+                }
+                
+
+                if (ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Pendiente))
+                {
+                    return EstadoOrden.Pendiente;
+                }
+
+                if (ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Enviado))
+                {
+                    return EstadoOrden.EnvioParcial;
+                }
+
+                var totalEnviados = ProductosCarrito.Count(p => p.Estado == EstadoOrdenItem.Enviado);
+
+                if (totalEnviados == ProductosCarrito.Count())
+                {
+                    return EstadoOrden.Enviado;
+                }
+
+                var totalEntregados = ProductosCarrito.Count(p => p.Estado == EstadoOrdenItem.Entregado);
+
+                if (totalEntregados == ProductosCarrito.Count())
+                {
+                    return EstadoOrden.Entregado;
+                }
+
+                var totalCancelados = ProductosCarrito.Count(p => p.Estado == EstadoOrdenItem.Cancelado);
+
+                if (totalCancelados == ProductosCarrito.Count())
+                {
+                    return EstadoOrden.Cancelado;
+                }
+
+                return EstadoOrden.Pendiente;
+            }
+        }
 
 
-    public int? PuntosRedimidos
+
+        public int? PuntosRedimidos
         {
             get;
             set;
@@ -83,7 +134,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
             // Tabla con los productos del carrito
             sb.Append("<table class=\"tabla-estilizada\">");
             sb.Append("<tr><th class=\"encabezado-tabla\">IMAGEN</th><th class=\"encabezado-tabla\">PRODUCTO</th><th class=\"encabezado-tabla\">DESCRIPCIÓN</th><th class=\"encabezado-tabla\">CANTIDAD</th></tr>");
-           
+
             foreach (var producto in ProductosCarrito)
             {
                 // Asegúrate de tener propiedades como Imagen, Nombre, Descripción en la clase ProductoRefence

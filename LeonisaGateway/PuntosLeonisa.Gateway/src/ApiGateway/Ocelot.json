@@ -689,6 +689,23 @@
       "Key": "GuardarTokenRoute"
     },
     {
+      "UpstreamPathTemplate": "/api/fidelizacion/GetUsuariosRedencionPuntosByEmail/{email}",
+      "DownstreamPathTemplate": "/api/fidelizacion/GetUsuariosRedencionPuntosByEmail/{email}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetUsuariosRedencionPuntosByEmailRoute"
+    },
+    {
       "UpstreamPathTemplate": "/api/fidelizacion/AddNroGuiaYTransportadora",
       "DownstreamPathTemplate": "/api/fidelizacion/AddNroGuiaYTransportadora",
       "DownstreamScheme": "https",

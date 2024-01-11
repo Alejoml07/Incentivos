@@ -4,11 +4,11 @@ using PuntosLeonisa.Fidelizacion.Domain.Model;
 
 namespace PuntosLeonisa.infrastructure.Persistence.Configuration
 {
-    public class UsuarioRedencionConfiguration : IEntityTypeConfiguration<UsuarioRedencion>
+    public class FidelizacionPuntosConfiguration : IEntityTypeConfiguration<FidelizacionPuntos>
     {
-        public void Configure(EntityTypeBuilder<UsuarioRedencion> builder)
+        public void Configure(EntityTypeBuilder<FidelizacionPuntos> builder)
         {
-            builder.ToContainer("UsuarioRedencion")
+            builder.ToContainer("FidelizacionPuntos")
                 .HasPartitionKey(e => e.Id);
         }
     }

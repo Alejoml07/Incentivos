@@ -1,4 +1,5 @@
-﻿using PuntosLeonisa.Fidelizacion.Domain.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using PuntosLeonisa.Fidelizacion.Domain.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Carrito;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
@@ -19,6 +20,14 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
         public CarritoRepository(FidelizacionContext context) : base(context)
         {
             _context = context;
+        }
+
+        public async Task<IEnumerable<Carrito>> GetPuntosEnCarrito(string? email)
+        {
+            var result = await _context.Set<Carrito>().Where(x => x.User.Email == email).ToListAsync();
+
+            return result;
+
         }
     }
 }

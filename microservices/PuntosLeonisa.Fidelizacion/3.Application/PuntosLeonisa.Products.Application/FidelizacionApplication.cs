@@ -4,6 +4,7 @@ using PuntosLeonisa.fidelizacion.Domain.Service.DTO.PuntosManuales;
 using PuntosLeonisa.Fidelizacion.Application.Core.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Carrito;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.FidelizacionPuntos;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
 using PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork;
@@ -418,32 +419,39 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
-            var res = await this.CreateRedencion(data);
-            if (res.Result)
-            {
 
-                var usuarioCompleto = this.usuarioExternalService.GetUserByEmail(data.Usuario.Email ?? "").GetAwaiter().GetResult();
-                var usuarioInfoPuntos = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(data.Usuario.Email);
-                data.Usuario = usuarioCompleto.Result;
-                if (usuarioInfoPuntos != null)
+            var puntosEnCarrito = this.unitOfWork.CarritoRepository.GetPuntosEnCarrito(data.Usuario.Email).GetAwaiter().GetResult();
+            var puntosEnCarritoSum = puntosEnCarrito.Sum(x => x.Product.Puntos);
+            var usuarioCompleto = this.usuarioExternalService.GetUserByEmail(data.Usuario.Email ?? "").GetAwaiter().GetResult();
+            var usuarioInfoPuntos = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(data.Usuario.Email);
+            data.Usuario = usuarioCompleto.Result;
+            if (usuarioInfoPuntos != null)
+            {
+                data.PuntosRedimidos = data.GetSumPuntos();
+                if (usuarioInfoPuntos.PuntosDisponibles < data.PuntosRedimidos)
+                {
+                    throw new Exception("Puntos a redimir no pueden ser mayores a los disponibles");
+                }
+
+                var res = await this.CreateRedencion(data);
+                if (res.Result)
                 {
                     //validacion donde no los puntos a redimir no pueden ser mayores al disponible
-                    if (usuarioInfoPuntos.PuntosDisponibles < data.PuntosRedimidos)
-                    {
-                        throw new Exception("Puntos a redimir no pueden ser mayores a los disponibles");
-                    }
+
                     usuarioInfoPuntos.PuntosDisponibles -= data.PuntosRedimidos;
                     usuarioInfoPuntos.PuntosRedimidos += data.PuntosRedimidos;
+                    usuarioInfoPuntos.PuntosEnCarrito = (int?)puntosEnCarritoSum;
                     await this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuarioInfoPuntos);
                     ClearWishlistAndCart(data.Usuario);
                     unitOfWork.SaveChangesSync();
                     SendNotify(data);
                 }
-                else
-                {
-                    throw new Exception("Usuario no encontrado");
-                }
             }
+            else
+            {
+                throw new Exception("Usuario no encontrado");
+            }
+
 
 
             return new GenericResponse<bool>
@@ -790,7 +798,7 @@ public class FidelizacionApplication : IFidelizacionApplication
 
             if (email != "0")
             {
-                redenciones = this.unitOfWork.UsuarioRedencionRepository.GetRedencionesWithProductsByEmail(email).ToList();                
+                redenciones = this.unitOfWork.UsuarioRedencionRepository.GetRedencionesWithProductsByEmail(email).ToList();
             }
             else
             {
@@ -821,7 +829,6 @@ public class FidelizacionApplication : IFidelizacionApplication
             {
                 redenciones.NroGuia = data.NroGuia;
                 redenciones.Transportadora = data.Transportadora;
-                redenciones.Estado = data.Estado;
                 await this.unitOfWork.UsuarioRedencionRepository.Update(redenciones);
                 await this.unitOfWork.SaveChangesAsync();
                 return new GenericResponse<bool>
@@ -843,6 +850,11 @@ public class FidelizacionApplication : IFidelizacionApplication
     }
 
     public Task<GenericResponse<OrdenDto>> GetUsuariosRedencionPuntosById(string id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<GenericResponse<bool>> GuardarLiquidacionPuntos(IEnumerable<LiquidacionPuntosDto> data)
     {
         throw new NotImplementedException();
     }

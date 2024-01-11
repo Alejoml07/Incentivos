@@ -27,7 +27,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
 
         public float? TiempoEntrega { get; set; }
 
-        public int? Estado { get; set; }
+        public EstadoOrdenItem? Estado { get; set; }
 
         public DateTime? FechaCreacion { get; set; }
 
@@ -96,5 +96,15 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
         public string? Tamaño { get; set; }
 
         public int? Quantity { get; set; }
+    }
+
+
+    public enum EstadoOrdenItem
+    {
+        Pendiente,
+        Enviado,
+        EnTransito,
+        Cancelado,
+        Entregado
     }
 }

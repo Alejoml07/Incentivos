@@ -73,6 +73,8 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
+    public IFidelizacionPuntosRepository FidelizacionPuntosRepository => throw new NotImplementedException();
+
     public void SaveChangesSync()
     {
         _fidelizacionContext.SaveChanges();

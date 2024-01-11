@@ -36,7 +36,15 @@ namespace PuntosLeonisa.Infraestructure.Core.Agent.Agentslmpl
                     );
                 var response = await resultData.Content.ReadAsStringAsync();
 #pragma warning disable CS8603 // Posible tipo de valor devuelto de referencia nulo
-                return JsonConvert.DeserializeObject<T1>(response);
+                return JsonConvert.DeserializeObject<T1>(response, new JsonSerializerSettings()
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    MissingMemberHandling = MissingMemberHandling.Ignore,
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
+                    Formatting = Formatting.Indented,
+                    ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver()
+                });
 #pragma warning restore CS8603 // Posible tipo de valor devuelto de referencia nulo
             }
             catch (Exception ex)
