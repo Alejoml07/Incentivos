@@ -787,11 +787,16 @@ public class FidelizacionApplication : IFidelizacionApplication
             }
 
             var redenciones = new List<UsuarioRedencion>();
+
             if (email != "0")
+            {
+                redenciones = this.unitOfWork.UsuarioRedencionRepository.GetRedencionesWithProductsByEmail(email).ToList();                
+            }
+            else
             {
                 redenciones = (await this.unitOfWork.UsuarioRedencionRepository.GetAll()).ToList();
             }
-               
+
             var OrdenesDto = mapper.Map<IEnumerable<OrdenDto>>(redenciones);
             var response = new GenericResponse<IEnumerable<OrdenDto>>();
             if (redenciones != null)
@@ -812,7 +817,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         var redenciones = await this.unitOfWork.UsuarioRedencionRepository.GetById(data.Id);
         try
         {
-            if(redenciones != null)
+            if (redenciones != null)
             {
                 redenciones.NroGuia = data.NroGuia;
                 redenciones.Transportadora = data.Transportadora;
