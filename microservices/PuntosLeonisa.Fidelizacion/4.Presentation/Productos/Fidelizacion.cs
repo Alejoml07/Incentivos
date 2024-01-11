@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -575,6 +575,40 @@ namespace Usuarioos
                 }
 
                 var response = await this.puntosApplication.GetUsuariosRedencionPuntosByProveedor(id);
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener las redenciones:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("GetUsuariosRedencionPuntosByEmail")]
+        [OpenApiOperation(operationId: "GetUsuariosRedencionPuntosByEmail", tags: new[] { "GetUsuariosRedencionPuntosByEmail" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene la redencion por Email")]
+        public async Task<IActionResult> GetUsuariosRedencionPuntosByEmail(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "fidelizacion/GetUsuariosRedencionPuntosByEmail/{email}")] HttpRequest req, ILogger log, string email)
+        {
+
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+                if (string.IsNullOrEmpty(email))
+                {
+                    throw new ArgumentException($"'{nameof(email)}' cannot be null or empty.", nameof(email));
+                }
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+                var response = await this.puntosApplication.GetUsuariosRedencionPuntosByEmail(email);
                 return new OkObjectResult(response);
             }
             catch (Exception ex)

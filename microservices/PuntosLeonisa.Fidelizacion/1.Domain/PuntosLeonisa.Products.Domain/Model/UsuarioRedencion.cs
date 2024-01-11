@@ -14,7 +14,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
 
         public int? NroPedido { get; set; }
 
-        public int? NroGuia { get; set; }
+        public string? NroGuia { get; set; }
 
         public string? Transportadora { get; set; }
         public Usuario? Usuario { get; set; }
@@ -25,8 +25,11 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
 
         public UsuarioEnvio? Envio { get; set; }
 
+        public EstadoOrden? Estado { get; set; }
+    
 
-        public int? PuntosRedimidos
+
+    public int? PuntosRedimidos
         {
             get;
             set;
@@ -112,5 +115,13 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
 
     }
 
+    public enum EstadoOrden
+    {
+        Pendiente,
+        Enviado,
+        EnvioParcial,
+        Cancelado,
+        Entregado
+    }
 
 }

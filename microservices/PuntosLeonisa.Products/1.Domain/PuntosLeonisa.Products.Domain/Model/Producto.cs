@@ -22,7 +22,7 @@ public class Producto :IDisposable
 
     public float? TiempoEntrega { get; set; }
 
-    public int? Estado { get; set; }
+    public string? Estado { get; set; }
  
     public DateTime? FechaCreacion { get; set; }
 

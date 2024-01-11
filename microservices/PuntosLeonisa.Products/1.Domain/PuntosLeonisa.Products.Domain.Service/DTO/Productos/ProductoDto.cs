@@ -24,7 +24,7 @@ namespace PuntosLeonisa.Products.Domain.Service.DTO.Productos
 
         public float? TiempoEntrega { get; set; }
 
-        public int? Estado { get; set; }
+        public string? Estado { get; set; }
 
         public DateTime? FechaCreacion { get; set; }
 

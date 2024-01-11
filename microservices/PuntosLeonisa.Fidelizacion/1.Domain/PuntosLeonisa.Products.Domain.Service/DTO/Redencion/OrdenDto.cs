@@ -22,7 +22,10 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
         public IEnumerable<ProductoCarritoLite>? ProductosCarrito { get; set; }
 
         public UsuarioEnvio? Envio { get; set; }
-    }
+
+        public EstadoOrden? Estado { get; set; }
+    
+}
 
     public class UsuarioEnvio
     {
@@ -41,6 +44,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
         public string? Estado { get; set; }
         public string? CodigoPostal { get; set; }
         public string? Pais { get; set; }
+
     }   
 
     public class ProductoCarritoLite
@@ -50,6 +54,8 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
         public string? Referencia { get; set; }
 
         public string? Nombre { get; set; }
+
+        public string? Estado { get; set; }
 
         public int? Cantidad { get; set; }
 
@@ -61,7 +67,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
 
         public string? Proveedor { get; set; }
 
-        public ProveedorLite? ProveedorLite { get; set; }
+        public ProveedorLite? ProveedorLites { get; set; }
 
         public string? Email { get; set; }
 

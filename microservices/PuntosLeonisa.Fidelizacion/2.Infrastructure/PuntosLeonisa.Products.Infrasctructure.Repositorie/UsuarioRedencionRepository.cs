@@ -23,6 +23,12 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
             return this.context.Set<UsuarioRedencion>().Count();
         }
 
+        public IEnumerable<UsuarioRedencion> GetRedencionesWithProductsByEmail(string email)
+        {
+            var data = this.context.Set<UsuarioRedencion>().Where(x => x.Usuario.Email == email).ToList();
+            return data;
+        }
+
         public IEnumerable<UsuarioRedencion> GetRedencionesWithProductsByProveedor(string proveedor)
         {
             // Asegúrate de que el valor del proveedor esté limpio y sea seguro para evitar inyecciones SQL
