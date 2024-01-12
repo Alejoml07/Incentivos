@@ -19,6 +19,10 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
 
         public int? Cantidad { get; set; }
 
+        public string? NroGuia { get; set; }
+
+        public string? Transportadora { get; set; }
+
         public string? Caracteristicas { get; set; }
 
         public string? Descripcion { get; set; }

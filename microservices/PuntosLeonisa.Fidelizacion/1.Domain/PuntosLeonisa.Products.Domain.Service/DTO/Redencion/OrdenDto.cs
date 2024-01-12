@@ -13,10 +13,6 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
 
         public int? NroPedido { get; set; }
 
-        public string? NroGuia { get; set; }
-
-        public string? Transportadora { get; set; }
-
         public UsuarioDtoLite? Usuario { get; set; }
 
         public IEnumerable<ProductoCarritoLite>? ProductosCarrito { get; set; }
@@ -58,6 +54,10 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
         public string? Estado { get; set; }
 
         public int? Cantidad { get; set; }
+
+        public string? NroGuia { get; set; }
+
+        public string? Trasnportadora { get; set; }
 
         public string? Descripcion { get; set; }
 

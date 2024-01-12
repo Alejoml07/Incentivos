@@ -841,7 +841,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
     }
 
-    public async Task<GenericResponse<bool>> AddNroGuiaYTransportadora(OrdenDto data)
+    public async Task<GenericResponse<bool>> AddNroGuiaYTransportadora(ProductoRefence data)
     {
 
         var redenciones = await this.unitOfWork.UsuarioRedencionRepository.GetById(data.Id);
@@ -849,8 +849,10 @@ public class FidelizacionApplication : IFidelizacionApplication
         {
             if (redenciones != null)
             {
-                redenciones.NroGuia = data.NroGuia;
-                redenciones.Transportadora = data.Transportadora;
+                foreach(var redencion in redenciones.ProductosCarrito)
+                {
+                    redencion.NroGuia = data.ProductosCarrito.Where(x => x.Id == redencion.Id).FirstOrDefault()?.NroGuia;
+                }
                 await this.unitOfWork.UsuarioRedencionRepository.Update(redenciones);
                 await this.unitOfWork.SaveChangesAsync();
                 return new GenericResponse<bool>
