@@ -18,10 +18,6 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
 
         public int? NroPedido { get; set; }
 
-        public string? NroGuia { get; set; }
-
-        public string? Transportadora { get; set; }
-
         public Usuario? Usuario { get; set; }
 
         public UsuarioInfoPuntos? InfoPuntos { get; set; }
@@ -38,20 +34,22 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
         {
             get
             {
+                    
                 if(ProductosCarrito == null)
                 {
                     return EstadoOrden.Pendiente;
                 }
-                
+                var total = ProductosCarrito.Count();
+
+                if (ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Enviado) && total > 1)
+                {
+                    return EstadoOrden.EnvioParcial;
+                }
+
 
                 if (ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Pendiente))
                 {
                     return EstadoOrden.Pendiente;
-                }
-
-                if (ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Enviado))
-                {
-                    return EstadoOrden.EnvioParcial;
                 }
 
                 var totalEnviados = ProductosCarrito.Count(p => p.Estado == EstadoOrdenItem.Enviado);

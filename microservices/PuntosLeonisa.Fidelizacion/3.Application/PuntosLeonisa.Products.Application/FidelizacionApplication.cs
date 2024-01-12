@@ -159,7 +159,6 @@ public class FidelizacionApplication : IFidelizacionApplication
             {
                 usuario.PuntosAcumulados += value.PuntosAcumulados;
                 usuario.PuntosDisponibles += value.PuntosDisponibles;
-                usuario.PuntosEnCarrito += value.PuntosEnCarrito;
                 await this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuario);
                 await this.unitOfWork.SaveChangesAsync();
                 return new GenericResponse<UsuarioInfoPuntos>

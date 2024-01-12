@@ -31,7 +31,18 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
 
         public float? TiempoEntrega { get; set; }
 
-        public EstadoOrdenItem? Estado { get; set; }
+        public EstadoOrdenItem? Estado
+        {
+            get
+            {
+
+                if (NroGuia != null && Transportadora != null)
+                {
+                    return EstadoOrdenItem.Enviado;
+                }
+                return EstadoOrdenItem.Pendiente;
+            }
+        }
 
         public DateTime? FechaCreacion { get; set; }
 
