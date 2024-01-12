@@ -57,7 +57,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
 
         public string? NroGuia { get; set; }
 
-        public string? Trasnportadora { get; set; }
+        public string? Transportadora { get; set; }
 
         public string? Descripcion { get; set; }
 
