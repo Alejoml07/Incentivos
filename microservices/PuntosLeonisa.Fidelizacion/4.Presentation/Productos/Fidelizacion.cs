@@ -619,33 +619,29 @@ namespace Usuarioos
         }
 
         [FunctionName("AddNroGuiaYTransportadora")]
-        [OpenApiOperation(operationId: "AddNroGuiaYTransportadora", tags: new[] { "AddNroGuiaYTransportadora" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Actualiza la guia y transportadora")]
+        [OpenApiOperation(operationId: "GetUsuariosRedencionPuntosByEmail", tags: new[] { "AddNroGuiaYTransportadora" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "hace post de la guia y transportadora")]
         public async Task<IActionResult> AddNroGuiaYTransportadora(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "Post", Route = "fidelizacion/AddNroGuiaYTransportadora")] HttpRequest req, ILogger log,string id)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/AddNroGuiaYTransportadora")] HttpRequest req, ILogger log)
         {
 
             log.LogInformation("C# HTTP trigger function processed a request.");
-
             try
-            {
-                if (req is null)
-                {
-                    throw new ArgumentNullException(nameof(req));
-                }
+            { 
 
                 if (log is null)
                 {
-                    throw new ArgumentNullException(nameof(log));   
+                    throw new ArgumentNullException(nameof(log));
                 }
+       
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var data = JsonConvert.DeserializeObject<ProductoRefence>(requestBody);
-                var response = await this.puntosApplication.AddNroGuiaYTransportadora(id,data);
+                var data = JsonConvert.DeserializeObject<AddNroGuiaYTransportadora>(requestBody);
+                var response = await this.puntosApplication.AddNroGuiaYTransportadora(data);
                 return new OkObjectResult(response);
             }
             catch (Exception ex)
             {
-                return GetFunctionError(log, "Error al actualizar el nro de guia y transportadora:" + DateTime.UtcNow.ToString(), ex);
+                return GetFunctionError(log, "Error al obtener las redenciones:" + DateTime.UtcNow.ToString(), ex);
             }
         }
 

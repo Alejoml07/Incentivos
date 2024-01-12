@@ -841,20 +841,20 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
     }
 
-    public async Task<GenericResponse<bool>> AddNroGuiaYTransportadora(string id,ProductoRefence data)
+    public async Task<GenericResponse<bool>> AddNroGuiaYTransportadora(AddNroGuiaYTransportadora data)
     {
 
-        var redenciones = await this.unitOfWork.UsuarioRedencionRepository.GetById(id);
+        var redenciones = await this.unitOfWork.UsuarioRedencionRepository.GetById(data.Id);
         try
         {
             if (redenciones != null)
             {
                 foreach(var redencion in redenciones.ProductosCarrito)
                 {
-                    if(redencion.Id == data.Id)
+                    if(redencion.Id == data.Producto.Id)
                     {
-                        redencion.NroGuia = data.NroGuia;
-                        redencion.Transportadora = data.Transportadora;
+                        redencion.NroGuia = data.Producto.NroGuia;
+                        redencion.Transportadora = data.Producto.Transportadora;
                     }
                     continue;                   
                 }

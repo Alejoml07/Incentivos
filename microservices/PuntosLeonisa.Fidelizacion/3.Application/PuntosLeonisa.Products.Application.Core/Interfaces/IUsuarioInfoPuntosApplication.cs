@@ -23,7 +23,7 @@ namespace PuntosLeonisa.Fidelizacion.Application.Core.Interfaces
         Task<GenericResponse<bool>> CreateRedencion(UsuarioRedencion data);
         Task<GenericResponse<IEnumerable<OrdenDto>>> GetUsuariosRedencionPuntosByProveedor(string proveedor);
         Task<GenericResponse<IEnumerable<OrdenDto>>> GetUsuariosRedencionPuntosByEmail(string email);
-        Task<GenericResponse<bool>> AddNroGuiaYTransportadora(string id,ProductoRefence data);
+        Task<GenericResponse<bool>> AddNroGuiaYTransportadora(AddNroGuiaYTransportadora data);
 
         Task<GenericResponse<bool>> GuardarLiquidacionPuntos(IEnumerable<LiquidacionPuntosDto> data);
 
