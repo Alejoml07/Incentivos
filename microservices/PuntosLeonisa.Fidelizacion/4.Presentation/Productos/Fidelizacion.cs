@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Carrito;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
+using PuntosLeonisa.Fidelizacion.Domain.Model;
 
 namespace Usuarioos
 {
@@ -621,7 +622,7 @@ namespace Usuarioos
         [OpenApiOperation(operationId: "AddNroGuiaYTransportadora", tags: new[] { "AddNroGuiaYTransportadora" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Actualiza la guia y transportadora")]
         public async Task<IActionResult> AddNroGuiaYTransportadora(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "Post", Route = "fidelizacion/AddNroGuiaYTransportadora")] HttpRequest req, ILogger log)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "Post", Route = "fidelizacion/AddNroGuiaYTransportadora")] HttpRequest req, ILogger log,string id)
         {
 
             log.LogInformation("C# HTTP trigger function processed a request.");
@@ -635,11 +636,11 @@ namespace Usuarioos
 
                 if (log is null)
                 {
-                    throw new ArgumentNullException(nameof(log));
+                    throw new ArgumentNullException(nameof(log));   
                 }
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var data = JsonConvert.DeserializeObject<OrdenDto>(requestBody);
-                var response = await this.puntosApplication.AddNroGuiaYTransportadora(data);
+                var data = JsonConvert.DeserializeObject<ProductoRefence>(requestBody);
+                var response = await this.puntosApplication.AddNroGuiaYTransportadora(id,data);
                 return new OkObjectResult(response);
             }
             catch (Exception ex)
@@ -648,7 +649,7 @@ namespace Usuarioos
             }
         }
 
-                
+
     }
 }
 

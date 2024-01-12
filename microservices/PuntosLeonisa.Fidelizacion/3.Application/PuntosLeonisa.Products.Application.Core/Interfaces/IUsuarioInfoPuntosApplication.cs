@@ -2,6 +2,7 @@
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.FidelizacionPuntos;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
+using System.Globalization;
 
 namespace PuntosLeonisa.Fidelizacion.Application.Core.Interfaces
 {
@@ -22,7 +23,7 @@ namespace PuntosLeonisa.Fidelizacion.Application.Core.Interfaces
         Task<GenericResponse<bool>> CreateRedencion(UsuarioRedencion data);
         Task<GenericResponse<IEnumerable<OrdenDto>>> GetUsuariosRedencionPuntosByProveedor(string proveedor);
         Task<GenericResponse<IEnumerable<OrdenDto>>> GetUsuariosRedencionPuntosByEmail(string email);
-        Task<GenericResponse<bool>> AddNroGuiaYTransportadora(ProductoRefence data);
+        Task<GenericResponse<bool>> AddNroGuiaYTransportadora(string id,ProductoRefence data);
 
         Task<GenericResponse<bool>> GuardarLiquidacionPuntos(IEnumerable<LiquidacionPuntosDto> data);
 

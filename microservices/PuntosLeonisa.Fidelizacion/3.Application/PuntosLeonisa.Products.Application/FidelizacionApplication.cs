@@ -841,17 +841,22 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
     }
 
-    public async Task<GenericResponse<bool>> AddNroGuiaYTransportadora(ProductoRefence data)
+    public async Task<GenericResponse<bool>> AddNroGuiaYTransportadora(string id,ProductoRefence data)
     {
 
-        var redenciones = await this.unitOfWork.UsuarioRedencionRepository.GetById(data.Id);
+        var redenciones = await this.unitOfWork.UsuarioRedencionRepository.GetById(id);
         try
         {
             if (redenciones != null)
             {
                 foreach(var redencion in redenciones.ProductosCarrito)
                 {
-                    redencion.NroGuia = data.ProductosCarrito.Where(x => x.Id == redencion.Id).FirstOrDefault()?.NroGuia;
+                    if(redencion.Id == data.Id)
+                    {
+                        redencion.NroGuia = data.NroGuia;
+                        redencion.Transportadora = data.Transportadora;
+                    }
+                    continue;                   
                 }
                 await this.unitOfWork.UsuarioRedencionRepository.Update(redenciones);
                 await this.unitOfWork.SaveChangesAsync();
