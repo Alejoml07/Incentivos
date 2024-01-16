@@ -40,8 +40,8 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
                     return EstadoOrden.Pendiente;
                 }
                 var total = ProductosCarrito.Count();
-
-                if (ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Enviado) && total > 1)
+                var totalEnviados2 = ProductosCarrito.Count(p => p.Estado == EstadoOrdenItem.Enviado);
+                if (ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Enviado) && total > 1 && totalEnviados2 != total)
                 {
                     return EstadoOrden.EnvioParcial;
                 }

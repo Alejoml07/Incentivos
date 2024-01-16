@@ -9,6 +9,7 @@ namespace PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios
     public  class UsuarioResponseLiteDto
     {
         public string? Nombres { get; set; }
+
         public string? Cedula { get; set; }
 
         public string? Apellidos { get; set; }
@@ -16,6 +17,8 @@ namespace PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios
         public string? Celular { get; set; }
 
         public string? Genero { get; set; }
+
+        public string? TipoUsuario { get; set; }
 
         public string? Email { get; set; }
 

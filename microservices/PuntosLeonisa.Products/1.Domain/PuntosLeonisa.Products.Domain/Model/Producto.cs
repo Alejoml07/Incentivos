@@ -23,7 +23,9 @@ public class Producto :IDisposable
     public float? TiempoEntrega { get; set; }
 
     public string? Estado { get; set; }
- 
+
+    public string? Roles { get; set; }
+
     public DateTime? FechaCreacion { get; set; }
 
     public string? ImagenPrincipal { get; set; }

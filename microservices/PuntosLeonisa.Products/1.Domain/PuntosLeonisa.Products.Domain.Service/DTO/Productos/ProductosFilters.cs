@@ -8,7 +8,7 @@ namespace PuntosLeonisa.Products.Domain.Service.DTO.Productos
 {
     public class ProductosFilters
     {
-
+        public string? TipoUsuario { get; set; }
         public string OrderMode { get; set; } = "ASC";
         public string OrderBy { get; set; } = "Nombre";
 

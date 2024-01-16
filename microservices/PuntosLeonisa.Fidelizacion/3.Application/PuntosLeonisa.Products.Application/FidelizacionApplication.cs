@@ -840,7 +840,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
     }
 
-    public async Task<GenericResponse<bool>> AddNroGuiaYTransportadora(AddNroGuiaYTransportadora data)
+    public async Task<GenericResponse<AddNroGuiaYTransportadora>> AddNroGuiaYTransportadora(AddNroGuiaYTransportadora data)
     {
 
         var redenciones = await this.unitOfWork.UsuarioRedencionRepository.GetById(data.Id);
@@ -854,28 +854,26 @@ public class FidelizacionApplication : IFidelizacionApplication
                     {
                         redencion.NroGuia = data.Producto.NroGuia;
                         redencion.Transportadora = data.Producto.Transportadora;
-                    }
-                    continue;                   
+                        break;
+                    }                 
                 }
                 await this.unitOfWork.UsuarioRedencionRepository.Update(redenciones);
                 await this.unitOfWork.SaveChangesAsync();
-                return new GenericResponse<bool>
+                return new GenericResponse<AddNroGuiaYTransportadora>
                 {
-                    Result = true
-                };
-            }
-            return new GenericResponse<bool>
-            {
-                Result = false
-            };
 
+                    Result = data
+                };
+               
+            }
+            return null;
         }
         catch (Exception)
         {
             throw;
         }
 
-    }
+    } 
 
     public Task<GenericResponse<OrdenDto>> GetUsuariosRedencionPuntosById(string id)
     {

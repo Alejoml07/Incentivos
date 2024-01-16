@@ -51,7 +51,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
 
         public string? Nombre { get; set; }
 
-        public string? Estado { get; set; }
+        public EstadoOrdenItem? Estado { get; set; }
 
         public int? Cantidad { get; set; }
 
