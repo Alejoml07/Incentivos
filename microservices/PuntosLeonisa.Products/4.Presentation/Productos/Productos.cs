@@ -18,6 +18,9 @@ namespace Productos
     using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
     using System.Net;
     using PuntosLeonisa.Products.Domain.Service.DTO.Productos;
+    using Microsoft.Extensions.Primitives;
+    using System.Linq;
+
     public class Productos
     {
         private readonly IProductApplication productoApplication;
@@ -320,10 +323,22 @@ namespace Productos
                     throw new ArgumentNullException(nameof(log));
                 }
 
+                foreach (var header in req.Headers)
+                {
+                    log.LogInformation($"{header.Key}: {header.Value}");
+                }
+
+                string tipoUsuario = string.Empty;
+                if (req.Headers.TryGetValue("Type", out StringValues tuEncabezadoValues))
+                {
+                    tipoUsuario = tuEncabezadoValues.FirstOrDefault();
+                }
+
                 log.LogInformation($"Product:ObtenerFiltros Inicia obtener todos los filtros. Fecha:{DateTime.UtcNow}");
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var generalFiltersWithResponses = JsonConvert.DeserializeObject<GeneralFiltersWithResponseDto>(requestBody);
 
+                var generalFiltersWithResponses = JsonConvert.DeserializeObject<GeneralFiltersWithResponseDto>(requestBody);
+                generalFiltersWithResponses.ApplyFiltro.TipoUsuario = tipoUsuario;
                 var filtros = await productoApplication.GetAndApplyFilters(generalFiltersWithResponses);
                 log.LogInformation($"Product:ObtenerFiltros finaliza obtener todos los filtros sin errores. Fecha:{DateTime.UtcNow}");
                 return new OkObjectResult(filtros);

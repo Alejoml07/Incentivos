@@ -26,6 +26,8 @@ namespace PuntosLeonisa.Products.Domain.Service.DTO.Productos
 
         public string? Estado { get; set; }
 
+        public string? Roles { get; set; }
+
         public DateTime? FechaCreacion { get; set; }
 
         public string? ImagenPrincipal { get; set; }
