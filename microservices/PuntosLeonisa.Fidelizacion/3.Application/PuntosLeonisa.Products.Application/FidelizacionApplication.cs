@@ -25,6 +25,7 @@ public class FidelizacionApplication : IFidelizacionApplication
     private readonly IUsuarioExternalService usuarioExternalService;
     private readonly IUnitOfWork unitOfWork;
     private readonly IUsuarioInfoPuntosApplication usuarioInfoPuntosApplication;
+
     private readonly GenericResponse<Carrito> response3;
     private readonly GenericResponse<SmsDto> response4;
     public FidelizacionApplication(IMapper mapper,
