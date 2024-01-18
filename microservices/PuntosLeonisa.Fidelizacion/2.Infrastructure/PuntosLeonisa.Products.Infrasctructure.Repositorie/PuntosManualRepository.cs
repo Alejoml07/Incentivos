@@ -4,9 +4,9 @@ using PuntosLeonisa.Fidelizacion.Domain.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
 
 namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie;
-public class PuntosManualRepository : Repository<PuntosManual>, IPuntosManualRepository
+public class MovimientoPuntosRepository : Repository<MovimientoPuntos>, IMovimientoPuntosRepository
 {
-    public PuntosManualRepository(FidelizacionContext context) : base(context)
+    public MovimientoPuntosRepository(FidelizacionContext context) : base(context)
     {
     }
 }

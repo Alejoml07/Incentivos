@@ -49,7 +49,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         try
         {
             //TODO: Hacer las validaciones
-            var puntos = mapper.Map<PuntosManual>(value);
+            var puntos = mapper.Map<MovimientoPuntos>(value);
             await this.unitOfWork.PuntosRepository.Add(puntos);
             await this.unitOfWork.SaveChangesAsync();
             response.Result = value;
@@ -66,7 +66,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         try
         {
             var usersByEmail = new List<Usuario>();
-            var puntos = new List<PuntosManual>();
+            var puntos = new List<MovimientoPuntos>();
 
             foreach (var punto in value)
             {
@@ -74,7 +74,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                 if (usersByEmail.Any(x => x.Cedula == punto.Cedula))
                 {
                     var puntosUsuarioExistente = usersByEmail.Where(x => x.Cedula == punto.Cedula).FirstOrDefault();
-                    puntos.Add(new PuntosManual
+                    puntos.Add(new MovimientoPuntos
                     {
                         Id = Guid.NewGuid().ToString(),
                         Puntos = punto.Puntos,
@@ -98,7 +98,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                     {
                         var user = mapper.Map<Usuario>(response.Result);
                         usersByEmail.Add(user);
-                        puntos.Add(new PuntosManual
+                        puntos.Add(new MovimientoPuntos
                         {
                             Id = Guid.NewGuid().ToString(),
                             Puntos = punto.Puntos,
@@ -308,7 +308,7 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
-            await this.unitOfWork.PuntosRepository.Delete(mapper.Map<PuntosManual>(value));
+            await this.unitOfWork.PuntosRepository.Delete(mapper.Map<MovimientoPuntos>(value));
             response.Result = value;
             return response;
         }

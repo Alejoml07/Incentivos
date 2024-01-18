@@ -17,8 +17,8 @@ namespace PuntosLeonisa.Seguridad.Domain.Service.Mapping
             //Producto
             CreateMap<Usuario, UsuarioDto>();
             CreateMap<UsuarioDto, Usuario>();
-            CreateMap <PuntosManual,PuntosManualDto>();
-            CreateMap<PuntosManualDto, PuntosManual>();
+            CreateMap <MovimientoPuntos,PuntosManualDto>();
+            CreateMap<PuntosManualDto, MovimientoPuntos>();
             CreateMap<UsuarioRedencion, OrdenDto>();
             CreateMap<ProductoRefence, ProductoCarritoLite>();
             CreateMap<ProductoCarritoLite, ProductoRefence>();

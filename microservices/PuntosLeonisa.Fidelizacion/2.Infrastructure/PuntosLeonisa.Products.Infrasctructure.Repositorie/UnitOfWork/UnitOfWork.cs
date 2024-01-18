@@ -8,7 +8,7 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly FidelizacionContext _fidelizacionContext;
     private IUsuarioInfoPuntosRepository _usuarioInfoPuntosRepository;
-    private IPuntosManualRepository _puntosRepository;
+    private IMovimientoPuntosRepository _puntosRepository;
     private ICarritoRepository _carritoRepository;
     private IWishListRepository _wishListRepository;
     private ISmsRepository _smsRepository;
@@ -28,11 +28,11 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    public IPuntosManualRepository PuntosRepository
+    public IMovimientoPuntosRepository PuntosRepository
     {
         get
         {
-            _puntosRepository ??= new PuntosManualRepository(_fidelizacionContext);
+            _puntosRepository ??= new MovimientoPuntosRepository(_fidelizacionContext);
             return _puntosRepository;
         }
     }

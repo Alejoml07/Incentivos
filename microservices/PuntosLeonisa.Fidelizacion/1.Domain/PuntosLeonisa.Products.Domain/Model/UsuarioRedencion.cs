@@ -95,11 +95,12 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
         }
         public string GenerarHTML()
         {
+            var imgUrl = "https://puntosleonisa.web.app/assets/images/MSAUC.png";
             var sb = new StringBuilder();
 
             sb.Append("<!DOCTYPE html><html lang=\"es\">");
             sb.Append("<head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Tabla para Redimir</title>");
-            sb.Append(" <style>\r\n        /* Estilos opcionales para el cuerpo de la página */\r\n        body {\r\n            font-family: Merriweather;\r\n            background-color: white;\r\n            margin: 0;\r\n            padding: 20px;\r\n        }\r\n\r\n        .tabla-estilizada {\r\n            border-collapse: collapse;\r\n            width: 90%;\r\n            margin: auto;\r\n            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);\r\n            border-radius: 10px;\r\n            overflow: hidden;\r\n        }\r\n\r\n        .encabezado-tabla {\r\n            background-color: #02376b;\r\n            color: white;\r\n            text-align: center;\r\n            padding: 0.5rem;\r\n            font-weight: bold;\r\n            border: 1px solid #000000;\r\n            /* Borde para las celdas del encabezado */\r\n        }\r\n\r\n        .celda-tabla {\r\n            background-color: white;\r\n            text-align: center;\r\n            padding: 0.5rem;\r\n            border: 1px solid #000000;\r\n            /* Borde para las celdas normales */\r\n        }\r\n\r\n        th,\r\n        td {\r\n            border: 1px solid #000000;\r\n            /* Borde para todas las celdas */\r\n            font-weight: bold;\r\n            /* Texto en negrita para todas las celdas */\r\n        }\r\n    </style>");
+            sb.Append(" <style>\r\n        /* Estilos opcionales para el cuerpo de la página */\r\n        body {\r\n            font-family: Merriweather;\r\n            background-color: white;\r\n            margin: 0;\r\n            padding: 20px;\r\n        }\r\n\r\n        .tabla-estilizada {\r\n            border-collapse: collapse;\r\n            width: 90%;\r\n            margin: auto;\r\n            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);\r\n            border-radius: 10px;\r\n            overflow: hidden;\r\n        }\r\n\r\n        .encabezado-tabla {\r\n            background-color: #BE5BD9;\r\n            color: white;\r\n            text-align: center;\r\n            padding: 0.5rem;\r\n            font-weight: bold;\r\n            border: 1px solid #000000;\r\n            /* Borde para las celdas del encabezado */\r\n        }\r\n\r\n        .celda-tabla {\r\n            background-color: white;\r\n            text-align: center;\r\n            padding: 0.5rem;\r\n            border: 1px solid #000000;\r\n            /* Borde para las celdas normales */\r\n        }\r\n\r\n        th,\r\n        td {\r\n            border: 1px solid #000000;\r\n            /* Borde para todas las celdas */\r\n            font-weight: bold;\r\n            /* Texto en negrita para todas las celdas */\r\n        }\r\n    </style>");
             sb.Append("</head>");
             sb.Append("<body>");
 
@@ -108,7 +109,8 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
             sb.Append("<!-- Aquí puedes agregar cualquier otro contenido HTML antes de la tabla -->");
 
             sb.Append("<div style=\"padding: 5%;\" class=\"\">");
-            sb.Append("<img src=\"https://stgactincentivos.blob.core.windows.net/$web/img/mis%20sue%C3%B1os%20a%20un%20clic.svg?sp=r&st=2023-12-19T16:00:18Z&se=2023-12-20T00:00:18Z&spr=https&sv=2022-11-02&sr=b&sig=oZC6y4Uw3sH9%2FjTNNYgxzDqxQfKzqZAeS6clt92IS6Y%3D\" style=\"width: 100%; margin: auto; display: block;\">");
+            //agregar imagen al correo
+            sb.Append($"<img src=\"{imgUrl}\">");
             sb.Append("</div>");
 
 

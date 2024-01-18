@@ -3,7 +3,7 @@ using PuntosLeonisa.Products.Domain.Model;
 
 namespace PuntosLeonisa.Fidelizacion.Domain.Model
 {
-    public class PuntosManual : IDisposable
+    public class MovimientoPuntos : IDisposable
     {
         public string? Id { get; set; }
 

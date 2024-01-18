@@ -37,7 +37,7 @@ namespace Productos
             builder.Services.AddDbContext<FidelizacionContext>(x => x.UseCosmos(stringConnection, bd));
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            builder.Services.AddScoped<IPuntosManualRepository, PuntosManualRepository>();
+            builder.Services.AddScoped<IMovimientoPuntosRepository, MovimientoPuntosRepository>();
             builder.Services.AddScoped<IWishListRepository, WishListRepository>();
             builder.Services.AddScoped<ICarritoRepository, CarritoRepository>();
             builder.Services.AddScoped<IUsuarioInfoPuntosRepository, UsuarioInfoPuntosRepository>();

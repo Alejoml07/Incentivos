@@ -22,7 +22,7 @@ public class FidelizacionContext : DbContext, IDisposable
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new PuntosManualConfiguration());
+        modelBuilder.ApplyConfiguration(new MovimientoPuntosConfiguration());
         modelBuilder.ApplyConfiguration(new WishListConfiguration());
         modelBuilder.ApplyConfiguration(new CarritoConfiguration());
         modelBuilder.ApplyConfiguration(new UsuarioInfoPuntosConfuguration());

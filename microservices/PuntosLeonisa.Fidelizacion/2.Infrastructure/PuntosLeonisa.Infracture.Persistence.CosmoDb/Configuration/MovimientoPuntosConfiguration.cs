@@ -4,11 +4,11 @@ using PuntosLeonisa.Fidelizacion.Domain.Model;
 
 namespace PuntosLeonisa.Infrasctructure.Core.Configuration
 {
-    public class PuntosManualConfiguration : IEntityTypeConfiguration<PuntosManual>
+    public class MovimientoPuntosConfiguration : IEntityTypeConfiguration<MovimientoPuntos>
     {
-        public void Configure(EntityTypeBuilder<PuntosManual> builder)
+        public void Configure(EntityTypeBuilder<MovimientoPuntos> builder)
         {
-            builder.ToContainer("PuntosManuales")
+            builder.ToContainer("MovimientoPuntos")
                 .HasPartitionKey(e => e.Id);
         }
 
