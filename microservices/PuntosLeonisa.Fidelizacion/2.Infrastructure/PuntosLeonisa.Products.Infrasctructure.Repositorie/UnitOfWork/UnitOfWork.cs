@@ -12,7 +12,8 @@ public class UnitOfWork : IUnitOfWork
     private ICarritoRepository _carritoRepository;
     private IWishListRepository _wishListRepository;
     private ISmsRepository _smsRepository;
-    private IUsuarioRedencionRepository  _usuarioRedencionRepository;
+    private IFidelizacionPuntosRepository _fidelizacionPuntosRepository;
+    private IUsuarioRedencionRepository _usuarioRedencionRepository;
 
     public UnitOfWork(FidelizacionContext fidelizacionContext)
     {
@@ -73,7 +74,14 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    public IFidelizacionPuntosRepository FidelizacionPuntosRepository => throw new NotImplementedException();
+    public IFidelizacionPuntosRepository FidelizacionPuntosRepository
+    {
+        get
+        {
+            _fidelizacionPuntosRepository ??= new FidelizacionPuntosRepository(_fidelizacionContext);
+            return _fidelizacionPuntosRepository;
+        }
+    }
 
     public void SaveChangesSync()
     {

@@ -95,7 +95,7 @@ namespace PuntosLeonisa.Seguridad.Function
                     { "sub", email },
                     { "aud", audience },
                     { "iss", issuer },
-                    { "exp", DateTimeOffset.UtcNow.AddHours(2).ToUnixTimeSeconds() }
+                    { "exp", DateTimeOffset.UtcNow.AddMinutes(1).ToUnixTimeSeconds() }
                 };
 
             var secretKey = Convert.ToBase64String(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("keySecret") ?? "defaultSecret")); // Clave secreta

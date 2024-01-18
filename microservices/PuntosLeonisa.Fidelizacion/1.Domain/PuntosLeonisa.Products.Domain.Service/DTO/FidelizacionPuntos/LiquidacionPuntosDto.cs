@@ -11,6 +11,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.FidelizacionPuntos
     {
 
         public string Cedula { get; set; }
+        public Usuario Usuario { get; set; }
         public string Id_User { get; set; }
 
         public int Mes { get; set; }

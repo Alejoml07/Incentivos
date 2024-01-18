@@ -13,6 +13,11 @@ namespace ApiGateway.Middlerware
                 byte[] secretKeyBytes = Encoding.UTF8.GetBytes(Convert.ToBase64String(Encoding.UTF8.GetBytes(secretKey))); // Clave secreta
 
                 var payload =  JWT.Decode(token, secretKeyBytes);
+                if// vallidar expiracion
+                    (DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(JsonConvert.DeserializeObject<Dictionary<string, object>>(payload)["exp"])) < DateTimeOffset.Now)
+                {
+                    return false;
+                }
                 // Aquí puedes añadir lógica adicional para validar los claims, expiración, etc.
                 var payLoadDeserialize = JsonConvert.DeserializeObject<Dictionary<string, object>>(payload);
                 // añadi a los headers de la request el id del usuario

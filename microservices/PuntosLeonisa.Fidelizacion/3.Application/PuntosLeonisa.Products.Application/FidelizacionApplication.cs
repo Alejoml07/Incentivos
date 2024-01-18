@@ -871,14 +871,19 @@ public class FidelizacionApplication : IFidelizacionApplication
         {
             if (redenciones != null)
             {
-                foreach(var redencion in redenciones.ProductosCarrito)
+                foreach (var redencion in redenciones.ProductosCarrito)
                 {
-                    if(redencion.Id == data.Producto.Id)
+                    if (redencion.Id == data.Producto.Id)
                     {
                         redencion.NroGuia = data.Producto.NroGuia;
                         redencion.Transportadora = data.Producto.Transportadora;
+<<<<<<< Updated upstream
                         break;
                     }                 
+=======
+                    }
+                    continue;
+>>>>>>> Stashed changes
                 }
                 await this.unitOfWork.UsuarioRedencionRepository.Update(redenciones);
                 await this.unitOfWork.SaveChangesAsync();
@@ -904,6 +909,46 @@ public class FidelizacionApplication : IFidelizacionApplication
     }
 
     public Task<GenericResponse<bool>> GuardarLiquidacionPuntos(IEnumerable<LiquidacionPuntosDto> data)
+    {
+        try
+        {
+            foreach (var item in data)
+            {
+                var usuario = this.usuarioExternalService.GetUserLiteByCedula(item.Cedula).GetAwaiter().GetResult();
+                if (usuario.IsSuccess)
+                    item.Usuario = usuario.Result;
+                else
+                    continue;
+            }
+
+            this.unitOfWork.FidelizacionPuntosRepository.AddRange(data.Select(x => new FidelizacionPuntos
+            {
+                Id = Guid.NewGuid().ToString(),
+                Anho = x.Anho,
+                Mes = x.Mes,
+                Porcentaje = x.Porcentaje,
+                Puntos = x.Puntos,
+                Publico = x.Publico,
+                Id_Variable = x.Id_Variable,
+                Usuario = x.Usuario
+            }).ToArray());
+
+            this.unitOfWork.SaveChangesSync();
+
+            return Task.FromResult(new GenericResponse<bool>
+            {
+                Result = true
+            });
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+
+    public Task<GenericResponse<bool>> AddNroGuiaYTransportadora(OrdenDto data)
     {
         throw new NotImplementedException();
     }

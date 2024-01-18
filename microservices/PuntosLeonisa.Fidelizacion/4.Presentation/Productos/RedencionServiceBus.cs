@@ -52,7 +52,6 @@ namespace PuntosLeonisa.Fidelizacion.Function
                 var serviceBusClient = new QueueClient(connectionString, queueName);
                  
                 var message = new Message(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data)));
-
                
 
                 await serviceBusClient.SendAsync(message);

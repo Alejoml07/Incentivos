@@ -18,6 +18,7 @@ public interface IFidelizacionApplication : IApplicationCore<PuntosManualDto>, I
     Task<bool> CarritoDeleteById(string id);
     Task<GenericResponse<IEnumerable<Carrito>>> CarritoGetByUser(string id);
     Task<GenericResponse<bool>> ValidateCodeRedencion(SmsDto data);
+
    
 }
 
