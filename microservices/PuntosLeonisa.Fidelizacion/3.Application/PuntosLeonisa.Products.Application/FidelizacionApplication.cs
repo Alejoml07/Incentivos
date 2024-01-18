@@ -10,6 +10,7 @@ using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
 using PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Helpers;
+using PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie;
 using PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces;
 using PuntosLeonisa.Products.Domain.Model;
 using PuntosLeonisa.Seguridad.Application.Core;
@@ -209,10 +210,21 @@ public class FidelizacionApplication : IFidelizacionApplication
         {
             if (carrito.Id == null)
             {
-
                 carrito.Id = Guid.NewGuid().ToString();
                 await this.unitOfWork.CarritoRepository.Add(carrito);
-                await this.unitOfWork.SaveChangesAsync();
+                //await this.unitOfWork.SaveChangesAsync();
+                //agregar a usuarioinfo puntos
+                var usuarioInfoPuntos = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(carrito.User.Email);
+                if (usuarioInfoPuntos != null)
+                {
+                    usuarioInfoPuntos.PuntosEnCarrito += (int)carrito.Product.Puntos * carrito.Product.Quantity;                    
+                    await this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuarioInfoPuntos);
+                    await this.unitOfWork.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new Exception("Usuario no encontrado");
+                }   
                 response3.Result = carrito;
                 return response3;
             }
@@ -224,6 +236,17 @@ public class FidelizacionApplication : IFidelizacionApplication
                 {
                     mapper.Map(carrito, carritoToUpdate);
                     await this.unitOfWork.CarritoRepository.Update(carritoToUpdate);
+                    var usuarioInfoPuntos = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(carrito.User.Email);
+                    if (usuarioInfoPuntos != null)
+                    {
+                        usuarioInfoPuntos.PuntosEnCarrito += (int?)carrito.Product?.Puntos * carrito.Product?.Quantity;
+                        await this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuarioInfoPuntos);
+                        await this.unitOfWork.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        throw new Exception("Usuario no encontrado");
+                    }
                     response3.Result = carrito;
                     return response3;
                 }
@@ -232,6 +255,8 @@ public class FidelizacionApplication : IFidelizacionApplication
                     throw new Exception("Carrito no encontrado");
                 }
             }
+
+
         }
         catch (Exception)
         {
@@ -275,7 +300,6 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
         catch (Exception)
         {
-
             throw;
         }
     }
@@ -622,7 +646,6 @@ public class FidelizacionApplication : IFidelizacionApplication
 
     }
 
-
     public async Task<GenericResponse<SmsDto>> SaveCodeAndSendSms(SmsDto data)
     {
         try
@@ -677,7 +700,6 @@ public class FidelizacionApplication : IFidelizacionApplication
         return data;
 
     }
-
     public async Task<GenericResponse<bool>> ValidateCodeRedencion(SmsDto data)
     {
         try

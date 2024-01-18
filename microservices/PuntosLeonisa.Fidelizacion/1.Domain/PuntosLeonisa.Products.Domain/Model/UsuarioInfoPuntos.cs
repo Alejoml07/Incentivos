@@ -11,7 +11,7 @@
         public string? Email { get; set; }
 
         public int? PuntosDisponibles { get; set; }
-        public int? PuntosEnCarrito { get; set; }
+        public float? PuntosEnCarrito { get; set; }
         public int? PuntosRedimidos { get; set; }
 
         public int? PuntosAcumulados { get; set; }

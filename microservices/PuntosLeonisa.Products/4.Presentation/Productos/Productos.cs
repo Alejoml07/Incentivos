@@ -341,6 +341,7 @@ namespace Productos
                 generalFiltersWithResponses.ApplyFiltro.TipoUsuario = tipoUsuario;
                 var filtros = await productoApplication.GetAndApplyFilters(generalFiltersWithResponses);
                 log.LogInformation($"Product:ObtenerFiltros finaliza obtener todos los filtros sin errores. Fecha:{DateTime.UtcNow}");
+                
                 return new OkObjectResult(filtros);
             }
             catch (Exception ex)

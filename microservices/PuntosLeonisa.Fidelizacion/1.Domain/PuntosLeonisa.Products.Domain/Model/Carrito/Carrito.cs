@@ -11,6 +11,5 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Carrito
 
         public ProductoRefence Product { get; set; }
 
-        public string Cantidad { get; set; }
     }
 }
