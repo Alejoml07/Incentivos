@@ -17,6 +17,7 @@ using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Carrito;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.MovimientoPuntos;
 
 namespace Usuarioos
 {
@@ -637,6 +638,33 @@ namespace Usuarioos
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var data = JsonConvert.DeserializeObject<AddNroGuiaYTransportadora>(requestBody);
                 var response = await this.puntosApplication.AddNroGuiaYTransportadora(data);
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener las redenciones:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("DevolucionPuntosYCancelarEstado")]
+        [OpenApiOperation(operationId: "DevolucionPuntosYCancelarEstado", tags: new[] { "DevolucionPuntosYCancelarEstado" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Devuelve los puntos redimidos al cancelarlos")]
+        public async Task<IActionResult> DevolucionPuntosYCancelarEstado(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/DevolucionPuntosYCancelarEstado")] HttpRequest req, ILogger log)
+        {
+
+            log.LogInformation("C# HTTP trigger function processed a request.");
+            try
+            {
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<DevolucionPuntosDto>(requestBody);
+                var response = await this.puntosApplication.DevolucionPuntosYCancelarEstado(data);
                 return new OkObjectResult(response);
             }
             catch (Exception ex)

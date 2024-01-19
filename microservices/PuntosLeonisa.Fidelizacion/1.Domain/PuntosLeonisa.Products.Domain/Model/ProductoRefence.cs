@@ -42,6 +42,10 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
                 }
                 return EstadoOrdenItem.Pendiente;
             }
+            set
+            {
+                Estado = value;
+            }
         }
 
         public DateTime? FechaCreacion { get; set; }

@@ -5,6 +5,7 @@ using PuntosLeonisa.Fidelizacion.Application.Core.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Carrito;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.FidelizacionPuntos;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.MovimientoPuntos;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
 using PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork;
@@ -14,6 +15,7 @@ using PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie;
 using PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces;
 using PuntosLeonisa.Products.Domain.Model;
 using PuntosLeonisa.Seguridad.Application.Core;
+using System.Data;
 
 namespace PuntosLeonisa.Fidelizacion.Application;
 
@@ -950,4 +952,48 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         throw new NotImplementedException();
     }
+
+    public async Task<GenericResponse<int>> DevolucionPuntosYCancelarEstado(DevolucionPuntosDto data)
+    {
+        var ordenes = await this.unitOfWork.UsuarioRedencionRepository.GetById(data.Id);
+        var puntos = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(data.Email);
+
+        try
+        {
+            if (ordenes != null)
+            {
+                EstadoOrdenItem? estadoRedencion = null;
+
+                foreach (var orden in ordenes.ProductosCarrito)
+                {
+                    if (orden.Id == data.Producto.Id)
+                    {
+                        orden.Estado = EstadoOrdenItem.Cancelado;
+                        estadoRedencion = orden.Estado; 
+                        puntos.PuntosDisponibles += data.PuntosADevolver;
+                        puntos.PuntosRedimidos -= data.PuntosADevolver;
+                        puntos.PuntosAcumulados -= data.PuntosADevolver;
+                        break;
+                    }
+                }
+       
+                    await this.unitOfWork.UsuarioRedencionRepository.Update(ordenes);
+                    await this.unitOfWork.UsuarioInfoPuntosRepository.Update(puntos);
+                    await this.unitOfWork.SaveChangesAsync();
+
+                    return new GenericResponse<int>
+                    {
+                        Result = (int)estadoRedencion.Value
+                    };               
+            }
+
+            return null;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+
 }
