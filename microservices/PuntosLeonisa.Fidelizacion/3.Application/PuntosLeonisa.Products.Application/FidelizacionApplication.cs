@@ -877,13 +877,11 @@ public class FidelizacionApplication : IFidelizacionApplication
                     {
                         redencion.NroGuia = data.Producto.NroGuia;
                         redencion.Transportadora = data.Producto.Transportadora;
-<<<<<<< Updated upstream
+
                         break;
-                    }                 
-=======
-                    }
+                    }                                     
                     continue;
->>>>>>> Stashed changes
+
                 }
                 await this.unitOfWork.UsuarioRedencionRepository.Update(redenciones);
                 await this.unitOfWork.SaveChangesAsync();
