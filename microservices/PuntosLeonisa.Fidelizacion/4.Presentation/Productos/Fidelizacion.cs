@@ -61,7 +61,7 @@ namespace Usuarioos
 
         [FunctionName("GetPuntos")]
         [OpenApiOperation(operationId: "GetPuntos", tags: new[] { "GetPuntos" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los usuarios")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Lista de puntos")]
         public async Task<IActionResult> GetPuntos(
            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
            ILogger log)

@@ -387,7 +387,7 @@ public class FidelizacionApplication : IFidelizacionApplication
 
     public async Task<GenericResponse<IEnumerable<PuntosManualDto>>> GetAll()
     {
-        var puntos = await this.unitOfWork.UsuarioInfoPuntosRepository.GetAll();
+        var puntos = await this.unitOfWork.PuntosRepository.GetAll();
         var puntosDto = mapper.Map<PuntosManualDto[]>(puntos);
         var responseOnly = new GenericResponse<IEnumerable<PuntosManualDto>>
         {

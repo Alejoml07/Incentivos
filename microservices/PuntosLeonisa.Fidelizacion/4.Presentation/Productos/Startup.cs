@@ -43,6 +43,7 @@ namespace Productos
             builder.Services.AddScoped<IUsuarioInfoPuntosRepository, UsuarioInfoPuntosRepository>();
             builder.Services.AddScoped<IFidelizacionApplication, FidelizacionApplication>();
 
+
         }
     }
 }
