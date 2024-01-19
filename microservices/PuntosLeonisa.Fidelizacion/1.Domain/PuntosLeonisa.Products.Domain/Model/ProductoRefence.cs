@@ -33,19 +33,17 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
 
         public EstadoOrdenItem? Estado
         {
-            get
-            {
+            get;
+            //{
 
-                if (NroGuia != null && Transportadora != null)
-                {
-                    return EstadoOrdenItem.Enviado;
-                }
-                return EstadoOrdenItem.Pendiente;
-            }
-            set
-            {
-                Estado = value;
-            }
+            //    if (NroGuia != null && Transportadora != null)
+            //    {
+            //        return EstadoOrdenItem.Enviado;
+            //    }
+            //    return EstadoOrdenItem.Pendiente;
+            //}
+            set;
+           
         }
 
         public DateTime? FechaCreacion { get; set; }

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Newtonsoft.Json.Linq;
 using PuntosLeonisa.fidelizacion.Domain.Service.DTO.PuntosManuales;
 using PuntosLeonisa.Fidelizacion.Application.Core.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
@@ -11,7 +10,6 @@ using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
 using PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Helpers;
-using PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie;
 using PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces;
 using PuntosLeonisa.Products.Domain.Model;
 using PuntosLeonisa.Seguridad.Application.Core;
@@ -220,14 +218,14 @@ public class FidelizacionApplication : IFidelizacionApplication
                 var usuarioInfoPuntos = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(carrito.User.Email);
                 if (usuarioInfoPuntos != null)
                 {
-                    usuarioInfoPuntos.PuntosEnCarrito += (int)carrito.Product.Puntos * carrito.Product.Quantity;                    
+                    usuarioInfoPuntos.PuntosEnCarrito += (int)carrito.Product.Puntos * carrito.Product.Quantity;
                     await this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuarioInfoPuntos);
                     await this.unitOfWork.SaveChangesAsync();
                 }
                 else
                 {
                     throw new Exception("Usuario no encontrado");
-                }   
+                }
                 response3.Result = carrito;
                 return response3;
             }
@@ -881,7 +879,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                         redencion.Transportadora = data.Producto.Transportadora;
 
                         break;
-                    }                                     
+                    }
                     continue;
 
                 }
@@ -892,7 +890,7 @@ public class FidelizacionApplication : IFidelizacionApplication
 
                     Result = data
                 };
-               
+
             }
             return null;
         }
@@ -901,7 +899,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             throw;
         }
 
-    } 
+    }
 
     public Task<GenericResponse<OrdenDto>> GetUsuariosRedencionPuntosById(string id)
     {
@@ -962,29 +960,26 @@ public class FidelizacionApplication : IFidelizacionApplication
         {
             if (ordenes != null)
             {
-                EstadoOrdenItem? estadoRedencion = null;
 
                 foreach (var orden in ordenes.ProductosCarrito)
                 {
                     if (orden.Id == data.Producto.Id)
                     {
                         orden.Estado = EstadoOrdenItem.Cancelado;
-                        estadoRedencion = orden.Estado; 
                         puntos.PuntosDisponibles += data.PuntosADevolver;
                         puntos.PuntosRedimidos -= data.PuntosADevolver;
-                        puntos.PuntosAcumulados -= data.PuntosADevolver;
                         break;
                     }
                 }
-       
-                    await this.unitOfWork.UsuarioRedencionRepository.Update(ordenes);
-                    await this.unitOfWork.UsuarioInfoPuntosRepository.Update(puntos);
-                    await this.unitOfWork.SaveChangesAsync();
 
-                    return new GenericResponse<int>
-                    {
-                        Result = (int)estadoRedencion.Value
-                    };               
+                await this.unitOfWork.UsuarioRedencionRepository.Update(ordenes);
+                await this.unitOfWork.UsuarioInfoPuntosRepository.Update(puntos);
+                await this.unitOfWork.SaveChangesAsync();
+
+                return new GenericResponse<int>
+                {
+                    Result = (int)EstadoOrdenItem.Cancelado
+                };
             }
 
             return null;

@@ -32,49 +32,50 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
 
         public EstadoOrden? Estado
         {
-            get
-            {
-                    
-                if(ProductosCarrito == null)
-                {
-                    return EstadoOrden.Pendiente;
-                }
-                var total = ProductosCarrito.Count();
-                var totalEnviados2 = ProductosCarrito.Count(p => p.Estado == EstadoOrdenItem.Enviado);
-                if (ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Enviado) && total > 1 && totalEnviados2 != total)
-                {
-                    return EstadoOrden.EnvioParcial;
-                }
+            get;
+            //{                    
+                //if(ProductosCarrito == null)
+                //{
+                //    return EstadoOrden.Pendiente;
+                //}
+                //var total = ProductosCarrito.Count();
+                //var totalEnviados2 = ProductosCarrito.Count(p => p.Estado == EstadoOrdenItem.Enviado);
+                //if (ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Enviado) && total > 1 && totalEnviados2 != total)
+                //{
+                //    return EstadoOrden.EnvioParcial;
+                //}
 
 
-                if (ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Pendiente))
-                {
-                    return EstadoOrden.Pendiente;
-                }
+                //if (ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Pendiente))
+                //{
+                //    return EstadoOrden.Pendiente;
+                //}
 
-                var totalEnviados = ProductosCarrito.Count(p => p.Estado == EstadoOrdenItem.Enviado);
+                //var totalEnviados = ProductosCarrito.Count(p => p.Estado == EstadoOrdenItem.Enviado);
 
-                if (totalEnviados == ProductosCarrito.Count())
-                {
-                    return EstadoOrden.Enviado;
-                }
+                //if (totalEnviados == ProductosCarrito.Count())
+                //{
+                //    return EstadoOrden.Enviado;
+                //}
 
-                var totalEntregados = ProductosCarrito.Count(p => p.Estado == EstadoOrdenItem.Entregado);
+                //var totalEntregados = ProductosCarrito.Count(p => p.Estado == EstadoOrdenItem.Entregado);
 
-                if (totalEntregados == ProductosCarrito.Count())
-                {
-                    return EstadoOrden.Entregado;
-                }
+                //if (totalEntregados == ProductosCarrito.Count())
+                //{
+                //    return EstadoOrden.Entregado;
+                //}
 
-                var totalCancelados = ProductosCarrito.Count(p => p.Estado == EstadoOrdenItem.Cancelado);
+                //var totalCancelados = ProductosCarrito.Count(p => p.Estado == EstadoOrdenItem.Cancelado);
 
-                if (totalCancelados == ProductosCarrito.Count())
-                {
-                    return EstadoOrden.Cancelado;
-                }
+                //if (totalCancelados == ProductosCarrito.Count())
+                //{
+                //    return EstadoOrden.Cancelado;
+                //}
 
-                return EstadoOrden.Pendiente;
-            }
+                //return EstadoOrden.Pendiente;
+            //}
+            set;
+            
         }
 
 
