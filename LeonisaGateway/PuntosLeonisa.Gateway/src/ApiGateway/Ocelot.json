@@ -740,6 +740,24 @@
       "Key": "GetUsuariosRedencionPuntosByIdRoute"
     },
 
+    {
+      "UpstreamPathTemplate": "/api/fidelizacion/DevolucionPuntosYCancelarEstado",
+      "DownstreamPathTemplate": "/api/fidelizacion/DevolucionPuntosYCancelarEstado",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "DevolucionPuntosYCancelarEstadoRoute"
+    },
+
     // fin fidelizacion
     // fin puntos,
     //proveedores
