@@ -9,6 +9,11 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
     public class ProductoRefence
     {
 
+        public ProductoRefence()
+        {
+            this.Estado = this.GetEstadoOrdenItem();
+        }
+
         public string Id { get; set; }
 
         public string? Referencia { get; set; }
@@ -34,16 +39,9 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
         public EstadoOrdenItem? Estado
         {
             get;
-            //{
 
-            //    if (NroGuia != null && Transportadora != null)
-            //    {
-            //        return EstadoOrdenItem.Enviado;
-            //    }
-            //    return EstadoOrdenItem.Pendiente;
-            //}
             set;
-           
+
         }
 
         public DateTime? FechaCreacion { get; set; }
@@ -113,6 +111,17 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
         public string? Tamaño { get; set; }
 
         public int? Quantity { get; set; }
+
+        public EstadoOrdenItem GetEstadoOrdenItem()
+        {
+
+            if (NroGuia != null && Transportadora != null)
+            {
+                return EstadoOrdenItem.Enviado;
+            }
+            return EstadoOrdenItem.Pendiente;
+
+        }
     }
 
 

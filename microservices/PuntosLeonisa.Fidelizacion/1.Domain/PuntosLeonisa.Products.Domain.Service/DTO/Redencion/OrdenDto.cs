@@ -20,8 +20,10 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
         public UsuarioEnvio? Envio { get; set; }
 
         public EstadoOrden? Estado { get; set; }
-    
-}
+        public DateTime? FechaRedencion { get; set; }
+
+
+    }
 
     public class UsuarioEnvio
     {
