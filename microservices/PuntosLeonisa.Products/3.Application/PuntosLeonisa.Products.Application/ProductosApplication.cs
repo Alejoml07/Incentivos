@@ -291,6 +291,7 @@ public class ProductosApplication : IProductApplication
             }
             else
             {
+
                 var response = await this.GetAll();
                 productosResponse = new PagedResult<ProductoDto>()
                 {
