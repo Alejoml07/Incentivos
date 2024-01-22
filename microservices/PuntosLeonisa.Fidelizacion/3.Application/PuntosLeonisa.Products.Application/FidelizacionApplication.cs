@@ -768,6 +768,16 @@ public class FidelizacionApplication : IFidelizacionApplication
         try
         {
             var redenciones = await this.unitOfWork.UsuarioRedencionRepository.GetAll();
+
+            Parallel.ForEach(redenciones, (redencion) =>
+            {
+                redencion.Estado = redencion.GetEstadoOrden();
+                foreach (var item in redencion.ProductosCarrito)
+                {
+                    item.Estado = item.GetEstadoOrdenItem();
+                }
+            });
+
             var OrdenesDto = mapper.Map<IEnumerable<OrdenDto>>(redenciones);
             var response = new GenericResponse<IEnumerable<OrdenDto>>();
             if (redenciones != null)
@@ -810,12 +820,21 @@ public class FidelizacionApplication : IFidelizacionApplication
                 redenciones = (await this.unitOfWork.UsuarioRedencionRepository.GetAll()).ToList();
             }
 
+            Parallel.ForEach(redenciones, (redencion) =>
+            {
+                redencion.Estado = redencion.GetEstadoOrden();
+                foreach (var item in redencion.ProductosCarrito)
+                {
+                    item.Estado = item.GetEstadoOrdenItem();
+                }
+            });
+
 
             var OrdenesDto = mapper.Map<IEnumerable<OrdenDto>>(redenciones);
             var response = new GenericResponse<IEnumerable<OrdenDto>>();
             if (redenciones != null)
             {
-                response.Result = OrdenesDto;
+                response.Result = OrdenesDto.OrderByDescending(p => p.FechaRedencion);
             }
             return response;
         }
@@ -871,20 +890,22 @@ public class FidelizacionApplication : IFidelizacionApplication
         {
             if (redenciones != null)
             {
-                foreach (var redencion in redenciones.ProductosCarrito)
+                var redencionEncontrada = redenciones.ProductosCarrito.Where(x => x.Id == data.Producto.Id).FirstOrDefault();
+                if (redencionEncontrada == null)
                 {
-                    if (redencion.Id == data.Producto.Id)
-                    {
-                        redencion.NroGuia = data.Producto.NroGuia;
-                        redencion.Transportadora = data.Producto.Transportadora;
-
-                        break;
-                    }
-                    continue;
-
+                    throw new Exception("Redencion no encontrada");
                 }
+
+                redencionEncontrada.NroGuia = data.Producto.NroGuia;
+                redencionEncontrada.Transportadora = data.Producto.Transportadora;
+                redencionEncontrada.Estado = redencionEncontrada.GetEstadoOrdenItem();
+
+                redencionEncontrada.Estado = redencionEncontrada.GetEstadoOrdenItem();
                 await this.unitOfWork.UsuarioRedencionRepository.Update(redenciones);
                 await this.unitOfWork.SaveChangesAsync();
+
+
+                data.Producto = redencionEncontrada;
                 return new GenericResponse<AddNroGuiaYTransportadora>
                 {
 
