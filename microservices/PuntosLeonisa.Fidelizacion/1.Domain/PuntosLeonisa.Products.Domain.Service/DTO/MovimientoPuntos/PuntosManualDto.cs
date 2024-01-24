@@ -1,4 +1,6 @@
-﻿namespace PuntosLeonisa.fidelizacion.Domain.Service.DTO.PuntosManuales
+﻿using PuntosLeonisa.Products.Domain.Model;
+
+namespace PuntosLeonisa.fidelizacion.Domain.Service.DTO.PuntosManuales
 {
     public class PuntosManualDto
     {
@@ -7,6 +9,8 @@
         public string? Nombre { get; set; }
 
         public string? Cedula { get; set; }
+
+        public Usuario? Usuario { get; set; }
 
         public string? Puntos { get; set; }
 
