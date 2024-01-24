@@ -56,8 +56,6 @@ namespace Usuarioos
             {
                 return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
-
-
         }
 
         [FunctionName("GetPuntos")]
@@ -673,7 +671,60 @@ namespace Usuarioos
             }
         }
 
+        [FunctionName("Extracto")]
+        [OpenApiOperation(operationId: "Extracto", tags: new[] { "Extracto" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Guarda el extracto")]
+        public async Task<IActionResult> Extractos(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+            ILogger log)
+        {
 
+            try
+            {
+                log.LogInformation($"Extracto :Extracto Inicia obtener todos los Extractos. Fecha:{DateTime.UtcNow}");
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<Extractos>(requestBody);
+                await this.puntosApplication.AddExtracto(data);
+                return new OkResult();
+
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("GetExtractos")]
+        [OpenApiOperation(operationId: "GetExtractos", tags: new[] { "GetExtractos" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Lista de extractos")]
+        public async Task<IActionResult> GetExtractos(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+           ILogger log)
+        {
+
+
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+                log.LogInformation($"Extractos :GetExtractos Inicia obtener todos los extractos. Fecha:{DateTime.UtcNow}");
+                var puntos = await puntosApplication.GetExtractos();
+                log.LogInformation($"Extractos :GetExtractos termina obtener todos los extractos. Fecha:{DateTime.UtcNow}");
+                return new OkObjectResult(puntos);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los puntos Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 

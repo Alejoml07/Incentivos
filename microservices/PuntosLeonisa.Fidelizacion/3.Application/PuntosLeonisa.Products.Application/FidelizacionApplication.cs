@@ -1027,6 +1027,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             var extractos = await this.unitOfWork.ExtractosRepository.GetById(data.Id);
             if (extractos == null)
             {
+                extractos.Id = Guid.NewGuid().ToString();
                 await this.unitOfWork.ExtractosRepository.Add(data);
                 await this.unitOfWork.SaveChangesAsync();
                 return new GenericResponse<bool>
@@ -1043,14 +1044,16 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
     }
 
-    public Task<GenericResponse<IEnumerable<Extractos>>> GetExtractos()
+    public async Task<GenericResponse<IEnumerable<Extractos>>> GetExtractos()
     {
+        var response = new GenericResponse<IEnumerable<Extractos>>();
         try
         {
             //get extractos
-            var extractos = this.unitOfWork.ExtractosRepository.GetAll().GetAwaiter().GetResult();
-            var response = new GenericResponse<IEnumerable<Extractos>>();
-            return Task.FromResult(response);
+            var extractos = await this.unitOfWork.ExtractosRepository.GetAll();
+            response.Result = extractos;
+            return response;
+           
         }
         catch (Exception)
         {

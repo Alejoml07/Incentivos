@@ -758,6 +758,41 @@
       "Key": "DevolucionPuntosYCancelarEstadoRoute"
     },
 
+    {
+      "UpstreamPathTemplate": "/api/Extracto",
+      "DownstreamPathTemplate": "/api/Extracto",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "ExtractoRoute"
+    },
+    {
+      "UpstreamPathTemplate": "/api/GetExtractos",
+      "DownstreamPathTemplate": "/api/GetExtractos",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetExtractosRoute"
+    },
+
     // fin fidelizacion
     // fin puntos,
     //proveedores
