@@ -880,11 +880,20 @@ public class FidelizacionApplication : IFidelizacionApplication
                 redenciones = (await this.unitOfWork.UsuarioRedencionRepository.GetAll()).ToList();
             }
 
+            Parallel.ForEach(redenciones, (redencion) =>
+            {
+                redencion.Estado = redencion.GetEstadoOrden();
+                foreach (var item in redencion.ProductosCarrito)
+                {
+                    item.Estado = item.GetEstadoOrdenItem();
+                }
+            });
+
             var OrdenesDto = mapper.Map<IEnumerable<OrdenDto>>(redenciones);
             var response = new GenericResponse<IEnumerable<OrdenDto>>();
             if (redenciones != null)
             {
-                response.Result = OrdenesDto;
+                response.Result = OrdenesDto.OrderByDescending(p => p.FechaRedencion);
             }
             return response;
         }
@@ -1027,7 +1036,8 @@ public class FidelizacionApplication : IFidelizacionApplication
             var extractos = await this.unitOfWork.ExtractosRepository.GetById(data.Id);
             if (extractos == null)
             {
-                extractos.Id = Guid.NewGuid().ToString();
+                data.Id = Guid.NewGuid().ToString();
+                data.Fecha = DateTime.Now;
                 await this.unitOfWork.ExtractosRepository.Add(data);
                 await this.unitOfWork.SaveChangesAsync();
                 return new GenericResponse<bool>
@@ -1051,7 +1061,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         {
             //get extractos
             var extractos = await this.unitOfWork.ExtractosRepository.GetAll();
-            response.Result = extractos;
+            response.Result = extractos.OrderByDescending(p => p.Fecha);
             return response;
            
         }
@@ -1059,5 +1069,49 @@ public class FidelizacionApplication : IFidelizacionApplication
         {
             throw;
         }
+    }
+
+    public async Task<GenericResponse<IEnumerable<bool>>> AddExtractos(Extractos[] data)
+    {
+        try
+        {
+            foreach (var extracto  in data)
+            {               
+                extracto.Id = Guid.NewGuid().ToString();
+                extracto.Fecha = DateTime.Now;
+            }
+            await unitOfWork.ExtractosRepository.AddRange(data);
+            await this.unitOfWork.SaveChangesAsync();
+            return new GenericResponse<IEnumerable<bool>>
+            {
+                Result = new List<bool> { true }
+            };
+            
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+        
+    }
+
+    public async Task<GenericResponse<IEnumerable<Extractos>>> GetExtractosByUsuario(string cedula)
+    {
+        try
+        {
+            var extractos = await this.unitOfWork.ExtractosRepository.GetExtractosByUsuario(cedula);
+            var response = new GenericResponse<IEnumerable<Extractos>>();
+            return new GenericResponse<IEnumerable<Extractos>>
+            {
+                Result = extractos.OrderByDescending(p => p.Fecha)
+            };
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+        
     }
 }

@@ -182,6 +182,8 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
             {
                 foreach (var producto in ProductosCarrito.Where(x => x.Estado == EstadoOrdenItem.Cancelado))
                 {
+                    
+
                     sb.AppendFormat("<tr><td class=\"celda-tabla\"><img src='{0}'style='width:100px;height:100px'/></td><td class=\"celda-tabla\">{1}</td><td class=\"celda-tabla\">{2}</td></tr>",
                                 producto.UrlImagen1, producto.Nombre, producto.Quantity);
 
@@ -193,7 +195,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
             {
                 foreach (var producto in ProductosCarrito.Where(x => x.ProveedorLite.Nombres == proveedor && x.NroGuia != null && x.Transportadora != null))
                 {
-                    // Asegúrate de tener propiedades como Imagen, Nombre, Descripción en la clase ProductoRefence
+                    
                     sb.AppendFormat("<tr><td class=\"celda-tabla\"><img src='{0}'style='width:100px;height:100px'/></td><td class=\"celda-tabla\">{1}</td><td class=\"celda-tabla\">{2}</td></tr>",
                                     producto.UrlImagen1, producto.Nombre, producto.Quantity);
 
@@ -201,6 +203,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
                     sb.Append($"<p><strong>Estado actual del producto:</strong> {producto.Estado}</p>");
                     sb.Append($"<p><strong>Numero de guia:</strong> {producto.NroGuia}</p>");
                     sb.Append($"<p><strong>Transportadora:</strong> {producto.Transportadora}</p>");
+
                 }
             }
             

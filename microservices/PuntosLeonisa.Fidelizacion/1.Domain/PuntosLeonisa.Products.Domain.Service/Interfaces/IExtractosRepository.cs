@@ -9,6 +9,6 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces
 {
     public interface IExtractosRepository : IRepository<Extractos>
     {
-
+        Task<IEnumerable<Extractos>> GetExtractosByUsuario(string cedula);
     }
 }

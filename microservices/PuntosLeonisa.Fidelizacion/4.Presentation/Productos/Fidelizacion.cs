@@ -725,6 +725,64 @@ namespace Usuarioos
                 return GetFunctionError(log, "Error al obtener los puntos Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("LoadExtractos")]
+        [OpenApiOperation(operationId: "LoadExtractos", tags: new[] { "LoadExtractos" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "agrega masivamente los extractos")]
+        public async Task<IActionResult> LoadExtractos(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+           ILogger log)
+        {
+
+
+            try
+            {
+                log.LogInformation($"Extractos:LoadExtractos Inicia agregar extractos masivos. Fecha:{DateTime.UtcNow}");
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var extractos = JsonConvert.DeserializeObject<Extractos[]>(requestBody);
+                var ext = await this.puntosApplication.AddExtractos(extractos);
+                return new OkObjectResult(ext);
+
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los puntos Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("GetExtractosByUsuario")]
+        [OpenApiOperation(operationId: "GetExtractosByUsuario", tags: new[] { "GetUsuariosRedencionPuntosByEmail" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los extractos por Cedula")]
+        public async Task<IActionResult> GetExtractosByUsuario(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetExtractosByUsuario/{cedula}")] HttpRequest req, ILogger log, string cedula)
+        {
+
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+                if (string.IsNullOrEmpty(cedula))
+                {
+                    throw new ArgumentException($"'{nameof(cedula)}' cannot be null or empty.", nameof(cedula));
+                }
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+                var response = await this.puntosApplication.GetExtractosByUsuario(cedula);
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener las redenciones:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 

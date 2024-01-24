@@ -115,6 +115,14 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
         public EstadoOrdenItem GetEstadoOrdenItem()
         {
 
+            if(Estado == EstadoOrdenItem.Cancelado)
+            {
+                return EstadoOrdenItem.Cancelado;
+            }
+            if (Estado == EstadoOrdenItem.Entregado)
+            {
+                return EstadoOrdenItem.Entregado;
+            }
             if (NroGuia != null && Transportadora != null)
             {
                 return EstadoOrdenItem.Enviado;

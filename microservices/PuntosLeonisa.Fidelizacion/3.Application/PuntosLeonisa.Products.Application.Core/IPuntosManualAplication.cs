@@ -21,5 +21,7 @@ public interface IFidelizacionApplication : IApplicationCore<PuntosManualDto>, I
     Task<GenericResponse<bool>> ValidateCodeRedencion(SmsDto data);
     Task<GenericResponse<bool>> AddExtracto(Extractos data);
     Task<GenericResponse<IEnumerable<Extractos>>> GetExtractos();
+    Task<GenericResponse<IEnumerable<bool>>> AddExtractos(Extractos[] data);
+    Task<GenericResponse<IEnumerable<Extractos>>> GetExtractosByUsuario(string cedula); 
 }
 

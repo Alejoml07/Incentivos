@@ -793,6 +793,42 @@
       "Key": "GetExtractosRoute"
     },
 
+    {
+      "UpstreamPathTemplate": "/api/LoadExtractos",
+      "DownstreamPathTemplate": "/api/LoadExtractos",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "LoadExtractosRoute"
+    },
+
+    {
+      "UpstreamPathTemplate": "/api/GetExtractosByUsuario/{cedula}",
+      "DownstreamPathTemplate": "/api/GetExtractosByUsuario/{cedula}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetExtractosByUsuarioRoute"
+    },
+
     // fin fidelizacion
     // fin puntos,
     //proveedores
