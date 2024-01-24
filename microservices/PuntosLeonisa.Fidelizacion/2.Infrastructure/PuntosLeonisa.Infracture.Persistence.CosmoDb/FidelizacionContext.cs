@@ -28,7 +28,8 @@ public class FidelizacionContext : DbContext, IDisposable
         modelBuilder.ApplyConfiguration(new UsuarioInfoPuntosConfuguration());
         modelBuilder.ApplyConfiguration(new SmsConfiguration());
         modelBuilder.ApplyConfiguration(new UsuarioRedencionConfiguration());
-        
+        modelBuilder.ApplyConfiguration(new ExtractoConfiguration());
+
     }
 
 }

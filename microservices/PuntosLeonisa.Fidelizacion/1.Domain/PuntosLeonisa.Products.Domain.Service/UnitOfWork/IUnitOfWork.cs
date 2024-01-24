@@ -16,8 +16,8 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork
         IWishListRepository WishListRepository { get; }
         ISmsRepository SmsRepository { get; }
         IUsuarioRedencionRepository UsuarioRedencionRepository { get; }
-
         IFidelizacionPuntosRepository FidelizacionPuntosRepository { get; }
+        IExtractosRepository ExtractosRepository { get; }
 
 
 

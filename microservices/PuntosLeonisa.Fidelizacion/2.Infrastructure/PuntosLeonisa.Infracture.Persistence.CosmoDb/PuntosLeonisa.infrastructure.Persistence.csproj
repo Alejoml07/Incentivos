@@ -19,7 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\1.Domain\PuntosLeonisa.Domain.Core\PuntosLeonisa.Domain.Core.csproj" />
     <ProjectReference Include="..\..\1.Domain\PuntosLeonisa.Products.Domain.Service\PuntosLeonisa.Fidelizacion.Domain.Service.csproj" />
     <ProjectReference Include="..\..\1.Domain\PuntosLeonisa.Products.Domain\PuntosLeonisa.Fidelizacion.Domain.csproj" />
+    <ProjectReference Include="..\..\PuntosLeonisa.Infraestructure.Core.Agent\PuntosLeonisa.Infraestructure.Core.Agent.csproj" />
   </ItemGroup>
 </Project>

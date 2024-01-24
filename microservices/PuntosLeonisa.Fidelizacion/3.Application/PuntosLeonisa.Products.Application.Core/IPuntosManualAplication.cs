@@ -4,6 +4,7 @@ using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Carrito;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
+using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using PuntosLeonisa.Products.Application.Core.Interfaces;
 
@@ -18,7 +19,7 @@ public interface IFidelizacionApplication : IApplicationCore<PuntosManualDto>, I
     Task<bool> CarritoDeleteById(string id);
     Task<GenericResponse<IEnumerable<Carrito>>> CarritoGetByUser(string id);
     Task<GenericResponse<bool>> ValidateCodeRedencion(SmsDto data);
-
-   
+    Task<GenericResponse<bool>> AddExtracto(Extractos data);
+    Task<GenericResponse<IEnumerable<Extractos>>> GetExtractos();
 }
 

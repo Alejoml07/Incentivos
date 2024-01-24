@@ -122,9 +122,10 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
             return EstadoOrdenItem.Pendiente;
 
         }
+
+
     }
-
-
+}
     public enum EstadoOrdenItem
     {
         Pendiente,
@@ -133,4 +134,8 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
         Cancelado,
         Entregado
     }
-}
+
+
+
+
+

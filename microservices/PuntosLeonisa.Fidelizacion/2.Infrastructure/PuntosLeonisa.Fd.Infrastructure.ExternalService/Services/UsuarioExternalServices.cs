@@ -105,6 +105,27 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
             }
         }
 
+        public Task<GenericResponse<bool>> UserSendEmailWithMessageAndState(UsuarioRedencion data)
+        {
+            try
+            {
+                var email = new EmailDTO()
+                {
+                    Message = data.GenerarHTMLCambioEstado(data.ProductosCarrito.FirstOrDefault().ProveedorLite.Nombres),
+                    Recipients = new string[] { data?.Usuario?.Email, "danielmg12361@gmail.com" },
+                    Subject = "Cambios estado premio"
+                };
+                var response = this.httpClientAgent.SendMail(email);
+
+                return Task.FromResult(new GenericResponse<bool>() { Result = true });
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
         public Task<GenericResponse<bool>> SendMailGeneric(EmailDTO emailData)
         {
             try

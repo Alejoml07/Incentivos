@@ -14,6 +14,7 @@ public class UnitOfWork : IUnitOfWork
     private ISmsRepository _smsRepository;
     private IFidelizacionPuntosRepository _fidelizacionPuntosRepository;
     private IUsuarioRedencionRepository _usuarioRedencionRepository;
+    private IExtractosRepository _extractosRepository;
 
     public UnitOfWork(FidelizacionContext fidelizacionContext)
     {
@@ -80,6 +81,15 @@ public class UnitOfWork : IUnitOfWork
         {
             _fidelizacionPuntosRepository ??= new FidelizacionPuntosRepository(_fidelizacionContext);
             return _fidelizacionPuntosRepository;
+        }
+    }
+
+    public IExtractosRepository ExtractosRepository
+    {
+        get
+        {
+            _extractosRepository ??= new ExtractosRepository(_fidelizacionContext);
+            return _extractosRepository;
         }
     }
 

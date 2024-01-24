@@ -11,7 +11,7 @@ namespace PuntosLeonisa.Products.Application.Core.Interfaces
         Task<GenericResponse<T>> Update(T value);
         Task<GenericResponse<T>> Delete(T value);
         Task<GenericResponse<T>> DeleteById(string id);
-        Task<GenericResponse<IEnumerable<T>>>   GetAll();
+        Task<GenericResponse<IEnumerable<T>>> GetAll();
 
 	}
 }
