@@ -52,6 +52,8 @@ public class ProductosApplication : IProductApplication
             await UploadImageToProducts(value);
             var producto = this.mapper.Map<Producto>(value);
             //TODO: Colocar el parametro de puntos y su equivalencia 87
+            producto.Id = Guid.NewGuid().ToString();
+            producto.ProveedorLite = this.proveedorExternalService.GetProveedorByNit(producto.Proveedor).GetAwaiter().GetResult().Result;
             producto.Puntos = ((int?)(producto.Precio / parametroEquivalenciaEnPuntos));
             await this.productoRepository.Add(producto);
             this.response.Result = value;

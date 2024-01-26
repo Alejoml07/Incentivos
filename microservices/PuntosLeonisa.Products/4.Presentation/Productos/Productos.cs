@@ -47,7 +47,6 @@ namespace Productos
                 log.LogInformation($"Product:GetProductos Inicia obtener todos los productos. Fecha:{DateTime.UtcNow}");
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var data = JsonConvert.DeserializeObject<ProductoDto>(requestBody);
-
                 await this.productoApplication.Add(data);
                 return new OkResult();
 
