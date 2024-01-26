@@ -121,9 +121,18 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
             sb.Append("<table class=\"tabla-estilizada\">");
             // Asumiendo que tienes un objeto UsuarioEnvio con los datos requeridos
             sb.AppendFormat("<tr><td class=\"encabezado-tabla\">NRO DE PEDIDO</td><td class=\"celda-tabla\">{0}</td></tr>", this.NroPedido);
-            sb.AppendFormat("<tr><td class=\"encabezado-tabla\">NOMBRE DE USUARIO</td><td class=\"celda-tabla\">{0} {1}</td></tr>", this.Usuario.Nombres, Usuario.Apellidos);
-            sb.AppendFormat("<tr><td class=\"encabezado-tabla\">CÉDULA</td><td class=\"celda-tabla\">{0}</td></tr>", Usuario.Cedula);
-            sb.AppendFormat("<tr><td class=\"encabezado-tabla\">EMPRESA</td><td class=\"celda-tabla\">{0}</td></tr>", Usuario.Empresa);
+            if(this.Usuario.Nombres != null && Usuario.Apellidos != null)
+            {
+                sb.AppendFormat("<tr><td class=\"encabezado-tabla\">NOMBRE DE USUARIO</td><td class=\"celda-tabla\">{0} {1}</td></tr>", this.Usuario.Nombres, Usuario.Apellidos);
+            }
+            if(Usuario.Cedula != null)
+            {
+                sb.AppendFormat("<tr><td class=\"encabezado-tabla\">CÉDULA</td><td class=\"celda-tabla\">{0}</td></tr>", Usuario.Cedula);
+            }
+            if(Usuario.Empresa != null)
+            {
+                sb.AppendFormat("<tr><td class=\"encabezado-tabla\">EMPRESA</td><td class=\"celda-tabla\">{0}</td></tr>", Usuario.Empresa);
+            }            
             sb.AppendFormat("<tr><td class=\"encabezado-tabla\">NOMBRE DE QUIEN RECIBE</td><td class=\"celda-tabla\">{0} {1}</td></tr>", Envio.Nombres, Envio.Apellidos);
             sb.AppendFormat("<tr><td class=\"encabezado-tabla\">CONTACTO DE QUIEN RECIBE</td><td class=\"celda-tabla\">{0}</td></tr>", Envio.Celular);
             sb.AppendFormat("<tr><td class=\"encabezado-tabla\">DEPARTAMENTO</td><td class=\"celda-tabla\">{0}</td></tr>", Envio.Departamento);
