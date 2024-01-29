@@ -111,7 +111,7 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
             {
                 var email = new EmailDTO()
                 {
-                    Message = data.GenerarHTMLCambioEstado(data.ProductosCarrito.FirstOrDefault().ProveedorLite.Nombres),
+                    Message = data.GenerarHTMLCambioEstado(data.ProductosCarrito.FirstOrDefault().ProveedorLite.Id),
                     Recipients = new string[] { data?.Usuario?.Email, "danielmg12361@gmail.com" },
                     Subject = "Cambios estado premio"
                 };

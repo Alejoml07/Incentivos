@@ -154,7 +154,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
             return sb.ToString();
         }
 
-        public string GenerarHTMLCambioEstado(string proveedor)
+        public string GenerarHTMLCambioEstado(string id)
         {
             var imgUrl = "https://puntosleonisa.web.app/assets/images/MSAUC.png";
             var sb = new StringBuilder();
@@ -193,7 +193,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
             }
             else
             {
-                foreach (var producto in ProductosCarrito.Where(x => x.ProveedorLite.Nombres == proveedor && x.NroGuia != null && x.Transportadora != null))
+                foreach (var producto in ProductosCarrito.Where(x => x.ProveedorLite.Id == id && x.NroGuia != null && x.Transportadora != null))
                 {
                     
                     sb.AppendFormat("<tr><td class=\"celda-tabla\"><img src='{0}'style='width:100px;height:100px'/></td><td class=\"celda-tabla\">{1}</td><td class=\"celda-tabla\">{2}</td></tr>",
