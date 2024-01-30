@@ -185,14 +185,14 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
             sb.Append("<div style=\"text-align: center; padding: 20px;\">");
             sb.Append("<h2>¡Hola! "+ this.Usuario.Nombres +"</h2>"); 
             sb.Append("<p>Queremos informarte que el estado de tu producto ha cambiado. Aquí están los detalles:</p>");
-            sb.Append("<table class=\"tabla-estilizada\">");
-            sb.Append("<tr><th class=\"encabezado-tabla\">IMAGEN</th><th class=\"encabezado-tabla\">PRODUCTO</th><th class=\"encabezado-tabla\">CANTIDAD</th></tr>");
+            
             if (ProductosCarrito.FirstOrDefault().Estado == EstadoOrdenItem.Cancelado)
             {
-                foreach (var producto in ProductosCarrito.Where(x => x.Estado == EstadoOrdenItem.Cancelado))
+                foreach (var producto in ProductosCarrito.Where(x => x.Estado == EstadoOrdenItem.Cancelado && x.ProveedorLite.Id == id))
                 {
-                    
 
+                    sb.Append("<table class=\"tabla-estilizada\">");
+                    sb.Append("<tr><th class=\"encabezado-tabla\">IMAGEN</th><th class=\"encabezado-tabla\">PRODUCTO</th><th class=\"encabezado-tabla\">CANTIDAD</th></tr>");
                     sb.AppendFormat("<tr><td class=\"celda-tabla\"><img src='{0}'style='width:100px;height:100px'/></td><td class=\"celda-tabla\">{1}</td><td class=\"celda-tabla\">{2}</td></tr>",
                                 producto.UrlImagen1, producto.Nombre, producto.Quantity);
 
@@ -202,9 +202,10 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
             }
             else
             {
-                foreach (var producto in ProductosCarrito.Where(x => x.ProveedorLite.Id == id && x.NroGuia != null && x.Transportadora != null))
+                foreach (var producto in ProductosCarrito)
                 {
-                    
+                    sb.Append("<table class=\"tabla-estilizada\">");
+                    sb.Append("<tr><th class=\"encabezado-tabla\">IMAGEN</th><th class=\"encabezado-tabla\">PRODUCTO</th><th class=\"encabezado-tabla\">CANTIDAD</th></tr>");
                     sb.AppendFormat("<tr><td class=\"celda-tabla\"><img src='{0}'style='width:100px;height:100px'/></td><td class=\"celda-tabla\">{1}</td><td class=\"celda-tabla\">{2}</td></tr>",
                                     producto.UrlImagen1, producto.Nombre, producto.Quantity);
 

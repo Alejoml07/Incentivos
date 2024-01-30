@@ -998,7 +998,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         {
             if (ordenes != null)
             {
-
+                var proveedor = string.Empty;
                 foreach (var orden in ordenes.ProductosCarrito)
                 {
                     if (orden.Id == data.Producto.Id)
@@ -1006,14 +1006,20 @@ public class FidelizacionApplication : IFidelizacionApplication
                         orden.Estado = EstadoOrdenItem.Cancelado;
                         puntos.PuntosDisponibles += data.PuntosADevolver;
                         puntos.PuntosRedimidos -= data.PuntosADevolver;
+                        proveedor = orden.ProveedorLite.Id;
                         break;
                     }
                 }
-
+                
                 await this.unitOfWork.UsuarioRedencionRepository.Update(ordenes);
                 await this.unitOfWork.UsuarioInfoPuntosRepository.Update(puntos);
-                await this.usuarioExternalService.UserSendEmailWithMessageAndState(ordenes);
                 await this.unitOfWork.SaveChangesAsync();
+
+                var ordenParaCorreo = this.mapper.Map(mapper.Map<UsuarioRedencion>(ordenes), new UsuarioRedencion());
+                ordenParaCorreo.ProductosCarrito = ordenes.ProductosCarrito.Where(x => x.Id == data.Producto.Id).ToList();
+                await this.usuarioExternalService.UserSendEmailWithMessageAndState(ordenParaCorreo);
+              
+               
 
                 return new GenericResponse<int>
                 {

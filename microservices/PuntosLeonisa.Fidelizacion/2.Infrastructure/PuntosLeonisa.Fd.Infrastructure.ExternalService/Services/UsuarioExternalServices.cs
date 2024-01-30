@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
+using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.DTO;
 using PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces;
