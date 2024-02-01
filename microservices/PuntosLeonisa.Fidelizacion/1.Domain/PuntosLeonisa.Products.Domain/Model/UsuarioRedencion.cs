@@ -1,10 +1,5 @@
-﻿using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Carrito;
-using PuntosLeonisa.Products.Domain.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using PuntosLeonisa.Products.Domain.Model;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace PuntosLeonisa.Fidelizacion.Domain.Model
 {
@@ -142,7 +137,6 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
             sb.Append("</table>");
 
             // ... código posterior ...
-
 
             // Tabla con los productos del carrito
             sb.Append("<table class=\"tabla-estilizada\">");

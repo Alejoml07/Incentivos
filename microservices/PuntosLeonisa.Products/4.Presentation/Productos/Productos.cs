@@ -20,6 +20,7 @@ namespace Productos
     using PuntosLeonisa.Products.Domain.Service.DTO.Productos;
     using Microsoft.Extensions.Primitives;
     using System.Linq;
+    using PuntosLeonisa.Products.Domain.Model;
 
     public class Productos
     {
@@ -385,6 +386,32 @@ namespace Productos
             catch (Exception ex)
             {
                 return GetFunctionError(log, "Error al obtener los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("UpdateInventory")]
+        [OpenApiOperation(operationId: "UpdateInventory", tags: new[] { "Productos/Codificacion/UpdateInventory" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Actualiza inventario")]
+
+        public async Task<IActionResult> UpdateInventory(
+          [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Productos/Codificacion/UpdateInventory")] HttpRequest req,
+          ILogger log)
+        {
+
+            try
+            {
+                log.LogInformation($"Product:ProductPrices Inicia agregar precio a los productos. Fecha:{DateTime.UtcNow}");
+
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var productoPrecios = JsonConvert.DeserializeObject<ProductoRefence[]>(requestBody);
+                var response = await productoApplication.UpdateInventory(productoPrecios);
+
+                return new OkObjectResult(response);
+
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Product:ProductPrices fin agregar precio a los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
         }
 

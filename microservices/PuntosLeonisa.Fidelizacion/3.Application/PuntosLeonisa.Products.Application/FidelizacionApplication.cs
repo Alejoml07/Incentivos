@@ -25,6 +25,7 @@ public class FidelizacionApplication : IFidelizacionApplication
     private readonly GenericResponse<PuntosManualDto> response;
     private readonly GenericResponse<WishListDto> response2;
     private readonly IUsuarioExternalService usuarioExternalService;
+    private readonly IProductoExternalService productoExternalService;
     private readonly IUnitOfWork unitOfWork;
     private readonly IUsuarioInfoPuntosApplication usuarioInfoPuntosApplication;
 
@@ -34,6 +35,7 @@ public class FidelizacionApplication : IFidelizacionApplication
     private readonly GenericResponse<Extractos> response5;
     public FidelizacionApplication(IMapper mapper,
         IUsuarioExternalService usuarioExternalService,
+        IProductoExternalService productoExternalService,
         IUnitOfWork unitOfWork, IUsuarioInfoPuntosApplication usuarioInfoPuntosApplication
         )
     {
@@ -41,6 +43,7 @@ public class FidelizacionApplication : IFidelizacionApplication
 
         this.mapper = mapper;
         this.usuarioExternalService = usuarioExternalService;
+        this.productoExternalService = productoExternalService;
         this.unitOfWork = unitOfWork;
         response = new GenericResponse<PuntosManualDto>();
         response2 = new GenericResponse<WishListDto>();
@@ -456,7 +459,6 @@ public class FidelizacionApplication : IFidelizacionApplication
         try
         {
 
-
             var usuarioCompleto = this.usuarioExternalService.GetUserByEmail(data.Usuario.Email ?? "").GetAwaiter().GetResult();
             var usuarioInfoPuntos = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(data.Usuario.Email);
             data.Usuario = usuarioCompleto.Result;
@@ -480,8 +482,10 @@ public class FidelizacionApplication : IFidelizacionApplication
                     ClearWishlistAndCart(data.Usuario);
                     unitOfWork.SaveChangesSync();
                     SendNotify(data);
+                    await this.productoExternalService.UpdateInventory(data.ProductosCarrito.ToArray());                    
                 }
             }
+
             else
             {
                 throw new Exception("Usuario no encontrado");

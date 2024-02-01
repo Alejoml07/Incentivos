@@ -23,11 +23,8 @@ namespace Productos
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            //Add ServiceProxy
-            builder.Services.AddScoped<IHttpClientAgent, HttpClientAgents>();
-            builder.Services.AddScoped<IUsuarioExternalService, UsuarioExternalServices>();
-            builder.Services.AddScoped<ICircuitBreaker, CircuitBreaker>();
-            builder.Services.AddScoped<ITransientRetry, TransientRetry>();
+
+
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             var stringConnection = Environment.GetEnvironmentVariable("accountCosmoName");
@@ -35,6 +32,7 @@ namespace Productos
 
 
             builder.Services.AddDbContext<FidelizacionContext>(x => x.UseCosmos(stringConnection, bd));
+
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped<IMovimientoPuntosRepository, MovimientoPuntosRepository>();
@@ -43,6 +41,13 @@ namespace Productos
             builder.Services.AddScoped<IUsuarioInfoPuntosRepository, UsuarioInfoPuntosRepository>();
             builder.Services.AddScoped<IFidelizacionApplication, FidelizacionApplication>();
             builder.Services.AddScoped<IExtractosRepository, ExtractosRepository>();
+
+            //Add ServiceProxy
+            builder.Services.AddScoped<IHttpClientAgent, HttpClientAgents>();
+            builder.Services.AddScoped<ICircuitBreaker, CircuitBreaker>();
+            builder.Services.AddScoped<ITransientRetry, TransientRetry>();
+            builder.Services.AddScoped<IUsuarioExternalService, UsuarioExternalServices>();
+            builder.Services.AddScoped<IProductoExternalService, ProductoExternalServices>();
 
 
         }

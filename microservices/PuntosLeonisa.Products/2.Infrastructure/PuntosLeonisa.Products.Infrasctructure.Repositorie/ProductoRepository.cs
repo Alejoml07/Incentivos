@@ -84,7 +84,7 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
     public async Task<PagedResult<IGrouping<string, Producto>>> GetProductsByFiltersAndRange(ProductosFilters queryObject)
     {
 
-        var query = _context.Set<Producto>().Where(x => x.Roles.Contains(queryObject.TipoUsuario) && x.Puntos != null).AsQueryable();
+        var query = _context.Set<Producto>().Where(x => x.Roles.Contains(queryObject.TipoUsuario) && x.Puntos != null && x.Cantidad != 0).AsQueryable();
         Expression? combinedExpression = null;
         var parameter = Expression.Parameter(typeof(Producto), "p");
         var maxPropertyEnd = queryObject.MaxRangePropertyNameEnd;

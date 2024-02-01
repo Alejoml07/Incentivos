@@ -1,4 +1,5 @@
 ﻿using PuntosLeonisa.Products.Application.Core.Interfaces;
+using PuntosLeonisa.Products.Domain.Model;
 using PuntosLeonisa.Products.Domain.Service.DTO.Genericos;
 using PuntosLeonisa.Products.Domain.Service.DTO.Productos;
 using PuntosLeonisa.Products.Infrasctructure.Common.Communication;
@@ -13,5 +14,6 @@ public interface IProductApplication : IApplicationCore<ProductoDto>
     Task<GenericResponse<PagedResult<ProductoDto>>> GetProductosByFiltersAndRange(ProductosFilters filtros);
     Task<GenericResponse<GeneralFiltersWithResponseDto>> GetAndApplyFilters(GeneralFiltersWithResponseDto filtrosDto);
     Task<GenericResponse<IEnumerable<ProductoDto>>> GetByRef(string referencia);
+    Task<GenericResponse<IEnumerable<bool>>> UpdateInventory(ProductoRefence[] data);
 }
 

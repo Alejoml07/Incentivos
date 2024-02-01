@@ -29,7 +29,7 @@ namespace Productos
 
             //builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddTransient<IProductoRepository, ProductoRepository>();
-            builder.Services.AddScoped<IProductApplication, ProductosApplication>();
+            builder.Services.AddScoped<IProductApplication, ProductosApplication>();          
 
 
             //Add ServiceProxy

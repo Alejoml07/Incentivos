@@ -6,6 +6,7 @@ using PuntosLeonisa.Infrasctructure.Core.ExternalServiceInterfaces;
 using PuntosLeonisa.Products.Application.Core;
 using PuntosLeonisa.Products.Domain;
 using PuntosLeonisa.Products.Domain.Interfaces;
+using PuntosLeonisa.Products.Domain.Model;
 using PuntosLeonisa.Products.Domain.Service.DTO.Genericos;
 using PuntosLeonisa.Products.Domain.Service.DTO.Productos;
 using PuntosLeonisa.Products.Infrasctructure.Common;
@@ -327,4 +328,27 @@ public class ProductosApplication : IProductApplication
         }
     }
 
+    public async Task<GenericResponse<IEnumerable<bool>>> UpdateInventory(ProductoRefence[] data)
+    {
+        try
+        {
+            foreach (var producto in data)
+            {
+                var productos = await this.productoRepository.GetById(producto.EAN);
+                productos.Cantidad -= producto.Quantity;
+                await this.productoRepository.Update(productos);                
+            }
+            return new GenericResponse<IEnumerable<bool>>()
+            {
+                Result = new List<bool>() { true }
+            };
+        }
+
+        catch (Exception)
+        {
+
+            throw;
+        }
+        
+    }
 }
