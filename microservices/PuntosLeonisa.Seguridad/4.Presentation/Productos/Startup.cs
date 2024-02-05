@@ -39,6 +39,7 @@ namespace Productos
             //Add Service
             builder.Services.AddScoped<IHttpClientAgent, HttpClientAgents>();
             builder.Services.AddScoped<IEmailExternalService, EmailExternalServices>();
+            builder.Services.AddScoped<IGetUsuarioExternalService, GetUsuarioExternalService>();
             builder.Services.AddScoped<ISecurityService>(provider => new SecurityHelper(key));
             builder.Services.AddScoped<ICircuitBreaker, CircuitBreaker>();
             builder.Services.AddScoped<ITransientRetry, TransientRetry>();

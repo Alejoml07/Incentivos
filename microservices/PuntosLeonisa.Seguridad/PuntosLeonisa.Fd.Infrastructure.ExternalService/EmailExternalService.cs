@@ -5,8 +5,6 @@ using PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios;
 using PuntosLeonisa.Seguridad.Domain.Service.Interfaces;
 using PuntosLeonisa.Seguridad.Infrasctructure.Common.Communication;
 using PuntosLeonisa.Seguridad.Infrasctructure.Common.DTO;
-using PuntosLeonisa.Seguridad.Infrasctructure.Common.Helpers;
-
 namespace PuntosLeonisa.Fd.Infrastructure.ExternalService
 {
     public class EmailExternalServices : IEmailExternalService

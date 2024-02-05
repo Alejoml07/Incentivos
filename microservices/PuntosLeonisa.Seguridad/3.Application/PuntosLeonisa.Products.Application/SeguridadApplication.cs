@@ -8,8 +8,6 @@ using PuntosLeonisa.Seguridad.Domain.Service.Interfaces;
 using PuntosLeonisa.Seguridad.Infrasctructure.Common.Communication;
 using System.Text;
 using Jose;
-using System.Net.Mail;
-using System.Net;
 using PuntosLeonisa.Seguridad.Infrasctructure.Common.Helpers;
 using PuntosLeonisa.Infrasctructure.Core.ExternalServiceInterfaces;
 
@@ -22,10 +20,11 @@ public class SeguridadApplication : IUsuarioApplication
     private readonly ISecurityService securityService;
     private readonly ITokenRepository tokenRepository;
     private readonly IEmailExternalService emailExternalService;
+    private readonly IGetUsuarioExternalService getUsuarioExternalService;
     private readonly GenericResponse<UsuarioDto> response;
     private readonly GenericResponse<TokenDto> response2;
 
-    public SeguridadApplication(IMapper mapper, IUsuarioRepository usuarioRepository, ISecurityService securityService, ITokenRepository tokenRepository, IEmailExternalService emailExternalService)
+    public SeguridadApplication(IMapper mapper, IUsuarioRepository usuarioRepository, ISecurityService securityService, ITokenRepository tokenRepository, IEmailExternalService emailExternalService, IGetUsuarioExternalService getUsuarioExternalService)
     {
         if (usuarioRepository is null)
         {
@@ -37,8 +36,11 @@ public class SeguridadApplication : IUsuarioApplication
         this.securityService = securityService;
         this.tokenRepository = tokenRepository;
         this.emailExternalService = emailExternalService;
+        this.getUsuarioExternalService = getUsuarioExternalService;
         response = new GenericResponse<UsuarioDto>();
         response2 = new GenericResponse<TokenDto>();
+        
+
     }
 
     public async Task<GenericResponse<UsuarioDto>> Add(UsuarioDto value)
@@ -121,7 +123,6 @@ public class SeguridadApplication : IUsuarioApplication
         {
             var usuario = await this.usuarioRepository.Login(login) ?? throw new UnauthorizedAccessException("Usuario no encontrado o Contraseña errada");
             var usuarioDto = mapper.Map<UsuarioResponseLiteDto>(usuario);
-
             var responseOnly = new GenericResponse<UsuarioResponseLiteDto>
             {
                 Result = usuarioDto
@@ -297,8 +298,25 @@ public class SeguridadApplication : IUsuarioApplication
 
             throw ex;
         }
+    }
 
+    public async Task<GenericResponse<bool>> ValidarCorreo(LoginDto login)
+    {
+        try
+        {
+            var exist = await usuarioRepository.GetUsuarioByEmail(login.Email);
 
+            if(exist == null)
+            {
+                throw new ArgumentException("Correo no encontrado");
+            }
+            return new GenericResponse<bool>() { Result = exist != null };
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }       
     }
 }
 

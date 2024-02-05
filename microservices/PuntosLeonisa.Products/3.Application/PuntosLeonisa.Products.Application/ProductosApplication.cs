@@ -55,6 +55,10 @@ public class ProductosApplication : IProductApplication
             //TODO: Colocar el parametro de puntos y su equivalencia 87
             producto.Id = Guid.NewGuid().ToString();
             producto.ProveedorLite = this.proveedorExternalService.GetProveedorByNit(producto.Proveedor).GetAwaiter().GetResult().Result;
+            if(producto.ProveedorLite == null)
+            {
+                throw new Exception("El proveedor no existe");
+            }
             producto.Puntos = ((int?)(producto.Precio / parametroEquivalenciaEnPuntos));
             await this.productoRepository.Add(producto);
             this.response.Result = value;
@@ -107,6 +111,10 @@ public class ProductosApplication : IProductApplication
             {
                 producto.Id = Guid.NewGuid().ToString();
                 producto.ProveedorLite = this.proveedorExternalService.GetProveedorByNit(producto.Proveedor).GetAwaiter().GetResult().Result;
+                if (producto.ProveedorLite == null)
+                {
+                    throw new Exception("El proveedor no existe");
+                }
             }
 
             await this.productoRepository.AddRange(productos);

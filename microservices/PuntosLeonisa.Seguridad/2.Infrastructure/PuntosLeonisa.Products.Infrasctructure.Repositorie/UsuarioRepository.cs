@@ -32,6 +32,7 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
         {
             // Usuario no encontrado
             return null;
+
         }
 
         // Verificar la contraseña

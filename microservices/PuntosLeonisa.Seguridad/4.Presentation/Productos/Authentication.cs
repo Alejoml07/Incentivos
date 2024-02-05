@@ -104,7 +104,37 @@ namespace PuntosLeonisa.Seguridad.Function
             return token;
         }
 
+        [FunctionName("ValidarCorreo")]
+        [OpenApiOperation(operationId: "ValidarCorreo", tags: new[] { "Seguridad/ValidarCorreo" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<IEnumerable<LoginDto>>), Description = "Verifica si el correo existe")]
+        public async Task<IActionResult> GetUsuarioos(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Seguridad/ValidarCorreo")] HttpRequest req,
+           ILogger log)
+        {
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
 
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+                log.LogInformation($"Seguridad: ValidarCorreo valida si el correo existe. Fecha:{DateTime.UtcNow}");
+
+                var exist = JsonConvert.DeserializeObject<LoginDto>(await new StreamReader(req.Body).ReadToEndAsync());
+                var response = await usuarioApplication.ValidarCorreo(exist);              
+                log.LogInformation($"Seguridad: ValidarCorreo termina de validar si el correo existe. Fecha:{DateTime.UtcNow}");
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
 
     }
 }
