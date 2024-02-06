@@ -23,10 +23,10 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService
             this.httpClientAgent = httpClientAgent;
             this._configuration = configuration;
         }
-        public async Task<GenericResponse<bool>> GetUsuario(LoginDto login)
+        public async Task<UsuarioDto> GetUsuario(LoginDto login)
         {
             var azf = $"{_configuration["AzfBaseGetUser"]}{_configuration["ValidarUsuarioParaIncentivos"]}/{login.Email}";
-            var response = await httpClientAgent.GetRequest<GenericResponse<bool>>(new Uri(azf));
+            var response = await httpClientAgent.GetRequest<UsuarioDto>(new Uri(azf));
             return response;
         }
     }

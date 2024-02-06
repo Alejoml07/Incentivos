@@ -310,11 +310,12 @@ public class SeguridadApplication : IUsuarioApplication
             {
                 
               var response = await this.getUsuarioExternalService.GetUsuario(login);
-                 if (response.Result)
-                 {
-                      var user = mapper.Map<bool>(response.Result);
-                      return new GenericResponse<bool> { Result = true };
-                 }
+                if (response != null)
+                {
+                    var usuario = mapper.Map<Usuario>(response);
+                    usuario.Id = Guid.NewGuid().ToString();
+                    await usuarioRepository.Add(usuario);
+                }
                 
             }
             return new GenericResponse<bool>() { Result = exist != null };

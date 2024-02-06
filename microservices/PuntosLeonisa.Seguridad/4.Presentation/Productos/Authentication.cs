@@ -63,9 +63,9 @@ namespace PuntosLeonisa.Seguridad.Function
                 {
                     throw new ArgumentNullException(nameof(req));
                 }
-                log.LogInformation($"Authentication:Authentication Inicia a loguear al ususario. Fecha:{DateTime.UtcNow}");
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var login = JsonConvert.DeserializeObject<LoginDto>(requestBody);
+                log.LogInformation($"Authentication:Authentication Inicia a loguear al ususario. Fecha:{DateTime.UtcNow}");
                 GenericResponse<UsuarioResponseLiteDto> usuarioAuth = await usuarioApplication.Authentication(login);
                 log.LogInformation($"Authentication:Authentication Termina y loguea al usuario. Fecha:{DateTime.UtcNow}");
                 usuarioAuth.Result.Tkn = CreateToken(login.Email, "Public", "arbems.com" );
@@ -95,7 +95,7 @@ namespace PuntosLeonisa.Seguridad.Function
                     { "sub", email },
                     { "aud", audience },
                     { "iss", issuer },
-                    { "exp", DateTimeOffset.UtcNow.AddMinutes(1).ToUnixTimeSeconds() }
+                    { "exp", DateTimeOffset.UtcNow.AddDays(1).ToUnixTimeSeconds() }
                 };
 
             var secretKey = Convert.ToBase64String(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("keySecret") ?? "defaultSecret")); // Clave secreta
