@@ -41,6 +41,8 @@ namespace PuntosLeonisa.Products.Domain.Model
 
         public string? Empresa { get; set; }
 
+        public string? EmpresaRepresentativa { get; set; }
+
         public string? Pwd { get; set; }
         public string Code2F { get; set; }
 

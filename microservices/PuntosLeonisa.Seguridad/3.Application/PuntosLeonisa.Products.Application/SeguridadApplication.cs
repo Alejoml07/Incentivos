@@ -122,6 +122,7 @@ public class SeguridadApplication : IUsuarioApplication
         try
         {
             var usuario = await this.usuarioRepository.Login(login) ?? throw new UnauthorizedAccessException("Usuario no encontrado o Contraseña errada");
+            
             var usuarioDto = mapper.Map<UsuarioResponseLiteDto>(usuario);
             var responseOnly = new GenericResponse<UsuarioResponseLiteDto>
             {
@@ -129,7 +130,6 @@ public class SeguridadApplication : IUsuarioApplication
             };
 
             return responseOnly;
-
 
         }
         catch (Exception)
@@ -304,11 +304,18 @@ public class SeguridadApplication : IUsuarioApplication
     {
         try
         {
-            var exist = await usuarioRepository.GetUsuarioByEmail(login.Email);
+            var exist = await usuarioRepository.Login(login);
 
             if(exist == null)
             {
-                throw new ArgumentException("Correo no encontrado");
+                
+              var response = await this.getUsuarioExternalService.GetUsuario(login);
+                 if (response.Result)
+                 {
+                      var user = mapper.Map<bool>(response.Result);
+                      return new GenericResponse<bool> { Result = true };
+                 }
+                
             }
             return new GenericResponse<bool>() { Result = exist != null };
         }

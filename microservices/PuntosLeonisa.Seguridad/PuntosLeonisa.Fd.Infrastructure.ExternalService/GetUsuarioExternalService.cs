@@ -25,7 +25,7 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService
         }
         public async Task<GenericResponse<bool>> GetUsuario(LoginDto login)
         {
-            var azf = $"{_configuration["AzfBaseGetUser"]}{_configuration["GetUsuario"]}/{login.Email}";
+            var azf = $"{_configuration["AzfBaseGetUser"]}{_configuration["ValidarUsuarioParaIncentivos"]}/{login.Email}";
             var response = await httpClientAgent.GetRequest<GenericResponse<bool>>(new Uri(azf));
             return response;
         }

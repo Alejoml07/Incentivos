@@ -55,7 +55,7 @@ namespace PuntosLeonisa.Seguridad.Function
         [OpenApiParameter(name: "Authenticate", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The **Authenticate** parameter")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
         public async Task<IActionResult> Authenticate(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Seguridad/Authenticate")] HttpRequest req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Seguridad/Authenticate")] HttpRequest req, ILogger log)
         {
             try
             {
@@ -63,11 +63,11 @@ namespace PuntosLeonisa.Seguridad.Function
                 {
                     throw new ArgumentNullException(nameof(req));
                 }
-
+                log.LogInformation($"Authentication:Authentication Inicia a loguear al ususario. Fecha:{DateTime.UtcNow}");
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var login = JsonConvert.DeserializeObject<LoginDto>(requestBody);
                 GenericResponse<UsuarioResponseLiteDto> usuarioAuth = await usuarioApplication.Authentication(login);
-
+                log.LogInformation($"Authentication:Authentication Termina y loguea al usuario. Fecha:{DateTime.UtcNow}");
                 usuarioAuth.Result.Tkn = CreateToken(login.Email, "Public", "arbems.com" );
 
                 return new OkObjectResult(usuarioAuth);
