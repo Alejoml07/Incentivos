@@ -363,6 +363,20 @@
       ],
       "Key": "ValidarTokenCambiarContrasenaRoute"
     },
+
+    {
+      "UpstreamPathTemplate": "/api/Seguridad/ValidarCorreo",
+      "DownstreamPathTemplate": "/api/Seguridad/ValidarCorreo",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plseguridad.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "ValidarCorreoRoute"
+    },
     //Termina Usuario
     //Empieza productos
     {

@@ -306,6 +306,16 @@ public class SeguridadApplication : IUsuarioApplication
         {
             var exist = await usuarioRepository.Login(login);
 
+            if(exist.Pwd == null || exist.Pwd == "")
+            {
+                return new GenericResponse<bool>() { Result = false };
+            }
+
+            if(exist.Pwd != null && exist.Pwd != "")
+            {
+                return new GenericResponse<bool>() { Result = true };
+            }
+
             if(exist == null)
             {
                 
@@ -318,7 +328,7 @@ public class SeguridadApplication : IUsuarioApplication
                 }
                 
             }
-            return new GenericResponse<bool>() { Result = exist != null };
+            return new GenericResponse<bool>() { Result = false };
         }
         catch (Exception)
         {
