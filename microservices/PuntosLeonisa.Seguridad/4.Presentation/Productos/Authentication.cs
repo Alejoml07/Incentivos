@@ -65,7 +65,7 @@ namespace PuntosLeonisa.Seguridad.Function
                 }
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var login = JsonConvert.DeserializeObject<LoginDto>(requestBody);
-                log.LogInformation($"Authentication:Authentication Inicia a loguear al ususario. Fecha:{DateTime.UtcNow}");
+                log.LogInformation($"Authentication:Authentication Inicia a loguear al ususario ${login.Email}. Fecha:{DateTime.UtcNow}");
                 GenericResponse<UsuarioResponseLiteDto> usuarioAuth = await usuarioApplication.Authentication(login);
                 log.LogInformation($"Authentication:Authentication Termina y loguea al usuario. Fecha:{DateTime.UtcNow}");
                 usuarioAuth.Result.Tkn = CreateToken(login.Email, "Public", "arbems.com" );

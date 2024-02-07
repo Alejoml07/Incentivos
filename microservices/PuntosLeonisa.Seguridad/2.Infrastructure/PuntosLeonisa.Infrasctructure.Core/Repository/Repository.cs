@@ -93,9 +93,9 @@ namespace PuntosLeonisa.Infrasctructure.Core.Repository
 
         public async Task AddRange(T[] entities)
         {
-            //DetachAllEntities();
             await _context.Set<T>().AddRangeAsync(entities);
             await _context.SaveChangesAsync();
+        
         }
     }
 }

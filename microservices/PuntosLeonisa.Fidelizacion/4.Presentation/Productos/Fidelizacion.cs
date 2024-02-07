@@ -1,4 +1,4 @@
-﻿ using System;
+﻿using System;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +18,7 @@ using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Carrito;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.MovimientoPuntos;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.FidelizacionPuntos;
 
 namespace Usuarioos
 {
@@ -324,7 +325,7 @@ namespace Usuarioos
 
             try
             {
-               
+
                 if (req is null)
                 {
                     throw new ArgumentNullException(nameof(req));
@@ -493,7 +494,7 @@ namespace Usuarioos
         [OpenApiOperation(operationId: "GetUsuarioInfoPuntosAll", tags: new[] { "GetUsuarioInfoPuntosAll" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los puntos")]
         public async Task<IActionResult> GetUsuarioInfoPuntosAll(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "fidelizacion/GetUsuarioInfoPuntosAll")] HttpRequest req,ILogger log)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "fidelizacion/GetUsuarioInfoPuntosAll")] HttpRequest req, ILogger log)
         {
 
             log.LogInformation("C# HTTP trigger function processed a request.");
@@ -626,13 +627,13 @@ namespace Usuarioos
 
             log.LogInformation("C# HTTP trigger function processed a request.");
             try
-            { 
+            {
 
                 if (log is null)
                 {
                     throw new ArgumentNullException(nameof(log));
                 }
-       
+
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var data = JsonConvert.DeserializeObject<AddNroGuiaYTransportadora>(requestBody);
                 var response = await this.puntosApplication.AddNroGuiaYTransportadora(data);
@@ -783,6 +784,34 @@ namespace Usuarioos
                 return GetFunctionError(log, "Error al obtener las redenciones:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("SincronizarLiquidacionPuntos")]
+        [OpenApiOperation(operationId: "GetUsuariosRedencionPuntosByEmail", tags: new[] { "SincronizarLiquidacionPuntos" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "hace post de la guia y transportadora")]
+        public async Task<IActionResult> SincronizarLiquidacionPuntos(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/SincronizarLiquidacionPuntos")] HttpRequest req, ILogger log)
+        {
+
+            log.LogInformation("C# HTTP trigger function processed a request.");
+            try
+            {
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<LiquidacionPuntosDto[]>(requestBody);
+                var response = await this.puntosApplication.GuardarLiquidacionPuntos(data);
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener las redenciones:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
     }
 }
 
