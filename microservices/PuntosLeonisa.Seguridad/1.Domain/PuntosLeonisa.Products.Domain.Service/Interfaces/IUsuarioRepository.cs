@@ -16,6 +16,8 @@ namespace PuntosLeonisa.Seguridad.Domain.Interfaces
         Task<Usuario> GetUsuarioByEmail(string email);
 
         Task<bool> CambioRecuperarPwd(CambioRecuperarPwdDto data);
+
+        Task<IEnumerable<Usuario>> GetUsuariosByCedulas(string[] cedulas);
     }
 
 

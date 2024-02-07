@@ -84,12 +84,12 @@ public class SeguridadApplication : IUsuarioApplication
         {
             var usuarios = mapper.Map<Usuario[]>(value);
             var usuariosParaAgregar = new List<Usuario>();
-
+            var usuariosExistente = await usuarioRepository.GetUsuariosByCedulas(usuarios.Select(p=> p.Cedula).ToArray());
             foreach (var usuario in usuarios)
             {
                 // Verifica si el usuario ya existe en la base de datos.
-                var usuarioExistente = await usuarioRepository.GetById(usuario.Cedula);
-                if (usuarioExistente == null)
+                
+                if (!usuariosExistente.Any(x => x.Cedula == usuario.Cedula))
                 {
                     // Si el usuario no existe, asigna un nuevo Id y lo agrega a la lista para agregar.
                     usuario.Id = Guid.NewGuid().ToString();

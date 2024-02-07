@@ -117,11 +117,11 @@ namespace Usuarios
 
                 foreach (var item in usuarios)
                 {
-
-                    item.Pwd = securityService.HasPassword(item.Pwd.Trim());
+                    if (item.Pwd != null)
+                        item.Pwd = securityService.HasPassword(item.Pwd.Trim());
                 }
 
-                await this.usuarioApplication.AddRange(usuarios);
+                this.usuarioApplication.AddRange(usuarios);
 
                 return new OkResult();
 
