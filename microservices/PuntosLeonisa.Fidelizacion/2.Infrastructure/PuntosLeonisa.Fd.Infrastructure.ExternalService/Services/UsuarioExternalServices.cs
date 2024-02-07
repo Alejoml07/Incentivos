@@ -89,15 +89,32 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
         {
             try
             {
-                var email = new EmailDTO()
+                if (data.Usuario.TipoUsuario == "Asesoras Vendedoras")
                 {
-                    Message = data.GenerarHTML(),
-                    Recipients = new string[] { data?.Usuario?.Email,"danielmg12361@gmail.com" },
-                    Subject = "Redención de premio"
-                };
-                var response = this.httpClientAgent.SendMail(email);
+                    var email = new EmailDTO()
+                    {
+                        Message = data.GenerarHTML(),
+                        Recipients = new string[] { data?.Usuario?.Email, "danielmg12361@gmail.com"},
+                        Subject = "Redención de premio"
+                    };
+                    var response = this.httpClientAgent.SendMail(email);
 
-                return Task.FromResult(new GenericResponse<bool>() { Result = true });
+                    return Task.FromResult(new GenericResponse<bool>() { Result = true });
+                }
+                else
+                {
+                    var email = new EmailDTO()
+                    {
+                        Message = data.GenerarHTML(),
+                        Recipients = new string[] { data?.Usuario?.Email, "danielmg12361@gmail.com"},
+                        Subject = "Redención de premio"
+                    };
+                    var response = this.httpClientAgent.SendMail(email);
+
+                    return Task.FromResult(new GenericResponse<bool>() { Result = true });
+                }
+                
+                
             }
             catch (Exception ex)
             {
@@ -110,6 +127,7 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
         {
             try
             {
+                
                 var email = new EmailDTO()
                 {
                     Message = data.GenerarHTMLCambioEstado(data.ProductosCarrito.FirstOrDefault().ProveedorLite.Id),

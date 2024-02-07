@@ -317,9 +317,13 @@ public class SeguridadApplication : IUsuarioApplication
             }
 
             if(exist == null)
-            {
-                
+            {                
               var response = await this.getUsuarioExternalService.GetUsuario(login);
+
+                if(response == null)
+                {
+                    throw new Exception("Usuario no existe");
+                }   
                 if (response != null)
                 {
                     var usuario = mapper.Map<Usuario>(response);
