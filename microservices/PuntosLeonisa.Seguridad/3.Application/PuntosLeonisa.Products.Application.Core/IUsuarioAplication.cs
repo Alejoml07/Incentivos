@@ -12,6 +12,6 @@ public interface IUsuarioApplication : IApplicationCore<UsuarioDto>
     Task<GenericResponse<bool>> RecuperarPassword(UsuarioDto data);
     Task<GenericResponse<bool>> CambioRecuperarPwd(CambioRecuperarPwdDto data);
     Task<GenericResponse<UsuarioDto>> ValidarTokenCambiarContrasena(TokenDto token);
-    Task<GenericResponse<bool>> ValidarCorreo(LoginDto login);
+    Task<GenericResponse<bool>> ValidarCorreo(string email);
 }
 

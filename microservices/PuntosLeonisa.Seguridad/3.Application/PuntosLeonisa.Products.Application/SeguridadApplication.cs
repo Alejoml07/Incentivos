@@ -300,11 +300,11 @@ public class SeguridadApplication : IUsuarioApplication
         }
     }
 
-    public async Task<GenericResponse<bool>> ValidarCorreo(LoginDto login)
+    public async Task<GenericResponse<bool>> ValidarCorreo(string email)
     {
         try
         {
-            var exist = await usuarioRepository.Login(login);
+            var exist = await usuarioRepository.GetUsuarioByEmail(email);
 
             if(exist.Pwd == null || exist.Pwd == "")
             {
@@ -318,7 +318,7 @@ public class SeguridadApplication : IUsuarioApplication
 
             if(exist == null)
             {                
-              var response = await this.getUsuarioExternalService.GetUsuario(login);
+              var response = await this.getUsuarioExternalService.GetUsuario(email);
 
                 if(response == null)
                 {

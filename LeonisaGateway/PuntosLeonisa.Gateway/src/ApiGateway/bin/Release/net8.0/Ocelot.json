@@ -368,7 +368,7 @@
       "UpstreamPathTemplate": "/api/Seguridad/ValidarCorreo",
       "DownstreamPathTemplate": "/api/Seguridad/ValidarCorreo",
       "DownstreamScheme": "https",
-      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
           "Host": "plseguridad.azurewebsites.net",

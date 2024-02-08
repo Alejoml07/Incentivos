@@ -10,6 +10,6 @@ namespace PuntosLeonisa.Infrasctructure.Core.ExternalServiceInterfaces
 {
     public interface IGetUsuarioExternalService
     {
-        Task<UsuarioDto> GetUsuario(LoginDto login);
+        Task<UsuarioDto> GetUsuario(string email);
     }
 }

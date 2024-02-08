@@ -97,7 +97,7 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
         }
         else
         {
-            throw new Exception("Usuario no encontrado");
+            return null;
         }
     }
 

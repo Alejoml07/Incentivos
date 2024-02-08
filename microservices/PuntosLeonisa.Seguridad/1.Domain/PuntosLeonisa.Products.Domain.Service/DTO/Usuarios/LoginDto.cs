@@ -11,6 +11,6 @@ namespace PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios
     {
         public string Email { get; set; }
 
-        public string Pwd { get; set; }
+        public string? Pwd { get; set; }
     }
 }
