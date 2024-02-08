@@ -218,7 +218,7 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
-            
+
 
             if (carrito.Id == null)
             {
@@ -438,7 +438,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         try
         {
             var puntosEnCarrito = this.unitOfWork.CarritoRepository.GetPuntosEnCarrito(id).GetAwaiter().GetResult();
-            
+
             var puntosEnCarritoSum = puntosEnCarrito.Sum(x => x.Product.Puntos * x.Product.Quantity);
             var usuario = await this.unitOfWork.UsuarioInfoPuntosRepository.GetByPredicateAsync(p => p.Email == id);
             usuario.FirstOrDefault().PuntosEnCarrito = (int)puntosEnCarritoSum;
@@ -482,7 +482,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                     ClearWishlistAndCart(data.Usuario);
                     unitOfWork.SaveChangesSync();
                     SendNotify(data);
-                    await this.productoExternalService.UpdateInventory(data.ProductosCarrito.ToArray());                    
+                    await this.productoExternalService.UpdateInventory(data.ProductosCarrito.ToArray());
                 }
             }
 
@@ -956,26 +956,107 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
+            var usuariosEncontrados = new List<Usuario>();
             foreach (var item in data)
             {
-                var usuario = this.usuarioExternalService.GetUserLiteByCedula(item.Cedula).GetAwaiter().GetResult();
-                if (usuario.IsSuccess)
-                    item.Usuario = usuario.Result;
+                Usuario usuario = null;
+                if (usuariosEncontrados.Count() > 0 && usuariosEncontrados.Any(u => u != null && u.Cedula == item.Cedula))
+                {
+                    usuario = usuariosEncontrados.First(u => u != null && u.Cedula == item.Cedula);
+                }
                 else
-                    continue;
+                {
+                    var usuarioResult = this.usuarioExternalService.GetUserLiteByCedula(item.Cedula).GetAwaiter().GetResult();
+
+                    if (usuarioResult.IsSuccess)
+                    {
+                        usuario = usuarioResult.Result;
+                        usuariosEncontrados.Add(usuarioResult.Result);
+                    }
+                    //else
+                    //{
+                    //    continue;
+                    //}
+                }
+                item.Usuario = usuario;
             }
+
 
             this.unitOfWork.FidelizacionPuntosRepository.AddRange(data.Select(x => new FidelizacionPuntos
             {
                 Id = Guid.NewGuid().ToString(),
-                Anho = x.Anho,
+                Anho = x.Ano,
                 Mes = x.Mes,
                 Porcentaje = x.Porcentaje,
-                Puntos = x.Puntos,
+                Puntos = (int?)x.Puntos,
                 Publico = x.Publico,
                 Id_Variable = x.Id_Variable,
                 Usuario = x.Usuario
             }).ToArray());
+
+            // buscar la cedula y actualizar el usuarioinfopuntos
+            var cedulas = data.Select(x => x.Cedula).Distinct().ToList();
+            foreach (var cedula in cedulas)
+            {
+                var usuarioInfoPuntos = this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(cedula).GetAwaiter().GetResult();
+                if (usuarioInfoPuntos != null)
+                {
+                    var puntos = data.Where(x => x.Cedula == cedula).Sum(x => x.Puntos);
+                    usuarioInfoPuntos.PuntosAcumulados += (int?)puntos;
+                    usuarioInfoPuntos.PuntosDisponibles += (int?)puntos;
+                    this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuarioInfoPuntos);
+
+                    // add extracto and call function
+                    var extracto = new Extractos()
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Usuario = data.FirstOrDefault(x => x.Cedula == cedula).Usuario,
+                        Fecha = DateTime.Now,
+                        ValorMovimiento = (int?)puntos,
+                        Descripcion = "Liquidacion de puntos",
+                        OrigenMovimiento = "Liquidacion de puntos",
+                    };
+                    this.unitOfWork.ExtractosRepository.Add(extracto);
+
+                }
+                else
+                {
+                    // create new usuarioinfopuntos
+                    var usuario = usuariosEncontrados.Where(p => p?.Cedula == cedula).FirstOrDefault();
+                    if (usuario != null)
+                    {
+                        var puntos = data.Where(x => x.Cedula == cedula).Sum(x => x.Puntos);
+                        var usuarioInfoPuntosNuevo = new UsuarioInfoPuntos
+                        {
+                            Cedula = cedula,
+                            PuntosAcumulados = (int?)puntos,
+                            PuntosDisponibles = (int?)puntos,
+                            PuntosRedimidos = 0,
+                            PuntosEnCarrito = 0,
+                            Nombres = usuario.Nombres,
+                            Apellidos = usuario.Apellidos,
+                            Email = usuario.Email,
+                            FechaActualizacion = DateTime.Now
+
+                        };
+                        this.unitOfWork.UsuarioInfoPuntosRepository.Add(usuarioInfoPuntosNuevo);
+
+                        // add extracto and call function
+                        var extracto = new Extractos
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            Usuario = usuario,
+                            Fecha = DateTime.Now,
+                            ValorMovimiento = (int?)puntos,
+                            Descripcion = "Liquidacion de puntos",
+                            OrigenMovimiento = "Liquidacion de puntos",
+                        };
+                        this.unitOfWork.ExtractosRepository.Add(extracto);
+                    }
+                }
+            }
+
+
 
             this.unitOfWork.SaveChangesSync();
 
@@ -1014,7 +1095,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                         break;
                     }
                 }
-                
+
                 await this.unitOfWork.UsuarioRedencionRepository.Update(ordenes);
                 await this.unitOfWork.UsuarioInfoPuntosRepository.Update(puntos);
                 await this.unitOfWork.SaveChangesAsync();
@@ -1022,8 +1103,8 @@ public class FidelizacionApplication : IFidelizacionApplication
                 var ordenParaCorreo = this.mapper.Map(mapper.Map<UsuarioRedencion>(ordenes), new UsuarioRedencion());
                 ordenParaCorreo.ProductosCarrito = ordenes.ProductosCarrito.Where(x => x.Id == data.Producto.Id).ToList();
                 await this.usuarioExternalService.UserSendEmailWithMessageAndState(ordenParaCorreo);
-              
-               
+
+
 
                 return new GenericResponse<int>
                 {
@@ -1053,9 +1134,9 @@ public class FidelizacionApplication : IFidelizacionApplication
                 return new GenericResponse<bool>
                 {
                     Result = true
-                };              
+                };
             }
-           return null;
+            return null;
         }
         catch (Exception)
         {
@@ -1073,7 +1154,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             var extractos = await this.unitOfWork.ExtractosRepository.GetAll();
             response.Result = extractos.OrderByDescending(p => p.Fecha);
             return response;
-           
+
         }
         catch (Exception)
         {
@@ -1085,8 +1166,8 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
-            foreach (var extracto  in data)
-            {               
+            foreach (var extracto in data)
+            {
                 extracto.Id = Guid.NewGuid().ToString();
                 extracto.Fecha = DateTime.Now;
             }
@@ -1096,14 +1177,14 @@ public class FidelizacionApplication : IFidelizacionApplication
             {
                 Result = new List<bool> { true }
             };
-            
+
         }
         catch (Exception)
         {
 
             throw;
         }
-        
+
     }
 
     public async Task<GenericResponse<IEnumerable<Extractos>>> GetExtractosByUsuario(string cedula)
@@ -1122,6 +1203,6 @@ public class FidelizacionApplication : IFidelizacionApplication
 
             throw;
         }
-        
+
     }
 }
