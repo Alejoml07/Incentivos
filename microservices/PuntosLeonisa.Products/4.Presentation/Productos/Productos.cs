@@ -155,7 +155,7 @@ namespace Productos
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var products = JsonConvert.DeserializeObject<ProductoDto[]>(requestBody);
 
-                await this.productoApplication.AddRange(products);
+                await this.productoApplication.AddRangeProducts(products);
 
                 return new OkResult();
 

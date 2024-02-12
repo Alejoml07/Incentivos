@@ -101,8 +101,9 @@ public class ProductosApplication : IProductApplication
         }
     }
 
-    public async Task<GenericResponse<ProductoDto[]>> AddRange(ProductoDto[] value)
+    public async Task<GenericResponse<Tuple<ProductoDto[], List<string>>>> AddRangeProducts(ProductoDto[] value)
     {
+        var errores = new List<string>();
         try
         {
             var productos = this.mapper.Map<Producto[]>(value);
@@ -113,15 +114,17 @@ public class ProductosApplication : IProductApplication
                 producto.ProveedorLite = this.proveedorExternalService.GetProveedorByNit(producto.Proveedor).GetAwaiter().GetResult().Result;
                 if (producto.ProveedorLite == null)
                 {
-                    throw new Exception("El proveedor no existe");
+                    errores.Add("Este proveedor no existe" + producto.Proveedor); 
                 }
             }
 
             await this.productoRepository.AddRange(productos);
-            var responseOnly = new GenericResponse<ProductoDto[]>
+            var responseOnly = new GenericResponse<Tuple<ProductoDto[], List<string>>>
             {
-                Result = value
+                Result = new Tuple<ProductoDto[], List<string>>( value,errores)
             };
+
+           
 
             return responseOnly;
 
@@ -358,5 +361,10 @@ public class ProductosApplication : IProductApplication
             throw;
         }
         
+    }
+
+    public Task<GenericResponse<ProductoDto[]>> AddRange(ProductoDto[] value)
+    {
+        throw new NotImplementedException();
     }
 }

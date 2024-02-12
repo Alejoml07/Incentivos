@@ -89,8 +89,20 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
         {
             try
             {
-                if (data.Usuario.TipoUsuario == "Asesoras Vendedoras")
-                {
+                //if (data.Usuario.TipoUsuario == "Asesoras Vendedoras")
+                //{
+                //    var email = new EmailDTO()
+                //    {
+                //        Message = data.GenerarHTML(),
+                //        Recipients = new string[] { data?.Usuario?.Email, "danielmg12361@gmail.com"},
+                //        Subject = "Redención de premio"
+                //    };
+                //    var response = this.httpClientAgent.SendMail(email);
+
+                //    return Task.FromResult(new GenericResponse<bool>() { Result = true });
+                //}
+                //else
+                //{
                     var email = new EmailDTO()
                     {
                         Message = data.GenerarHTML(),
@@ -100,19 +112,7 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
                     var response = this.httpClientAgent.SendMail(email);
 
                     return Task.FromResult(new GenericResponse<bool>() { Result = true });
-                }
-                else
-                {
-                    var email = new EmailDTO()
-                    {
-                        Message = data.GenerarHTML(),
-                        Recipients = new string[] { data?.Usuario?.Email, "danielmg12361@gmail.com"},
-                        Subject = "Redención de premio"
-                    };
-                    var response = this.httpClientAgent.SendMail(email);
-
-                    return Task.FromResult(new GenericResponse<bool>() { Result = true });
-                }
+                //}
                 
                 
             }
