@@ -365,8 +365,8 @@
     },
 
     {
-      "UpstreamPathTemplate": "Seguridad/ValidarCorreo/{email}",
-      "DownstreamPathTemplate": "Seguridad/ValidarCorreo/{email}",
+      "UpstreamPathTemplate": "/api/Seguridad/ValidarCorreo/{email}",
+      "DownstreamPathTemplate": "/api/Seguridad/ValidarCorreo/{email}",
       "DownstreamScheme": "https",
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
