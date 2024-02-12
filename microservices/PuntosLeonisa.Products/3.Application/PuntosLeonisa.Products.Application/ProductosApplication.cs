@@ -33,7 +33,7 @@ public class ProductosApplication : IProductApplication
         this.productoRepository = productoRepository;
         this.proveedorExternalService = proveedorExternalService;
         this.response = new GenericResponse<ProductoDto>();
-        
+
     }
 
     public async Task<GenericResponse<ProductoDto>> Add(ProductoDto value)
@@ -55,7 +55,7 @@ public class ProductosApplication : IProductApplication
             //TODO: Colocar el parametro de puntos y su equivalencia 87
             producto.Id = Guid.NewGuid().ToString();
             producto.ProveedorLite = this.proveedorExternalService.GetProveedorByNit(producto.Proveedor).GetAwaiter().GetResult().Result;
-            if(producto.ProveedorLite == null)
+            if (producto.ProveedorLite == null)
             {
                 throw new Exception("El proveedor no existe");
             }
@@ -107,24 +107,41 @@ public class ProductosApplication : IProductApplication
         try
         {
             var productos = this.mapper.Map<Producto[]>(value);
-
+            var productosProcesados = new List<Producto>();
             foreach (var producto in productos)
             {
-                producto.Id = Guid.NewGuid().ToString();
                 producto.ProveedorLite = this.proveedorExternalService.GetProveedorByNit(producto.Proveedor).GetAwaiter().GetResult().Result;
                 if (producto.ProveedorLite == null)
                 {
-                    errores.Add("Este proveedor no existe" + producto.Proveedor); 
+                    errores.Add($"El producto {producto.EAN} tiene un  numero de proveedor que no existe : {producto.Proveedor}");
                 }
-            }
+                else
+                {
 
-            await this.productoRepository.AddRange(productos);
+                    var productoExist = await this.productoRepository.GetById(producto.EAN ?? string.Empty);
+                    if (productoExist != null)
+                    {
+                        if (productoExist.ProveedorLite == null)
+                            productoExist.ProveedorLite = producto.ProveedorLite;
+                        this.mapper.Map(producto, productoExist);
+                        await this.productoRepository.Update(productoExist);
+                    }
+                    else
+                    {
+                        producto.Id = Guid.NewGuid().ToString();                        
+                        await this.productoRepository.Add(producto);
+                    }
+                    productosProcesados.Add(producto);
+                }
+
+            }
+            var productosProcesadosDto = this.mapper.Map<ProductoDto[]>(productosProcesados);   
             var responseOnly = new GenericResponse<Tuple<ProductoDto[], List<string>>>
             {
-                Result = new Tuple<ProductoDto[], List<string>>( value,errores)
+                Result = new Tuple<ProductoDto[], List<string>>(productosProcesadosDto, errores)
             };
 
-           
+
 
             return responseOnly;
 
@@ -347,7 +364,7 @@ public class ProductosApplication : IProductApplication
             {
                 var productos = await this.productoRepository.GetById(producto.EAN);
                 productos.Cantidad -= producto.Quantity;
-                await this.productoRepository.Update(productos);                
+                await this.productoRepository.Update(productos);
             }
             return new GenericResponse<IEnumerable<bool>>()
             {
@@ -360,7 +377,7 @@ public class ProductosApplication : IProductApplication
 
             throw;
         }
-        
+
     }
 
     public Task<GenericResponse<ProductoDto[]>> AddRange(ProductoDto[] value)
