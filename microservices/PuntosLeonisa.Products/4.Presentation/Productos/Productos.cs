@@ -42,7 +42,6 @@ namespace Productos
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Productos/Producto")] HttpRequest req,
             ILogger log)
         {
-
             try
             {
                 log.LogInformation($"Product:GetProductos Inicia obtener todos los productos. Fecha:{DateTime.UtcNow}");
@@ -50,25 +49,20 @@ namespace Productos
                 var data = JsonConvert.DeserializeObject<ProductoDto>(requestBody);
                 await this.productoApplication.Add(data);
                 return new OkResult();
-
             }
             catch (Exception ex)
             {
                 return GetFunctionError(log, "Error al obtener los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
-
-
         }
 
         [FunctionName("GetProductos")]
         [OpenApiOperation(operationId: "GetProductos", tags: new[] { "Productos/GetProductos" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
         public async Task<IActionResult> GetProductos(
-           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Productos/GetProductos")] HttpRequest req,
-           ILogger log)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Productos/GetProductos")] HttpRequest req,
+        ILogger log)
         {
-           
-
             try
             {
                 if (req is null)
@@ -80,7 +74,6 @@ namespace Productos
                 {
                     throw new ArgumentNullException(nameof(log));
                 }
-
                 log.LogInformation($"Product:GetProductos Inicia obtener todos los productos. Fecha:{DateTime.UtcNow}");
                 var productos = await productoApplication.GetAll();
                 log.LogInformation($"Product:GetProductos finaliza obtener todos los productos sin errores. Fecha:{DateTime.UtcNow}");
@@ -147,18 +140,13 @@ namespace Productos
            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Productos/LoadProducts")] HttpRequest req,
            ILogger log)
         {
-            
-
             try
             {
                 log.LogInformation($"Product:LoadProducts Inicia agregar productos masivos. Fecha:{DateTime.UtcNow}");
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var products = JsonConvert.DeserializeObject<ProductoDto[]>(requestBody);
-
-               var result = await this.productoApplication.AddRangeProducts(products);
-
+                var result = await this.productoApplication.AddRangeProducts(products);
                 return new OkObjectResult(result);
-
             }
             catch (Exception ex)
             {
@@ -174,8 +162,6 @@ namespace Productos
            string id,  // <-- Parámetro adicional
            ILogger log)
         {
-            
-
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             try
@@ -211,9 +197,9 @@ namespace Productos
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
 
         public async Task<IActionResult> DeleteProduct(
-           [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "Productos/DeleteProduct/{id}")] HttpRequest req,
-           string id,  // <-- Parámetro adicional
-           ILogger log)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "Productos/DeleteProduct/{id}")] HttpRequest req,
+        string id,  // <-- Parámetro adicional
+        ILogger log)
         {
             
             log.LogInformation("C# HTTP trigger function processed a request.");
@@ -235,9 +221,7 @@ namespace Productos
                     throw new ArgumentNullException(nameof(log));
                 }
 
-
                 var productos = await this.productoApplication.DeleteById(id);
-
                 return new OkObjectResult(productos);
             }
             catch (Exception ex)
@@ -251,21 +235,17 @@ namespace Productos
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
 
         public async Task<IActionResult> ProductInventory(
-           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Productos/Codificacion/ProductInventory")] HttpRequest req,
-           ILogger log)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Productos/Codificacion/ProductInventory")] HttpRequest req,
+        ILogger log)
         {
 
             try
             {
                 log.LogInformation($"Product:ProductInventory Inicia obtener todos los productos. Fecha:{DateTime.UtcNow}");
-
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var productoInventarioDtos = JsonConvert.DeserializeObject<ProductoInventarioDto[]>(requestBody);
-
                 var response  = await this.productoApplication.AddProductoInventario(productoInventarioDtos);
-
                 return new OkObjectResult(response);
-
             }
             catch (Exception ex)
             {
@@ -273,34 +253,27 @@ namespace Productos
             }
         }
 
-
         [FunctionName("ProductPrices")]
         [OpenApiOperation(operationId: "ProductPrices", tags: new[] { "Productos/Codificacion/ProductPrices" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
 
         public async Task<IActionResult> ProductPrices(
-          [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Productos/Codificacion/ProductPrices")] HttpRequest req,
-          ILogger log)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Productos/Codificacion/ProductPrices")] HttpRequest req,
+        ILogger log)
         {
-
             try
             {
                 log.LogInformation($"Product:ProductPrices Inicia agregar precio a los productos. Fecha:{DateTime.UtcNow}");
-
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var productoPrecios = JsonConvert.DeserializeObject<ProductoPreciosDto[]>(requestBody);
-
                 var response = await productoApplication.AddProductoPrecios(productoPrecios);
-
                 return new OkObjectResult(response);
-
             }
             catch (Exception ex)
             {
                 return GetFunctionError(log, "Product:ProductPrices fin agregar precio a los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
         }
-
 
         [FunctionName("GetAndApplyFilters")]
         [OpenApiOperation(operationId: "GetAndApplyFilters", tags: new[] { "Productos/Mk/GetAndApplyFilters" })]
@@ -309,8 +282,6 @@ namespace Productos
            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Productos/Mk/GetAndApplyFilters")] HttpRequest req,
            ILogger log)
         {
-
-
             try
             {
                 if (req is null)
@@ -333,15 +304,12 @@ namespace Productos
                 {
                     tipoUsuario = tuEncabezadoValues.FirstOrDefault();
                 }
-
                 log.LogInformation($"Product:ObtenerFiltros Inicia obtener todos los filtros. Fecha:{DateTime.UtcNow}");
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-
                 var generalFiltersWithResponses = JsonConvert.DeserializeObject<GeneralFiltersWithResponseDto>(requestBody);
                 generalFiltersWithResponses.ApplyFiltro.TipoUsuario = tipoUsuario;
                 var filtros = await productoApplication.GetAndApplyFilters(generalFiltersWithResponses);
-                log.LogInformation($"Product:ObtenerFiltros finaliza obtener todos los filtros sin errores. Fecha:{DateTime.UtcNow}");
-                
+                log.LogInformation($"Product:ObtenerFiltros finaliza obtener todos los filtros sin errores. Fecha:{DateTime.UtcNow}");  
                 return new OkObjectResult(filtros);
             }
             catch (Exception ex)
@@ -354,14 +322,11 @@ namespace Productos
         [OpenApiOperation(operationId: "GetByRef", tags: new[] { "Productos/GetByRef" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
         public async Task<IActionResult> GetByRef(
-          [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Productos/GetByRef/{referencia}")] HttpRequest req,
-          string referencia,  // <-- Parámetro adicional
-          ILogger log)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Productos/GetByRef/{referencia}")] HttpRequest req,
+        string referencia,  // <-- Parámetro adicional
+        ILogger log)
         {
-
-
             log.LogInformation("C# HTTP trigger function processed a request.");
-
             try
             {
                 if (req is null)
@@ -380,7 +345,6 @@ namespace Productos
                 }
 
                 var producto = await this.productoApplication.GetByRef(referencia);
-
                 return new OkObjectResult(producto);
             }
             catch (Exception ex)
@@ -394,27 +358,22 @@ namespace Productos
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Actualiza inventario")]
 
         public async Task<IActionResult> UpdateInventory(
-          [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Productos/Codificacion/UpdateInventory")] HttpRequest req,
-          ILogger log)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Productos/Codificacion/UpdateInventory")] HttpRequest req,
+        ILogger log)
         {
-
             try
             {
                 log.LogInformation($"Product:ProductPrices Inicia agregar precio a los productos. Fecha:{DateTime.UtcNow}");
-
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var productoPrecios = JsonConvert.DeserializeObject<ProductoRefence[]>(requestBody);
                 var response = await productoApplication.UpdateInventory(productoPrecios);
-
                 return new OkObjectResult(response);
-
             }
             catch (Exception ex)
             {
                 return GetFunctionError(log, "Product:ProductPrices fin agregar precio a los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
         }
-
     }
 }
 
