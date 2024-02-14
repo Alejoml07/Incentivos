@@ -312,7 +312,12 @@ public class SeguridadApplication : IUsuarioApplication
             }
 
             if(exist.Pwd != null && exist.Pwd != "")
-            {
+            {  
+                var response = await this.getUsuarioExternalService.GetUsuario(email);
+                if(response != null)
+                {
+                    await this.usuarioRepository.Update(mapper.Map<Usuario>(response));
+                }
                 return new GenericResponse<bool>() { Result = true };
             }
 
