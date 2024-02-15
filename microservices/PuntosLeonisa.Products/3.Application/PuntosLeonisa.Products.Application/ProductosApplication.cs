@@ -1,7 +1,5 @@
 ﻿
 using AutoMapper;
-using Microsoft.Azure.Cosmos.Serialization.HybridRow.Schemas;
-using Newtonsoft.Json.Linq;
 using PuntosLeonisa.Infrasctructure.Core.ExternalServiceInterfaces;
 using PuntosLeonisa.Products.Application.Core;
 using PuntosLeonisa.Products.Domain;
@@ -11,8 +9,6 @@ using PuntosLeonisa.Products.Domain.Service.DTO.Genericos;
 using PuntosLeonisa.Products.Domain.Service.DTO.Productos;
 using PuntosLeonisa.Products.Infrasctructure.Common;
 using PuntosLeonisa.Products.Infrasctructure.Common.Communication;
-using PuntosLeonisa.Products.Infrasctructure.Repositorie;
-
 namespace PuntosLeonisa.Products.Application;
 
 public class ProductosApplication : IProductApplication
@@ -28,12 +24,10 @@ public class ProductosApplication : IProductApplication
         {
             throw new ArgumentNullException(nameof(productoRepository));
         }
-
         this.mapper = mapper;
         this.productoRepository = productoRepository;
         this.proveedorExternalService = proveedorExternalService;
         this.response = new GenericResponse<ProductoDto>();
-        
     }
 
     public async Task<GenericResponse<ProductoDto>> Add(ProductoDto value)
@@ -55,7 +49,7 @@ public class ProductosApplication : IProductApplication
             //TODO: Colocar el parametro de puntos y su equivalencia 87
             producto.Id = Guid.NewGuid().ToString();
             producto.ProveedorLite = this.proveedorExternalService.GetProveedorByNit(producto.Proveedor).GetAwaiter().GetResult().Result;
-            if(producto.ProveedorLite == null)
+            if (producto.ProveedorLite == null)
             {
                 throw new Exception("El proveedor no existe");
             }
@@ -73,7 +67,6 @@ public class ProductosApplication : IProductApplication
     private static async Task UploadImageToProducts(ProductoDto producto)
     {
         var azureHelper = new AzureHelper("DefaultEndpointsProtocol=https;AccountName=stgactincentivos;AccountKey=mtBoBaUJu8BKcHuCfdWzk1au7Upgif0rlzD+BlfAJZBsvQ02CiGzCNG5gj1li10GF8RpUwz6h+Mj+AStMOwyTA==;EndpointSuffix=core.windows.net");
-
         if (!string.IsNullOrEmpty(producto.UrlImagen1))
         {
             byte[] bytes = Convert.FromBase64String(producto.UrlImagen1);
@@ -101,30 +94,44 @@ public class ProductosApplication : IProductApplication
         }
     }
 
-    public async Task<GenericResponse<ProductoDto[]>> AddRange(ProductoDto[] value)
+    public async Task<GenericResponse<Tuple<ProductoDto[], List<string>>>> AddRangeProducts(ProductoDto[] value)
     {
+        var errores = new List<string>();
         try
         {
             var productos = this.mapper.Map<Producto[]>(value);
-
+            var productosProcesados = new List<Producto>();
             foreach (var producto in productos)
             {
-                producto.Id = Guid.NewGuid().ToString();
                 producto.ProveedorLite = this.proveedorExternalService.GetProveedorByNit(producto.Proveedor).GetAwaiter().GetResult().Result;
                 if (producto.ProveedorLite == null)
                 {
-                    throw new Exception("El proveedor no existe");
+                    errores.Add($"El producto {producto.EAN} tiene un  numero de proveedor que no existe : {producto.Proveedor}");
+                }
+                else
+                {
+                    var productoExist = await this.productoRepository.GetById(producto.EAN ?? string.Empty);
+                    if (productoExist != null)
+                    {
+                        if (productoExist.ProveedorLite == null)
+                            productoExist.ProveedorLite = producto.ProveedorLite;
+                            this.mapper.Map(producto, productoExist);
+                            await this.productoRepository.Update(productoExist);
+                    }
+                    else
+                    {
+                        producto.Id = Guid.NewGuid().ToString();                        
+                        await this.productoRepository.Add(producto);
+                    }
+                    productosProcesados.Add(producto);
                 }
             }
-
-            await this.productoRepository.AddRange(productos);
-            var responseOnly = new GenericResponse<ProductoDto[]>
+            var productosProcesadosDto = this.mapper.Map<ProductoDto[]>(productosProcesados);   
+            var responseOnly = new GenericResponse<Tuple<ProductoDto[], List<string>>>
             {
-                Result = value
+                Result = new Tuple<ProductoDto[], List<string>>(productosProcesadosDto, errores)
             };
-
             return responseOnly;
-
         }
         catch (Exception ex)
         {
@@ -150,7 +157,6 @@ public class ProductosApplication : IProductApplication
         {
             throw;
         }
-
     }
 
     public async Task<GenericResponse<IEnumerable<ProductoDto>>> GetAll()
@@ -161,7 +167,6 @@ public class ProductosApplication : IProductApplication
         {
             Result = productoDto
         };
-
         return responseOnly;
     }
 
@@ -170,7 +175,6 @@ public class ProductosApplication : IProductApplication
         var responseRawData = await this.productoRepository.GetById(id);
         var responseData = this.mapper.Map<ProductoDto>(responseRawData);
         this.response.Result = responseData;
-
         return this.response;
     }
 
@@ -180,7 +184,6 @@ public class ProductosApplication : IProductApplication
         var responseData = this.mapper.Map<IEnumerable<ProductoDto>>(responseRawData);
         var newResponse = new GenericResponse<IEnumerable<ProductoDto>>();
         newResponse.Result = responseData;
-
         return newResponse;
     }
 
@@ -222,7 +225,6 @@ public class ProductosApplication : IProductApplication
         }
         catch (Exception)
         {
-
             throw;
         }
     }
@@ -244,12 +246,10 @@ public class ProductosApplication : IProductApplication
                 productoExist.PrecioOferta = producto.PrecioOferta;
                 await this.productoRepository.Update(productoExist);
             }
-
             return new GenericResponse<bool>() { Result = true };
         }
         catch (Exception)
         {
-
             throw;
         }
     }
@@ -265,7 +265,6 @@ public class ProductosApplication : IProductApplication
             pageresult.PageSize = response.PageSize;
             pageresult.TotalCount = response.TotalCount;
             pageresult.Data = productos;
-
             return new GenericResponse<PagedResult<ProductoDto>>()
             {
                 Result = this.mapper.Map<PagedResult<ProductoDto>>(pageresult)
@@ -273,10 +272,8 @@ public class ProductosApplication : IProductApplication
         }
         catch (Exception)
         {
-
             throw;
         }
-
     }
 
     public async Task<GenericResponse<FiltroDto>> ObtenerFiltros(GeneralFiltersWithResponseDto generalFiltersWithResponseDto)
@@ -286,9 +283,9 @@ public class ProductosApplication : IProductApplication
         {
             Result = filtros
         };
-
         return responseOnly;
     }
+
     public async Task<GenericResponse<GeneralFiltersWithResponseDto>> GetAndApplyFilters(GeneralFiltersWithResponseDto generalFiltersWithResponseDto)
     {
         try
@@ -302,7 +299,6 @@ public class ProductosApplication : IProductApplication
             }
             else
             {
-
                 var response = await this.GetAll();
                 productosResponse = new PagedResult<ProductoDto>()
                 {
@@ -311,14 +307,11 @@ public class ProductosApplication : IProductApplication
                     PageSize = 10,
                     TotalCount = response.Result.Count()
                 };
-
             }
-
             // Opcional: Determinar o ajustar filtros adicionales basados en productos obtenidos
             // ..
             // Obtener o ajustar filtros usando GetFiltro
             var filtrosResponse = await this.ObtenerFiltros(generalFiltersWithResponseDto); // O alguna lógica que involucre GetFiltro
-
             // Combinar productos y filtros en una respuesta
             return new GenericResponse<GeneralFiltersWithResponseDto>
             {
@@ -344,19 +337,21 @@ public class ProductosApplication : IProductApplication
             {
                 var productos = await this.productoRepository.GetById(producto.EAN);
                 productos.Cantidad -= producto.Quantity;
-                await this.productoRepository.Update(productos);                
+                await this.productoRepository.Update(productos);
             }
             return new GenericResponse<IEnumerable<bool>>()
             {
                 Result = new List<bool>() { true }
             };
         }
-
         catch (Exception)
         {
-
             throw;
         }
-        
+    }
+
+    public Task<GenericResponse<ProductoDto[]>> AddRange(ProductoDto[] value)
+    {
+        throw new NotImplementedException();
     }
 }

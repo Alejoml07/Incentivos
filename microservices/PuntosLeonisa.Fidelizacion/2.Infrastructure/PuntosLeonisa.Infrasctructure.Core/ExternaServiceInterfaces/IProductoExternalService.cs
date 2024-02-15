@@ -11,6 +11,7 @@ namespace PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces
     public interface IProductoExternalService
     {
         Task<GenericResponse<IEnumerable<bool>>> UpdateInventory(ProductoRefence[] data);
+        Task<GenericResponse<ProductoRefence>> GetProductByEAN(string ean);
 
     }
 }

@@ -94,7 +94,7 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
                     var email = new EmailDTO()
                     {
                         Message = data.GenerarHTML(),
-                        Recipients = new string[] { data?.Usuario?.Email, "danielmg12361@gmail.com"},
+                        Recipients = new string[] { data?.Usuario?.Email, "danielmg12361@gmail.com" },
                         Subject = "Redención de premio"
                     };
                     var response = this.httpClientAgent.SendMail(email);
@@ -159,6 +159,13 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
 
                 throw;
             }
+        }
+
+        public Task<GenericResponse<bool>> CambiarEstado(string email)
+        {
+            var azf = $"{_configuration["AzfBaseUser"]}{_configuration["CambiarEstado"]}/{email}";
+            var response = httpClientAgent.GetRequest<GenericResponse<bool>>(new Uri(azf));
+            return response;
         }
     }
 }

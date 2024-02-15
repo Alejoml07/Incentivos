@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PuntosLeonisa.Infrasctructure.Core.Configuration;
-using PuntosLeonisa.Products.Domain;
+
 
 namespace PuntosLeonisa.infrastructure.Persistence.CosmoDb;
 
@@ -33,9 +33,7 @@ public class ProductContext : DbContext
     {
         modelBuilder.ApplyConfiguration(new ProductosConfiguration());
         modelBuilder.ApplyConfiguration(new UsuariosConfiguration());
-
     }
-
 }
 
 

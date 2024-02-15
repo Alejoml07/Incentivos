@@ -1210,4 +1210,87 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
 
     }
+
+    public async Task<GenericResponse<bool>> CambiarEstadoYLiquidarPuntos(string email)
+    {
+        try
+        {
+            var EANBono = "123456789";
+            await this.usuarioExternalService.CambiarEstado(email);
+            var usuarioPuntos = this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(email).GetAwaiter().GetResult();
+            var usuario = this.usuarioExternalService.GetUserByEmail(email).GetAwaiter().GetResult();
+            var bono = this.productoExternalService.GetProductByEAN(EANBono).GetAwaiter().GetResult();
+            var redencion = this.unitOfWork.UsuarioRedencionRepository.GetRedencionesWithProductsByEmail(email);
+            if (usuarioPuntos != null && usuario != null && bono != null)
+            {
+                var redencionNueva = new UsuarioRedencion
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    FechaRedencion = DateTime.Now,
+                    Usuario = usuario.Result,
+                    ProductosCarrito = new List<ProductoRefence>
+                    {
+                        new ProductoRefence
+                        {
+                            Id = bono.Result.Id,
+                            EAN = bono.Result.EAN,
+                            UrlImagen1 = bono.Result.UrlImagen1,
+                            Caracteristicas = bono.Result.Caracteristicas,
+                            Color = bono.Result.Color,
+                            Descripcion = bono.Result.Descripcion,
+                            Marca = bono.Result.Marca,
+                            Precio = bono.Result.Precio,
+                            PrecioOferta = bono.Result.PrecioOferta,
+                            Proveedor = bono.Result.Proveedor,
+                            Referencia = bono.Result.Referencia,
+                            TiempoEntrega = bono.Result.TiempoEntrega,
+                            Nombre = bono.Result.Nombre,
+                            Puntos = bono.Result.Puntos,
+                            ProveedorLite = bono.Result.ProveedorLite,
+                            Estado = EstadoOrdenItem.Pendiente,
+                            FechaCreacion = DateTime.Now,
+                            Quantity = usuarioPuntos.PuntosDisponibles,
+                            Correo = bono.Result.Correo,
+                            CategoriaNombre = bono.Result.CategoriaNombre,
+                            SubCategoriaNombre = bono.Result.SubCategoriaNombre,
+                        }
+                    }
+                };
+                redencionNueva.PuntosRedimidos = usuarioPuntos.PuntosDisponibles;
+                await this.unitOfWork.UsuarioRedencionRepository.Add(redencionNueva);
+                await this.unitOfWork.SaveChangesAsync();
+                await this.usuarioExternalService.UserSendEmailWithMessageAndState(redencionNueva);
+                return new GenericResponse<bool>
+                {
+                    Result = true
+                };
+            }
+            return new GenericResponse<bool>
+            {
+                Result = false
+            };
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    public Task<GenericResponse<IEnumerable<UsuarioRedencion>>> GetReporteRedencion(ReporteDto data)
+    {
+        try
+        {
+            var reporte = this.unitOfWork.UsuarioRedencionRepository.GetReporteRedencion(data);
+            return Task.FromResult(new GenericResponse<IEnumerable<UsuarioRedencion>>
+            {
+                Result = reporte
+            });
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
 }

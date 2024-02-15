@@ -23,5 +23,6 @@ public interface IFidelizacionApplication : IApplicationCore<PuntosManualDto>, I
     Task<GenericResponse<IEnumerable<Extractos>>> GetExtractos();
     Task<GenericResponse<IEnumerable<bool>>> AddExtractos(Extractos[] data);
     Task<GenericResponse<IEnumerable<Extractos>>> GetExtractosByUsuario(string cedula); 
+    Task<GenericResponse<IEnumerable<UsuarioRedencion>>> GetReporteRedencion(ReporteDto data);
 }
 

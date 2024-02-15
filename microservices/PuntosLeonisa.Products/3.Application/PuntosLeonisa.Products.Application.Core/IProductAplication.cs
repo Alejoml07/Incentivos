@@ -15,5 +15,10 @@ public interface IProductApplication : IApplicationCore<ProductoDto>
     Task<GenericResponse<GeneralFiltersWithResponseDto>> GetAndApplyFilters(GeneralFiltersWithResponseDto filtrosDto);
     Task<GenericResponse<IEnumerable<ProductoDto>>> GetByRef(string referencia);
     Task<GenericResponse<IEnumerable<bool>>> UpdateInventory(ProductoRefence[] data);
+    Task<GenericResponse<Tuple<ProductoDto[], List<string>>>> AddRangeProducts(ProductoDto[] value);
+
+
+
+
 }
 
