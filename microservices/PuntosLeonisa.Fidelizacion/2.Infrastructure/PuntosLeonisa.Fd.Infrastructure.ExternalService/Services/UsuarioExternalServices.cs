@@ -160,5 +160,12 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
                 throw;
             }
         }
+
+        public Task<GenericResponse<bool>> CambiarEstado(string email)
+        {
+            var azf = $"{_configuration["AzfBaseUser"]}{_configuration["CambiarEstado"]}/{email}";
+            var response = httpClientAgent.GetRequest<GenericResponse<bool>>(new Uri(azf));
+            return response;
+        }
     }
 }

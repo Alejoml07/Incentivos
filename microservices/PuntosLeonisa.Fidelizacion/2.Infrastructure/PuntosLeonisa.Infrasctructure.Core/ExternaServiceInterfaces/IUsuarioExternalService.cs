@@ -14,7 +14,8 @@ namespace PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces
         Task<GenericResponse<bool>> SendSmsWithMessage(Usuario data, string message);
         Task<GenericResponse<bool>> UserSendEmailWithMessage(UsuarioRedencion data);
         Task<GenericResponse<bool>> UserSendEmailWithMessageAndState(UsuarioRedencion data);
-        Task<GenericResponse<bool>> SendMailGeneric(EmailDTO emailData);
+        Task<GenericResponse<bool>> SendMailGeneric(EmailDTO emailData);       
+        Task<GenericResponse<bool>> CambiarEstado(string email);
 
     }
 }

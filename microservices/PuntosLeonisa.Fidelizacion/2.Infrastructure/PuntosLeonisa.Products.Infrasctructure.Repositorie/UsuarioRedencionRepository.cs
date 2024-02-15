@@ -6,6 +6,7 @@ using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
 using PuntosLeonisa.Infrasctructure.Core.Repository;
 using PuntosLeonisa.infrastructure.Persistence.CosmoDb;
+using System.Runtime.InteropServices;
 
 namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
 {
@@ -46,8 +47,10 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
             return results;
         }
 
-
-
-
+        public IEnumerable<UsuarioRedencion> GetReporteRedencion(ReporteDto data)
+        {
+            var redencion = this.context.Set<UsuarioRedencion>().Where(x => x.FechaRedencion >= data.FechaInicio && x.FechaRedencion <= data.FechaFin).ToList();
+            return redencion;
+        }
     }
 }
