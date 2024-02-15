@@ -340,7 +340,7 @@
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -526,7 +526,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -543,7 +543,7 @@
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -556,7 +556,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -573,7 +573,7 @@
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -590,7 +590,7 @@
       "UpstreamHttpMethod": [ "Delete" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -607,7 +607,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -624,7 +624,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -641,7 +641,7 @@
       "UpstreamHttpMethod": [ "Delete" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -658,7 +658,7 @@
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -675,7 +675,7 @@
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -692,7 +692,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -709,7 +709,7 @@
       "UpstreamHttpMethod": [ "get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -726,7 +726,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -743,7 +743,7 @@
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -761,7 +761,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -779,7 +779,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -796,7 +796,7 @@
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -814,7 +814,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -832,7 +832,7 @@
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -920,7 +920,7 @@
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -937,7 +937,7 @@
       "UpstreamHttpMethod": [ "Delete" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -954,7 +954,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -975,7 +975,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -992,7 +992,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -1009,7 +1009,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -1018,9 +1018,27 @@
         "AllowedScopes": []
       },
       "Key": "EnviarNotificacionCodigoRedencionRoute"
-    }
+    },
 
-    // fin fidelizacion-notificaciones
+    // fin fidelizacion-notificaciones,
+    //Reportes
+    {
+      "DownstreamPathTemplate": "/api/fidelizacion/GetReporteRedencion",
+      "UpstreamPathTemplate": "/api/fidelizacion/GetReporteRedencion",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetReporteRedencionRoute"
+    }
   ],
   "GlobalConfiguration": {
 

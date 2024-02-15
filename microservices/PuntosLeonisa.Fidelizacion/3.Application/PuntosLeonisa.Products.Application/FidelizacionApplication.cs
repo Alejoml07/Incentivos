@@ -957,6 +957,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         try
         {
             var usuariosEncontrados = new List<Usuario>();
+            var datafilter = data.Take(20).ToList();
             foreach (var item in data)
             {
                 Usuario usuario = null;
@@ -973,12 +974,13 @@ public class FidelizacionApplication : IFidelizacionApplication
                         usuario = usuarioResult.Result;
                         usuariosEncontrados.Add(usuarioResult.Result);
                     }
-                    //else
-                    //{
-                    //    continue;
-                    //}
+                    else
+                    {
+                        continue;
+                    }
                 }
-                item.Usuario = usuario;
+                if (usuario != null)
+                    item.Usuario = usuario;
             }
 
 
@@ -998,7 +1000,8 @@ public class FidelizacionApplication : IFidelizacionApplication
             var cedulas = data.Select(x => x.Cedula).Distinct().ToList();
             foreach (var cedula in cedulas)
             {
-                var usuarioInfoPuntos = this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(cedula).GetAwaiter().GetResult();
+                var usuario = usuariosEncontrados.Where(p => p?.Cedula == cedula).FirstOrDefault();
+                var usuarioInfoPuntos = this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(usuario?.Email).GetAwaiter().GetResult();
                 if (usuarioInfoPuntos != null)
                 {
                     var puntos = data.Where(x => x.Cedula == cedula).Sum(x => x.Puntos);
@@ -1022,50 +1025,52 @@ public class FidelizacionApplication : IFidelizacionApplication
                 else
                 {
                     // create new usuarioinfopuntos
-                    var usuario = usuariosEncontrados.Where(p => p?.Cedula == cedula).FirstOrDefault();
-                    if (usuario != null)
+
+                    var puntos = data.Where(x => x?.Cedula == cedula).Sum(x => x.Puntos);
+                    var usuarioInfoPuntosNuevo = new UsuarioInfoPuntos
                     {
-                        var puntos = data.Where(x => x.Cedula == cedula).Sum(x => x.Puntos);
-                        var usuarioInfoPuntosNuevo = new UsuarioInfoPuntos
-                        {
-                            Cedula = cedula,
-                            PuntosAcumulados = (int?)puntos,
-                            PuntosDisponibles = (int?)puntos,
-                            PuntosRedimidos = 0,
-                            PuntosEnCarrito = 0,
-                            Nombres = usuario.Nombres,
-                            Apellidos = usuario.Apellidos,
-                            Email = usuario.Email,
-                            FechaActualizacion = DateTime.Now
+                        Cedula = cedula,
+                        PuntosAcumulados = (int?)puntos,
+                        PuntosDisponibles = (int?)puntos,
+                        PuntosRedimidos = 0,
+                        PuntosEnCarrito = 0,
+                        Nombres = usuario.Nombres,
+                        Apellidos = usuario.Apellidos,
+                        Email = usuario.Email,
+                        FechaActualizacion = DateTime.Now
 
-                        };
-                        this.unitOfWork.UsuarioInfoPuntosRepository.Add(usuarioInfoPuntosNuevo);
+                    };
+                    this.unitOfWork.UsuarioInfoPuntosRepository.Add(usuarioInfoPuntosNuevo);
 
-                        // add extracto and call function
-                        var extracto = new Extractos
-                        {
-                            Id = Guid.NewGuid().ToString(),
-                            Usuario = usuario,
-                            Fecha = DateTime.Now,
-                            ValorMovimiento = (int?)puntos,
-                            Descripcion = "Liquidacion de puntos",
-                            OrigenMovimiento = "Liquidacion de puntos",
-                        };
-                        this.unitOfWork.ExtractosRepository.Add(extracto);
-                    }
+                    // add extracto and call function
+                    var extracto = new Extractos
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Usuario = usuario,
+                        Fecha = DateTime.Now,
+                        ValorMovimiento = (int?)puntos,
+                        Descripcion = "Liquidacion de puntos",
+                        OrigenMovimiento = "Liquidacion de puntos",
+                    };
+                    this.unitOfWork.ExtractosRepository.Add(extracto);
+
+
+
                 }
+
+                this.unitOfWork.SaveChangesSync();
+
             }
 
 
 
-            this.unitOfWork.SaveChangesSync();
 
             return Task.FromResult(new GenericResponse<bool>
             {
                 Result = true
             });
         }
-        catch (Exception)
+        catch (Exception ex)
         {
 
             throw;
