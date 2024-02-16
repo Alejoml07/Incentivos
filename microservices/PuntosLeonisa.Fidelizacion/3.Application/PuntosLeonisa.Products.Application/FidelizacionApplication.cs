@@ -482,7 +482,10 @@ public class FidelizacionApplication : IFidelizacionApplication
                     ClearWishlistAndCart(data.Usuario);
                     unitOfWork.SaveChangesSync();
                     SendNotify(data);
-                    await this.productoExternalService.UpdateInventory(data.ProductosCarrito.ToArray());
+                    if(data.ProductosCarrito.FirstOrDefault().Nombre != "bono")
+                    {
+                        await this.productoExternalService.UpdateInventory(data.ProductosCarrito.ToArray());
+                    }                    
                 }
             }
 
@@ -1215,7 +1218,7 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
-            var EANBono = "123456789";
+            var EANBono = "999999";
             await this.usuarioExternalService.CambiarEstado(email);
             var usuarioPuntos = this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(email).GetAwaiter().GetResult();
             var usuario = this.usuarioExternalService.GetUserByEmail(email).GetAwaiter().GetResult();
@@ -1259,7 +1262,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                 redencionNueva.PuntosRedimidos = usuarioPuntos.PuntosDisponibles;
                 await this.unitOfWork.UsuarioRedencionRepository.Add(redencionNueva);
                 await this.unitOfWork.SaveChangesAsync();
-                await this.usuarioExternalService.UserSendEmailWithMessageAndState(redencionNueva);
+                await this.usuarioExternalService.UserSendEmailWithMessage(redencionNueva);
                 return new GenericResponse<bool>
                 {
                     Result = true

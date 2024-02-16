@@ -87,8 +87,7 @@ public class SeguridadApplication : IUsuarioApplication
             var usuariosExistente = await usuarioRepository.GetUsuariosByCedulas(usuarios.Select(p=> p.Cedula).ToArray());
             foreach (var usuario in usuarios)
             {
-                // Verifica si el usuario ya existe en la base de datos.
-                
+                // Verifica si el usuario ya existe en la base de datos.                
                 if (!usuariosExistente.Any(x => x.Cedula == usuario.Cedula))
                 {
                     // Si el usuario no existe, asigna un nuevo Id y lo agrega a la lista para agregar.
@@ -97,7 +96,6 @@ public class SeguridadApplication : IUsuarioApplication
                 }
                 // Si el usuario ya existe, simplemente continúa con el siguiente.
             }
-
             // Agrega todos los usuarios nuevos a la base de datos.
             if (usuariosParaAgregar.Any())
             {
