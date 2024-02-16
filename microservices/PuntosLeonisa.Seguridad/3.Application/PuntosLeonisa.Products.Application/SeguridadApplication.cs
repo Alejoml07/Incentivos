@@ -92,15 +92,23 @@ public class SeguridadApplication : IUsuarioApplication
                 {
                     // Si el usuario no existe, asigna un nuevo Id y lo agrega a la lista para agregar.
                     usuario.Id = Guid.NewGuid().ToString();
-                    usuariosParaAgregar.Add(usuario);
+                    //usuariosParaAgregar.Add(usuario);
+                    await this.usuarioRepository.Add(usuario);
+
                 }
-                // Si el usuario ya existe, simplemente continúa con el siguiente.
+                else
+                {
+                    // Si el usuario ya existe, actualiza los datos del usuario.
+                    var usuariomMap = usuariosExistente.FirstOrDefault(x => x.Cedula == usuario.Cedula);
+                    mapper.Map(usuario, usuariomMap);
+                    await this.usuarioRepository.Update(usuariomMap);
+                }
             }
-            // Agrega todos los usuarios nuevos a la base de datos.
-            if (usuariosParaAgregar.Any())
-            {
-                await usuarioRepository.AddRange(usuariosParaAgregar.ToArray());
-            }
+            //// Agrega todos los usuarios nuevos a la base de datos.
+            //if (usuariosParaAgregar.Any())
+            //{
+            //    await usuarioRepository.AddRange(usuariosParaAgregar.ToArray());
+            //}
 
             var responseOnly = new GenericResponse<UsuarioDto[]>
             {
