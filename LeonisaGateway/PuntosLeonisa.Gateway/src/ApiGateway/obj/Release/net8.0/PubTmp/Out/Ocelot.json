@@ -1020,6 +1020,24 @@
       "Key": "EnviarNotificacionCodigoRedencionRoute"
     },
 
+    {
+      "DownstreamPathTemplate": "/api/fidelizacion/CambiarEstadoYLiquidarPuntos/{email}",
+      "UpstreamPathTemplate": "/api/fidelizacion/CambiarEstadoYLiquidarPuntos/{email}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "CambiarEstadoYLiquidarPuntosRoute"
+    },
+
     // fin fidelizacion-notificaciones,
     //Reportes
     {
