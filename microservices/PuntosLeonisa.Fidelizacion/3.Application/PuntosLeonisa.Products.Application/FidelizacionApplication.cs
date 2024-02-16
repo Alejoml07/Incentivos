@@ -1272,7 +1272,6 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
         catch (Exception)
         {
-
             throw;
         }
     }

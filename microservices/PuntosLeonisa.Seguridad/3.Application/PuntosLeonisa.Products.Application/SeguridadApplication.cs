@@ -341,9 +341,16 @@ public class SeguridadApplication : IUsuarioApplication
         }
         catch (Exception)
         {
-
             throw;
         }       
+    }
+
+    public async Task<GenericResponse<bool>> CambiarEstado(string email)
+    {
+        var usuario = await usuarioRepository.GetUsuarioByEmail(email);
+        usuario.Estado = "Inactivo";
+        await usuarioRepository.Update(usuario);
+        return new GenericResponse<bool>() { Result = true };
     }
 }
 
