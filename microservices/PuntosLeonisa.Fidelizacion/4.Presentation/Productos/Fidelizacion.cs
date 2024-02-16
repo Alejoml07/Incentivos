@@ -817,7 +817,6 @@ namespace Usuarioos
         public async Task<IActionResult> GetReporteRedencion(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "fidelizacion/GetReporteRedencion")] HttpRequest req, ILogger log)
         {
-
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             try
