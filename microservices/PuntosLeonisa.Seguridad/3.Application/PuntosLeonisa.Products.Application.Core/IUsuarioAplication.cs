@@ -1,4 +1,5 @@
 ﻿using PuntosLeonisa.Products.Application.Core.Interfaces;
+using PuntosLeonisa.Products.Domain.Model;
 using PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios;
 using PuntosLeonisa.Seguridad.Infrasctructure.Common.Communication;
 
@@ -13,5 +14,6 @@ public interface IUsuarioApplication : IApplicationCore<UsuarioDto>
     Task<GenericResponse<bool>> CambioRecuperarPwd(CambioRecuperarPwdDto data);
     Task<GenericResponse<UsuarioDto>> ValidarTokenCambiarContrasena(TokenDto token);
     Task<GenericResponse<bool>> ValidarCorreo(string email);
+    Task<GenericResponse<bool>> CambiarEstado(string email);
 }
 

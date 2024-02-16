@@ -308,6 +308,45 @@ namespace Usuarios
             var response = await usuarioApplication.ValidarTokenCambiarContrasena(data);
             return new OkObjectResult(response);
         }
+
+        [FunctionName("CambiarEstado")]
+        [OpenApiOperation(operationId: "Usuarios/CambiarEstado", tags: new[] { "CambiarEstado" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Cambiar estado del usuario")]
+        public async Task<IActionResult> CambiarEstado(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Usuario/CambiarEstado/{email}")] HttpRequest req,
+           string email,  
+           ILogger log)
+        {
+
+
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+
+                if (string.IsNullOrEmpty(email))
+                {
+                    throw new ArgumentException($"'{nameof(email)}' cannot be null or empty.", nameof(email));
+                }
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+                var response = await this.usuarioApplication.CambiarEstado(email);
+
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 

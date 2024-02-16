@@ -374,6 +374,38 @@ namespace Productos
                 return GetFunctionError(log, "Product:ProductPrices fin agregar precio a los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("GetProductByEAN")]
+        [OpenApiOperation(operationId: "GetProductByEAN", tags: new[] { "Productos/GetProductByEAN" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
+        public async Task<IActionResult> GetProductByEAN(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Productos/GetProductByEAN/{ean}")] HttpRequest req,ILogger logger, string ean)
+        {
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+
+                if (string.IsNullOrEmpty(ean))
+                {
+                    throw new ArgumentException($"'{nameof(ean)}' cannot be null or empty.", nameof(ean));
+                }
+
+                if (logger is null)
+                {
+                    throw new ArgumentNullException(nameof(logger));
+                }
+
+                var producto = await this.productoApplication.GetProductByEAN(ean);
+                return new OkObjectResult(producto);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(logger, "Error al obtener los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 

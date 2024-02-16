@@ -831,6 +831,29 @@ namespace Usuarioos
                 return GetFunctionError(log, "Error al obtener los reportes:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("CambiarEstadoYLiquidarPuntos")]
+        [OpenApiOperation(operationId: "CambiarEstadoYLiquidarPuntos", tags: new[] { "CambiarEstadoYLiquidarPuntos" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Cambia el estado del ususario y liquida puntos")]
+        public async Task<IActionResult> CambiarEstadoYLiquidarPuntos(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "fidelizacion/CambiarEstadoYLiquidarPuntos/{email}")] HttpRequest req, ILogger log, string email)
+        {
+
+            log.LogInformation("C# HTTP trigger function processed a request.");
+            try
+            {
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+                var response = await this.puntosApplication.CambiarEstadoYLiquidarPuntos(email);
+                return new OkResult();
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al cambiar el estado y liquidar punttos:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 
