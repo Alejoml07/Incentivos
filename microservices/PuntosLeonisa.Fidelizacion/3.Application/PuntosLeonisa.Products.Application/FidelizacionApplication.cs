@@ -1223,7 +1223,6 @@ public class FidelizacionApplication : IFidelizacionApplication
             var usuarioPuntos = this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(email).GetAwaiter().GetResult();
             var usuario = this.usuarioExternalService.GetUserByEmail(email).GetAwaiter().GetResult();
             var bono = this.productoExternalService.GetProductByEAN(EANBono).GetAwaiter().GetResult();
-            var redencion = this.unitOfWork.UsuarioRedencionRepository.GetRedencionesWithProductsByEmail(email);
             if (usuarioPuntos != null && usuario != null && bono != null)
             {
                 var redencionNueva = new UsuarioRedencion
