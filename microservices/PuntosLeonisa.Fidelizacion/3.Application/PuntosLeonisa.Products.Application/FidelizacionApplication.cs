@@ -482,10 +482,10 @@ public class FidelizacionApplication : IFidelizacionApplication
                     ClearWishlistAndCart(data.Usuario);
                     unitOfWork.SaveChangesSync();
                     SendNotify(data);
-                    if(data.ProductosCarrito.FirstOrDefault().Nombre != "bono")
+                    if (data.ProductosCarrito.FirstOrDefault().Nombre != "bono")
                     {
                         await this.productoExternalService.UpdateInventory(data.ProductosCarrito.ToArray());
-                    }                    
+                    }
                 }
             }
 
@@ -975,7 +975,10 @@ public class FidelizacionApplication : IFidelizacionApplication
                     if (usuarioResult.IsSuccess)
                     {
                         usuario = usuarioResult.Result;
-                        usuariosEncontrados.Add(usuarioResult.Result);
+                        if (usuario != null)
+                        {
+                            usuariosEncontrados.Add(usuario);
+                        }
                     }
                     else
                     {
@@ -986,21 +989,10 @@ public class FidelizacionApplication : IFidelizacionApplication
                     item.Usuario = usuario;
             }
 
-
-            this.unitOfWork.FidelizacionPuntosRepository.AddRange(data.Select(x => new FidelizacionPuntos
-            {
-                Id = Guid.NewGuid().ToString(),
-                Anho = x.Ano,
-                Mes = x.Mes,
-                Porcentaje = x.Porcentaje,
-                Puntos = (int?)x.Puntos,
-                Publico = x.Publico,
-                Id_Variable = x.Id_Variable,
-                Usuario = x.Usuario
-            }).ToArray());
+            guardarLiquidacionPuntos(data);
 
             // buscar la cedula y actualizar el usuarioinfopuntos
-            var cedulas = data.Select(x => x.Cedula).Distinct().ToList();
+            var cedulas = usuariosEncontrados.Select(x => x.Cedula).Distinct().ToList();
             foreach (var cedula in cedulas)
             {
                 var usuario = usuariosEncontrados.Where(p => p?.Cedula == cedula).FirstOrDefault();
@@ -1080,7 +1072,26 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
     }
 
+    private void guardarLiquidacionPuntos(IEnumerable<LiquidacionPuntosDto> data)
+    {
+        var liquidacionPuntos = data.Select(x => new FidelizacionPuntos
+        {
+            Id = Guid.NewGuid().ToString(),
+            Anho = x.Ano,
+            Mes = x.Mes,
+            Porcentaje = x.Porcentaje,
+            Puntos = (int?)x.Puntos,
+            Publico = x.Publico,
+            Id_Variable = x.Id_Variable,
+            Usuario = x.Usuario
+        }).ToArray();
 
+        foreach (var item in liquidacionPuntos)
+        {
+            this.unitOfWork.FidelizacionPuntosRepository.Add(item);
+            this.unitOfWork.SaveChangesSync();
+        }
+    }
 
     public async Task<GenericResponse<int>> DevolucionPuntosYCancelarEstado(DevolucionPuntosDto data)
     {

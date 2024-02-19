@@ -33,7 +33,7 @@ namespace PuntosLeonisa.Infrasctructure.Core.Repository
         public async Task Delete(T entity)
         {
             _context.Set<T>().Remove(entity);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace PuntosLeonisa.Infrasctructure.Core.Repository
         {
             //DetachAllEntities();
             _context.Set<T>().Update(entity);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace PuntosLeonisa.Infrasctructure.Core.Repository
         {
             await _context.Set<T>().AddRangeAsync(entities);
             await _context.SaveChangesAsync();
-        
+
         }
     }
 }
