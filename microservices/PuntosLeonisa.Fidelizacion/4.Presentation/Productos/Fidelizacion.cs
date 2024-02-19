@@ -803,8 +803,8 @@ namespace Usuarioos
 
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var data = JsonConvert.DeserializeObject<LiquidacionPuntosDto[]>(requestBody);
-                var response = await this.puntosApplication.GuardarLiquidacionPuntos(data);
-                return new OkObjectResult(response);
+                 this.puntosApplication.GuardarLiquidacionPuntos(data);
+                return new OkResult();
             }
             catch (Exception ex)
             {

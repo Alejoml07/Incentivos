@@ -39,7 +39,7 @@ public class SeguridadApplication : IUsuarioApplication
         this.getUsuarioExternalService = getUsuarioExternalService;
         response = new GenericResponse<UsuarioDto>();
         response2 = new GenericResponse<TokenDto>();
-        
+
 
     }
 
@@ -84,7 +84,7 @@ public class SeguridadApplication : IUsuarioApplication
         {
             var usuarios = mapper.Map<Usuario[]>(value);
             var usuariosParaAgregar = new List<Usuario>();
-            var usuariosExistente = await usuarioRepository.GetUsuariosByCedulas(usuarios.Select(p=> p.Cedula).ToArray());
+            var usuariosExistente = usuarioRepository.GetUsuariosByCedulas(usuarios.Select(p => p.Cedula).ToArray()).GetAwaiter().GetResult();
             foreach (var usuario in usuarios)
             {
                 // Verifica si el usuario ya existe en la base de datos.                
@@ -92,15 +92,23 @@ public class SeguridadApplication : IUsuarioApplication
                 {
                     // Si el usuario no existe, asigna un nuevo Id y lo agrega a la lista para agregar.
                     usuario.Id = Guid.NewGuid().ToString();
-                    usuariosParaAgregar.Add(usuario);
+                    //usuariosParaAgregar.Add(usuario);
+                    await usuarioRepository.Add(usuario);
+
                 }
-                // Si el usuario ya existe, simplemente continúa con el siguiente.
+                else
+                {
+                    // Si el usuario ya existe, actualiza los datos del usuario.
+                    var usuariomMap = usuariosExistente.FirstOrDefault(x => x.Cedula == usuario.Cedula);
+                    mapper.Map(usuario, usuariomMap);
+                    await usuarioRepository.Update(usuariomMap);
+                }
             }
-            // Agrega todos los usuarios nuevos a la base de datos.
-            if (usuariosParaAgregar.Any())
-            {
-                await usuarioRepository.AddRange(usuariosParaAgregar.ToArray());
-            }
+            //// Agrega todos los usuarios nuevos a la base de datos.
+            //if (usuariosParaAgregar.Any())
+            //{
+            //    await usuarioRepository.AddRange(usuariosParaAgregar.ToArray());
+            //}
 
             var responseOnly = new GenericResponse<UsuarioDto[]>
             {
@@ -120,7 +128,7 @@ public class SeguridadApplication : IUsuarioApplication
         try
         {
             var usuario = await this.usuarioRepository.Login(login) ?? throw new UnauthorizedAccessException("Usuario no encontrado o Contraseña errada");
-            
+
             var usuarioDto = mapper.Map<UsuarioResponseLiteDto>(usuario);
             var responseOnly = new GenericResponse<UsuarioResponseLiteDto>
             {
@@ -234,7 +242,7 @@ public class SeguridadApplication : IUsuarioApplication
 
     private async Task<GenericResponse<TokenDto>> GuardarToken(TokenDto data, bool isTokenEmpty = true)
     {
-        var res =  usuarioRepository.GetUsuarioByEmail(data.Usuario.Email).GetAwaiter().GetResult();
+        var res = usuarioRepository.GetUsuarioByEmail(data.Usuario.Email).GetAwaiter().GetResult();
         var dto = this.mapper.Map<UsuarioDto>(res);
         try
         {
@@ -288,7 +296,7 @@ public class SeguridadApplication : IUsuarioApplication
             {
                 return new GenericResponse<UsuarioDto>() { Result = usuario?.Usuario };
             }
-            return new GenericResponse<UsuarioDto>() { Result = null, IsSuccess= false, Message = "Token invalido" };
+            return new GenericResponse<UsuarioDto>() { Result = null, IsSuccess = false, Message = "Token invalido" };
         }
 
         catch (Exception ex)
@@ -304,43 +312,43 @@ public class SeguridadApplication : IUsuarioApplication
         {
             var exist = await usuarioRepository.GetUsuarioByEmail(email);
 
-            if(exist.Pwd == null || exist.Pwd == "")
+            if (exist.Pwd == null || exist.Pwd == "")
             {
                 return new GenericResponse<bool>() { Result = false };
             }
 
-            if(exist.Pwd != null && exist.Pwd != "")
-            {  
+            if (exist.Pwd != null && exist.Pwd != "")
+            {
                 var response = await this.getUsuarioExternalService.GetUsuario(email);
-                if(response != null)
+                if (response != null)
                 {
                     await this.usuarioRepository.Update(mapper.Map<Usuario>(response));
                 }
                 return new GenericResponse<bool>() { Result = true };
             }
 
-            if(exist == null)
-            {                
-              var response = await this.getUsuarioExternalService.GetUsuario(email);
+            if (exist == null)
+            {
+                var response = await this.getUsuarioExternalService.GetUsuario(email);
 
-                if(response == null)
+                if (response == null)
                 {
                     throw new Exception("Usuario no existe");
-                }   
+                }
                 if (response != null)
                 {
                     var usuario = mapper.Map<Usuario>(response);
                     usuario.Id = Guid.NewGuid().ToString();
                     await usuarioRepository.Add(usuario);
                 }
-                
+
             }
             return new GenericResponse<bool>() { Result = false };
         }
         catch (Exception)
         {
             throw;
-        }       
+        }
     }
 
     public async Task<GenericResponse<bool>> CambiarEstado(string email)

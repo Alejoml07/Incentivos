@@ -118,10 +118,10 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
         return false;
     }
 
-    public Task<IEnumerable<Usuario>> GetUsuariosByCedulas(string[] cedulas)
+    public async Task<IEnumerable<Usuario>> GetUsuariosByCedulas(string[] cedulas)
     {
-        var usuarios = _context.Set<Usuario>().Where(u => cedulas.Contains(u.Cedula)).ToList();
-        return Task.FromResult(usuarios.AsEnumerable());
+        var usuarios = _context.Set<Usuario>().Where(u => cedulas.Contains(u.Cedula));
+        return usuarios.AsEnumerable();
     }
 }
 
