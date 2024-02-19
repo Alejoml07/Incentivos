@@ -82,9 +82,21 @@ public class SeguridadApplication : IUsuarioApplication
     {
         try
         {
+            foreach (var item in value)
+            {
+                if (item.Pwd != null)
+                    item.Pwd = securityService.HasPassword(item.Pwd.Trim());
+            }
+
             var usuarios = mapper.Map<Usuario[]>(value);
             var usuariosParaAgregar = new List<Usuario>();
             var usuariosExistente = usuarioRepository.GetUsuariosByCedulas(usuarios.Select(p => p.Cedula).ToArray()).GetAwaiter().GetResult();
+
+            // cruzar los usuarios que se van a agregar con los usuarios existentes en la base de datos.
+            var usuarioCruce = usuarios.Where(x => usuariosExistente.Any(y => y.Cedula == x.Cedula)).ToArray();
+
+
+
             foreach (var usuario in usuarios)
             {
                 // Verifica si el usuario ya existe en la base de datos.                
@@ -104,11 +116,7 @@ public class SeguridadApplication : IUsuarioApplication
                     await usuarioRepository.Update(usuariomMap);
                 }
             }
-            //// Agrega todos los usuarios nuevos a la base de datos.
-            //if (usuariosParaAgregar.Any())
-            //{
-            //    await usuarioRepository.AddRange(usuariosParaAgregar.ToArray());
-            //}
+       
 
             var responseOnly = new GenericResponse<UsuarioDto[]>
             {
@@ -312,7 +320,7 @@ public class SeguridadApplication : IUsuarioApplication
         {
             var exist = await usuarioRepository.GetUsuarioByEmail(email);
 
-            if (exist.Pwd == null || exist.Pwd == "")
+            if (exist == null && (exist.Pwd == null || exist.Pwd == ""))
             {
                 return new GenericResponse<bool>() { Result = false };
             }

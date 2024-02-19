@@ -25,9 +25,17 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService
         }
         public async Task<UsuarioDto> GetUsuario(string email)
         {
-            var azf = $"{_configuration["AzfBaseGetUser"]}{_configuration["ValidarUsuarioParaIncentivos"]}/{email}";
-            var response = await httpClientAgent.GetRequest<UsuarioDto>(new Uri(azf));
-            return response;
+            try
+            {
+                var azf = $"{_configuration["AzfBaseGetUser"]}{_configuration["ValidarUsuarioParaIncentivos"]}/{email}";
+                var response = await httpClientAgent.GetRequest<UsuarioDto>(new Uri(azf));
+                return response;
+            }
+            catch (Exception ex)
+            {
+
+                return null;
+            }
         }
     }
 }

@@ -1,0 +1,61 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\sourcecode\\IncentivosService\\LeonisaGateway\\PuntosLeonisa.Gateway\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{C1905C2A-9E36-4A01-B9AC-F1C2FE46A1DB}|src\\ApiGateway\\ApiGateway.csproj|c:\\sourcecode\\incentivosservice\\leonisagateway\\puntosleonisa.gateway\\src\\apigateway\\ocelot.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{C1905C2A-9E36-4A01-B9AC-F1C2FE46A1DB}|src\\ApiGateway\\ApiGateway.csproj|solutionrelative:src\\apigateway\\ocelot.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 125,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{13b12e3e-c1b4-4539-9371-4fe9a0d523fc}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Ocelot.json",
+              "DocumentMoniker": "C:\\sourcecode\\IncentivosService\\LeonisaGateway\\PuntosLeonisa.Gateway\\src\\ApiGateway\\Ocelot.json",
+              "RelativeDocumentMoniker": "src\\ApiGateway\\Ocelot.json",
+              "ToolTip": "C:\\sourcecode\\IncentivosService\\LeonisaGateway\\PuntosLeonisa.Gateway\\src\\ApiGateway\\Ocelot.json",
+              "RelativeToolTip": "src\\ApiGateway\\Ocelot.json",
+              "ViewState": "AQIAAHwBAAAAAAAAAAAcwJQBAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-02-19T14:53:57.46Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
