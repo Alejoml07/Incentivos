@@ -1293,11 +1293,33 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
-            var reporte = this.unitOfWork.UsuarioRedencionRepository.GetReporteRedencion(data);
+
+            var reporteOriginal = this.unitOfWork.UsuarioRedencionRepository.GetReporteRedencion(data);
+            //necesito separar las ordenes añadiendo unicamente un producto por orden
+            var reporte = new List<UsuarioRedencion>();
+            foreach (var item in reporteOriginal)
+            {
+                foreach (var producto in item.ProductosCarrito)
+                {
+
+                    var orden = new UsuarioRedencion
+                    {
+                        Id = item.Id,
+                        FechaRedencion = item.FechaRedencion,
+                        NroPedido = item.NroPedido,
+                        Usuario = item.Usuario,
+                        PuntosRedimidos = (int)producto.Puntos,
+                        Envio = item.Envio,
+                        ProductosCarrito = new List<ProductoRefence> { producto }
+                    };
+                    reporte.Add(orden);
+                }
+            }
             return Task.FromResult(new GenericResponse<IEnumerable<UsuarioRedencion>>
             {
                 Result = reporte
             });
+
         }
         catch (Exception)
         {

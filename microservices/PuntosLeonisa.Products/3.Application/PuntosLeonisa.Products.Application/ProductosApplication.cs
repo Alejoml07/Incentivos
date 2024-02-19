@@ -355,13 +355,24 @@ public class ProductosApplication : IProductApplication
         throw new NotImplementedException();
     }
 
-    public Task<GenericResponse<ProductoRefence>> GetProductByEAN(string ean)
+    public async Task<GenericResponse<ProductoRefence>> GetProductByEAN(string ean)
     {
-        var response = this.productoRepository.GetById(ean);
-        var responseDto = this.mapper.Map<ProductoRefence>(response);
-        return Task.FromResult(new GenericResponse<ProductoRefence>
+        try
         {
-            Result = responseDto
-        });
+            var response = await this.productoRepository.GetById(ean);
+            var responseDto = this.mapper.Map<ProductoRefence>(response);
+            return new GenericResponse<ProductoRefence>()
+            {
+                Result = responseDto
+            };
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+       
+
+        
     }
 }

@@ -815,7 +815,7 @@ namespace Usuarioos
         [OpenApiOperation(operationId: "GetReporteRedencion", tags: new[] { "GetReporteRedencion" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los reportes por fechas")]
         public async Task<IActionResult> GetReporteRedencion(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "fidelizacion/GetReporteRedencion")] HttpRequest req, ILogger log)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/GetReporteRedencion")] HttpRequest req, ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 

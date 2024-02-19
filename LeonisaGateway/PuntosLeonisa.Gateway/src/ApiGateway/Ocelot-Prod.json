@@ -584,6 +584,23 @@
       },
       "Key": "deleteWishListRoute"
     },
+    {
+      "DownstreamPathTemplate": "/api/fidelizacion/CambiarEstadoYLiquidarPuntos/{email}",
+      "UpstreamPathTemplate": "/api/fidelizacion/CambiarEstadoYLiquidarPuntos/{email}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "CambiarEstadoYLiquidarPuntosRoute"
+    }
 
     // fin fidelizacion
     // fin puntos,
@@ -651,8 +668,26 @@
         "AllowedScopes": []
       },
       "Key": "DeleteProveedorRoute"
-    }
+    },
     //fin proveedores
+    //Reportes
+    {
+      "DownstreamPathTemplate": "/api/fidelizacion/GetReporteRedencion",
+      "UpstreamPathTemplate": "/api/fidelizacion/GetReporteRedencion",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetReporteRedencionRoute"
+    }
   ],
   "GlobalConfiguration": {
 
