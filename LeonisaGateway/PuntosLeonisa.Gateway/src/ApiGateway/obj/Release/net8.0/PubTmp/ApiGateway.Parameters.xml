@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <parameters>
   <parameter name="IIS Web Application Name" description="" value="ApiGateweypuntosleonisa" tags="IisApp">
+<<<<<<< HEAD
     <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\sourcecode\\IncentivosService\\LeonisaGateway\\PuntosLeonisa\.Gateway\\src\\ApiGateway\\obj\\Release\\net8\.0\\PubTmp\\Out\\$" />
+=======
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\SourceCode\\IncentivosService\\LeonisaGateway\\PuntosLeonisa\.Gateway\\src\\ApiGateway\\obj\\Release\\net8\.0\\PubTmp\\Out\\$" />
+>>>>>>> 3e97ed1daa583e87fa5b4a6d7add78f4590e5d51
   </parameter>
 </parameters>

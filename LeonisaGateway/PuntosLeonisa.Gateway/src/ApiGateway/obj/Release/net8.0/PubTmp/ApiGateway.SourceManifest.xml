@@ -1,4 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <sitemanifest>
+<<<<<<< HEAD
   <IisApp path="C:\sourcecode\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\obj\Release\net8.0\PubTmp\Out\" />
+=======
+  <IisApp path="C:\SourceCode\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\obj\Release\net8.0\PubTmp\Out\" />
+>>>>>>> 3e97ed1daa583e87fa5b4a6d7add78f4590e5d51
 </sitemanifest>
