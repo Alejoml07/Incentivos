@@ -41,6 +41,10 @@ namespace PuntosLeonisa.Infraestructure.Core.Agent.Agentslmpl
                         httpClient.GetAsync(requestUrl))
                     );
                 var response = await resultData.Content.ReadAsStringAsync();
+                if(resultData.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    throw new Exception(response);
+                }
 #pragma warning disable CS8603 // Posible tipo de valor devuelto de referencia nulo
                 return JsonConvert.DeserializeObject<T1>(response);
 #pragma warning restore CS8603 // Posible tipo de valor devuelto de referencia nulo

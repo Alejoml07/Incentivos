@@ -40,7 +40,6 @@ C:\sourcecode\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGate
 C:\sourcecode\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\obj\Release\net8.0\staticwebassets\msbuild.buildTransitive.ApiGateway.props
 C:\sourcecode\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\obj\Release\net8.0\staticwebassets.pack.json
 C:\sourcecode\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\obj\Release\net8.0\scopedcss\bundle\ApiGateway.styles.css
-C:\sourcecode\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\obj\Release\net8.0\ApiGateway.csproj.CopyComplete
 C:\sourcecode\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\obj\Release\net8.0\ApiGateway.dll
 C:\sourcecode\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\obj\Release\net8.0\refint\ApiGateway.dll
 C:\sourcecode\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\obj\Release\net8.0\ApiGateway.pdb
@@ -94,3 +93,4 @@ C:\Pl-BackEnd\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGate
 C:\Pl-BackEnd\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\obj\Release\net8.0\ApiGateway.pdb
 C:\Pl-BackEnd\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\obj\Release\net8.0\ApiGateway.genruntimeconfig.cache
 C:\Pl-BackEnd\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\obj\Release\net8.0\ref\ApiGateway.dll
+C:\sourcecode\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\obj\Release\net8.0\ApiGateway.csproj.Up2Date

@@ -340,7 +340,7 @@
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -362,6 +362,20 @@
         }
       ],
       "Key": "ValidarTokenCambiarContrasenaRoute"
+    },
+
+    {
+      "UpstreamPathTemplate": "/api/Seguridad/ValidarCorreo/{email}",
+      "DownstreamPathTemplate": "/api/Seguridad/ValidarCorreo/{email}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plseguridad.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "ValidarCorreoRoute"
     },
     //Termina Usuario
     //Empieza productos
@@ -385,12 +399,16 @@
     {
       "UpstreamPathTemplate": "/api/Productos/GetProductos",
       "DownstreamPathTemplate": "/api/Productos/GetProductos",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
+        //{
+        //  "Host": "incentivosproductos.azurewebsites.net",
+        //  "Port": 443
+        //}
         {
-          "Host": "incentivosproductos.azurewebsites.net",
-          "Port": 443
+          "Host": "localhost",
+          "Port": 7060
         }
       ],
       "Key": "getProductosRoute"
@@ -512,7 +530,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -529,7 +547,7 @@
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -542,7 +560,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -559,7 +577,7 @@
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -576,7 +594,7 @@
       "UpstreamHttpMethod": [ "Delete" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -593,7 +611,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -610,7 +628,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -627,7 +645,7 @@
       "UpstreamHttpMethod": [ "Delete" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -644,7 +662,7 @@
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -661,7 +679,7 @@
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -678,7 +696,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -695,7 +713,7 @@
       "UpstreamHttpMethod": [ "get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -712,7 +730,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -729,7 +747,7 @@
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -738,6 +756,95 @@
         "AllowedScopes": []
       },
       "Key": "GetUsuariosRedencionPuntosByIdRoute"
+    },
+
+    {
+      "UpstreamPathTemplate": "/api/fidelizacion/DevolucionPuntosYCancelarEstado",
+      "DownstreamPathTemplate": "/api/fidelizacion/DevolucionPuntosYCancelarEstado",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "DevolucionPuntosYCancelarEstadoRoute"
+    },
+
+    {
+      "UpstreamPathTemplate": "/api/Extracto",
+      "DownstreamPathTemplate": "/api/Extracto",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "ExtractoRoute"
+    },
+    {
+      "UpstreamPathTemplate": "/api/GetExtractos",
+      "DownstreamPathTemplate": "/api/GetExtractos",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetExtractosRoute"
+    },
+
+    {
+      "UpstreamPathTemplate": "/api/LoadExtractos",
+      "DownstreamPathTemplate": "/api/LoadExtractos",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "LoadExtractosRoute"
+    },
+
+    {
+      "UpstreamPathTemplate": "/api/GetExtractosByUsuario/{cedula}",
+      "DownstreamPathTemplate": "/api/GetExtractosByUsuario/{cedula}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetExtractosByUsuarioRoute"
     },
 
     // fin fidelizacion
@@ -817,7 +924,7 @@
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -834,7 +941,7 @@
       "UpstreamHttpMethod": [ "Delete" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -851,7 +958,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -872,7 +979,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -889,7 +996,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -906,7 +1013,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "plfidelizacion.azurewebsites.net",
+          "Host": "azfidelizacion.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -915,9 +1022,45 @@
         "AllowedScopes": []
       },
       "Key": "EnviarNotificacionCodigoRedencionRoute"
-    }
+    },
 
-    // fin fidelizacion-notificaciones
+    {
+      "DownstreamPathTemplate": "/api/fidelizacion/CambiarEstadoYLiquidarPuntos/{email}",
+      "UpstreamPathTemplate": "/api/fidelizacion/CambiarEstadoYLiquidarPuntos/{email}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "CambiarEstadoYLiquidarPuntosRoute"
+    },
+
+    // fin fidelizacion-notificaciones,
+    //Reportes
+    {
+      "DownstreamPathTemplate": "/api/fidelizacion/GetReporteRedencion",
+      "UpstreamPathTemplate": "/api/fidelizacion/GetReporteRedencion",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetReporteRedencionRoute"
+    }
   ],
   "GlobalConfiguration": {
 

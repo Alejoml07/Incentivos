@@ -440,11 +440,42 @@ public class FidelizacionApplication : IFidelizacionApplication
             var puntosEnCarrito = this.unitOfWork.CarritoRepository.GetPuntosEnCarrito(id).GetAwaiter().GetResult();
 
             var puntosEnCarritoSum = puntosEnCarrito.Sum(x => x.Product.Puntos * x.Product.Quantity);
-            var usuario = await this.unitOfWork.UsuarioInfoPuntosRepository.GetByPredicateAsync(p => p.Email == id);
-            usuario.FirstOrDefault().PuntosEnCarrito = (int)puntosEnCarritoSum;
+            var usuarioRegistrado = await this.usuarioExternalService.GetUserByEmail(id);
+            if(!usuarioRegistrado.IsSuccess)
+            {
+                throw new Exception("Usuario no encontrado");
+            }
+
+            var usuarios = await this.unitOfWork.UsuarioInfoPuntosRepository.GetByPredicateAsync(p => p.Cedula == usuarioRegistrado.Result.Cedula);
+            var usuario = new UsuarioInfoPuntos();
+            if(usuarios == null || !usuarios.Any())
+            {
+                //create new usuarioInfoPuntos
+                var usuarioInfoPuntosNuevo = new UsuarioInfoPuntos
+                {
+                    Cedula = usuarioRegistrado.Result.Cedula,
+                    PuntosAcumulados = 0,
+                    PuntosDisponibles = 0,
+                    PuntosRedimidos = 0,
+                    PuntosEnCarrito = puntosEnCarritoSum,
+                    Nombres = usuarioRegistrado.Result.Nombres,
+                    Apellidos = usuarioRegistrado.Result.Apellidos,
+                    Email = usuarioRegistrado.Result.Email,
+                    FechaActualizacion = DateTime.Now
+                };
+                await this.unitOfWork.UsuarioInfoPuntosRepository.Add(usuarioInfoPuntosNuevo);
+                this.unitOfWork.SaveChangesSync();
+                usuario = usuarioInfoPuntosNuevo;
+            }
+            else
+            {
+                usuario = usuarios.First();
+                usuario.PuntosEnCarrito = puntosEnCarritoSum;
+            }
+
             return new GenericResponse<UsuarioInfoPuntos>
             {
-                Result = usuario.FirstOrDefault()
+                Result = usuario
             };
         }
         catch (Exception)

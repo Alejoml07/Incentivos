@@ -115,13 +115,50 @@ namespace Usuarios
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var usuarios = JsonConvert.DeserializeObject<UsuarioDto[]>(requestBody);
 
-                foreach (var item in usuarios)
-                {
-                    if (item.Pwd != null)
-                        item.Pwd = securityService.HasPassword(item.Pwd.Trim());
-                }
 
-                this.usuarioApplication.AddRange(usuarios);
+
+                await this.usuarioApplication.AddRange(usuarios);
+
+                return new OkResult();
+
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("LoadUsuariosFromTPA")]
+        [OpenApiOperation(operationId: "LoadUsuarios", tags: new[] { "Usuario/LoadUsuarios" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(IEnumerable<UsuarioDto>), Description = "Carga masiva de usuarios")]
+        public IActionResult LoadUsuariosFromTPA(
+          [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Usuario/LoadUsuariosFromTPA")] HttpRequest req,
+          ILogger log)
+        {
+
+
+            try
+            {
+                log.LogInformation($"Usuario:LoadUsuarios Inicia agregar usuarios masivos. Fecha:{DateTime.UtcNow}");
+                string requestBody = new StreamReader(req.Body).ReadToEnd();
+                var usuarios = JsonConvert.DeserializeObject<UsuarioDto[]>(requestBody);
+
+
+                // ejecutar tarea asincrona segundo plano
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        this.usuarioApplication.AddRange(usuarios);
+
+                    }
+                    catch (Exception)
+                    {
+                        log.LogError("Error al agregar usuarios masivos. Fecha:" + DateTime.UtcNow.ToString());
+                    }
+
+                });
+
 
                 return new OkResult();
 
@@ -314,7 +351,7 @@ namespace Usuarios
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Cambiar estado del usuario")]
         public async Task<IActionResult> CambiarEstado(
            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Usuario/CambiarEstado/{email}")] HttpRequest req,
-           string email,  
+           string email,
            ILogger log)
         {
 
