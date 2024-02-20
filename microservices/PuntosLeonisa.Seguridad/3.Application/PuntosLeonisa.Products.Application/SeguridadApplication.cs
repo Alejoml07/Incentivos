@@ -330,7 +330,9 @@ public class SeguridadApplication : IUsuarioApplication
                 var response = await this.getUsuarioExternalService.GetUsuario(email);
                 if (response != null)
                 {
-                    await this.usuarioRepository.Update(mapper.Map<Usuario>(response));
+                    var usuarioLocal = this.usuarioRepository.GetUsuarioByEmail(email).GetAwaiter().GetResult();    
+                    mapper.Map(mapper.Map<Usuario>(response), usuarioLocal);   
+                    await this.usuarioRepository.Update(usuarioLocal);
                 }
                 return new GenericResponse<bool>() { Result = true };
             }

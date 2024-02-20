@@ -93,7 +93,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
         }
         public string GenerarHTML()
         {
-            var imgUrl = "https://puntosleonisa.web.app/assets/images/MSAUC.png";
+            var imgUrl = "https://incentivosvotre.web.app/assets/images/MSAUC.png";
             var sb = new StringBuilder();
 
             sb.Append("<!DOCTYPE html><html lang=\"es\">");
