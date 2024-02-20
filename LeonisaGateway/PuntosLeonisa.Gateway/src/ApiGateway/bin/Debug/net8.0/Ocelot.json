@@ -399,16 +399,12 @@
     {
       "UpstreamPathTemplate": "/api/Productos/GetProductos",
       "DownstreamPathTemplate": "/api/Productos/GetProductos",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
-        //{
-        //  "Host": "incentivosproductos.azurewebsites.net",
-        //  "Port": 443
-        //}
         {
-          "Host": "localhost",
-          "Port": 7060
+          "Host": "incentivosproductos.azurewebsites.net",
+          "Port": 443
         }
       ],
       "Key": "getProductosRoute"
@@ -1048,7 +1044,7 @@
       "DownstreamPathTemplate": "/api/fidelizacion/GetReporteRedencion",
       "UpstreamPathTemplate": "/api/fidelizacion/GetReporteRedencion",
       "DownstreamScheme": "https",
-      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
           "Host": "azfidelizacion.azurewebsites.net",
@@ -1060,6 +1056,24 @@
         "AllowedScopes": []
       },
       "Key": "GetReporteRedencionRoute"
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/fidelizacion/GetUsuarioInfoPuntosAll",
+      "UpstreamPathTemplate": "/api/fidelizacion/GetUsuarioInfoPuntosAll",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetUsuarioInfoPuntosAllRoute"
     }
   ],
   "GlobalConfiguration": {

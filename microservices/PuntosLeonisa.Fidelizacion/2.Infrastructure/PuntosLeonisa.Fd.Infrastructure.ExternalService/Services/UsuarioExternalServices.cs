@@ -167,5 +167,15 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
             var response = httpClientAgent.GetRequest<GenericResponse<bool>>(new Uri(azf));
             return response;
         }
+
+        
+        public Task<GenericResponse<IEnumerable<Usuario>>> GetUsuarios()
+        {
+            var azf = $"{_configuration["AzfBaseUser"]}{_configuration["GetUsuarios"]}";
+            var response = httpClientAgent.GetRequest<GenericResponse<IEnumerable<Usuario>>>(new Uri(azf));
+            return response;
+        }
+
+     
     }
 }

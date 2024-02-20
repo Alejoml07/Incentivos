@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
+<<<<<<< HEAD
+    <NameOfLastUsedPublishProfile>C:\sourcecode\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\Properties\PublishProfiles\ApiGateweypuntosleonisa - Web Deploy.pubxml</NameOfLastUsedPublishProfile>
+=======
     <NameOfLastUsedPublishProfile>C:\SourceCode\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\Properties\PublishProfiles\ApiGateweypuntosleonisa - Web Deploy.pubxml</NameOfLastUsedPublishProfile>
+>>>>>>> 3e97ed1daa583e87fa5b4a6d7add78f4590e5d51
   </PropertyGroup>
 </Project>

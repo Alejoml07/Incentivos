@@ -1308,7 +1308,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                 {
                     Result = true
                 };
-            }
+            } 
             return new GenericResponse<bool>
             {
                 Result = false

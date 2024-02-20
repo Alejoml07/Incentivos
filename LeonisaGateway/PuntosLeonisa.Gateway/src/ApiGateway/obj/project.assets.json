@@ -2958,40 +2958,24 @@
     ]
   },
   "packageFolders": {
-<<<<<<< HEAD
-    "C:\\Users\\danie\\.nuget\\packages\\": {}
-=======
     "C:\\Users\\andre\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
->>>>>>> 3e97ed1daa583e87fa5b4a6d7add78f4590e5d51
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-<<<<<<< HEAD
-      "projectUniqueName": "C:\\sourcecode\\IncentivosService\\LeonisaGateway\\PuntosLeonisa.Gateway\\src\\ApiGateway\\ApiGateway.csproj",
-      "projectName": "ApiGateway",
-      "projectPath": "C:\\sourcecode\\IncentivosService\\LeonisaGateway\\PuntosLeonisa.Gateway\\src\\ApiGateway\\ApiGateway.csproj",
-      "packagesPath": "C:\\Users\\danie\\.nuget\\packages\\",
-      "outputPath": "C:\\sourcecode\\IncentivosService\\LeonisaGateway\\PuntosLeonisa.Gateway\\src\\ApiGateway\\obj\\",
-=======
       "projectUniqueName": "C:\\SourceCode\\IncentivosService\\LeonisaGateway\\PuntosLeonisa.Gateway\\src\\ApiGateway\\ApiGateway.csproj",
       "projectName": "ApiGateway",
       "projectPath": "C:\\SourceCode\\IncentivosService\\LeonisaGateway\\PuntosLeonisa.Gateway\\src\\ApiGateway\\ApiGateway.csproj",
       "packagesPath": "C:\\Users\\andre\\.nuget\\packages\\",
       "outputPath": "C:\\SourceCode\\IncentivosService\\LeonisaGateway\\PuntosLeonisa.Gateway\\src\\ApiGateway\\obj\\",
->>>>>>> 3e97ed1daa583e87fa5b4a6d7add78f4590e5d51
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-<<<<<<< HEAD
-        "C:\\Users\\danie\\AppData\\Roaming\\NuGet\\NuGet.Config",
-=======
         "C:\\Users\\andre\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
->>>>>>> 3e97ed1daa583e87fa5b4a6d7add78f4590e5d51
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -3012,11 +2996,6 @@
         "warnAsError": [
           "NU1605"
         ]
-      },
-      "restoreAuditProperties": {
-        "enableAudit": "true",
-        "auditLevel": "low",
-        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -3055,12 +3034,16 @@
             "privateAssets": "all"
           }
         },
-<<<<<<< HEAD
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200/PortableRuntimeIdentifierGraph.json"
-=======
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
->>>>>>> 3e97ed1daa583e87fa5b4a6d7add78f4590e5d51
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problema al leer el archivo de caché C:\\SourceCode\\IncentivosService\\LeonisaGateway\\PuntosLeonisa.Gateway\\src\\ApiGateway\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

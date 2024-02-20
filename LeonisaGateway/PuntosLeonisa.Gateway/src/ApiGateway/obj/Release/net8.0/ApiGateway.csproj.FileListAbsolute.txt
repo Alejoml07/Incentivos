@@ -93,4 +93,4 @@ C:\Pl-BackEnd\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGate
 C:\Pl-BackEnd\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\obj\Release\net8.0\ApiGateway.pdb
 C:\Pl-BackEnd\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\obj\Release\net8.0\ApiGateway.genruntimeconfig.cache
 C:\Pl-BackEnd\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\obj\Release\net8.0\ref\ApiGateway.dll
-C:\sourcecode\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\obj\Release\net8.0\ApiGateway.csproj.Up2Date
+C:\SourceCode\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\obj\Release\net8.0\ApiGateway.csproj.CopyComplete
