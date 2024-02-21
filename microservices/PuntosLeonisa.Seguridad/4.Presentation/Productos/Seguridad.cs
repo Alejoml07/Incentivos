@@ -384,6 +384,39 @@ namespace Usuarios
                 return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("GetUsuarioBasic")]
+        [OpenApiOperation(operationId: "Usuarios/GetUsuarioBasic", tags: new[] { "GetUsuarioBasic" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los usuarios")]    
+        public async Task<IActionResult> GetUsuarioBasic(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Usuario/GetUsuarioBasic")] HttpRequest req,
+        ILogger log)
+        {
+               log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+                var response = await this.usuarioApplication.GetUsuarioBasic();
+
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
+
+
 }
 

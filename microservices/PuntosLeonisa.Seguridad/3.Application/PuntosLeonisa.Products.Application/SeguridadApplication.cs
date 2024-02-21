@@ -10,6 +10,7 @@ using System.Text;
 using Jose;
 using PuntosLeonisa.Seguridad.Infrasctructure.Common.Helpers;
 using PuntosLeonisa.Infrasctructure.Core.ExternalServiceInterfaces;
+using PuntosLeonisa.Seguridad.Infrasctructure.Repositorie;
 
 namespace PuntosLeonisa.Seguridad.Application;
 
@@ -368,5 +369,20 @@ public class SeguridadApplication : IUsuarioApplication
         await usuarioRepository.Update(usuario);
         return new GenericResponse<bool>() { Result = true };
     }
+
+    public async Task<GenericResponse<IEnumerable<UsuarioBasicDto>>> GetUsuarioBasic()
+    {
+        var usuarios = await usuarioRepository.GetAll();
+        var usuariosDto = mapper.Map<UsuarioBasicDto[]>(usuarios);
+        var responseOnly = new GenericResponse<IEnumerable<UsuarioBasicDto>>
+        {
+            Result = usuariosDto
+        };
+
+        return responseOnly;
+
+    }
+
+  
 }
 

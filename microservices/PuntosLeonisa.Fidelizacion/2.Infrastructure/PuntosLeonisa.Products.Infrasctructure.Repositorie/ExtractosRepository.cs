@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
 using PuntosLeonisa.Infrasctructure.Core.Repository;
 using PuntosLeonisa.infrastructure.Persistence.CosmoDb;
+using System.IO.Hashing;
 
 namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
 {
@@ -14,12 +16,17 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
             _context = context;
         }
 
+        public async Task<IEnumerable<Extractos>> GetExtractosByDate(ReporteDto data)
+        {
+            //traeme el extracto por mes y anio
+            var result = await _context.Set<Extractos>().Where(x => x.Mes == data.Mes && x.Anio == data.Anio).ToListAsync();
+            return result;
+        }
+
         public async Task<IEnumerable<Extractos>> GetExtractosByUsuario(string cedula)
         {
             var result = await _context.Set<Extractos>().Where(x => x.Usuario.Cedula == cedula).ToListAsync();
-
             return result;
-
         }
     }
 }

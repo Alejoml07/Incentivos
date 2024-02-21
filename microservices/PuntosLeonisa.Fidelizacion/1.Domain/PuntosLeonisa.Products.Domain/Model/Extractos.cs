@@ -13,6 +13,10 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
 
         public DateTime? Fecha { get; set; }
 
+        public string? Mes { get; set; }
+
+        public string? Anio { get; set; }
+
         public string? Descripcion { get; set; }
 
         public float? ValorMovimiento { get; set; }

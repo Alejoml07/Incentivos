@@ -854,6 +854,48 @@ namespace Usuarioos
                 return GetFunctionError(log, "Error al cambiar el estado y liquidar punttos:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("GetExtractosByDate")]
+        [OpenApiOperation(operationId: "GetExtractosByDate", tags: new[] { "GetExtractosByDate" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los extractos por fechas")]
+        public async Task<IActionResult> GetExtractosByDate(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/GetExtractosByDate")] HttpRequest req, ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<ReporteDto>(requestBody);
+                var response = await this.puntosApplication.GetExtractosByDate(data);
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los extractos:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("UpdateMesYAnio")]
+        [OpenApiOperation(operationId: "UpdateMesYAnio", tags: new[] { "UpdateMesYAnio" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los extractos por fechas")]
+        public async Task<IActionResult> UpdateMesYAnio(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/UpdateMesYAnio")] HttpRequest req, ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<ReporteDto>(requestBody);
+                var response = await this.puntosApplication.UpdateMesYAño(data);
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los extractos:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 

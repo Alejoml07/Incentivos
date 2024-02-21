@@ -9,8 +9,12 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
 {
     public class ReporteDto
     {
-        public DateTime FechaInicio { get; set; }
+        public DateTime? FechaInicio { get; set; }
 
-        public DateTime FechaFin { get; set; }
+        public DateTime? FechaFin { get; set; }
+
+        public string? Mes { get; set; }
+
+        public string? Anio { get; set; }
     }
 }

@@ -1178,7 +1178,9 @@ public class FidelizacionApplication : IFidelizacionApplication
             if (extractos == null)
             {
                 data.Id = Guid.NewGuid().ToString();
-                data.Fecha = DateTime.Now;
+                data.Fecha = DateTime.Now; 
+                data.Mes = DateTime.Now.Month.ToString();
+                data.Anio = DateTime.Now.Year.ToString();
                 await this.unitOfWork.ExtractosRepository.Add(data);
                 await this.unitOfWork.SaveChangesAsync();
                 return new GenericResponse<bool>
@@ -1357,5 +1359,40 @@ public class FidelizacionApplication : IFidelizacionApplication
 
             throw;
         }
+    }
+
+    public async Task<GenericResponse<IEnumerable<Extractos>>> GetExtractosByDate(ReporteDto data)
+    {
+        try
+        {
+            var extractos = await this.unitOfWork.ExtractosRepository.GetExtractosByDate(data);
+            var response = new GenericResponse<IEnumerable<Extractos>>();
+            return new GenericResponse<IEnumerable<Extractos>>
+            {
+                Result = extractos.OrderByDescending(p => p.Fecha)
+            };
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    public Task<GenericResponse<IEnumerable<Extractos>>> UpdateMesYAño(ReporteDto data)
+    {
+        //Necesito traer todos los extractos y actualizar el mes y el año, el mes es igual a 1 y el año es igual a 2024
+        var extractos = this.unitOfWork.ExtractosRepository.GetAll().GetAwaiter().GetResult();
+        foreach (var item in extractos)
+        {
+            item.Mes = "1";
+            item.Anio = "2024";
+            this.unitOfWork.ExtractosRepository.Update(item);
+        }
+        this.unitOfWork.SaveChangesSync();
+        return Task.FromResult(new GenericResponse<IEnumerable<Extractos>>
+        {
+            Result = extractos
+        });
     }
 }
