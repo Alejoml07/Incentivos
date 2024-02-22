@@ -8,7 +8,7 @@ namespace PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios
 {
     public class UsuarioBasicDto
     {
-        public string? Nombre { get; set; }
+        public string? Nombres { get; set; }
 
         public string? Cedula { get; set; }
 
