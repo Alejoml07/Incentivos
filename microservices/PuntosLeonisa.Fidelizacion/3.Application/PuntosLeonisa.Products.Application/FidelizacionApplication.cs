@@ -1220,8 +1220,22 @@ public class FidelizacionApplication : IFidelizacionApplication
         {
             foreach (var extracto in data)
             {
+                if(data.FirstOrDefault().OrigenMovimiento == "Puntos Adquiridos")
+                {
+                    var usuario = await this.usuarioExternalService.GetUserByEmail(extracto.Usuario.Email);
+                    if (usuario != null)
+                    {
+                        extracto.Id = Guid.NewGuid().ToString();
+                        extracto.Fecha = DateTime.Now;
+                        extracto.Mes = DateTime.Now.Month.ToString();
+                        extracto.Anio = DateTime.Now.Year.ToString();
+                        extracto.Usuario = usuario.Result;
+                    }                    
+                }
                 extracto.Id = Guid.NewGuid().ToString();
                 extracto.Fecha = DateTime.Now;
+                extracto.Mes = DateTime.Now.Month.ToString();
+                extracto.Anio = DateTime.Now.Year.ToString();
             }
             await unitOfWork.ExtractosRepository.AddRange(data);
             await this.unitOfWork.SaveChangesAsync();
@@ -1255,7 +1269,6 @@ public class FidelizacionApplication : IFidelizacionApplication
 
             throw;
         }
-
     }
 
     public async Task<GenericResponse<bool>> CambiarEstadoYLiquidarPuntos(string email)
