@@ -18,13 +18,13 @@ builder.Services.AddOcelot()
     .AddSingletonDefinedAggregator<UsersPostsAggregator>();
 
 builder.Services.AddCors(c =>
-{ 
+{
     c.AddDefaultPolicy(options =>
     {
         options.AllowAnyOrigin()
             .AllowAnyHeader()
             .AllowAnyMethod();
-    }); 
+    });
 });
 
 builder.Services.AddAuthentication(options =>
@@ -32,17 +32,17 @@ builder.Services.AddAuthentication(options =>
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
 
-            ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
-            ValidAudience = builder.Configuration["JwtSettings:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Convert.ToBase64String(Encoding.UTF8.GetBytes("C3Fg6@2pLm8!pQrS0tVwX2zY&fUjWnZ1")))) // Clave secreta
+        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+        ValidAudience = builder.Configuration["JwtSettings:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Convert.ToBase64String(Encoding.UTF8.GetBytes("C3Fg6@2pLm8!pQrS0tVwX2zY&fUjWnZ1")))) // Clave secreta
 
-            //ClockSkew = new System.TimeSpan(0)
-        };
-    });
+        //ClockSkew = new System.TimeSpan(0)
+    };
+});
 
 // Configure the HTTP request pipeline.
 
@@ -53,7 +53,7 @@ app.Use(async (context, next) =>
     if (context.Request.Headers.TryGetValue("Authorization", out var authHeader))
     {
         var token = authHeader.ToString().Substring("Bearer ".Length).Trim();
-        if (!JwtValidator.ValidateToken(token, "C3Fg6@2pLm8!pQrS0tVwX2zY&fUjWnZ1",ref context))
+        if (!JwtValidator.ValidateToken(token, "C3Fg6@2pLm8!pQrS0tVwX2zY&fUjWnZ1", ref context))
         {
             context.Response.StatusCode = 401; // No autorizado
             await context.Response.WriteAsync("Token inválido o expirado");
@@ -61,9 +61,9 @@ app.Use(async (context, next) =>
         }
         else
         {
-           
+
         }
-            
+
     }
 
     await next.Invoke();
@@ -94,4 +94,3 @@ app.UseCors();
 app.UseOcelot().Wait();
 
 app.Run();
-

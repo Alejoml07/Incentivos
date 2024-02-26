@@ -492,6 +492,8 @@ public class FidelizacionApplication : IFidelizacionApplication
 
             var usuarioCompleto = this.usuarioExternalService.GetUserByEmail(data.Usuario.Email ?? "").GetAwaiter().GetResult();
             var usuarioInfoPuntos = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(data.Usuario.Email);
+            data.Usuario.Agencia = usuarioCompleto.Result.Agencia;
+            data.Usuario.Empresa = usuarioCompleto.Result.Empresa;
             data.Usuario = usuarioCompleto.Result;
             if (usuarioInfoPuntos != null)
             {
