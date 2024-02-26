@@ -1374,24 +1374,6 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
     }
 
-    public async Task<GenericResponse<IEnumerable<Extractos>>> GetExtractosByDate(ReporteDto data)
-    {
-        try
-        {
-            var extractos = await this.unitOfWork.ExtractosRepository.GetExtractosByDate(data);
-            var response = new GenericResponse<IEnumerable<Extractos>>();
-            return new GenericResponse<IEnumerable<Extractos>>
-            {
-                Result = extractos.OrderByDescending(p => p.Fecha)
-            };
-        }
-        catch (Exception)
-        {
-
-            throw;
-        }
-    }
-
     public Task<GenericResponse<IEnumerable<Extractos>>> UpdateMesYAño(ReporteDto data)
     {
         //Necesito traer todos los extractos y actualizar el mes y el año, el mes es igual a 1 y el año es igual a 2024
@@ -1401,6 +1383,36 @@ public class FidelizacionApplication : IFidelizacionApplication
             item.Mes = "1";
             item.Anio = "2024";
             this.unitOfWork.ExtractosRepository.Update(item);
+        }
+        this.unitOfWork.SaveChangesSync();
+        return Task.FromResult(new GenericResponse<IEnumerable<Extractos>>
+        {
+            Result = extractos
+        });
+    }
+
+    public Task<GenericResponse<IEnumerable<Extractos>>> GetExtractosByUserAndDate(ReporteDto data)
+    {
+        var extractos = this.unitOfWork.ExtractosRepository.GetExtractosByUserAndDate(data).GetAwaiter().GetResult();
+        return Task.FromResult(new GenericResponse<IEnumerable<Extractos>>
+        {
+            Result = extractos.OrderByDescending(p => p.Fecha)
+        });
+    }
+
+    public Task<GenericResponse<IEnumerable<Extractos>>> UpdateUser()
+    {
+        //Necesito traer todos los extractos y actualizar el mes y el año, el mes es igual a 1 y el año es igual a 2024
+        var extractos = this.unitOfWork.ExtractosRepository.GetAll().GetAwaiter().GetResult();
+        foreach (var item in extractos)
+        {
+            var user = this.usuarioExternalService.GetUserLiteByCedula(item.Usuario.Cedula).GetAwaiter().GetResult();
+            if (user != null)
+            {
+                item.Usuario = user.Result;
+                this.unitOfWork.ExtractosRepository.Update(item);
+            }
+            
         }
         this.unitOfWork.SaveChangesSync();
         return Task.FromResult(new GenericResponse<IEnumerable<Extractos>>

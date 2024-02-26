@@ -16,11 +16,19 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
             _context = context;
         }
 
-        public async Task<IEnumerable<Extractos>> GetExtractosByDate(ReporteDto data)
+        public async Task<IEnumerable<Extractos>> GetExtractosByUserAndDate(ReporteDto data)
         {
-            //traeme el extracto por mes y anio
-            var result = await _context.Set<Extractos>().Where(x => x.Mes == data.Mes && x.Anio == data.Anio).ToListAsync();
-            return result;
+            if(data.Cedula == "")
+            { 
+                var result = await _context.Set<Extractos>().Where(x => x.Mes == data.Mes && x.Anio == data.Anio).ToListAsync();
+                return result;
+            }
+            else
+            {
+                var result = await _context.Set<Extractos>().Where(x => x.Usuario.Cedula == data.Cedula && x.Mes == data.Mes && x.Anio == data.Anio).ToListAsync();
+                return result;
+            }
+            
         }
 
         public async Task<IEnumerable<Extractos>> GetExtractosByUsuario(string cedula)

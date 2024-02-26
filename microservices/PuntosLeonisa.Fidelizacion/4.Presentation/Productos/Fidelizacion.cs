@@ -855,27 +855,6 @@ namespace Usuarioos
             }
         }
 
-        [FunctionName("GetExtractosByDate")]
-        [OpenApiOperation(operationId: "GetExtractosByDate", tags: new[] { "GetExtractosByDate" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los extractos por fechas")]
-        public async Task<IActionResult> GetExtractosByDate(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/GetExtractosByDate")] HttpRequest req, ILogger log)
-        {
-            log.LogInformation("C# HTTP trigger function processed a request.");
-
-            try
-            {
-                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var data = JsonConvert.DeserializeObject<ReporteDto>(requestBody);
-                var response = await this.puntosApplication.GetExtractosByDate(data);
-                return new OkObjectResult(response);
-            }
-            catch (Exception ex)
-            {
-                return GetFunctionError(log, "Error al obtener los extractos:" + DateTime.UtcNow.ToString(), ex);
-            }
-        }
-
         [FunctionName("UpdateMesYAnio")]
         [OpenApiOperation(operationId: "UpdateMesYAnio", tags: new[] { "UpdateMesYAnio" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los extractos por fechas")]
@@ -889,6 +868,46 @@ namespace Usuarioos
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var data = JsonConvert.DeserializeObject<ReporteDto>(requestBody);
                 var response = await this.puntosApplication.UpdateMesYAño(data);
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los extractos:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("GetExtractosByUsuarioAndDate")]
+        [OpenApiOperation(operationId: "GetExtractosByUsuarioAndDate", tags: new[] { "GetExtractosByUsuarioAndDate" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los extractos por fechas")]
+        public async Task<IActionResult> GetExtractosByUsuarioAndDate(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/GetExtractosByUsuarioAndDate")] HttpRequest req, ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<ReporteDto>(requestBody);
+                var response = await this.puntosApplication.GetExtractosByUserAndDate(data);
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los extractos:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("UpdateUser")]
+        [OpenApiOperation(operationId: "UpdateUser", tags: new[] { "UpdateUser" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los extractos por fechas")]
+        public async Task<IActionResult> UpdateUser(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/UpdateUser")] HttpRequest req, ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                var response = await this.puntosApplication.UpdateUser();
                 return new OkObjectResult(response);
             }
             catch (Exception ex)
