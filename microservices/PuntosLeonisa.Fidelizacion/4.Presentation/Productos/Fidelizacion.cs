@@ -915,6 +915,25 @@ namespace Usuarioos
                 return GetFunctionError(log, "Error al obtener los extractos:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("UpdateEmpresaYAgencia")]
+        [OpenApiOperation(operationId: "UpdateEmpresaYAgencia", tags: new[] { "UpdateEmpresaYAgencia" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los extractos por fechas")]
+        public async Task<IActionResult> UpdateEmpresaYAgencia(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "Post", Route = "fidelizacion/UpdateEmpresaYAgencia")] HttpRequest req, ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                var response = await this.puntosApplication.UpdateEmpresaYAgencia();
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los extractos:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 

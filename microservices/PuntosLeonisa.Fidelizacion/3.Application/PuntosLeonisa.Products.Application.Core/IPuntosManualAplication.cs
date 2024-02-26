@@ -27,5 +27,7 @@ public interface IFidelizacionApplication : IApplicationCore<PuntosManualDto>, I
     Task<GenericResponse<IEnumerable<Extractos>>> GetExtractosByUserAndDate(ReporteDto data);
     Task<GenericResponse<IEnumerable<Extractos>>> UpdateMesYAño(ReporteDto data);
     Task<GenericResponse<IEnumerable<Extractos>>> UpdateUser();
+    Task<GenericResponse<IEnumerable<UsuarioRedencion>>> UpdateEmpresaYAgencia();
+
 }
 
