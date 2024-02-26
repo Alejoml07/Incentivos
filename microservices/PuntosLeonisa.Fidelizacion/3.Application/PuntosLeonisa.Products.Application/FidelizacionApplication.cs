@@ -1287,6 +1287,18 @@ public class FidelizacionApplication : IFidelizacionApplication
                     Id = Guid.NewGuid().ToString(),
                     FechaRedencion = DateTime.Now,
                     Usuario = usuario.Result,
+                    PuntosRedimidos = usuarioPuntos.PuntosDisponibles,
+                    Envio = new Domain.Model.UsuarioEnvio
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Nombres = usuario.Result.Nombres,
+                        Celular = usuario.Result.Celular,
+                        Departamento = "",
+                        Ciudad = "",
+                        Direccion = "",
+                        Observaciones = "Liquidacion puntos en bono",
+
+                    },
                     ProductosCarrito = new List<ProductoRefence>
                     {
                         new ProductoRefence
@@ -1315,10 +1327,13 @@ public class FidelizacionApplication : IFidelizacionApplication
                         }
                     }
                 };
+                usuarioPuntos.PuntosDisponibles = 0;
                 redencionNueva.PuntosRedimidos = usuarioPuntos.PuntosDisponibles;
-                await this.unitOfWork.UsuarioRedencionRepository.Add(redencionNueva);
-                await this.unitOfWork.SaveChangesAsync();
                 await this.usuarioExternalService.UserSendEmailWithMessage(redencionNueva);
+                SendNotifyToProveedores(redencionNueva);
+                await this.unitOfWork.UsuarioRedencionRepository.Add(redencionNueva);
+                await this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuarioPuntos);
+                await this.unitOfWork.SaveChangesAsync();
                 return new GenericResponse<bool>
                 {
                     Result = true
