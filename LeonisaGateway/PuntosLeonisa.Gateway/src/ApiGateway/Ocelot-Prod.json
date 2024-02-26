@@ -1110,6 +1110,24 @@
         "AllowedScopes": []
       },
       "Key": "GetExtractosByDateRoute"
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/fidelizacion/GetExtractosByUsuarioAndDate",
+      "UpstreamPathTemplate": "/api/fidelizacion/GetExtractosByUsuarioAndDate",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetExtractosByUsuarioAndDateRoute"
     }
   ],
   "GlobalConfiguration": {

@@ -11,7 +11,6 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces
     public interface IExtractosRepository : IRepository<Extractos>
     {
         Task<IEnumerable<Extractos>> GetExtractosByUsuario(string cedula);
-
-        Task<IEnumerable<Extractos>> GetExtractosByDate(ReporteDto data);
+        Task<IEnumerable<Extractos>> GetExtractosByUserAndDate(ReporteDto data);
     }
 }

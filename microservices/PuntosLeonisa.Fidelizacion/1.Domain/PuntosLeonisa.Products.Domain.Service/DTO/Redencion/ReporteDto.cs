@@ -16,5 +16,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
         public string? Mes { get; set; }
 
         public string? Anio { get; set; }
+
+        public string? Cedula { get; set; }
     }
 }
