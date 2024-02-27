@@ -1091,7 +1091,7 @@
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       },
-      "Key": "GetUsuarioInfoPuntosAllRoute",
+      "Key": "GetUsuarioInfoPuntosAllRoute"
     },
 
     {

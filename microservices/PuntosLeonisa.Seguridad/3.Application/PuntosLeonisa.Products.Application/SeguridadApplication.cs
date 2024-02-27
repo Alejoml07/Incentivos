@@ -87,6 +87,9 @@ public class SeguridadApplication : IUsuarioApplication
             {
                 if (item.Pwd != null)
                     item.Pwd = securityService.HasPassword(item.Pwd.Trim());
+                    item.Cedula = item.Cedula.Trim();
+                    item.Email = item.Email.Trim();
+                    item.Celular = item.Celular.Trim();
             }
 
             var usuarios = mapper.Map<Usuario[]>(value);
@@ -321,7 +324,25 @@ public class SeguridadApplication : IUsuarioApplication
         {
             var exist = await usuarioRepository.GetUsuarioByEmail(email);
 
-            if (exist == null && (exist.Pwd == null || exist.Pwd == ""))
+            if (exist == null)
+            {
+                var response = await this.getUsuarioExternalService.GetUsuario(email);
+
+                if (response == null)
+                {
+                    return new GenericResponse<bool>() { IsSuccess = false };
+                }
+                else
+                {
+                    var usuario = mapper.Map<Usuario>(response);
+                    usuario.Id = Guid.NewGuid().ToString();
+                    await usuarioRepository.Add(usuario);
+                    return new GenericResponse<bool>() { Result = false };
+                }
+
+            }
+
+            if (exist.Pwd == null || exist.Pwd == "")
             {
                 return new GenericResponse<bool>() { Result = false };
             }
@@ -338,23 +359,8 @@ public class SeguridadApplication : IUsuarioApplication
                 return new GenericResponse<bool>() { Result = true };
             }
 
-            if (exist == null)
-            {
-                var response = await this.getUsuarioExternalService.GetUsuario(email);
-
-                if (response == null)
-                {
-                    throw new Exception("Usuario no existe");
-                }
-                if (response != null)
-                {
-                    var usuario = mapper.Map<Usuario>(response);
-                    usuario.Id = Guid.NewGuid().ToString();
-                    await usuarioRepository.Add(usuario);
-                }
-
-            }
-            return new GenericResponse<bool>() { Result = false };
+            
+            return new GenericResponse<bool>() { IsSuccess = false };
         }
         catch (Exception)
         {

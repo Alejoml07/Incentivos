@@ -116,7 +116,6 @@ namespace Usuarioos
                 var points = JsonConvert.DeserializeObject<PuntosManualDto[]>(requestBody);
 
                 var puntos = await this.puntosApplication.AddRange(points);
-
                 return new OkObjectResult(puntos);
 
             }

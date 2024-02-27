@@ -438,7 +438,6 @@ public class FidelizacionApplication : IFidelizacionApplication
         try
         {
             var puntosEnCarrito = this.unitOfWork.CarritoRepository.GetPuntosEnCarrito(id).GetAwaiter().GetResult();
-
             var puntosEnCarritoSum = puntosEnCarrito.Sum(x => x.Product.Puntos * x.Product.Quantity);
             var usuarioRegistrado = await this.usuarioExternalService.GetUserByEmail(id);
             if(!usuarioRegistrado.IsSuccess)
