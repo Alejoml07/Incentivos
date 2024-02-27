@@ -1365,18 +1365,35 @@ public class FidelizacionApplication : IFidelizacionApplication
             {
                 foreach (var producto in item.ProductosCarrito)
                 {
-
-                    var orden = new UsuarioRedencion
+                    if (producto.Nombre == "bono")
                     {
-                        Id = item.Id,
-                        FechaRedencion = item.FechaRedencion,
-                        NroPedido = item.NroPedido,
-                        Usuario = item.Usuario,
-                        PuntosRedimidos = (int)producto.Puntos,
-                        Envio = item.Envio,
-                        ProductosCarrito = new List<ProductoRefence> { producto }
-                    };
-                    reporte.Add(orden);
+                        var orden = new UsuarioRedencion
+                        {
+                            Id = item.Id,
+                            FechaRedencion = item.FechaRedencion,
+                            NroPedido = item.NroPedido,
+                            Usuario = item.Usuario,
+                            PuntosRedimidos = (int)producto.Quantity,
+                            Envio = item.Envio,
+                            ProductosCarrito = new List<ProductoRefence> { producto }
+                        };
+                        reporte.Add(orden);
+                    }
+                    else
+                    {
+
+                        var orden = new UsuarioRedencion
+                        {
+                            Id = item.Id,
+                            FechaRedencion = item.FechaRedencion,
+                            NroPedido = item.NroPedido,
+                            Usuario = item.Usuario,
+                            PuntosRedimidos = (int)producto.Puntos,
+                            Envio = item.Envio,
+                            ProductosCarrito = new List<ProductoRefence> { producto }
+                        };
+                        reporte.Add(orden);
+                    }
                 }
             }
             return Task.FromResult(new GenericResponse<IEnumerable<UsuarioRedencion>>
