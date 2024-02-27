@@ -24,6 +24,10 @@ namespace PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios
 
         public string? Proveedor { get; set; }
 
+        public string? Agencia { get; set; }
+
+        public string? Empresa { get; set; }
+
         public string Tkn { get; set; }
     }
 }

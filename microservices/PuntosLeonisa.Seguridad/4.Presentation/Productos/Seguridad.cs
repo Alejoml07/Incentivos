@@ -238,7 +238,6 @@ namespace Usuarios
                 }
 
                 var producto = await this.usuarioApplication.GetByEmail(email);
-
                 return new OkObjectResult(producto);
             }
             catch (Exception ex)

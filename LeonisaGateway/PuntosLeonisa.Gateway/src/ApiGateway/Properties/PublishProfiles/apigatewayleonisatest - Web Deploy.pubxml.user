@@ -6,8 +6,13 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
 <Project>
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
+<<<<<<< HEAD
     <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAskxSgNaqHE2HgUYnuH4/JgAAAAACAAAAAAAQZgAAAAEAACAAAACM4IRhGsxTrL/tXZmic4bZzUGcwFx8BrCbEmVjuDZ+AwAAAAAOgAAAAAIAACAAAADBR+7XbjVrTSnYZ7rmaAJzzMMSfBXE28C1Bx+iBADrnqAAAAC3bQgvh7j9t/AgSxNH0QKUnRsBauo12PpTpbLkW6S0ZnEk25EVhGZTI8JYu8sNTm9RJsnQkyAAnWZS4xd1n9jWGeCHtDqtjzLfa+g1HkCmfzaIsVQ/VSbxW/ANqmmu8dC1wOuV0LyvNOZlChnde2WOHtcS/U7AVduaX7gdnII1SLQkNb4aXnmF0j5tveLRjyMvMmF7qrXUgDHRTeZsELp8QAAAAGax1TJy1zIYs24yXtm0vGV9umTsWThQUObR2eW5sGIPLk5txEKcampv1k+3h6qqQyDi6z1x6i69AX8Ievfo49U=</EncryptedPassword>
     <History>True|2024-02-26T19:10:20.5361026Z;</History>
+=======
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAABzNgr+x9tEeLnA9WFuKP+QAAAAACAAAAAAAQZgAAAAEAACAAAACRMEQxsvNxZ2geaLi+jyKX/fJUS6gDa5WzFKI/X1pI4gAAAAAOgAAAAAIAACAAAAANotF2CLRc+hpfkPXXZFn7JOLGLFbXsW4Si7VJ6nmWTaAAAACEWFIC35u/rGt2v5jkxYU/o4pUyeWW/hWTO+wuPCE/Ak5jCv903Mzmvv9aWLp5yLI3z1JNXTbVLTQsW9RrV8b5dNxd2ZEd8edEh5Fa7KUPJR7LgjpQsiRYxgWhz5kuwNhMmVLepnOmYBj+vah0OSjq9IhCExf7KhmzEEUdgg9sO8q1Ig660RDwP4kmcFvGsxZM2+/FJHFK93be1zSdt7nlQAAAADgV9adqacqNeXu5BORxeKCrkGlWoCsxGt4zlpMldtC95pHLtTpIKWFpk7UuodvtNsHvW4hrL5Fr4s7CYrKn6Q8=</EncryptedPassword>
+    <History>True|2024-02-26T18:10:11.7670046Z;True|2024-02-26T10:21:50.5580024-05:00;True|2024-02-26T10:20:16.3704411-05:00;</History>
+>>>>>>> 14440f290f89a876e115d5e83288f2822c0bda76
     <LastFailureDetails />
   </PropertyGroup>
 </Project>

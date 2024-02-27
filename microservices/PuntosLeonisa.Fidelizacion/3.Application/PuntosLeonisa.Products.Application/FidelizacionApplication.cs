@@ -491,6 +491,8 @@ public class FidelizacionApplication : IFidelizacionApplication
 
             var usuarioCompleto = this.usuarioExternalService.GetUserByEmail(data.Usuario.Email ?? "").GetAwaiter().GetResult();
             var usuarioInfoPuntos = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(data.Usuario.Email);
+            data.Usuario.Agencia = usuarioCompleto.Result.Agencia;
+            data.Usuario.Empresa = usuarioCompleto.Result.Empresa;
             data.Usuario = usuarioCompleto.Result;
             if (usuarioInfoPuntos != null)
             {
@@ -1432,6 +1434,26 @@ public class FidelizacionApplication : IFidelizacionApplication
         return Task.FromResult(new GenericResponse<IEnumerable<Extractos>>
         {
             Result = extractos
+        });
+    }
+
+    public Task<GenericResponse<IEnumerable<UsuarioRedencion>>> UpdateEmpresaYAgencia()
+    {
+        var redenciones = this.unitOfWork.UsuarioRedencionRepository.GetAll().GetAwaiter().GetResult();
+        foreach (var item in redenciones)
+        {
+           var user = this.usuarioExternalService.GetUserByEmail(item.Usuario.Email).GetAwaiter().GetResult();
+            if (user != null)
+            {
+                item.Usuario.Empresa = user.Result.Empresa;
+                item.Usuario.Agencia = user.Result.Agencia;
+                this.unitOfWork.UsuarioRedencionRepository.Update(item);
+            }
+        }
+        this.unitOfWork.SaveChangesSync();
+        return Task.FromResult(new GenericResponse<IEnumerable<UsuarioRedencion>>
+        {
+            Result = redenciones
         });
     }
 }
