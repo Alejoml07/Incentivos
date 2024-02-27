@@ -1328,8 +1328,10 @@ public class FidelizacionApplication : IFidelizacionApplication
                         }
                     }
                 };
-                usuarioPuntos.PuntosDisponibles = 0;
                 redencionNueva.PuntosRedimidos = usuarioPuntos.PuntosDisponibles;
+                usuarioPuntos.PuntosAcumulados += usuarioPuntos.PuntosDisponibles;
+                usuarioPuntos.PuntosRedimidos += usuarioPuntos.PuntosDisponibles;
+                usuarioPuntos.PuntosDisponibles = 0;            
                 await this.usuarioExternalService.UserSendEmailWithMessage(redencionNueva);
                 SendNotifyToProveedores(redencionNueva);
                 await this.unitOfWork.UsuarioRedencionRepository.Add(redencionNueva);
