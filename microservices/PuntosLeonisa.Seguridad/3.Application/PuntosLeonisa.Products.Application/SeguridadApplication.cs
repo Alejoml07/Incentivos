@@ -60,7 +60,11 @@ public class SeguridadApplication : IUsuarioApplication
             {
 
                 //TODO: Hacer las validaciones
+
                 var usuario = mapper.Map<Usuario>(value);
+                usuario.Email = usuario.Email.Trim();
+                usuario.Celular = usuario.Celular.Trim();
+                usuario.Cedula = usuario.Cedula.Trim();
                 usuario.Id = Guid.NewGuid().ToString();
                 await usuarioRepository.Add(usuario);
             }
@@ -333,6 +337,9 @@ public class SeguridadApplication : IUsuarioApplication
                 {
                     var usuario = mapper.Map<Usuario>(response);
                     usuario.Id = Guid.NewGuid().ToString();
+                    usuario.Email = usuario.Email.Trim();
+                    usuario.Celular = usuario.Celular.Trim();
+                    usuario.Cedula = usuario.Cedula.Trim();
                     await usuarioRepository.Add(usuario);
                     return new GenericResponse<bool>() { Result = false };
                 }
@@ -386,6 +393,17 @@ public class SeguridadApplication : IUsuarioApplication
 
     }
 
-  
+    public Task<GenericResponse<bool>> UpdateEmailSinEspacios()
+    {
+        var usuarios = usuarioRepository.GetAll().GetAwaiter().GetResult();
+        foreach (var item in usuarios)
+        {
+            item.Email = item.Email.Trim();
+            item.Celular = item.Celular.Trim();
+            item.Cedula = item.Cedula.Trim();
+            usuarioRepository.Update(item);
+        }
+        return Task.FromResult(new GenericResponse<bool> { Result = true });
+    }
 }
 

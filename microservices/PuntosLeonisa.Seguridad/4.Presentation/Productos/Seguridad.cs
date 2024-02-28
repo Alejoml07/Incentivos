@@ -414,6 +414,25 @@ namespace Usuarios
                 return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("UpdateEmailSinEspacios")]
+        [OpenApiOperation(operationId: "UpdateEmailSinEspacios", tags: new[] { "UpdateEmailSinEspacios" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los extractos por fechas")]
+        public async Task<IActionResult> UpdateMesYAnio(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Usuario/UpdateEmailSinEspacios")] HttpRequest req, ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                var response = await this.usuarioApplication.UpdateEmailSinEspacios();
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los extractos:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 
 

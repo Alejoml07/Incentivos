@@ -16,6 +16,7 @@ public interface IUsuarioApplication : IApplicationCore<UsuarioDto>
     Task<GenericResponse<bool>> ValidarCorreo(string email);
     Task<GenericResponse<bool>> CambiarEstado(string email);
     Task<GenericResponse<IEnumerable<UsuarioBasicDto>>> GetUsuarioBasic();
+    Task<GenericResponse<bool>> UpdateEmailSinEspacios();
 
 }
 
