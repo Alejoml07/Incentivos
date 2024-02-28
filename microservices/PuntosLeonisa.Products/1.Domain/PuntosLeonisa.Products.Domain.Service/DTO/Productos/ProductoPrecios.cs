@@ -12,5 +12,7 @@ namespace PuntosLeonisa.Products.Domain.Service.DTO.Productos
         public double? Precio { get; set; }
         public double? PrecioOferta { get; set; }
         public float? Puntos { get; set; }
+
+        public float? PuntosSinDescuento { get; set; }
     }
 }

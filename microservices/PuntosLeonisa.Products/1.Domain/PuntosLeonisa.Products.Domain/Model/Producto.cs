@@ -20,6 +20,8 @@ public class Producto :IDisposable
   
     public float? Puntos { get; set; }
 
+    public float? PuntosSinDescuento { get; set; }
+
     public float? TiempoEntrega { get; set; }
 
     public string? Estado { get; set; }

@@ -34,6 +34,8 @@ namespace PuntosLeonisa.Products.Domain.Model
 
         public float? Puntos { get; set; }
 
+        public float? PuntosSinDescuento { get; set; }
+
         public float? TiempoEntrega { get; set; }
 
         public EstadoOrdenItem? Estado
