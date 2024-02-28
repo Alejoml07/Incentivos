@@ -36,7 +36,7 @@ public class ProductosApplication : IProductApplication
         {
             //TODO: Hacer las validaciones
             var productoExist = await this.productoRepository.GetById(value.EAN ?? string.Empty);
-            var parametroEquivalenciaEnPuntos = 87;
+            var parametroEquivalenciaEnPuntos = 85;
             if (productoExist != null)
             {
                 this.mapper.Map(value, productoExist);
@@ -46,7 +46,7 @@ public class ProductosApplication : IProductApplication
             //antes de guardar se debe subir la imagen
             await UploadImageToProducts(value);
             var producto = this.mapper.Map<Producto>(value);
-            //TODO: Colocar el parametro de puntos y su equivalencia 87
+            //TODO: Colocar el parametro de puntos y su equivalencia 85
             producto.Id = Guid.NewGuid().ToString();
             producto.ProveedorLite = this.proveedorExternalService.GetProveedorByNit(producto.Proveedor).GetAwaiter().GetResult().Result;
             if (producto.ProveedorLite == null)
@@ -241,8 +241,9 @@ public class ProductosApplication : IProductApplication
                     continue;
                 }
                 productoExist.Precio = producto.Precio;
-                //TODO: Colocar el parametro de puntos y su equivalencia 87
-                productoExist.Puntos = (int)Math.Round((float)(producto.Precio / 87));
+                //TODO: Colocar el parametro de puntos y su equivalencia 85
+                productoExist.Puntos = (int)Math.Round((float)(producto.Precio / 85));
+                productoExist.PuntosSinDescuento = (int)Math.Round((float)(producto.Precio / 85));
                 productoExist.PrecioOferta = producto.PrecioOferta;
                 await this.productoRepository.Update(productoExist);
             }
@@ -371,8 +372,7 @@ public class ProductosApplication : IProductApplication
 
             throw;
         }
-       
-
         
     }
+
 }

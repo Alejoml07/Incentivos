@@ -52,12 +52,9 @@ public class SeguridadApplication : IUsuarioApplication
             var usuarioExist = await this.usuarioRepository.GetById(value.Cedula ?? "");
             if (usuarioExist != null)
             {
-
+                value.Pwd = usuarioExist.Pwd;
                 mapper.Map(value, usuarioExist);
-                usuarioExist.Pwd = securityService.HasPassword(usuarioExist.Cedula);
-
                 await usuarioRepository.Update(usuarioExist);
-
             }
             else
             {
