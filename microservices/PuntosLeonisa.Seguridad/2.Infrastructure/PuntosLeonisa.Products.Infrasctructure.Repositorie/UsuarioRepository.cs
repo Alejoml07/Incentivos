@@ -90,7 +90,7 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
 
     public async Task<Usuario> GetUsuarioByEmail(string email)
     {
-        var item = await _context.Set<Usuario>().FirstOrDefaultAsync(u => u.Email == email);
+        var item = await _context.Set<Usuario>().FirstOrDefaultAsync(u => u.Email.Trim().ToLower() == email.Trim().ToLower());
         if (item != null)
         {
             return item;
