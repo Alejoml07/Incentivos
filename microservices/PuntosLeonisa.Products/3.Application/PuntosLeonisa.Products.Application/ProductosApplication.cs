@@ -241,15 +241,19 @@ public class ProductosApplication : IProductApplication
                     continue;
                 }
                 productoExist.Precio = producto.Precio;
-                //TODO: Colocar el parametro de puntos y su equivalencia 85
-                productoExist.Puntos = (int)Math.Round((float)(producto.Precio / 85));
                 productoExist.PuntosSinDescuento = (int)Math.Round((float)(producto.Precio / 85));
+                if (productoExist.ProveedorLite.Descuento != null)
+                {
+                    productoExist.Precio = producto.Precio - ((producto.Precio * productoExist.ProveedorLite.Descuento) / 100);
+                }
+                productoExist.Puntos = (int)Math.Round((float)(productoExist.Precio / 85));
                 productoExist.PrecioOferta = producto.PrecioOferta;
                 await this.productoRepository.Update(productoExist);
+                
             }
             return new GenericResponse<bool>() { Result = true };
         }
-        catch (Exception)
+        catch (Exception) 
         {
             throw;
         }

@@ -16,6 +16,6 @@ namespace PuntosLeonisa.Products.Domain.Model
 
         public string? Email { get; set; }
 
-        public string? Descuento { get; set; }
+        public double? Descuento { get; set; }
     }
 }
