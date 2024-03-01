@@ -51,8 +51,6 @@ namespace Usuarios
             {
                 return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
-
-
         }
 
         [FunctionName("GetProveedores")]
@@ -174,7 +172,31 @@ namespace Usuarios
             }
         }
 
+        [FunctionName("UpdateProveedor")]
+        [OpenApiOperation(operationId: "UpdateProveedor", tags: new[] { "Proveedor/UpdateProveedor" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<ProveedorDto>), Description = "Hace Update del proveedor")]
+        public async Task<IActionResult> UpdateProveedor(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Proveedor/UpdateProveedor")] HttpRequest req,
+            ILogger log)
+        {
 
+            try
+            {
+                log.LogInformation($"Proveedor : UpdateProveedor Inicia a actualizar todos los Proveedores. Fecha:{DateTime.UtcNow}");
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<ProveedorDto>(requestBody);
+
+                var response = await this.proveedorApplication.Update(data);
+                return new OkObjectResult(response);
+
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al actualizar los proveedores Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+
+
+        }
     }
 }
 

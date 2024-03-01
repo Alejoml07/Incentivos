@@ -32,14 +32,10 @@ public class ProveedorApplication : IProveedorApplication
             var proveedorExist = await this.proveedorRepository.GetById(value.Nit ?? "");
             if (proveedorExist != null)
             {
-                mapper.Map(value, proveedorExist);
-                await proveedorRepository.Update(proveedorExist);
-
+                throw new ArgumentException("Este proveedor ya existe");
             }
             else
             {
-
-                //TODO: Hacer las validaciones
                 var proveedor = mapper.Map<Proveedor>(value);
                 proveedor.Id = Guid.NewGuid().ToString();
                 await proveedorRepository.Add(proveedor);
