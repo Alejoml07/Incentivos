@@ -120,7 +120,8 @@ public class ProductosApplication : IProductApplication
                     }
                     else
                     {
-                        producto.Id = Guid.NewGuid().ToString();                        
+                        producto.Id = Guid.NewGuid().ToString();
+                        producto.FechaCreacion = DateTime.Now;  
                         await this.productoRepository.Add(producto);
                     }
                     productosProcesados.Add(producto);
