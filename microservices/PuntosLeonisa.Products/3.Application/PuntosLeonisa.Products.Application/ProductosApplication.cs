@@ -165,7 +165,7 @@ public class ProductosApplication : IProductApplication
         var productoDto = this.mapper.Map<ProductoDto[]>(productos);
         var responseOnly = new GenericResponse<IEnumerable<ProductoDto>>
         {
-            Result = productoDto
+            Result = productoDto.OrderByDescending(x => x.FechaCreacion)
         };
         return responseOnly;
     }
