@@ -88,9 +88,9 @@ public class SeguridadApplication : IUsuarioApplication
             {
                 if (item.Pwd != null)
                     item.Pwd = securityService.HasPassword(item.Pwd.Trim());
-                    item.Cedula = item.Cedula.Trim();
-                    item.Email = item.Email.Trim();
-                    item.Celular = item.Celular.Trim();
+                item.Cedula = item.Cedula.Trim();
+                item.Email = item.Email.Trim();
+                item.Celular = item.Celular.Trim();
             }
 
             var usuarios = mapper.Map<Usuario[]>(value);
@@ -121,7 +121,7 @@ public class SeguridadApplication : IUsuarioApplication
                     await usuarioRepository.Update(usuariomMap);
                 }
             }
-       
+
 
             var responseOnly = new GenericResponse<UsuarioDto[]>
             {
@@ -356,14 +356,14 @@ public class SeguridadApplication : IUsuarioApplication
                 var response = await this.getUsuarioExternalService.GetUsuario(email);
                 if (response != null)
                 {
-                    var usuarioLocal = this.usuarioRepository.GetUsuarioByEmail(email).GetAwaiter().GetResult();    
-                    mapper.Map(mapper.Map<Usuario>(response), usuarioLocal);   
+                    var usuarioLocal = this.usuarioRepository.GetUsuarioByEmail(email).GetAwaiter().GetResult();
+                    mapper.Map(mapper.Map<Usuario>(response), usuarioLocal);
                     await this.usuarioRepository.Update(usuarioLocal);
                 }
                 return new GenericResponse<bool>() { Result = true };
             }
 
-            
+
             return new GenericResponse<bool>() { IsSuccess = false };
         }
         catch (Exception)
@@ -404,6 +404,27 @@ public class SeguridadApplication : IUsuarioApplication
             usuarioRepository.Update(item);
         }
         return Task.FromResult(new GenericResponse<bool> { Result = true });
+    }
+
+    public async Task<GenericResponse<bool>> ResetearTodasLasContrasenas()
+    {
+        try
+        {
+            var usuarios = usuarioRepository.GetAll().GetAwaiter().GetResult();
+            foreach (var item in usuarios)
+            {
+                item.Pwd = string.Empty;
+                await usuarioRepository.Update(item);
+            }
+
+            return new GenericResponse<bool>() { Result = true };
+
+        }
+        catch (Exception ex)
+        {
+
+            throw ex;
+        }
     }
 }
 

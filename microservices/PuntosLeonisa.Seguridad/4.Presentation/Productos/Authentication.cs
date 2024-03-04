@@ -133,6 +133,35 @@ namespace PuntosLeonisa.Seguridad.Function
             }
         }
 
+
+        [FunctionName("ResetearTodasLasContrasenas")]
+        [OpenApiOperation(operationId: "ValidarCorreo", tags: new[] { "Seguridad/ValidarCorreo/" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Verifica si el correo existe")]
+        public async Task<IActionResult> ResetearTodasLasContrasenas(
+          [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Seguridad/ResetearTodasLasContrasenas")] HttpRequest req,
+          ILogger log)
+        {
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+                log.LogInformation($"Seguridad: Resetear valida si el correo existe. Fecha:{DateTime.UtcNow}");
+                var response = await usuarioApplication.ResetearTodasLasContrasenas();
+                log.LogInformation($"Seguridad: Resetear termina de validar si el correo existe. Fecha:{DateTime.UtcNow}");
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al resetear contraseña Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 
