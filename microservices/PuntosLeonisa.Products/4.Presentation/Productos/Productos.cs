@@ -406,6 +406,38 @@ namespace Productos
                 return GetFunctionError(logger, "Error al obtener los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("GetProductByProveedor")]
+        [OpenApiOperation(operationId: "GetProductByProveedor", tags: new[] { "Productos/GetProductByProveedor" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
+        public async Task<IActionResult> GetProductByProveedor(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Productos/GetProductByProveedor/{proveedor}")] HttpRequest req, ILogger logger, string proveedor)
+        {
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+
+                if (string.IsNullOrEmpty(proveedor))
+                {
+                    throw new ArgumentException($"'{nameof(proveedor)}' cannot be null or empty.", nameof(proveedor));
+                }
+
+                if (logger is null)
+                {
+                    throw new ArgumentNullException(nameof(logger));
+                }
+
+                var producto = await this.productoApplication.GetProductByProveedor(proveedor);
+                return new OkObjectResult(producto);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(logger, "Error al obtener los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 

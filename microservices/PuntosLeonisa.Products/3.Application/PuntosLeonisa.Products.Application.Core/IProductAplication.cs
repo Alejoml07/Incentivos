@@ -1,4 +1,5 @@
 ﻿using PuntosLeonisa.Products.Application.Core.Interfaces;
+using PuntosLeonisa.Products.Domain;
 using PuntosLeonisa.Products.Domain.Model;
 using PuntosLeonisa.Products.Domain.Service.DTO.Genericos;
 using PuntosLeonisa.Products.Domain.Service.DTO.Productos;
@@ -17,5 +18,6 @@ public interface IProductApplication : IApplicationCore<ProductoDto>
     Task<GenericResponse<IEnumerable<bool>>> UpdateInventory(ProductoRefence[] data);
     Task<GenericResponse<Tuple<ProductoDto[], List<string>>>> AddRangeProducts(ProductoDto[] value);
     Task<GenericResponse<ProductoRefence>> GetProductByEAN(string ean);
+    Task<GenericResponse<IEnumerable<ProductoDto>>> GetProductByProveedor(string proveedor);
 }
 

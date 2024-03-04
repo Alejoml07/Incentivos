@@ -380,4 +380,13 @@ public class ProductosApplication : IProductApplication
         
     }
 
+    public Task<GenericResponse<IEnumerable<ProductoDto>>> GetProductByProveedor(string proveedor)
+    {
+        var response = this.productoRepository.GetProductByProveedor(proveedor);
+        var responseDto = this.mapper.Map<IEnumerable<ProductoDto>>(response);
+        return Task.FromResult(new GenericResponse<IEnumerable<ProductoDto>>()
+        {
+            Result = responseDto
+        });
+    }
 }
