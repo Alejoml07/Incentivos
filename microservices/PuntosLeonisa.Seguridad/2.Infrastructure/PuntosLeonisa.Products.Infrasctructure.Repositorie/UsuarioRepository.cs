@@ -25,19 +25,13 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
     public async Task<Usuario?> Login(LoginDto loginDto)
     {
         // Buscar el usuario por correo
-
-<<<<<<< HEAD
-        var usuario = await _context.Set<Usuario>().FirstOrDefaultAsync(u => u.Email == loginDto.Email);
         
-=======
         var usuario = await _context.Set<Usuario>().FirstOrDefaultAsync(u => u.Email.ToLower().Trim() == loginDto.Email.Trim().ToLower());
 
->>>>>>> f12c12259615f93a61be9452f03d30a6830665cf
         if (usuario == null)
         {
             // Usuario no encontrado
             return null;
-
         }
 
         // Verificar la contraseña
@@ -49,9 +43,6 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
             // Contraseña incorrecta
             return null;
         }
-
-
-
         return usuario;
     }
 
