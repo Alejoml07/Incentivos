@@ -24,6 +24,8 @@ namespace PuntosLeonisa.Products.Domain.Service.Mapping
             CreateMap<ProductoDto, Producto>();
             CreateMap<ProveedorLite, ProveedorLiteDto>();
             CreateMap<ProveedorLiteDto, ProveedorLite>();
+            CreateMap<ProductoDto, ProveedorLite>();
+            CreateMap<ProveedorLite, ProductoDto>();
 
 
 

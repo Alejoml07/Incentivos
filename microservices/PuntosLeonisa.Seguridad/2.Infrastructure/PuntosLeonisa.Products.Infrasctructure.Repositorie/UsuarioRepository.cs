@@ -26,8 +26,13 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
     {
         // Buscar el usuario por correo
 
+<<<<<<< HEAD
         var usuario = await _context.Set<Usuario>().FirstOrDefaultAsync(u => u.Email == loginDto.Email);
         
+=======
+        var usuario = await _context.Set<Usuario>().FirstOrDefaultAsync(u => u.Email.ToLower().Trim() == loginDto.Email.Trim().ToLower());
+
+>>>>>>> f12c12259615f93a61be9452f03d30a6830665cf
         if (usuario == null)
         {
             // Usuario no encontrado
@@ -103,7 +108,7 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
 
     public async Task<bool> CambioRecuperarPwd(CambioRecuperarPwdDto data)
     {
-        var usuario = await _context.Set<Usuario>().FirstOrDefaultAsync(u => u.Email == data.Email);
+        var usuario = await _context.Set<Usuario>().FirstOrDefaultAsync(u => u.Email.Trim().ToLower() == data.Email.Trim().ToLower());
         if (usuario != null)
         {
             if (data.NuevaContrasena == data.ConfirmarNuevaContrasena)

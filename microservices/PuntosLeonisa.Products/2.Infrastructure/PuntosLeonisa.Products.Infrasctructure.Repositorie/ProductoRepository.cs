@@ -288,5 +288,15 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
         }
     }
 
+    public async Task<IEnumerable<Producto>> GetProductByProveedor(string proveedor)
+    {
+        {
+            var response = await _context.Set<Producto>().Where(p => p.ProveedorLite.Nombres == proveedor).ToListAsync();
+            return response;
+        }      
+    }
+
     #endregion
+
+
 }
