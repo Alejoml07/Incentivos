@@ -881,6 +881,25 @@
       },
       "Key": "ProveedorRoute"
     },
+
+    {
+      "DownstreamPathTemplate": "/api/Proveedor/UpdateProveedor",
+      "UpstreamPathTemplate": "/api/Proveedor/UpdateProveedor",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azseguridadtest.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "UpdateProveedorRoute"
+    },
+
     {
       "DownstreamPathTemplate": "/api/Proveedor/GetProveedores",
       "UpstreamPathTemplate": "/api/Proveedor/GetProveedores",

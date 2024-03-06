@@ -8,6 +8,7 @@ using PuntosLeonisa.Seguridad.Domain.Service.Interfaces;
 using PuntosLeonisa.Seguridad.Domain.Service.Enum;
 using System.Net.Mail;
 using System.Net;
+using Microsoft.Azure.Cosmos.Serialization.HybridRow.Schemas;
 
 namespace PuntosLeonisa.Seguridad.Infrasctructure.Repositorie;
 public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
@@ -25,14 +26,18 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
     public async Task<Usuario?> Login(LoginDto loginDto)
     {
         // Buscar el usuario por correo
-
+        
         var usuario = await _context.Set<Usuario>().FirstOrDefaultAsync(u => u.Email.ToLower().Trim() == loginDto.Email.Trim().ToLower());
+
+        if(usuario.Estado == "Inactivo")
+        {
+            throw new UnauthorizedAccessException("Usuario Inactivo");
+        }
 
         if (usuario == null)
         {
             // Usuario no encontrado
             return null;
-
         }
 
         // Verificar la contraseña
@@ -44,9 +49,6 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
             // Contraseña incorrecta
             return null;
         }
-
-
-
         return usuario;
     }
 

@@ -120,7 +120,8 @@ public class ProductosApplication : IProductApplication
                     }
                     else
                     {
-                        producto.Id = Guid.NewGuid().ToString();                        
+                        producto.Id = Guid.NewGuid().ToString();
+                        producto.FechaCreacion = DateTime.Now;  
                         await this.productoRepository.Add(producto);
                     }
                     productosProcesados.Add(producto);
@@ -379,4 +380,13 @@ public class ProductosApplication : IProductApplication
         
     }
 
+    public Task<GenericResponse<IEnumerable<ProductoDto>>> GetProductByProveedor(string proveedor)
+    {
+        var response = this.productoRepository.GetProductByProveedor(proveedor);
+        var responseDto = this.mapper.Map<IEnumerable<ProductoDto>>(response);
+        return Task.FromResult(new GenericResponse<IEnumerable<ProductoDto>>()
+        {
+            Result = responseDto
+        });
+    }
 }

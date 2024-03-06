@@ -340,6 +340,7 @@ public class SeguridadApplication : IUsuarioApplication
                     usuario.Email = usuario.Email.Trim();
                     usuario.Celular = usuario.Celular.Trim();
                     usuario.Cedula = usuario.Cedula.Trim();
+                    usuario.TipoUsuario = "Asesoras vendedoras";
                     await usuarioRepository.Add(usuario);
                     return new GenericResponse<bool>() { Result = false };
                 }
