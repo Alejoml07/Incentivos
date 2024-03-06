@@ -846,7 +846,7 @@ namespace Usuarioos
                     throw new ArgumentNullException(nameof(log));
                 }
                 var response = await this.puntosApplication.CambiarEstadoYLiquidarPuntos(email);
-                return new OkResult();
+                return new OkObjectResult(response);
             }
             catch (Exception ex)
             {
