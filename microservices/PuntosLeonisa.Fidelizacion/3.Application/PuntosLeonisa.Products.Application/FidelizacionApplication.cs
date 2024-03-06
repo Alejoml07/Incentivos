@@ -1297,8 +1297,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                         Departamento = "",
                         Ciudad = "",
                         Direccion = "",
-                        Observaciones = "Liquidacion puntos en bono",
-
+                        Observaciones = "Liquidacion puntos en bono"
                     },
                     ProductosCarrito = new List<ProductoRefence>
                     {
@@ -1328,15 +1327,17 @@ public class FidelizacionApplication : IFidelizacionApplication
                         }
                     }
                 };
-                redencionNueva.PuntosRedimidos = usuarioPuntos.PuntosDisponibles;
-                usuarioPuntos.PuntosAcumulados += usuarioPuntos.PuntosDisponibles;
+
+                redencionNueva.PuntosRedimidos += usuarioPuntos.PuntosDisponibles;
                 usuarioPuntos.PuntosRedimidos += usuarioPuntos.PuntosDisponibles;
                 usuarioPuntos.PuntosDisponibles = 0;            
-               //await this.usuarioExternalService.UserSendEmailWithMessage(redencionNueva);
-                SendNotifyToProveedores(redencionNueva);
+
                 await this.unitOfWork.UsuarioRedencionRepository.Add(redencionNueva);
                 await this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuarioPuntos);
                 await this.unitOfWork.SaveChangesAsync();
+
+                SendNotifyToProveedores(redencionNueva);
+
                 return new GenericResponse<bool>
                 {
                     Result = true
@@ -1344,7 +1345,9 @@ public class FidelizacionApplication : IFidelizacionApplication
             } 
             return new GenericResponse<bool>
             {
-                Result = false
+                Result = false,
+                Message = "Usuario no encontrado",
+                IsSuccess = false
             };
         }
         catch (Exception)
