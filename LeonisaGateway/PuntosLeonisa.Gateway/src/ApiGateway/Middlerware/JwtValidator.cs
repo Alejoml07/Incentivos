@@ -6,13 +6,13 @@ namespace ApiGateway.Middlerware
 {
     public static class JwtValidator
     {
-        public static bool ValidateToken(string token, string secretKey,ref HttpContext context)
+        public static bool ValidateToken(string token, string secretKey, ref HttpContext context)
         {
             try
             {
                 byte[] secretKeyBytes = Encoding.UTF8.GetBytes(Convert.ToBase64String(Encoding.UTF8.GetBytes(secretKey))); // Clave secreta
 
-                var payload =  JWT.Decode(token, secretKeyBytes);
+                var payload = JWT.Decode(token, secretKeyBytes);
                 // Aquí puedes añadir lógica adicional para validar los claims, expiración, etc.
                 var payLoadDeserialize = JsonConvert.DeserializeObject<Dictionary<string, object>>(payload);
                 // añadi a los headers de la request el id del usuario
@@ -27,5 +27,6 @@ namespace ApiGateway.Middlerware
                 return false;
             }
         }
+
     }
 }
