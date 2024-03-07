@@ -39,6 +39,7 @@ public class ProductosApplication : IProductApplication
             var parametroEquivalenciaEnPuntos = 85;
             if (productoExist != null)
             {
+                value.ProveedorLite= this.proveedorExternalService.GetProveedorByNit(value.Proveedor).GetAwaiter().GetResult().Result;
                 this.mapper.Map(value, productoExist);
                 await this.productoRepository.Update(productoExist);
                 return this.response;

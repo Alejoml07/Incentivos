@@ -16,6 +16,7 @@ using PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces;
 using PuntosLeonisa.Products.Domain.Model;
 using PuntosLeonisa.Seguridad.Application.Core;
 using System.Data;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace PuntosLeonisa.Fidelizacion.Application;
 
@@ -1231,7 +1232,11 @@ public class FidelizacionApplication : IFidelizacionApplication
                         extracto.Mes = DateTime.Now.Month.ToString();
                         extracto.Anio = DateTime.Now.Year.ToString();
                         extracto.Usuario = usuario.Result;
-                    }                    
+                    }
+                    else
+                    {
+                        continue; 
+                    }
                 }
                 extracto.Id = Guid.NewGuid().ToString();
                 extracto.Fecha = DateTime.Now;
@@ -1329,14 +1334,13 @@ public class FidelizacionApplication : IFidelizacionApplication
                     }
                 };
                 redencionNueva.PuntosRedimidos = usuarioPuntos.PuntosDisponibles;
-                usuarioPuntos.PuntosAcumulados += usuarioPuntos.PuntosDisponibles;
                 usuarioPuntos.PuntosRedimidos += usuarioPuntos.PuntosDisponibles;
                 usuarioPuntos.PuntosDisponibles = 0;            
                //await this.usuarioExternalService.UserSendEmailWithMessage(redencionNueva);
-                SendNotifyToProveedores(redencionNueva);
                 await this.unitOfWork.UsuarioRedencionRepository.Add(redencionNueva);
                 await this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuarioPuntos);
                 await this.unitOfWork.SaveChangesAsync();
+                SendNotifyToProveedores(redencionNueva);
                 return new GenericResponse<bool>
                 {
                     Result = true
