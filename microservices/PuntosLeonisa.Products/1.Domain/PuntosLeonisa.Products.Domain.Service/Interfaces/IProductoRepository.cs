@@ -9,7 +9,7 @@ namespace PuntosLeonisa.Products.Domain.Interfaces
         Task<PagedResult<IGrouping<string, Producto>>> GetProductsByFiltersAndRange(ProductosFilters queryObject);
         Task<FiltroDto> ObtenerFiltros(GeneralFiltersWithResponseDto generalFiltersWithResponseDto);
         Task<IEnumerable<Producto>> GetByRef(string referencia);
-        Task<IEnumerable<Producto>> GetProductByProveedor(string proveedor);
+        Task<IEnumerable<Producto>> GetProductByProveedor(string nit);
 
     }
 }

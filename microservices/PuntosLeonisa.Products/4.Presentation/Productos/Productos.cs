@@ -411,8 +411,11 @@ namespace Productos
         [OpenApiOperation(operationId: "GetProductByProveedor", tags: new[] { "Productos/GetProductByProveedor" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
         public async Task<IActionResult> GetProductByProveedor(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Productos/GetProductByProveedor/{proveedor}")] HttpRequest req, ILogger logger, string proveedor)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Productos/GetProductByProveedor/{nit}")] HttpRequest req,
+        string nit,  // <-- Parámetro adicional
+        ILogger log)
         {
+            log.LogInformation("C# HTTP trigger function processed a request.");
             try
             {
                 if (req is null)
@@ -420,22 +423,22 @@ namespace Productos
                     throw new ArgumentNullException(nameof(req));
                 }
 
-                if (string.IsNullOrEmpty(proveedor))
+                if (string.IsNullOrEmpty(nit))
                 {
-                    throw new ArgumentException($"'{nameof(proveedor)}' cannot be null or empty.", nameof(proveedor));
+                    throw new ArgumentException($"'{nameof(nit)}' cannot be null or empty.", nameof(nit));
                 }
 
-                if (logger is null)
+                if (log is null)
                 {
-                    throw new ArgumentNullException(nameof(logger));
+                    throw new ArgumentNullException(nameof(log));
                 }
 
-                var producto = await this.productoApplication.GetProductByProveedor(proveedor);
+                var producto = await this.productoApplication.GetProductByProveedor(nit);
                 return new OkObjectResult(producto);
             }
             catch (Exception ex)
             {
-                return GetFunctionError(logger, "Error al obtener los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
+                return GetFunctionError(log, "Error al obtener los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
         }
     }

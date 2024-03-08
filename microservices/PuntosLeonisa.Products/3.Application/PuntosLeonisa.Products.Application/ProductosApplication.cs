@@ -380,14 +380,12 @@ public class ProductosApplication : IProductApplication
         }
         
     }
-
-    public Task<GenericResponse<IEnumerable<ProductoDto>>> GetProductByProveedor(string proveedor)
+    public async Task<GenericResponse<IEnumerable<ProductoDto>>> GetProductByProveedor(string nit)
     {
-        var response = this.productoRepository.GetProductByProveedor(proveedor);
-        var responseDto = this.mapper.Map<IEnumerable<ProductoDto>>(response);
-        return Task.FromResult(new GenericResponse<IEnumerable<ProductoDto>>()
-        {
-            Result = responseDto
-        });
+        var responseRawData = await this.productoRepository.GetProductByProveedor(nit);
+        var responseData = this.mapper.Map<IEnumerable<ProductoDto>>(responseRawData);
+        var newResponse = new GenericResponse<IEnumerable<ProductoDto>>();
+        newResponse.Result = responseData;
+        return newResponse;
     }
 }

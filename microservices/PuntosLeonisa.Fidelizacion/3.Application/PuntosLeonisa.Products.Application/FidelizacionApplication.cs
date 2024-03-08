@@ -27,6 +27,7 @@ public class FidelizacionApplication : IFidelizacionApplication
     private readonly GenericResponse<WishListDto> response2;
     private readonly IUsuarioExternalService usuarioExternalService;
     private readonly IProductoExternalService productoExternalService;
+    private readonly IOrdenOPExternalService ordenOPExternalService;
     private readonly IUnitOfWork unitOfWork;
     private readonly IUsuarioInfoPuntosApplication usuarioInfoPuntosApplication;
 
@@ -37,6 +38,7 @@ public class FidelizacionApplication : IFidelizacionApplication
     public FidelizacionApplication(IMapper mapper,
         IUsuarioExternalService usuarioExternalService,
         IProductoExternalService productoExternalService,
+        IOrdenOPExternalService ordenOPExternalService,
         IUnitOfWork unitOfWork, IUsuarioInfoPuntosApplication usuarioInfoPuntosApplication
         )
     {
@@ -45,6 +47,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         this.mapper = mapper;
         this.usuarioExternalService = usuarioExternalService;
         this.productoExternalService = productoExternalService;
+        this.ordenOPExternalService = ordenOPExternalService;
         this.unitOfWork = unitOfWork;
         response = new GenericResponse<PuntosManualDto>();
         response2 = new GenericResponse<WishListDto>();
@@ -794,6 +797,16 @@ public class FidelizacionApplication : IFidelizacionApplication
             foreach (var item in data.ProductosCarrito)
             {
                 item.Id = Guid.NewGuid().ToString();
+                //TODO : Realizar el envio de datos al OP
+                if(item.ProveedorLite.Nit == "NIT_LEONISA")
+                {
+                    var ordenOP = new OrdenOP
+                    {
+                        orderDate = DateTime.Now.ToString(),
+                    };
+                    await this.ordenOPExternalService.EnviarOrdenOP(ordenOP);
+
+                }
             }
 
             data.PuntosRedimidos = data.GetSumPuntos();
