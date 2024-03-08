@@ -51,18 +51,7 @@ var app = builder.Build();
 app.Use(async (context, next) =>
 {
 
-    if (context.Request.Headers.Any(p => p.Key == "keyApi"))
-    {
-        if (context.Request.Headers.TryGetValue("keyApi", out var keyApi))
-        {
-            if (keyApi.ToString() != "bf82a6de6d6c484626ef4a5349aa194f")
-            {
-                context.Response.StatusCode = 401; // No autorizado
-                await context.Response.WriteAsync("Key inválida");
-                return;
-            }
-        }
-    }
+    
     bool ValidarUrlOrigen(string urlOrigen)
     {
         // Obtener la URL permitida desde una variable de entorno
@@ -73,11 +62,25 @@ app.Use(async (context, next) =>
     // Obtener la URL de origen de la petición
     var urlOrigen = context.Request.Headers["Origin"].ToString();
 
-    if (!ValidarUrlOrigen(urlOrigen))
+   
+    if (context.Request.Headers.Any(p => p.Key == "keyApi"))
     {
-        context.Response.StatusCode = 403; // Prohibido
-        await context.Response.WriteAsync("Acceso denegado desde esta URL");
-        return;
+        if (!ValidarUrlOrigen(urlOrigen))
+        {
+            context.Response.StatusCode = 403; // Prohibido
+            await context.Response.WriteAsync("Acceso denegado desde esta URL");
+            return;
+        }
+
+        if (context.Request.Headers.TryGetValue("keyApi", out var keyApi))
+        {
+            if (keyApi.ToString() != "bf82a6de6d6c484626ef4a5349aa194f")
+            {
+                context.Response.StatusCode = 401; // No autorizado
+                await context.Response.WriteAsync("Key inválida");
+                return;
+            }
+        }
     }
     else if (context.Request.Headers.TryGetValue("Authorization", out var authHeader))
     {

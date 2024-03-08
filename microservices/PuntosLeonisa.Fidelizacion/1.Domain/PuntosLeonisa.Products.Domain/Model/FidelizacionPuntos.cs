@@ -20,6 +20,8 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
 
         public int? Id_Variable { get; set; }
 
+        public string PuntoVenta { get; set; }
+
         public int? Puntos { get; set; }
         public DateTime? FechaActualizacion { get; set; } = DateTime.Now;
 

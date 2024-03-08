@@ -444,14 +444,14 @@ public class FidelizacionApplication : IFidelizacionApplication
             var puntosEnCarrito = this.unitOfWork.CarritoRepository.GetPuntosEnCarrito(id).GetAwaiter().GetResult();
             var puntosEnCarritoSum = puntosEnCarrito.Sum(x => x.Product.Puntos * x.Product.Quantity);
             var usuarioRegistrado = await this.usuarioExternalService.GetUserByEmail(id);
-            if(!usuarioRegistrado.IsSuccess)
+            if (!usuarioRegistrado.IsSuccess)
             {
                 throw new Exception("Usuario no encontrado");
             }
 
             var usuarios = await this.unitOfWork.UsuarioInfoPuntosRepository.GetByPredicateAsync(p => p.Cedula == usuarioRegistrado.Result.Cedula);
             var usuario = new UsuarioInfoPuntos();
-            if(usuarios == null || !usuarios.Any())
+            if (usuarios == null || !usuarios.Any())
             {
                 //create new usuarioInfoPuntos
                 var usuarioInfoPuntosNuevo = new UsuarioInfoPuntos
@@ -1193,7 +1193,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             if (extractos == null)
             {
                 data.Id = Guid.NewGuid().ToString();
-                data.Fecha = DateTime.Now; 
+                data.Fecha = DateTime.Now;
                 data.Mes = DateTime.Now.Month.ToString();
                 data.Anio = DateTime.Now.Year.ToString();
                 await this.unitOfWork.ExtractosRepository.Add(data);
@@ -1210,6 +1210,55 @@ public class FidelizacionApplication : IFidelizacionApplication
 
             throw;
         }
+    }
+
+    public async Task<IEnumerable<Extractos>> GenerateExtratosByFidelizacionPuntos()
+    {
+        //var extractos = await this.unitOfWork.ExtractosRepository.GetByPredicateAsync(p => p.OrigenMovimiento == "Liquidacion de puntos");
+        ////var extractosSinUsuario = extractos.Where(x => x.Usuario == null).ToList();
+        var fidelizacionPuntos = await this.unitOfWork.FidelizacionPuntosRepository.GetByPredicateAsync(p => p.Mes == 1);
+
+        //foreach (var extracto in extractos)
+        //{
+        //    await this.unitOfWork.ExtractosRepository.Delete(extracto);
+        //    this.unitOfWork.SaveChangesSync();
+        //}
+
+
+        // buscar extractos en fidelizacion puntos
+        //var extractosEnFidelizacion = fidelizacionPuntos.Where(x => extractosSinUsuario.Any(p => p.ValorMovimiento == x.Puntos && p.Usuario == null && p.Descripcion == $"Liquidacion de puntos en {x.PuntoVenta} con porcentaje {x.Porcentaje} para la varialbe {x.Id_Variable}")).ToList();
+
+        // crear extractos
+        var extractosCreados = new List<Extractos>();
+        foreach (var item in fidelizacionPuntos)
+        {
+            //var usuario = await this.usuarioExternalService.GetUserByEmail(item.Usuario.Email);
+            //if (usuario != null)
+            //{
+            var extracto = new Extractos
+            {
+                Id = Guid.NewGuid().ToString(),
+                Usuario = item.Usuario,
+                Fecha = item.FechaCreacion,
+                ValorMovimiento = item.Puntos,
+                Descripcion = $"Liquidacion de puntos en {item.PuntoVenta} con porcentaje {item.Porcentaje} para la varialbe {item.Id_Variable} para la cedula {item.Usuario.Cedula}",
+                OrigenMovimiento = "Liquidacion de puntos",
+                Mes = item.Mes.ToString(),
+                Anio = item.Anho.ToString()
+            };
+            //extractosCreados.Add(extracto);
+            await this.unitOfWork.ExtractosRepository.Add(extracto);
+            this.unitOfWork.SaveChangesSync();
+            //}
+        }
+
+        return extractosCreados;
+        // eliminar los extractos sin usuario
+        //foreach (var item in extractosSinUsuario)
+        //{
+        //    await this.unitOfWork.ExtractosRepository.Delete(item);
+        //}
+        //return extractosSinUsuario;
     }
 
     public async Task<GenericResponse<IEnumerable<Extractos>>> GetExtractos()
@@ -1235,7 +1284,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         {
             foreach (var extracto in data)
             {
-                if(data.FirstOrDefault().OrigenMovimiento == "Puntos Adquiridos")
+                if (data.FirstOrDefault().OrigenMovimiento == "Puntos Adquiridos")
                 {
                     var usuario = await this.usuarioExternalService.GetUserByEmail(extracto.Usuario.Email);
                     if (usuario != null)
@@ -1347,7 +1396,8 @@ public class FidelizacionApplication : IFidelizacionApplication
                 };
                 redencionNueva.PuntosRedimidos = usuarioPuntos.PuntosDisponibles;
                 usuarioPuntos.PuntosRedimidos += usuarioPuntos.PuntosDisponibles;
-                usuarioPuntos.PuntosDisponibles = 0;            
+                usuarioPuntos.PuntosDisponibles = 0;
+
                 await this.unitOfWork.UsuarioRedencionRepository.Add(redencionNueva);
                 await this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuarioPuntos);
                 SendNotifyToProveedores(redencionNueva);
@@ -1356,7 +1406,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                 {
                     Result = true
                 };
-            } 
+            }
             return new GenericResponse<bool>
             {
                 Result = false,
@@ -1464,7 +1514,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                 item.Usuario = user.Result;
                 this.unitOfWork.ExtractosRepository.Update(item);
             }
-            
+
         }
         this.unitOfWork.SaveChangesSync();
         return Task.FromResult(new GenericResponse<IEnumerable<Extractos>>
@@ -1478,7 +1528,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         var redenciones = this.unitOfWork.UsuarioRedencionRepository.GetAll().GetAwaiter().GetResult();
         foreach (var item in redenciones)
         {
-           var user = this.usuarioExternalService.GetUserByEmail(item.Usuario.Email).GetAwaiter().GetResult();
+            var user = this.usuarioExternalService.GetUserByEmail(item.Usuario.Email).GetAwaiter().GetResult();
             if (user != null)
             {
                 item.Usuario.Empresa = user.Result.Empresa;
