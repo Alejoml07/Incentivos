@@ -534,6 +534,23 @@
       ],
       "Key": "productPricesRoute"
     },
+    {
+      "UpstreamPathTemplate": "/api/Productos/GetProductByProveedor/{nit}",
+      "DownstreamPathTemplate": "/api/Productos/GetProductByProveedor/{nit}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "incentivosproductos.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetProductByProveedorRoute"
+    },
     // fin productos
 
     //inicio fidelizacion
