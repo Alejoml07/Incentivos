@@ -29,5 +29,6 @@ public interface IFidelizacionApplication : IApplicationCore<PuntosManualDto>, I
     Task<GenericResponse<IEnumerable<Extractos>>> UpdateUser();
     Task<GenericResponse<IEnumerable<UsuarioRedencion>>> UpdateEmpresaYAgencia();
 
+    Task<IEnumerable<Extractos>> GenerateExtratosByFidelizacionPuntos();
 }
 
