@@ -22,13 +22,19 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
             this.httpClientAgent = httpClientAgent;
             this._configuration = configuration;
         }
-        public async Task<OrdenOP> EnviarOrdenOP(OrdenOP ordenOP)
+        public async Task<bool> EnviarOrdenOP(OrdenOP ordenOP)
         {
             var azf = $"{_configuration["AzfBaseOrder"]}{_configuration["receiveOrder"]}";
-            var response = await httpClientAgent.PostRequest<OrdenOP, OrdenOP>(new Uri(azf), ordenOP);
+            var response = await httpClientAgent.PostRequest<bool, OrdenOP>(new Uri(azf), ordenOP);
             return response;
         }
 
+        public async Task<int> GetNroOrdenOP(string nroOrden)
+        {
+            var azf = $"{_configuration["AzfBaseOrder"]}{_configuration["GenerateConsecutiveOrderRDL"]}";
+            var response = await httpClientAgent.PostRequest<int, string>(new Uri(azf), nroOrden);
+            return response;
+        }
     }
-    }
+    
 }

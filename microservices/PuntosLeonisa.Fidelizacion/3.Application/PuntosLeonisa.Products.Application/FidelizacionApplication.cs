@@ -800,9 +800,16 @@ public class FidelizacionApplication : IFidelizacionApplication
                 //TODO : Realizar el envio de datos al OP
                 if(item.ProveedorLite.Nit == "NIT_LEONISA")
                 {
+                    
+                    var nroOrden = new NroPedidoOP
+                    {
+                        sequentialGenerated = this.ordenOPExternalService.GetNroOrdenOP("Pedido").GetAwaiter().GetResult()
+                    };
+                    
                     var ordenOP = new OrdenOP
                     {
                         orderDate = DateTime.Now.ToString(),
+                        orderNumber = (int)nroOrden.sequentialGenerated,
                     };
                     await this.ordenOPExternalService.EnviarOrdenOP(ordenOP);
 
