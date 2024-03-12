@@ -808,9 +808,95 @@ public class FidelizacionApplication : IFidelizacionApplication
                 ordenOP.orderRecipient.items = new List<Item>();
 
             }
+            ordenOP.additionalField5 = "";
+            ordenOP.allowBackOrder = "Y";
+            ordenOP.avscode = "";
+            ordenOP.baseSubTotal = (double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) - ((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) * 0.19);
 
+            ordenOP.billingInformation = new BillingInformation
+            {
+                addressLine1 = data.Envio.Direccion,
+                addressLine2 = "",
+                addressLine3 = "",
+                city = data.Envio.Ciudad,
+                colonia = "",
+                companyName = "",
+                country = "CO",
+                emailAddress = data.Envio.Email,
+                firstName = data.Envio.Nombres,
+                lastName = data.Envio.Apellidos,
+                middleInitial = "",
+                municipioDelegacion = data.Envio.Departamento,
+                phoneNumber = data.Envio.Celular,
+                stateProvince = data.Envio.Departamento, //HACER TRABLA DE ASIGNACION
+                zipCode = "",
+            };
+
+            ordenOP.cid_CVV2Response = "";
+            ordenOP.comments = "";
+            ordenOP.countryCode = "574";
+            ordenOP.discount = 0;
+            ordenOP.dniID = data.Usuario.Cedula;
+            ordenOP.expirationDate = "";
+            ordenOP.freeShipping = false;
+            ordenOP.giftCertificateAmount = 0;
+            ordenOP.giftWrapping = "0";
+            ordenOP.invoice = "";
+            ordenOP.ipAddress = "";
+            ordenOP.languageId = 0;
+            ordenOP.loguinUser = "";
+            ordenOP.macAddress = "";
+            ordenOP.memberId = 0;
+            ordenOP.message = "";
             ordenOP.orderDate = DateTime.Now.ToString();
             ordenOP.orderNumber = (int)result.sequentialGenerated;
+            ordenOP.orderRecipient = new OrderRecipient
+            {
+
+                address = new Address
+                {
+                    addressLine1 = data.Envio.Direccion,
+                    addressLine2 = "",
+                    addressLine3 = "",
+                    city = data.Envio.Ciudad,
+                    colonia = "",
+                    companyName = "",
+                    country = "CO",
+                    emailAddress = data.Envio.Email,
+                    firstName = data.Envio.Nombres,
+                    lastName = data.Envio.Apellidos,
+                    middleInitial = "",
+                    municipioDelegacion = data.Envio.Departamento,
+                    phoneNumber = data.Envio.Celular,
+                    stateProvince = data.Envio.Departamento, //HACER TRABLA DE ASIGNACION
+                    zipCode = ""
+                },
+
+                baseSubTotal = (double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) - ((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) * 0.19),
+                discount = 0,
+                giftMessageText = "",
+                giftWrapping = 0,
+                recipientId = 0,
+                shipping = "0",
+                shippingMethod = "",
+                subTotal = (double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) - ((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) * 0.19),
+                tax = ((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) * 0.19),
+                total = (double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity)
+            };
+
+            ordenOP.preauthDate = "";
+            ordenOP.preauthorization = "";
+            ordenOP.promotionCode = "";
+            ordenOP.shipComplete = "";
+            ordenOP.shipping = "0";
+            ordenOP.status = "";
+            ordenOP.subTotal = (double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) - ((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) * 0.19);
+            ordenOP.tax = ((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) * 0.19);
+            ordenOP.tenderBank = "";
+            ordenOP.tenderCode = ""; //PREGUNTAR 
+            ordenOP.tenderReference = "leonisa";
+            ordenOP.total = (double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity);
+            ordenOP.transactionId = "";
 
             foreach (var item in data.ProductosCarrito)
             {
@@ -822,9 +908,25 @@ public class FidelizacionApplication : IFidelizacionApplication
                     {
                         barCode= item.EAN,
                         discount = 0,
-
-
-
+                        giftCardExpirationDate = "01/01/0001",
+                        giftCardFromName = "",
+                        giftCardMessage = "",
+                        giftCardNumber = "",
+                        giftCardToEmailAddress = "",
+                        giftCardToName = "",
+                        giftCardVerification = 0,
+                        giftQuantity = 0,
+                        isGiftCard = "N",
+                        isGiftWrap = "N",
+                        isHardCopy = "N",
+                        isOnSale = "999",
+                        isTaxFree = "N",
+                        itemName = item.Nombre,
+                        itemPrice = (double)item.Precio,
+                        price = (double)item.Precio,
+                        quantity = (int)item.Quantity,
+                        salePrice = (double)item.Precio,
+                        sku = item.EAN
                     };
 
                     ordenOP.orderRecipient.items.Add(productITem);
