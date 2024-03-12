@@ -10,9 +10,10 @@
     <Compile Remove="Usuarios2.cs" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.21.0" />
     <PackageReference Include="Microsoft.Azure.ServiceBus" Version="5.2.0" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi" Version="1.5.1" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.ServiceBus" Version="5.13.6" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.ServiceBus" Version="5.13.5" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.2.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.19.1" />
@@ -31,9 +32,12 @@
     <ProjectReference Include="..\..\2.Infrastructure\PuntosLeonisa.Fd.Infrastructure.ExternalService\PuntosLeonisa.Fd.Infrastructure.ExternalService.csproj" />
     <ProjectReference Include="..\..\2.Infrastructure\PuntosLeonisa.Products.Infrasctructure.Repositorie\PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie.csproj" />
     <ProjectReference Include="..\..\3.Application\PuntosLeonisa.Products.Application.Core\PuntosLeonisa.Fidelizacion.Application.Core.csproj" />
+    <ProjectReference Include="..\..\3.Application\PuntosLeonisa.Products.Application\PuntosLeonisa.Fidelizacion.Application.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
     <ProjectReference Include="..\..\1.Domain\PuntosLeonisa.Products.Domain\PuntosLeonisa.Fidelizacion.Domain.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
-    <ProjectReference Include="..\..\PuntosLeonisa.Fidelizacion.Application.Application\PuntosLeonisa.Fidelizacion.Application.Application.csproj" />
+    <ProjectReference Include="..\..\PuntosLeonisa.Infraestructure.Core.Agent\PuntosLeonisa.Infraestructure.Core.Agent.csproj" />
   </ItemGroup>
 </Project>

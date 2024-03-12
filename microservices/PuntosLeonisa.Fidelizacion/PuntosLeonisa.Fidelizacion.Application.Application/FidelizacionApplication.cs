@@ -794,26 +794,46 @@ public class FidelizacionApplication : IFidelizacionApplication
         {
             data.Id = Guid.NewGuid().ToString();
             data.FechaRedencion = DateTime.Now;
+            var ordenOP = new OrdenOP();
+            var operationType = new NroPedidoOP
+            {
+                operationType = "Pedido"
+            };
+            var result = new ResultNroPedidoOp();
+
+            if (data.ProductosCarrito.Any(p => p.ProveedorLite.Nit == ""))
+            {
+
+                result.sequentialGenerated = this.ordenOPExternalService.GetNroOrdenOP(operationType).GetAwaiter().GetResult();
+                ordenOP.orderRecipient.items = new List<Item>();
+
+            }
+
+            ordenOP.orderDate = DateTime.Now.ToString();
+            ordenOP.orderNumber = (int)result.sequentialGenerated;
+
             foreach (var item in data.ProductosCarrito)
             {
                 item.Id = Guid.NewGuid().ToString();
                 //TODO : Realizar el envio de datos al OP
                 if (item.ProveedorLite.Nit == "NIT_LEONISA")
                 {
-
-                    var nroOrden = new NroPedidoOP
+                    var productITem = new Item()
                     {
-                        sequentialGenerated = this.ordenOPExternalService.GetNroOrdenOP("Pedido").GetAwaiter().GetResult()
+                        barCode= item.EAN,
+                        discount = 0,
+
+
+
                     };
 
-                    var ordenOP = new OrdenOP
-                    {
-                        orderDate = DateTime.Now.ToString(),
-                        orderNumber = (int)nroOrden.sequentialGenerated,
-                    };
-                    await this.ordenOPExternalService.EnviarOrdenOP(ordenOP);
-
+                    ordenOP.orderRecipient.items.Add(productITem);
                 }
+            }
+
+            if (data.ProductosCarrito.Any(p => p.ProveedorLite.Nit == ""))
+            {
+                await this.ordenOPExternalService.EnviarOrdenOP(ordenOP);
             }
 
             data.PuntosRedimidos = data.GetSumPuntos();

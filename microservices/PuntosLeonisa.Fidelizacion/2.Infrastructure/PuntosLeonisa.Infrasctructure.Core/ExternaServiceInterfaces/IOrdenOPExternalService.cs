@@ -10,7 +10,7 @@ namespace PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces
     public interface IOrdenOPExternalService
     {
         Task<bool> EnviarOrdenOP(OrdenOP ordenOP);
-        Task<int> GetNroOrdenOP(string nroOrden);
+        Task<int> GetNroOrdenOP(NroPedidoOP nroOrden);
         
     }
 }

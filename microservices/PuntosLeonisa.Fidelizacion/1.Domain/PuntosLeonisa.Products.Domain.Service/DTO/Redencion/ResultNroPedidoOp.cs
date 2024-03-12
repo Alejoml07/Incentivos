@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
 {
-    public class NroPedidoOP
+    public class ResultNroPedidoOp
     {
-        public string? operationType { get; set; }
+        public int? sequentialGenerated { get; set; }
     }
 }

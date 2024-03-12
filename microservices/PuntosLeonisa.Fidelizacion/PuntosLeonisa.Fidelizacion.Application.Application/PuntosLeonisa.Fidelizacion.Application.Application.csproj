@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+	  <None Remove="Interfaces\" />
+    <ProjectReference Include="..\1.Domain\PuntosLeonisa.Products.Domain.Service\PuntosLeonisa.Fidelizacion.Domain.Service.csproj" />
+    <ProjectReference Include="..\1.Domain\PuntosLeonisa.Products.Domain\PuntosLeonisa.Fidelizacion.Domain.csproj" />
+    <ProjectReference Include="..\2.Infrastructure\PuntosLeonisa.Infrasctructure.Core\PuntosLeonisa.Infrasctructure.Core.csproj" />
+    <ProjectReference Include="..\2.Infrastructure\PuntosLeonisa.Products.Infrasctructure.Common\PuntosLeonisa.Fidelizacion.Infrasctructure.Common.csproj" />
+    <ProjectReference Include="..\3.Application\PuntosLeonisa.Products.Application.Core\PuntosLeonisa.Fidelizacion.Application.Core.csproj" />
+  </ItemGroup>
+
+</Project>
