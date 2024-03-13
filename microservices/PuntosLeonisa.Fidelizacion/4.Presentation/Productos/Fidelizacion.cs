@@ -952,6 +952,27 @@ namespace Usuarioos
                 return GetFunctionError(log, "Error al obtener los extractos:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("CreateRed")]
+        [OpenApiOperation(operationId: "CreateRed", tags: new[] { "CreateRed" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Crea la redencion")]
+        public async Task<IActionResult> CreateRed(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/CreateRed")] HttpRequest req, ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<UsuarioRedencion>(requestBody);
+                var response = await this.puntosApplication.CreateRedencion(data);
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los extractos:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 

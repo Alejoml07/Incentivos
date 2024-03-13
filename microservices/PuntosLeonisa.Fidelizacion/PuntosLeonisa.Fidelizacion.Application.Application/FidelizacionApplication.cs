@@ -788,6 +788,56 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
     }
 
+    public static string AsignarDepartamento(string departamento)
+    {
+        // Diccionario de departamentos y sus códigos
+        Dictionary<string, string> codigosDepartamentos = new Dictionary<string, string>
+    {
+        { "ANTIOQUIA", "AN" },
+        { "ATLÁNTICO", "AT" },
+        { "BOLÍVAR", "BO" },
+        { "BOYACÁ", "BY" },
+        { "CALDAS", "CA" },
+        { "CAQUETÁ", "CQ" },
+        { "CAUCA", "CC" },
+        { "CESAR", "CE" },
+        { "CÓRDOBA", "CO" },
+        { "CUNDINAMARCA", "CU" },
+        { "CHOCÓ", "CH" },
+        { "HUILA", "HU" },
+        { "LA GUAJIRA", "GJ" },
+        { "MAGDALENA", "MA" },
+        { "META", "ME" },
+        { "NARIÑO", "NA" },
+        { "NORTE DE SANTANDER", "NS" },
+        { "QUINDÍO", "QU" },
+        { "RISARALDA", "RI" },
+        { "SANTANDER", "SA" },
+        { "SUCRE", "SU" },
+        { "TOLIMA", "TO" },
+        { "VALLE DEL CAUCA", "VA" },
+        { "ARAUCA", "AC" },
+        { "CASANARE", "CS" },
+        { "PUTUMAYO", "PU" },
+        { "SAN ANDRÉS", "SN" },
+        { "AMAZONAS", "AM" },
+        { "GUAINÍA", "GN" },
+        { "GUAVIARE", "GV" },
+        { "VAUPÉS", "VP" },
+        { "VICHADA", "VC" }
+    };
+
+        // Verificar si el departamento está en el diccionario
+        if (codigosDepartamentos.ContainsKey(departamento.ToUpper()))
+        {
+            return codigosDepartamentos[departamento.ToUpper()];
+        }
+        else
+        {
+            return departamento;
+        }
+    }
+
     public async Task<GenericResponse<bool>> CreateRedencion(UsuarioRedencion data)
     {
         try
@@ -800,19 +850,14 @@ public class FidelizacionApplication : IFidelizacionApplication
                 operationType = "Pedido"
             };
             var result = new ResultNroPedidoOp();
-
-            if (data.ProductosCarrito.Any(p => p.ProveedorLite.Nit == ""))
-            {
-
-                result.sequentialGenerated = this.ordenOPExternalService.GetNroOrdenOP(operationType).GetAwaiter().GetResult();
-                ordenOP.orderRecipient.items = new List<Item>();
-
-            }
+            if (data.ProductosCarrito.Any(p => p.ProveedorLite.Nit == "1039465602"))
+            {            
+                //result.sequentialGenerated = this.ordenOPExternalService.GetNroOrdenOP(operationType).GetAwaiter().GetResult();
+            }            
             ordenOP.additionalField5 = "";
             ordenOP.allowBackOrder = "Y";
             ordenOP.avscode = "";
             ordenOP.baseSubTotal = (double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) - ((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) * 0.19);
-
             ordenOP.billingInformation = new BillingInformation
             {
                 addressLine1 = data.Envio.Direccion,
@@ -828,7 +873,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                 middleInitial = "",
                 municipioDelegacion = data.Envio.Departamento,
                 phoneNumber = data.Envio.Celular,
-                stateProvince = data.Envio.Departamento, //HACER TRABLA DE ASIGNACION
+                stateProvince = AsignarDepartamento(data.Envio.Departamento), //HACER TRABLA DE ASIGNACION
                 zipCode = "",
             };
 
@@ -849,10 +894,10 @@ public class FidelizacionApplication : IFidelizacionApplication
             ordenOP.memberId = 0;
             ordenOP.message = "";
             ordenOP.orderDate = DateTime.Now.ToString();
-            ordenOP.orderNumber = (int)result.sequentialGenerated;
+            //ordenOP.orderNumber = (int)result.sequentialGenerated;
             ordenOP.orderRecipient = new OrderRecipient
             {
-
+                items = new List<Item>(),
                 address = new Address
                 {
                     addressLine1 = data.Envio.Direccion,
@@ -868,7 +913,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                     middleInitial = "",
                     municipioDelegacion = data.Envio.Departamento,
                     phoneNumber = data.Envio.Celular,
-                    stateProvince = data.Envio.Departamento, //HACER TRABLA DE ASIGNACION
+                    stateProvince = AsignarDepartamento(data.Envio.Departamento), //HACER TRABLA DE ASIGNACION
                     zipCode = ""
                 },
 
@@ -902,7 +947,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             {
                 item.Id = Guid.NewGuid().ToString();
                 //TODO : Realizar el envio de datos al OP
-                if (item.ProveedorLite.Nit == "NIT_LEONISA")
+                if (item.ProveedorLite.Nit == "1039465602")
                 {
                     var productITem = new Item()
                     {
@@ -933,16 +978,20 @@ public class FidelizacionApplication : IFidelizacionApplication
                 }
             }
 
-            if (data.ProductosCarrito.Any(p => p.ProveedorLite.Nit == ""))
+
+
+            if (data.ProductosCarrito.Any(p => p.ProveedorLite.Nit == "1039465602"))
             {
-                await this.ordenOPExternalService.EnviarOrdenOP(ordenOP);
+               // await this.ordenOPExternalService.EnviarOrdenOP(ordenOP);
             }
 
             data.PuntosRedimidos = data.GetSumPuntos();
-            var redenciones = unitOfWork.UsuarioRedencionRepository.GetNroPedido() + 1;
-            data.NroPedido = redenciones;
-            await this.unitOfWork.UsuarioRedencionRepository.Add(data);
-            this.unitOfWork.SaveChangesSync();
+
+            //mientras tinto TODO: Hacer el envio de datos a OP
+            //var redenciones = unitOfWork.UsuarioRedencionRepository.GetNroPedido() + 1;
+            //data.NroPedido = redenciones;
+            //await this.unitOfWork.UsuarioRedencionRepository.Add(data);
+            //this.unitOfWork.SaveChangesSync();
 
             return new GenericResponse<bool>
             {
