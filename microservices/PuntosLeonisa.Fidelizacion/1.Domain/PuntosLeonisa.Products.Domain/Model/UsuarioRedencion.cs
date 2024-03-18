@@ -228,6 +228,8 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
         public string? Nombres { get; set; }
         public string? Apellidos { get; set; }
         public string? Direccion { get; set; }
+        public string? DireccionBasic { get; set; }
+        public string? DireccionComplemento { get; set; }
         public string? Celular { get; set; }
         public string? Email { get; set; }
         public string? Ciudad { get; set; }

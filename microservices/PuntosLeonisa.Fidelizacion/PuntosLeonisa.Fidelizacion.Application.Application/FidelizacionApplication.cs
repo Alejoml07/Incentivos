@@ -844,24 +844,33 @@ public class FidelizacionApplication : IFidelizacionApplication
         {
             data.Id = Guid.NewGuid().ToString();
             data.FechaRedencion = DateTime.Now;
+            var tender = "";
+            if (data.Usuario.TipoUsuario == "Asesoras Vendedoras")
+            {
+                tender = "REL";
+            }
+            else
+            {
+                tender = "REV";
+            }
             var ordenOP = new OrdenOP();
             var operationType = new NroPedidoOP
             {
                 operationType = "Pedido"
             };
             var result = new ResultNroPedidoOp();
-            if (data.ProductosCarrito.Any(p => p.ProveedorLite.Nit == "1039465602"))
-            {            
+            if (data.ProductosCarrito.Any(p => p.ProveedorLite.Nit == "800081664"))
+            {
                 //result.sequentialGenerated = this.ordenOPExternalService.GetNroOrdenOP(operationType).GetAwaiter().GetResult();
-            }            
+            }
             ordenOP.additionalField5 = "";
             ordenOP.allowBackOrder = "Y";
             ordenOP.avscode = "";
-            ordenOP.baseSubTotal = (double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) - ((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) * 0.19);
+            ordenOP.baseSubTotal = ((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity)) / 1.19;
             ordenOP.billingInformation = new BillingInformation
             {
-                addressLine1 = data.Envio.Direccion,
-                addressLine2 = "",
+                addressLine1 = data.Envio.DireccionBasic,
+                addressLine2 = data.Envio.DireccionComplemento,
                 addressLine3 = "",
                 city = data.Envio.Ciudad,
                 colonia = "",
@@ -893,15 +902,15 @@ public class FidelizacionApplication : IFidelizacionApplication
             ordenOP.macAddress = "";
             ordenOP.memberId = 0;
             ordenOP.message = "";
-            ordenOP.orderDate = DateTime.Now.ToString();
+            ordenOP.orderDate = DateTime.Now.ToShortDateString();
             //ordenOP.orderNumber = (int)result.sequentialGenerated;
             ordenOP.orderRecipient = new OrderRecipient
             {
                 items = new List<Item>(),
                 address = new Address
                 {
-                    addressLine1 = data.Envio.Direccion,
-                    addressLine2 = "",
+                    addressLine1 = data.Envio.DireccionBasic,
+                    addressLine2 = data.Envio.DireccionComplemento,
                     addressLine3 = "",
                     city = data.Envio.Ciudad,
                     colonia = "",
@@ -917,15 +926,15 @@ public class FidelizacionApplication : IFidelizacionApplication
                     zipCode = ""
                 },
 
-                baseSubTotal = (double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) - ((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) * 0.19),
+                baseSubTotal = ((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity)) / 1.19,
                 discount = 0,
                 giftMessageText = "",
                 giftWrapping = 0,
                 recipientId = 0,
                 shipping = "0",
                 shippingMethod = "",
-                subTotal = (double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) - ((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) * 0.19),
-                tax = ((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) * 0.19),
+                subTotal = ((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity)) / 1.19,
+                tax = ((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) / 1.19) * 0.19,
                 total = (double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity)
             };
 
@@ -935,10 +944,10 @@ public class FidelizacionApplication : IFidelizacionApplication
             ordenOP.shipComplete = "";
             ordenOP.shipping = "0";
             ordenOP.status = "";
-            ordenOP.subTotal = (double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) - ((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) * 0.19);
-            ordenOP.tax = ((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) * 0.19);
+            ordenOP.subTotal = ((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity)) / 1.19;
+            ordenOP.tax = ((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) / 1.19) * 0.19;
             ordenOP.tenderBank = "";
-            ordenOP.tenderCode = ""; //PREGUNTAR 
+            ordenOP.tenderCode = tender;
             ordenOP.tenderReference = "leonisa";
             ordenOP.total = (double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity);
             ordenOP.transactionId = "";
@@ -947,11 +956,11 @@ public class FidelizacionApplication : IFidelizacionApplication
             {
                 item.Id = Guid.NewGuid().ToString();
                 //TODO : Realizar el envio de datos al OP
-                if (item.ProveedorLite.Nit == "1039465602")
+                if (item.ProveedorLite.Nit == "800081664")
                 {
                     var productITem = new Item()
                     {
-                        barCode= item.EAN,
+                        barCode = item.EAN,
                         discount = 0,
                         giftCardExpirationDate = "01/01/0001",
                         giftCardFromName = "",
@@ -980,18 +989,18 @@ public class FidelizacionApplication : IFidelizacionApplication
 
 
 
-            if (data.ProductosCarrito.Any(p => p.ProveedorLite.Nit == "1039465602"))
+            if (data.ProductosCarrito.Any(p => p.ProveedorLite.Nit == "800081664"))
             {
-               // await this.ordenOPExternalService.EnviarOrdenOP(ordenOP);
+                //await this.ordenOPExternalService.EnviarOrdenOP(ordenOP);
             }
 
             data.PuntosRedimidos = data.GetSumPuntos();
 
             //mientras tinto TODO: Hacer el envio de datos a OP
-            //var redenciones = unitOfWork.UsuarioRedencionRepository.GetNroPedido() + 1;
-            //data.NroPedido = redenciones;
-            //await this.unitOfWork.UsuarioRedencionRepository.Add(data);
-            //this.unitOfWork.SaveChangesSync();
+            var redenciones = unitOfWork.UsuarioRedencionRepository.GetNroPedido() + 1;
+            data.NroPedido = redenciones;
+            await this.unitOfWork.UsuarioRedencionRepository.Add(data);
+            this.unitOfWork.SaveChangesSync();
 
             return new GenericResponse<bool>
             {

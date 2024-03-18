@@ -959,12 +959,12 @@ namespace Usuarioos
         public async Task<IActionResult> CreateRed(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/CreateRed")] HttpRequest req, ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            log.LogInformation("C# HTTP trigger function process ed a request.");
 
             try
             {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var data = JsonConvert.DeserializeObject<UsuarioRedencion>(requestBody);
+                var data = JsonConvert.DeserializeObject<UsuarioRedencion>(requestBody  );
                 var response = await this.puntosApplication.CreateRedencion(data);
                 return new OkObjectResult(response);
             }
