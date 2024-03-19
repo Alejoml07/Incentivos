@@ -115,7 +115,7 @@ namespace Logistic.Infrastructure.Agents.AgentsImpl
                 var TransientErrorRetryPolicy = _transientRetry.GetTransientRetry();
                 var httpClient = _httpClientFactory.CreateClient();
                 httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
-                httpClient.DefaultRequestHeaders.Add("UserName", _configuration["UserNameAPI"]);
+                httpClient.DefaultRequestHeaders.Add("Authorization", _configuration["Authorization"]);
                 httpClient.DefaultRequestHeaders.Add("AuthenticationToken", _configuration["AuthenticationTokenAPI"]);
                 var resultData = await CircuitBreakerPolicy.ExecuteAsync(() =>
                         TransientErrorRetryPolicy.ExecuteAsync(() =>
