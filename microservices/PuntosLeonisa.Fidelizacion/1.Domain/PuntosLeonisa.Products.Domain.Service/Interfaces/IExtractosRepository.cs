@@ -12,5 +12,6 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces
     {
         Task<IEnumerable<Extractos>> GetExtractosByUsuario(string cedula);
         Task<IEnumerable<Extractos>> GetExtractosByUserAndDate(ReporteDto data);
+        Task<IEnumerable<Extractos>> GetExtractosByUser(string? cedula);
     }
 }

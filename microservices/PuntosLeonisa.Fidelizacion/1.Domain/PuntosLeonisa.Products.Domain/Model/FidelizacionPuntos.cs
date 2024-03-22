@@ -28,6 +28,6 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
         public DateTime? FechaCreacion { get; set; } = DateTime.Now;
 
         public int? Publico { get; set; }
-
+        public string? Cedula { get; set; }
     }
 }

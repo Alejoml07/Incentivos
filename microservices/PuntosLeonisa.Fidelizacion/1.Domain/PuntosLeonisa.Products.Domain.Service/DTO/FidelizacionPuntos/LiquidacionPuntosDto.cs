@@ -19,6 +19,8 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.FidelizacionPuntos
         public int Mes { get; set; }
         public int Ano { get; set; }
 
+        public string PuntoVenta { get; set; }
+
         public int? Porcentaje { get; set; }
 
         public int? Id_Variable { get; set; }

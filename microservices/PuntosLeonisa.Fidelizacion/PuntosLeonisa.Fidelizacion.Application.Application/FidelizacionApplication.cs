@@ -11,6 +11,7 @@ using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
+using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.DTO;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Helpers;
 using PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces;
 using PuntosLeonisa.Products.Domain.Model;
@@ -955,36 +956,36 @@ public class FidelizacionApplication : IFidelizacionApplication
             foreach (var item in data.ProductosCarrito)
             {
                 item.Id = Guid.NewGuid().ToString();
-            //    //TODO : Realizar el envio de datos al OP
-            //    if (item.ProveedorLite.Nit == "800081664")
-            //    {
-            //        var productITem = new Item()
-            //        {
-            //            barCode = item.EAN,
-            //            discount = 0,
-            //            giftCardExpirationDate = "01/01/0001",
-            //            giftCardFromName = "",
-            //            giftCardMessage = "",
-            //            giftCardNumber = "",
-            //            giftCardToEmailAddress = "",
-            //            giftCardToName = "",
-            //            giftCardVerification = 0,
-            //            giftQuantity = 0,
-            //            isGiftCard = "N",
-            //            isGiftWrap = "N",
-            //            isHardCopy = "N",
-            //            isOnSale = "999",
-            //            isTaxFree = "N",
-            //            itemName = item.Nombre,
-            //            itemPrice = (double)item.Precio,
-            //            price = (double)item.Precio,
-            //            quantity = (int)item.Quantity,
-            //            salePrice = (double)item.Precio,
-            //            sku = item.EAN
-            //        };
+                //    //TODO : Realizar el envio de datos al OP
+                //    if (item.ProveedorLite.Nit == "800081664")
+                //    {
+                //        var productITem = new Item()
+                //        {
+                //            barCode = item.EAN,
+                //            discount = 0,
+                //            giftCardExpirationDate = "01/01/0001",
+                //            giftCardFromName = "",
+                //            giftCardMessage = "",
+                //            giftCardNumber = "",
+                //            giftCardToEmailAddress = "",
+                //            giftCardToName = "",
+                //            giftCardVerification = 0,
+                //            giftQuantity = 0,
+                //            isGiftCard = "N",
+                //            isGiftWrap = "N",
+                //            isHardCopy = "N",
+                //            isOnSale = "999",
+                //            isTaxFree = "N",
+                //            itemName = item.Nombre,
+                //            itemPrice = (double)item.Precio,
+                //            price = (double)item.Precio,
+                //            quantity = (int)item.Quantity,
+                //            salePrice = (double)item.Precio,
+                //            sku = item.EAN
+                //        };
 
-            //        ordenOP.orderRecipient.items.Add(productITem);
-            //    }
+                //        ordenOP.orderRecipient.items.Add(productITem);
+                //    }
             }
 
 
@@ -1188,12 +1189,21 @@ public class FidelizacionApplication : IFidelizacionApplication
         throw new NotImplementedException();
     }
 
-    public Task<GenericResponse<bool>> GuardarLiquidacionPuntos(IEnumerable<LiquidacionPuntosDto> data)
+    public async Task<GenericResponse<bool>> GuardarLiquidacionPuntos(IEnumerable<LiquidacionPuntosDto> data)
     {
         try
         {
+            var emailGeneric = new EmailDTO()
+            {
+                Subject = "Liquidacion de puntos",
+                SenderName = "Mis sueños a un clic",
+                Message = "Se ha iniciado la liquidacion de puntos total registros " + data.Count().ToString(),
+                Recipients = new string[] { "danielmg12361@gmail.com" }
+            };
+
+            //await this.usuarioExternalService.SendMailGeneric(emailGeneric);
+
             var usuariosEncontrados = new List<Usuario>();
-            var datafilter = data.Take(20).ToList();
             foreach (var item in data)
             {
                 Usuario usuario = null;
@@ -1219,12 +1229,12 @@ public class FidelizacionApplication : IFidelizacionApplication
                     }
                 }
                 if (usuario != null)
-                    item.Usuario = usuario;
+                    item.Usuario = (Usuario)usuario.Clone();
             }
 
             guardarLiquidacionPuntos(data);
 
-            // buscar la cedula y actualizar el usuarioinfopuntos
+            //buscar la cedula y actualizar el usuarioinfopuntos
             var cedulas = usuariosEncontrados.Select(x => x.Cedula).Distinct().ToList();
             foreach (var cedula in cedulas)
             {
@@ -1235,19 +1245,9 @@ public class FidelizacionApplication : IFidelizacionApplication
                     var puntos = data.Where(x => x.Cedula == cedula).Sum(x => x.Puntos);
                     usuarioInfoPuntos.PuntosAcumulados += (int?)puntos;
                     usuarioInfoPuntos.PuntosDisponibles += (int?)puntos;
-                    this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuarioInfoPuntos);
+                    await this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuarioInfoPuntos);
 
-                    // add extracto and call function
-                    var extracto = new Extractos()
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Usuario = data.FirstOrDefault(x => x.Cedula == cedula).Usuario,
-                        Fecha = DateTime.Now,
-                        ValorMovimiento = (int?)puntos,
-                        Descripcion = "Liquidacion de puntos",
-                        OrigenMovimiento = "Liquidacion de puntos",
-                    };
-                    this.unitOfWork.ExtractosRepository.Add(extracto);
+
 
                 }
                 else
@@ -1268,19 +1268,19 @@ public class FidelizacionApplication : IFidelizacionApplication
                         FechaActualizacion = DateTime.Now
 
                     };
-                    this.unitOfWork.UsuarioInfoPuntosRepository.Add(usuarioInfoPuntosNuevo);
+                    await this.unitOfWork.UsuarioInfoPuntosRepository.Add(usuarioInfoPuntosNuevo);
 
-                    // add extracto and call function
-                    var extracto = new Extractos
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Usuario = usuario,
-                        Fecha = DateTime.Now,
-                        ValorMovimiento = (int?)puntos,
-                        Descripcion = "Liquidacion de puntos",
-                        OrigenMovimiento = "Liquidacion de puntos",
-                    };
-                    this.unitOfWork.ExtractosRepository.Add(extracto);
+                    //// add extracto and call function
+                    //var extracto = new Extractos
+                    //{
+                    //    Id = Guid.NewGuid().ToString(),
+                    //    Usuario = usuario,
+                    //    Fecha = DateTime.Now,
+                    //    ValorMovimiento = (int?)puntos,
+                    //    Descripcion = "Liquidacion de puntos",
+                    //    OrigenMovimiento = "Liquidacion de puntos",
+                    //};
+                    //this.unitOfWork.ExtractosRepository.Add(extracto);
 
 
 
@@ -1290,17 +1290,32 @@ public class FidelizacionApplication : IFidelizacionApplication
 
             }
 
+            emailGeneric = new EmailDTO()
+            {
+                Subject = "Liquidacion de puntos",
+                SenderName = "Mis sueños a un clic",
+                Message = "Se ha realizado la liquidacion de puntos total registros " + data.Count().ToString(),
+                Recipients = new string[] { "danielmg12361@gmail.com" }
+            };
+            await this.usuarioExternalService.SendMailGeneric(emailGeneric);
 
 
 
-            return Task.FromResult(new GenericResponse<bool>
+            return new GenericResponse<bool>
             {
                 Result = true
-            });
+            };
         }
         catch (Exception ex)
         {
-
+            var emailGeneric = new EmailDTO()
+            {
+                Subject = "Liquidacion de puntos",
+                SenderName = "Mis sueños a un clic",
+                Message = "Se ha realizado la liquidacion de puntos con error " + ex.Message,
+                Recipients = new string[] { "danielmg12361@gmail.com" }
+            };
+            this.usuarioExternalService.SendMailGeneric(emailGeneric);
             throw;
         }
     }
@@ -1309,22 +1324,53 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         var liquidacionPuntos = data.Select(x => new FidelizacionPuntos
         {
-            Id = Guid.NewGuid().ToString(),
             Anho = x.Ano,
             Mes = x.Mes,
             Porcentaje = x.Porcentaje,
             Puntos = (int?)x.Puntos,
             Publico = x.Publico,
             Id_Variable = x.Id_Variable,
-            Usuario = x.Usuario
+            PuntoVenta = x.PuntoVenta,
+            Usuario = x.Usuario,
+            Cedula = x.Cedula
         }).ToArray();
 
         foreach (var item in liquidacionPuntos)
         {
-            this.unitOfWork.FidelizacionPuntosRepository.Add(item);
-            this.unitOfWork.SaveChangesSync();
+            item.Id = Guid.NewGuid().ToString();
+            var existe = this.unitOfWork.FidelizacionPuntosRepository.GetByPredicateAsync(p => p.PuntoVenta == item.PuntoVenta && p.Id_Variable == item.Id_Variable && p.Anho == item.Anho && p.Usuario.Cedula == item.Usuario.Cedula && p.Mes == item.Mes && p.Publico == 1).GetAwaiter().GetResult();
+            if (existe == null || !existe.Any())
+            {
+                this.unitOfWork.FidelizacionPuntosRepository.Add(item).GetAwaiter().GetResult();
+
+                // add extracto and call function
+                var extracto = new Extractos()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Usuario = item.Usuario,
+                    Fecha = DateTime.Now,
+                    Anio = item.Anho.ToString(),
+                    Mes = item.Mes.ToString(),
+                    ValorMovimiento = (int?)item.Puntos,
+                    Descripcion = $"Liquidacion de puntos en {item.PuntoVenta} con porcentaje {item.Porcentaje} para la varialbe {item.Id_Variable}",
+                    OrigenMovimiento = "Liquidacion de puntos",
+                };
+                this.unitOfWork.ExtractosRepository.Add(extracto).GetAwaiter().GetResult();
+
+            }
+            else
+            {
+                var itemToUpdate = existe.FirstOrDefault();
+                itemToUpdate.Puntos = item.Puntos;
+                itemToUpdate.Porcentaje = item.Porcentaje;
+                this.unitOfWork.FidelizacionPuntosRepository.Update(itemToUpdate).GetAwaiter().GetResult();
+            }
         }
+
+        this.unitOfWork.SaveChangesSync();
+
     }
+
 
     public async Task<GenericResponse<int>> DevolucionPuntosYCancelarEstado(DevolucionPuntosDto data)
     {
@@ -1401,9 +1447,9 @@ public class FidelizacionApplication : IFidelizacionApplication
 
     public async Task<IEnumerable<Extractos>> GenerateExtratosByFidelizacionPuntos()
     {
-        //var extractos = await this.unitOfWork.ExtractosRepository.GetByPredicateAsync(p => p.OrigenMovimiento == "Liquidacion de puntos");
+        //var extractos = await this.unitOfWork.ExtractosRepository.GetByPredicateAsync(p => p.OrigenMovimiento == "Liquidacion de puntos" && p.Mes == "2");
         ////var extractosSinUsuario = extractos.Where(x => x.Usuario == null).ToList();
-        var fidelizacionPuntos = await this.unitOfWork.FidelizacionPuntosRepository.GetByPredicateAsync(p => p.Mes == 1);
+        var fidelizacionPuntos = await this.unitOfWork.FidelizacionPuntosRepository.GetByPredicateAsync(p=> p.Mes ==2);
 
         //foreach (var extracto in extractos)
         //{
@@ -1413,7 +1459,7 @@ public class FidelizacionApplication : IFidelizacionApplication
 
 
         // buscar extractos en fidelizacion puntos
-        //var extractosEnFidelizacion = fidelizacionPuntos.Where(x => extractosSinUsuario.Any(p => p.ValorMovimiento == x.Puntos && p.Usuario == null && p.Descripcion == $"Liquidacion de puntos en {x.PuntoVenta} con porcentaje {x.Porcentaje} para la varialbe {x.Id_Variable}")).ToList();
+        //var extractosEnFidelizacion = fidelizacionPuntos.Where(x => extractos.Any(p => p.ValorMovimiento == x.Puntos && p.Usuario.Cedula == x.Cedula && p.Descripcion == $"Liquidacion de puntos en {x.PuntoVenta} con porcentaje {x.Porcentaje} para la varialbe {x.Id_Variable}")).ToList();
 
         // crear extractos
         var extractosCreados = new List<Extractos>();
@@ -1432,8 +1478,9 @@ public class FidelizacionApplication : IFidelizacionApplication
                 OrigenMovimiento = "Liquidacion de puntos",
                 Mes = item.Mes.ToString(),
                 Anio = item.Anho.ToString()
+               
             };
-            //extractosCreados.Add(extracto);
+            extractosCreados.Add(extracto);
             await this.unitOfWork.ExtractosRepository.Add(extracto);
             this.unitOfWork.SaveChangesSync();
             //}
@@ -1728,5 +1775,24 @@ public class FidelizacionApplication : IFidelizacionApplication
         {
             Result = redenciones
         });
+    }
+
+    public Task RecalcularPuntos()
+    {
+        var usuarioInfoPuntos = this.unitOfWork.UsuarioInfoPuntosRepository.GetAll().GetAwaiter().GetResult();
+        foreach (var item in usuarioInfoPuntos)
+        {
+            var extractos = this.unitOfWork.ExtractosRepository.GetExtractosByUser(item.Cedula).GetAwaiter().GetResult();
+            var puntosDisponibles = extractos.Sum(x => x.ValorMovimiento);
+            var puntosAcumulados = extractos.Where(p => p.OrigenMovimiento == "Liquidacion de puntos" || p.OrigenMovimiento == "Puntos Adquiridos").Sum(x => x.ValorMovimiento);
+
+            item.PuntosAcumulados = (int?)puntosAcumulados;
+            item.PuntosDisponibles = (int?)puntosDisponibles;
+            this.unitOfWork.UsuarioInfoPuntosRepository.Update(item);
+        }
+
+        this.unitOfWork.SaveChangesSync();
+
+        return Task.CompletedTask;
     }
 }
