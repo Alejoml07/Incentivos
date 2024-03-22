@@ -8,6 +8,10 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
 {
     public class ResultNroPedidoOp
     {
+        public string? code { get; set; }
+        public string? description { get; set; }
+        public string? operationType { get; set; }
         public int? sequentialGenerated { get; set; }
+
     }
 }
