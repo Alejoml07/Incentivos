@@ -10,6 +10,7 @@ using PuntosLeonisa.infrastructure.Persistence.CosmoDb;
 using PuntosLeonisa.Products.Application;
 using PuntosLeonisa.Products.Application.Core;
 using PuntosLeonisa.Products.Domain.Interfaces;
+using PuntosLeonisa.Products.Domain.Service.Interfaces;
 using PuntosLeonisa.Products.Infrasctructure.Repositorie;
 
 [assembly: FunctionsStartup(typeof(Productos.Startup))]
@@ -29,7 +30,9 @@ namespace Productos
 
             //builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddTransient<IProductoRepository, ProductoRepository>();
+            builder.Services.AddTransient<IBannerRepository, BannerRepository>();
             builder.Services.AddScoped<IProductApplication, ProductosApplication>();
+
 
             
 

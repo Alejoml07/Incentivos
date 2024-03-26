@@ -21,6 +21,7 @@ namespace Productos
     using Microsoft.Extensions.Primitives;
     using System.Linq;
     using PuntosLeonisa.Products.Domain.Model;
+    using PuntosLeonisa.Products.Domain.Service.DTO.Banners;
 
     public class Productos
     {
@@ -435,6 +436,66 @@ namespace Productos
 
                 var producto = await this.productoApplication.GetProductByProveedor(nit);
                 return new OkObjectResult(producto);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("AddBanner")]
+        [OpenApiOperation(operationId: "AddBanner", tags: new[] { "Productos/AddBanner" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Guarda los Banners")]
+        public async Task<IActionResult> AddBanner(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Productos/AddBanner")] HttpRequest req,
+            ILogger log)
+        {
+            try
+            {
+                log.LogInformation($"Product:AddBanner Inicia obtener todos los banners. Fecha:{DateTime.UtcNow}");
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<Banner>(requestBody);
+                await this.productoApplication.AddBanner(data);
+                return new OkResult();
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los Banners Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("GetBannerById")]
+        [OpenApiOperation(operationId: "GetBannerById", tags: new[] { "Productos/GetBannerById" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de los banners por usuario")]
+        public async Task<IActionResult> GetBannerById(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Productos/GetBannerById")] HttpRequest req,
+           string tipousuario,  // <-- Parámetro adicional
+           ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+
+                if (string.IsNullOrEmpty(tipousuario))
+                {
+                    throw new ArgumentException($"'{nameof(tipousuario)}' cannot be null or empty.", nameof(tipousuario));
+                }
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+                log.LogInformation($"Product:AddBanner Inicia obtener todos los banners. Fecha:{DateTime.UtcNow}");
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<Banner>(requestBody);
+                var response = await this.productoApplication.GetBannerById(data);
+                return new OkObjectResult(response);
             }
             catch (Exception ex)
             {

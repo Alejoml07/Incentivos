@@ -1,6 +1,7 @@
 ﻿using PuntosLeonisa.Products.Application.Core.Interfaces;
 using PuntosLeonisa.Products.Domain;
 using PuntosLeonisa.Products.Domain.Model;
+using PuntosLeonisa.Products.Domain.Service.DTO.Banners;
 using PuntosLeonisa.Products.Domain.Service.DTO.Genericos;
 using PuntosLeonisa.Products.Domain.Service.DTO.Productos;
 using PuntosLeonisa.Products.Infrasctructure.Common.Communication;
@@ -19,5 +20,7 @@ public interface IProductApplication : IApplicationCore<ProductoDto>
     Task<GenericResponse<Tuple<ProductoDto[], List<string>>>> AddRangeProducts(ProductoDto[] value);
     Task<GenericResponse<ProductoRefence>> GetProductByEAN(string ean);
     Task<GenericResponse<IEnumerable<ProductoDto>>> GetProductByProveedor(string proveedor);
+    Task<GenericResponse<bool>> AddBanner(Banner banner);
+    Task<GenericResponse<Banner>> GetBannerById(Banner data);
 }
 

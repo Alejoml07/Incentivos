@@ -5,8 +5,10 @@ using PuntosLeonisa.Products.Application.Core;
 using PuntosLeonisa.Products.Domain;
 using PuntosLeonisa.Products.Domain.Interfaces;
 using PuntosLeonisa.Products.Domain.Model;
+using PuntosLeonisa.Products.Domain.Service.DTO.Banners;
 using PuntosLeonisa.Products.Domain.Service.DTO.Genericos;
 using PuntosLeonisa.Products.Domain.Service.DTO.Productos;
+using PuntosLeonisa.Products.Domain.Service.Interfaces;
 using PuntosLeonisa.Products.Infrasctructure.Common;
 using PuntosLeonisa.Products.Infrasctructure.Common.Communication;
 namespace PuntosLeonisa.Products.Application;
@@ -15,10 +17,11 @@ public class ProductosApplication : IProductApplication
 {
     private readonly IMapper mapper;
     private readonly IProductoRepository productoRepository;
+    private readonly IBannerRepository bannerRepository;
     private readonly IProveedorExternalService proveedorExternalService;
     private readonly GenericResponse<ProductoDto> response;
 
-    public ProductosApplication(IMapper mapper, IProductoRepository productoRepository, IProveedorExternalService proveedorExternalService)
+    public ProductosApplication(IMapper mapper, IProductoRepository productoRepository, IProveedorExternalService proveedorExternalService, IBannerRepository bannerRepository)
     {
         if (productoRepository is null)
         {
@@ -26,6 +29,7 @@ public class ProductosApplication : IProductApplication
         }
         this.mapper = mapper;
         this.productoRepository = productoRepository;
+        this.bannerRepository = bannerRepository;
         this.proveedorExternalService = proveedorExternalService;
         this.response = new GenericResponse<ProductoDto>();
     }
@@ -94,6 +98,43 @@ public class ProductosApplication : IProductApplication
             producto.UrlImagen5 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
         }
     }
+
+    private static async Task UploadImageToBanner(Banner banner)
+    {
+        var azureHelper = new AzureHelper("DefaultEndpointsProtocol=https;AccountName=stgactincentivos;AccountKey=mtBoBaUJu8BKcHuCfdWzk1au7Upgif0rlzD+BlfAJZBsvQ02CiGzCNG5gj1li10GF8RpUwz6h+Mj+AStMOwyTA==;EndpointSuffix=core.windows.net");
+        if (!string.IsNullOrEmpty(banner.Imagen1))
+        {
+            byte[] bytes = Convert.FromBase64String(banner.Imagen1);
+            banner.Imagen1 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+        }
+        if (!string.IsNullOrEmpty(banner.Imagen2))
+        {
+            byte[] bytes = Convert.FromBase64String(banner.Imagen2);
+            banner.Imagen2 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+        }
+        if (!string.IsNullOrEmpty(banner.Imagen3))
+        {
+            byte[] bytes = Convert.FromBase64String(banner.Imagen3);
+            banner.Imagen3 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+        }
+        if (!string.IsNullOrEmpty(banner.Imagen4))
+        {
+            byte[] bytes = Convert.FromBase64String(banner.Imagen4);
+            banner.Imagen4 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+        }
+        if (!string.IsNullOrEmpty(banner.Imagen5))
+        {
+            byte[] bytes = Convert.FromBase64String(banner.Imagen5);
+            banner.Imagen5 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+        }
+        if (!string.IsNullOrEmpty(banner.Imagen6))
+        {
+            byte[] bytes = Convert.FromBase64String(banner.Imagen6);
+            banner.Imagen6= await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+        }
+    }
+
+
 
     public async Task<GenericResponse<Tuple<ProductoDto[], List<string>>>> AddRangeProducts(ProductoDto[] value)
     {
@@ -382,10 +423,70 @@ public class ProductosApplication : IProductApplication
     }
     public async Task<GenericResponse<IEnumerable<ProductoDto>>> GetProductByProveedor(string nit)
     {
-        var responseRawData = await this.productoRepository.GetProductByProveedor(nit);
-        var responseData = this.mapper.Map<IEnumerable<ProductoDto>>(responseRawData);
-        var newResponse = new GenericResponse<IEnumerable<ProductoDto>>();
-        newResponse.Result = responseData;
-        return newResponse;
+        try
+        {
+            var responseRawData = await this.productoRepository.GetProductByProveedor(nit);
+            var responseData = this.mapper.Map<IEnumerable<ProductoDto>>(responseRawData);
+            var newResponse = new GenericResponse<IEnumerable<ProductoDto>>();
+            newResponse.Result = responseData;
+            return newResponse;
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+        
+    }
+
+    public async Task<GenericResponse<bool>> AddBanner(Banner banner)
+    {
+        try
+        {
+            var bannerExist = await this.bannerRepository.GetById(banner.TipoUsuario);
+            if (bannerExist != null)
+            {
+                await UploadImageToBanner(banner);
+                await this.bannerRepository.Update(banner);
+                return new GenericResponse<bool>()
+                {
+                    Result = true
+                };
+            }
+            else
+            {
+                await UploadImageToBanner(banner);
+                await this.bannerRepository.Add(banner);
+                return new GenericResponse<bool>()
+                {
+                    Result = true
+                };
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+            
+        
+        
+    }
+
+    public Task<GenericResponse<Banner>> GetBannerById(Banner data)
+    {
+        try
+        {
+            var response = this.bannerRepository.GetBannersByUserType(data);
+            return Task.FromResult(new GenericResponse<Banner>()
+            {
+                Result = response.Result
+            });
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
     }
 }

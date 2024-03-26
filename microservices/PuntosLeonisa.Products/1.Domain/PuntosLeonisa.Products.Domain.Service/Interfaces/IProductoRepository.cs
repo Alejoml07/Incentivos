@@ -1,4 +1,5 @@
-﻿using PuntosLeonisa.Products.Domain.Service.DTO.Genericos;
+﻿using PuntosLeonisa.Products.Domain.Service.DTO.Banners;
+using PuntosLeonisa.Products.Domain.Service.DTO.Genericos;
 using PuntosLeonisa.Products.Domain.Service.DTO.Productos;
 using System;
 namespace PuntosLeonisa.Products.Domain.Interfaces
