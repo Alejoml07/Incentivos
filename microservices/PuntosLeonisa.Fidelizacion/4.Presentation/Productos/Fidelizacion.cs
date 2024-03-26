@@ -19,6 +19,9 @@ using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.MovimientoPuntos;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.FidelizacionPuntos;
+using Microsoft.Azure.ServiceBus;
+using System.Linq;
+using System.Text;
 
 namespace Usuarioos
 {
@@ -788,7 +791,7 @@ namespace Usuarioos
         [OpenApiOperation(operationId: "GetUsuariosRedencionPuntosByEmail", tags: new[] { "SincronizarLiquidacionPuntos" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "hace post de la guia y transportadora")]
         public async Task<IActionResult> SincronizarLiquidacionPuntos(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/SincronizarLiquidacionPuntos")] HttpRequest req, ILogger log)
+  [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/SincronizarLiquidacionPuntos")] HttpRequest req, ILogger log)
         {
 
             log.LogInformation("C# HTTP trigger function processed a request.");
@@ -802,7 +805,21 @@ namespace Usuarioos
 
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var data = JsonConvert.DeserializeObject<LiquidacionPuntosDto[]>(requestBody);
-                 this.puntosApplication.GuardarLiquidacionPuntos(data);
+                //this.puntosApplication.GuardarLiquidacionPuntos(data);
+
+                string connectionString = Environment.GetEnvironmentVariable("ServiceBusConnectionString");
+                string queueName = "queueliquidacionpuntos";
+
+                var serviceBusClient = new QueueClient(connectionString, queueName);
+                // agrupar datos por cedula y mandar un mensaje con la agrupacion de cada cedula y convertir en un array de array con las cedulas
+                var agrupado = data.OrderBy(x => x.Cedula).GroupBy(x => x.Cedula).Select(x => x.ToList()).ToList();
+                foreach (var item in agrupado)
+                {
+                    //Delay de 1000 milisegundos
+                    //await Task.Delay(50);
+                    var message = new Message(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(item)));
+                    await serviceBusClient.SendAsync(message);
+                }
                 return new OkResult();
             }
             catch (Exception ex)
@@ -810,6 +827,35 @@ namespace Usuarioos
                 return GetFunctionError(log, "Error al obtener las redenciones:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("ProcessMessageFunctionLiquidacion")]
+        public void ProcessMessageFunction(
+        [ServiceBusTrigger("queueliquidacionpuntos", Connection = "ServiceBusConnectionString")] string myQueueItem,
+        ILogger log)
+        {
+            try
+            {
+
+                log.LogInformation($"C# ServiceBus queue trigger function processed message: {myQueueItem}");
+
+                var data = JsonConvert.DeserializeObject<List<LiquidacionPuntosDto>>(myQueueItem);
+                //aqui obtienes el usuarioinfopuntos y le restas los puntos
+
+                this.puntosApplication.GuardarLiquidacionPuntos(data);
+
+
+
+                //this.puntosApplication.GuardarLiquidacionPunto(data);
+                log.LogInformation("Mensaje procesado correctamente");
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex, "Error procesando la redencion");
+            }
+
+        }
+
+
         [FunctionName("GetReporteRedencion")]
         [OpenApiOperation(operationId: "GetReporteRedencion", tags: new[] { "GetReporteRedencion" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los reportes por fechas")]
@@ -953,6 +999,26 @@ namespace Usuarioos
             }
         }
 
+
+        [FunctionName("RecalcularPuntos")]
+        [OpenApiOperation(operationId: "RecalcularPuntos", tags: new[] { "RecalcularPuntos" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los extractos por fechas")]
+        public async Task<IActionResult> RecalcularPuntos(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "fidelizacion/RecalcularPuntos")] HttpRequest req, ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                await this.puntosApplication.RecalcularPuntos();
+                return new OkResult();
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los extractos:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
         [FunctionName("CreateRed")]
         [OpenApiOperation(operationId: "CreateRed", tags: new[] { "CreateRed" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Crea la redencion")]
@@ -964,7 +1030,7 @@ namespace Usuarioos
             try
             {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var data = JsonConvert.DeserializeObject<UsuarioRedencion>(requestBody  );
+                var data = JsonConvert.DeserializeObject<UsuarioRedencion>(requestBody);
                 var response = await this.puntosApplication.CreateRedencion(data);
                 return new OkObjectResult(response);
             }

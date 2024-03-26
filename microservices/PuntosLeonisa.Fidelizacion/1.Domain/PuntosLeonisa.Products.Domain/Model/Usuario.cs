@@ -2,7 +2,7 @@
 
 namespace PuntosLeonisa.Products.Domain.Model
 {
-    public class Usuario : IDisposable
+    public class Usuario : IDisposable, ICloneable
     {
         public string? Id { get; set; }
 
@@ -33,6 +33,11 @@ namespace PuntosLeonisa.Products.Domain.Model
         public string? Empresa { get; set; }
 
         public string? Contraseña { get; set; }
+
+        public object Clone()
+        {
+            return MemberwiseClone();
+        }
 
         public void Dispose()
         {

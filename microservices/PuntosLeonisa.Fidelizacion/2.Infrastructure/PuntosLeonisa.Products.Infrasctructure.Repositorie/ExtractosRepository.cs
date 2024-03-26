@@ -16,10 +16,15 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
             _context = context;
         }
 
+        public async Task<IEnumerable<Extractos>> GetExtractosByUser(string? cedula)
+        {
+            return await _context.Set<Extractos>().Where(x => x.Usuario.Cedula == cedula).ToListAsync();
+        }
+
         public async Task<IEnumerable<Extractos>> GetExtractosByUserAndDate(ReporteDto data)
         {
-            if(data.Cedula == "")
-            { 
+            if (data.Cedula == "")
+            {
                 var result = await _context.Set<Extractos>().Where(x => x.Mes == data.Mes && x.Anio == data.Anio).ToListAsync();
                 return result;
             }
@@ -28,7 +33,7 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
                 var result = await _context.Set<Extractos>().Where(x => x.Usuario.Cedula == data.Cedula && x.Mes == data.Mes && x.Anio == data.Anio).ToListAsync();
                 return result;
             }
-            
+
         }
 
         public async Task<IEnumerable<Extractos>> GetExtractosByUsuario(string cedula)
