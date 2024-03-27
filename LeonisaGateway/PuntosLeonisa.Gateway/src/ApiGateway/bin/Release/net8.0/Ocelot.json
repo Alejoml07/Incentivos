@@ -571,10 +571,10 @@
     },
 
     {
-      "UpstreamPathTemplate": "/api/Productos/GetBannerById/{tipousuario}",
-      "DownstreamPathTemplate": "/api/Productos/GetBannerById/{tipousuario}",
+      "UpstreamPathTemplate": "/api/Productos/GetBannerById",
+      "DownstreamPathTemplate": "/api/Productos/GetBannerById",
       "DownstreamScheme": "https",
-      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
           "Host": "azproductostest.azurewebsites.net",

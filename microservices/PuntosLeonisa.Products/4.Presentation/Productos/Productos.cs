@@ -468,24 +468,13 @@ namespace Productos
         [OpenApiOperation(operationId: "GetBannerById", tags: new[] { "Productos/GetBannerById" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de los banners por usuario")]
         public async Task<IActionResult> GetBannerById(
-           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Productos/GetBannerById")] HttpRequest req,
-           string tipousuario,  // <-- Parámetro adicional
+           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Productos/GetBannerById")] HttpRequest req,  // <-- Parámetro adicional
            ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             try
             {
-                if (req is null)
-                {
-                    throw new ArgumentNullException(nameof(req));
-                }
-
-                if (string.IsNullOrEmpty(tipousuario))
-                {
-                    throw new ArgumentException($"'{nameof(tipousuario)}' cannot be null or empty.", nameof(tipousuario));
-                }
-
                 if (log is null)
                 {
                     throw new ArgumentNullException(nameof(log));
