@@ -65,13 +65,13 @@ app.Use(async (context, next) =>
 
     if (context.Request.Headers.Any(p => p.Key == "keyApi"))
     {
-        if (!ValidarUrlOrigen(urlOrigen))
-        {
-            context.Response.StatusCode = 403; // Prohibido
-            await context.Response.WriteAsync("Acceso denegado desde esta URL");
-            return;
-        }
 
+        //if (!ValidarUrlOrigen(urlOrigen))
+        //{
+        //    context.Response.StatusCode = 403; // Prohibido
+        //    await context.Response.WriteAsync("Acceso denegado desde esta URL");
+        //    return;
+        //}
 
         if (context.Request.Headers.TryGetValue("keyApi", out var keyApi))
         {
