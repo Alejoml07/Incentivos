@@ -100,41 +100,57 @@ public class ProductosApplication : IProductApplication
     }
 
     private static async Task UploadImageToBanner(Banner banner)
-    {
+    {   
         var azureHelper = new AzureHelper("DefaultEndpointsProtocol=https;AccountName=stgactincentivos;AccountKey=mtBoBaUJu8BKcHuCfdWzk1au7Upgif0rlzD+BlfAJZBsvQ02CiGzCNG5gj1li10GF8RpUwz6h+Mj+AStMOwyTA==;EndpointSuffix=core.windows.net");
         if (!string.IsNullOrEmpty(banner.Imagen1))
         {
-            byte[] bytes = Convert.FromBase64String(banner.Imagen1);
-            banner.Imagen1 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            if(!banner.Imagen1.Contains("https://stgactincentivos.blob.core.windows.net"))
+            {
+                byte[] bytes = Convert.FromBase64String(banner.Imagen1);
+                banner.Imagen1 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            }          
         }
         if (!string.IsNullOrEmpty(banner.Imagen2))
         {
-            byte[] bytes = Convert.FromBase64String(banner.Imagen2);
-            banner.Imagen2 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            if (!banner.Imagen2.Contains("https://stgactincentivos.blob.core.windows.net"))
+            {
+                byte[] bytes = Convert.FromBase64String(banner.Imagen2);
+                banner.Imagen2 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            }
         }
         if (!string.IsNullOrEmpty(banner.Imagen3))
         {
-            byte[] bytes = Convert.FromBase64String(banner.Imagen3);
-            banner.Imagen3 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            if (!banner.Imagen3.Contains("https://stgactincentivos.blob.core.windows.net"))
+            {
+                byte[] bytes = Convert.FromBase64String(banner.Imagen3);
+                banner.Imagen3 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            }
         }
         if (!string.IsNullOrEmpty(banner.Imagen4))
         {
-            byte[] bytes = Convert.FromBase64String(banner.Imagen4);
-            banner.Imagen4 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            if (!banner.Imagen4.Contains("https://stgactincentivos.blob.core.windows.net"))
+            {
+                byte[] bytes = Convert.FromBase64String(banner.Imagen4);
+                banner.Imagen4 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            }
         }
         if (!string.IsNullOrEmpty(banner.Imagen5))
         {
-            byte[] bytes = Convert.FromBase64String(banner.Imagen5);
-            banner.Imagen5 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            if (!banner.Imagen5.Contains("https://stgactincentivos.blob.core.windows.net"))
+            {
+                byte[] bytes = Convert.FromBase64String(banner.Imagen5);
+                banner.Imagen5 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            }
         }
         if (!string.IsNullOrEmpty(banner.Imagen6))
         {
-            byte[] bytes = Convert.FromBase64String(banner.Imagen6);
-            banner.Imagen6= await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            if (!banner.Imagen6.Contains("https://stgactincentivos.blob.core.windows.net"))
+            {
+                byte[] bytes = Convert.FromBase64String(banner.Imagen6);
+                banner.Imagen6 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            }
         }
     }
-
-
 
     public async Task<GenericResponse<Tuple<ProductoDto[], List<string>>>> AddRangeProducts(ProductoDto[] value)
     {
