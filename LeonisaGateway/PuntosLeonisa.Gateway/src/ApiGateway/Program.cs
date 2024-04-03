@@ -31,7 +31,8 @@ builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
+})
+    .AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
@@ -81,13 +82,7 @@ app.Use(async (context, next) =>
                 await context.Response.WriteAsync("Key inválida");
                 return;
             }
-            else
-            {
-                context.Request.Headers.Add("Authorization", "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhbGVqYW5kcm9tdW5vemxlemNhbm9AZ21haWwuY29tIiwiYXVkIjoiUHVibGljIiwiaXNzIjoiYXJiZW1zLmNvbSIsImV4cCI6MTcxMjA2MjcxOX0.0a8oE0JE0WmQigSSDZZXdtBJLxEvqMdkaFge7P5dLjw");
-
-                await next.Invoke();
-                // return;
-            }
+           
         }
     }
     else if (context.Request.Headers.TryGetValue("Authorization", out var authHeader))
@@ -95,11 +90,7 @@ app.Use(async (context, next) =>
         // await context.Response.WriteAsync("Key 4");
 
         var token = authHeader.ToString().Substring("Bearer ".Length).Trim();
-        if (token == "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhbGVqYW5kcm9tdW5vemxlemNhbm9AZ21haWwuY29tIiwiYXVkIjoiUHVibGljIiwiaXNzIjoiYXJiZW1zLmNvbSIsImV4cCI6MTcxMjA2MjcxOX0.0a8oE0JE0WmQigSSDZZXdtBJLxEvqMdkaFge7P5dLjw")
-        {
-            await next.Invoke();
-            return;
-        }
+
 
         if (!JwtValidator.ValidateToken(token, "C3Fg6@2pLm8!pQrS0tVwX2zY&fUjWnZ1", ref context))
         {

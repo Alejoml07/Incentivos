@@ -93,5 +93,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
         public string? Apellidos { get; set; }
 
         public string? Email { get; set; }
+
+        public string? TipoUsuario { get; set; }
     }
 }

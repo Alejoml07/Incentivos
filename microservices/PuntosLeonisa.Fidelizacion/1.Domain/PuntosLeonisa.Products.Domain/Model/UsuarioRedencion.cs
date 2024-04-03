@@ -129,6 +129,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
                 sb.AppendFormat("<tr><td class=\"encabezado-tabla\">EMPRESA</td><td class=\"celda-tabla\">{0}</td></tr>", Usuario.Empresa);
             }            
             sb.AppendFormat("<tr><td class=\"encabezado-tabla\">NOMBRE DE QUIEN RECIBE</td><td class=\"celda-tabla\">{0} {1}</td></tr>", Envio.Nombres, Envio.Apellidos);
+            sb.AppendFormat("<tr><td class=\"encabezado-tabla\">TIPO DE USUARIO</td><td class=\"celda-tabla\">{0}</td></tr>", Usuario.TipoUsuario);
             sb.AppendFormat("<tr><td class=\"encabezado-tabla\">CONTACTO DE QUIEN RECIBE</td><td class=\"celda-tabla\">{0}</td></tr>", Envio.Celular);
             sb.AppendFormat("<tr><td class=\"encabezado-tabla\">DEPARTAMENTO</td><td class=\"celda-tabla\">{0}</td></tr>", Envio.Departamento);
             sb.AppendFormat("<tr><td class=\"encabezado-tabla\">MUNICIPIO</td><td class=\"celda-tabla\">{0}</td></tr>", Envio.Ciudad);
