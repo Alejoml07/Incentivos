@@ -17,11 +17,12 @@ public class ProductosApplication : IProductApplication
 {
     private readonly IMapper mapper;
     private readonly IProductoRepository productoRepository;
+    private readonly ILogInventarioRepository logInventarioRepository;
     private readonly IBannerRepository bannerRepository;
     private readonly IProveedorExternalService proveedorExternalService;
     private readonly GenericResponse<ProductoDto> response;
 
-    public ProductosApplication(IMapper mapper, IProductoRepository productoRepository, IProveedorExternalService proveedorExternalService, IBannerRepository bannerRepository)
+    public ProductosApplication(IMapper mapper, IProductoRepository productoRepository, IProveedorExternalService proveedorExternalService, IBannerRepository bannerRepository, ILogInventarioRepository logInventarioRepository)
     {
         if (productoRepository is null)
         {
@@ -30,8 +31,10 @@ public class ProductosApplication : IProductApplication
         this.mapper = mapper;
         this.productoRepository = productoRepository;
         this.bannerRepository = bannerRepository;
+        this.logInventarioRepository = logInventarioRepository;
         this.proveedorExternalService = proveedorExternalService;
         this.response = new GenericResponse<ProductoDto>();
+        this.logInventarioRepository = logInventarioRepository;
     }
 
     public async Task<GenericResponse<ProductoDto>> Add(ProductoDto value)
@@ -269,6 +272,7 @@ public class ProductosApplication : IProductApplication
     {
         try
         {
+            var logInventario = new LogInventarioDto();
             foreach (var producto in productos)
             {
                 var productoExist = await this.productoRepository.GetById(producto.EAN ?? "");
@@ -277,6 +281,16 @@ public class ProductosApplication : IProductApplication
                     continue;
                 }
                 productoExist.Cantidad = producto.Cantidad;
+                logInventario.Id = Guid.NewGuid().ToString();
+                logInventario.Cantidad = producto.Cantidad;
+                logInventario.EAN = producto.EAN;
+                if(producto.Email == null || producto.Email == "")
+                {
+                    producto.Email = "LEONISA";
+                }
+                logInventario.Usuario = producto.Email;
+                logInventario.FechaActualizacion = DateTime.Now;
+                await this.logInventarioRepository.Add(logInventario);
                 await this.productoRepository.Update(productoExist);
             }
 

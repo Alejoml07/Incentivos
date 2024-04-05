@@ -845,6 +845,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         {
             data.Id = Guid.NewGuid().ToString();
             data.FechaRedencion = DateTime.Now;
+            data.ValorMovimiento = data.ValorMovimiento * 85;
             //var tender = "";
             //if (data.Usuario.TipoUsuario == "Asesoras Vendedoras")
             //{

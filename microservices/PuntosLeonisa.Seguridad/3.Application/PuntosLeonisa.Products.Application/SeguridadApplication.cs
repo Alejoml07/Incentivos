@@ -354,12 +354,19 @@ public class SeguridadApplication : IUsuarioApplication
 
             if (exist.Pwd != null && exist.Pwd != "")
             {
+                var pwd2 = exist.Pwd;
                 var response = await this.getUsuarioExternalService.GetUsuario(email);
+
                 if (response != null)
                 {
-                    var usuarioLocal = this.usuarioRepository.GetUsuarioByEmail(email).GetAwaiter().GetResult();
-                    mapper.Map(mapper.Map<Usuario>(response), usuarioLocal);
-                    await this.usuarioRepository.Update(usuarioLocal);
+                    var usuarioLocal = await this.usuarioRepository.GetUsuarioByEmail(email);
+                    if (usuarioLocal != null)
+                    {
+                        // Mapeamos las propiedades de response a usuarioLocal
+                        mapper.Map(response, usuarioLocal);
+                        usuarioLocal.Pwd = pwd2;
+                        await this.usuarioRepository.Update(usuarioLocal);
+                    }
                 }
                 return new GenericResponse<bool>() { Result = true };
             }

@@ -28,7 +28,7 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService
                 var email = new EmailDTO()
                 {
                     message = this.securityService.GenerarHTML(urlComplete),
-                    recipients = new string[] { data.Email, "danielmg12361@gmail.com" },
+                    recipients = new string[] {data.Email},
                     subject = "Restablecer contraseña"
                 };
                 var response = this.httpClientAgent.SendMail(email);

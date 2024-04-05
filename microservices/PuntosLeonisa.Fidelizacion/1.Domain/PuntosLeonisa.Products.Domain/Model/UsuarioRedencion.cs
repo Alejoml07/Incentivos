@@ -14,6 +14,8 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
 
         public int? NroPedido { get; set; }
 
+        public int? ValorMovimiento { get; set; }
+
         public Usuario? Usuario { get; set; }
 
         public UsuarioInfoPuntos? InfoPuntos { get; set; }
