@@ -35,6 +35,7 @@ public class ProductContext : DbContext
         modelBuilder.ApplyConfiguration(new ProductosConfiguration());
         modelBuilder.ApplyConfiguration(new UsuariosConfiguration());
         modelBuilder.ApplyConfiguration(new BannerConfiguration());
+        modelBuilder.ApplyConfiguration(new LogInventarioConfiguration());
     }
 }
 

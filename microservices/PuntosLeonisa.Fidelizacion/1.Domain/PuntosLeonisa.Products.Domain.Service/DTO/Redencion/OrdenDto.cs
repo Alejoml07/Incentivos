@@ -22,6 +22,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
         public EstadoOrden? Estado { get; set; }
         public DateTime? FechaRedencion { get; set; }
 
+        public string? ValorMovimiento { get; set; }
 
     }
 
@@ -80,6 +81,9 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
         public string? Marca { get; set; }
 
         public int? Quantity { get; set; }
+
+        public string? Precio { get; set; }
+
     }
 
     public class  UsuarioDtoLite
@@ -93,5 +97,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
         public string? Apellidos { get; set; }
 
         public string? Email { get; set; }
+
+        public string? TipoUsuario { get; set; }
     }
 }

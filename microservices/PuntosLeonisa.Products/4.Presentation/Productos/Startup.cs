@@ -31,7 +31,9 @@ namespace Productos
             //builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddTransient<IProductoRepository, ProductoRepository>();
             builder.Services.AddTransient<IBannerRepository, BannerRepository>();
+            builder.Services.AddTransient<ILogInventarioRepository, LogInventarioRepository>();
             builder.Services.AddScoped<IProductApplication, ProductosApplication>();
+
 
 
             

@@ -17,11 +17,12 @@ public class ProductosApplication : IProductApplication
 {
     private readonly IMapper mapper;
     private readonly IProductoRepository productoRepository;
+    private readonly ILogInventarioRepository logInventarioRepository;
     private readonly IBannerRepository bannerRepository;
     private readonly IProveedorExternalService proveedorExternalService;
     private readonly GenericResponse<ProductoDto> response;
 
-    public ProductosApplication(IMapper mapper, IProductoRepository productoRepository, IProveedorExternalService proveedorExternalService, IBannerRepository bannerRepository)
+    public ProductosApplication(IMapper mapper, IProductoRepository productoRepository, IProveedorExternalService proveedorExternalService, IBannerRepository bannerRepository, ILogInventarioRepository logInventarioRepository)
     {
         if (productoRepository is null)
         {
@@ -30,8 +31,10 @@ public class ProductosApplication : IProductApplication
         this.mapper = mapper;
         this.productoRepository = productoRepository;
         this.bannerRepository = bannerRepository;
+        this.logInventarioRepository = logInventarioRepository;
         this.proveedorExternalService = proveedorExternalService;
         this.response = new GenericResponse<ProductoDto>();
+        this.logInventarioRepository = logInventarioRepository;
     }
 
     public async Task<GenericResponse<ProductoDto>> Add(ProductoDto value)
@@ -100,41 +103,57 @@ public class ProductosApplication : IProductApplication
     }
 
     private static async Task UploadImageToBanner(Banner banner)
-    {
+    {   
         var azureHelper = new AzureHelper("DefaultEndpointsProtocol=https;AccountName=stgactincentivos;AccountKey=mtBoBaUJu8BKcHuCfdWzk1au7Upgif0rlzD+BlfAJZBsvQ02CiGzCNG5gj1li10GF8RpUwz6h+Mj+AStMOwyTA==;EndpointSuffix=core.windows.net");
         if (!string.IsNullOrEmpty(banner.Imagen1))
         {
-            byte[] bytes = Convert.FromBase64String(banner.Imagen1);
-            banner.Imagen1 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            if(!banner.Imagen1.Contains("https://stgactincentivos.blob.core.windows.net"))
+            {
+                byte[] bytes = Convert.FromBase64String(banner.Imagen1);
+                banner.Imagen1 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            }          
         }
         if (!string.IsNullOrEmpty(banner.Imagen2))
         {
-            byte[] bytes = Convert.FromBase64String(banner.Imagen2);
-            banner.Imagen2 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            if (!banner.Imagen2.Contains("https://stgactincentivos.blob.core.windows.net"))
+            {
+                byte[] bytes = Convert.FromBase64String(banner.Imagen2);
+                banner.Imagen2 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            }
         }
         if (!string.IsNullOrEmpty(banner.Imagen3))
         {
-            byte[] bytes = Convert.FromBase64String(banner.Imagen3);
-            banner.Imagen3 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            if (!banner.Imagen3.Contains("https://stgactincentivos.blob.core.windows.net"))
+            {
+                byte[] bytes = Convert.FromBase64String(banner.Imagen3);
+                banner.Imagen3 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            }
         }
         if (!string.IsNullOrEmpty(banner.Imagen4))
         {
-            byte[] bytes = Convert.FromBase64String(banner.Imagen4);
-            banner.Imagen4 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            if (!banner.Imagen4.Contains("https://stgactincentivos.blob.core.windows.net"))
+            {
+                byte[] bytes = Convert.FromBase64String(banner.Imagen4);
+                banner.Imagen4 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            }
         }
         if (!string.IsNullOrEmpty(banner.Imagen5))
         {
-            byte[] bytes = Convert.FromBase64String(banner.Imagen5);
-            banner.Imagen5 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            if (!banner.Imagen5.Contains("https://stgactincentivos.blob.core.windows.net"))
+            {
+                byte[] bytes = Convert.FromBase64String(banner.Imagen5);
+                banner.Imagen5 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            }
         }
         if (!string.IsNullOrEmpty(banner.Imagen6))
         {
-            byte[] bytes = Convert.FromBase64String(banner.Imagen6);
-            banner.Imagen6= await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            if (!banner.Imagen6.Contains("https://stgactincentivos.blob.core.windows.net"))
+            {
+                byte[] bytes = Convert.FromBase64String(banner.Imagen6);
+                banner.Imagen6 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            }
         }
     }
-
-
 
     public async Task<GenericResponse<Tuple<ProductoDto[], List<string>>>> AddRangeProducts(ProductoDto[] value)
     {
@@ -253,6 +272,7 @@ public class ProductosApplication : IProductApplication
     {
         try
         {
+            var logInventario = new LogInventarioDto();
             foreach (var producto in productos)
             {
                 var productoExist = await this.productoRepository.GetById(producto.EAN ?? "");
@@ -261,6 +281,16 @@ public class ProductosApplication : IProductApplication
                     continue;
                 }
                 productoExist.Cantidad = producto.Cantidad;
+                logInventario.Id = Guid.NewGuid().ToString();
+                logInventario.Cantidad = producto.Cantidad;
+                logInventario.EAN = producto.EAN;
+                if(producto.Email == null || producto.Email == "")
+                {
+                    producto.Email = "LEONISA";
+                }
+                logInventario.Usuario = producto.Email;
+                logInventario.FechaActualizacion = DateTime.Now;
+                await this.logInventarioRepository.Add(logInventario);
                 await this.productoRepository.Update(productoExist);
             }
 

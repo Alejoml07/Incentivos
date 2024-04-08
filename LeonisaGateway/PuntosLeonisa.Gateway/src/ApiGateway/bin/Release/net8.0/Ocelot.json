@@ -498,10 +498,6 @@
           "Port": 443
         }
       ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      },
       "Key": "productInventoryRoute"
     },
     {
@@ -545,10 +541,6 @@
           "Port": 443
         }
       ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      },
       "Key": "GetProductByProveedorRoute"
     },
 

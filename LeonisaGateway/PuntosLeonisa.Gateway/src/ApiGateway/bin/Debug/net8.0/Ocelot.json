@@ -498,10 +498,6 @@
           "Port": 443
         }
       ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      },
       "Key": "productInventoryRoute"
     },
     {
@@ -545,11 +541,43 @@
           "Port": 443
         }
       ],
+      "Key": "GetProductByProveedorRoute"
+    },
+
+    {
+      "UpstreamPathTemplate": "/api/Productos/AddBanner",
+      "DownstreamPathTemplate": "/api/Productos/AddBanner",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azproductostest.azurewebsites.net",
+          "Port": 443
+        }
+      ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       },
-      "Key": "GetProductByProveedorRoute"
+      "Key": "AddBannerRoute"
+    },
+
+    {
+      "UpstreamPathTemplate": "/api/Productos/GetBannerById",
+      "DownstreamPathTemplate": "/api/Productos/GetBannerById",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azproductostest.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetBannerByIdRoute"
     },
 
     {

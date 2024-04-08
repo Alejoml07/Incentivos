@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\1.Domain\PuntosLeonisa.Domain.Core\PuntosLeonisa.Domain.Core.csproj" />
     <ProjectReference Include="..\..\1.Domain\PuntosLeonisa.Products.Domain.Service\PuntosLeonisa.Products.Domain.Service.csproj" />
     <ProjectReference Include="..\..\1.Domain\PuntosLeonisa.Products.Domain\PuntosLeonisa.Products.Domain.csproj" />
   </ItemGroup>
