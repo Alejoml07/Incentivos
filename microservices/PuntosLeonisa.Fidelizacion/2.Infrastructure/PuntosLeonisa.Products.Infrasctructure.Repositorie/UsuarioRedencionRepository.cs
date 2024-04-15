@@ -49,6 +49,7 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
 
         public IEnumerable<UsuarioRedencion> GetReporteRedencion(ReporteDto data)
         {
+            data.FechaFin = new DateTime(data.FechaFin.Value.Year, data.FechaFin.Value.Month, data.FechaFin.Value.Day, 23, 59, 59);
             var redencion = this.context.Set<UsuarioRedencion>().Where(x => x.FechaRedencion >= data.FechaInicio && x.FechaRedencion <= data.FechaFin).ToList();
             return redencion;
         }

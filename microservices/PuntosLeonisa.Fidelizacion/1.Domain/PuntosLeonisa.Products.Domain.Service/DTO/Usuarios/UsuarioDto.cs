@@ -28,6 +28,8 @@
 
         public string? Agencia { get; set; }
 
+        public string? CentroCosto { get; set; }
+
         public string? Empresa { get; set; }
 
         public string? contraseña { get; set; }

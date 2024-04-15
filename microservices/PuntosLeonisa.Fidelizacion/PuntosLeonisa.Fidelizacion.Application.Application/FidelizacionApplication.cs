@@ -901,7 +901,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             //ordenOP.ipAddress = "";
             //ordenOP.languageId = 0;
             //ordenOP.loguinUser = "";
-            //ordenOP.macAddress = "";
+            //ordenOP.macAddress = data.Usuario.CentroCosto;
             //ordenOP.memberId = 0;
             //ordenOP.message = "";
             //ordenOP.orderDate = DateTime.Now.ToShortDateString();
@@ -1353,7 +1353,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                     Anio = item.Anho.ToString(),
                     Mes = item.Mes.ToString(),
                     ValorMovimiento = (int?)item.Puntos,
-                    Descripcion = $"Liquidacion de puntos en {item.PuntoVenta} con porcentaje {item.Porcentaje} para la varialbe {item.Id_Variable}",
+                    Descripcion = $"En {item.PuntoVenta} con porcentaje {item.Porcentaje} para la variable {item.Id_Variable}",
                     OrigenMovimiento = "Liquidacion de puntos",
                 };
                 this.unitOfWork.ExtractosRepository.Add(extracto).GetAwaiter().GetResult();
@@ -1521,7 +1521,11 @@ public class FidelizacionApplication : IFidelizacionApplication
             {
                 if (data.FirstOrDefault().OrigenMovimiento == "Puntos Adquiridos")
                 {
-                    var usuario = await this.usuarioExternalService.GetUserByEmail(extracto.Usuario.Email);
+                    var usuario = await this.usuarioExternalService.GetUserLiteByCedula(extracto.Usuario.Cedula);
+                    if(usuario == null)
+                    {
+                        usuario = await this.usuarioExternalService.GetUserByEmail(extracto.Usuario.Email);
+                    }
                     if (usuario != null)
                     {
                         extracto.Id = Guid.NewGuid().ToString();

@@ -94,7 +94,7 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
                     var email = new EmailDTO()
                     {
                         Message = data.GenerarHTML(),
-                        Recipients = new string[] {data?.Usuario?.Email, "nramirez@dissensas.com" },
+                        Recipients = new string[] {data?.Usuario?.Email}, //"nramirez@dissensas.com"
                         Subject = "Redención de premio"
                     };
                     var response = this.httpClientAgent.SendMail(email);
@@ -131,7 +131,7 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
                 var email = new EmailDTO()
                 {
                     Message = data.GenerarHTMLCambioEstado(data.ProductosCarrito.FirstOrDefault().ProveedorLite.Id),
-                    Recipients = new string[] { data?.Usuario?.Email, "danielmg12361@gmail.com" },
+                    Recipients = new string[] { data?.Usuario?.Email},
                     Subject = "Cambios estado premio"
                 };
                 var response = this.httpClientAgent.SendMail(email);

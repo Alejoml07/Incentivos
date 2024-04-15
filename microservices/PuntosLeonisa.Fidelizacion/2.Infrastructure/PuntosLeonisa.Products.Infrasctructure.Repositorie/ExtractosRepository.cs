@@ -35,6 +35,7 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
             }
             else
             {
+                data.FechaFin = new DateTime(data.FechaFin.Value.Year, data.FechaFin.Value.Month, data.FechaFin.Value.Day, 23, 59, 59);
                 var result = await _context.Set<Extractos>().Where(x => x.Fecha >= data.FechaInicio && x.Fecha <= data.FechaFin).ToListAsync();
                 return result;
             }
