@@ -24,6 +24,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.FidelizacionPuntos
         public int? Porcentaje { get; set; }
 
         public int? Id_Variable { get; set; }
+        public string? NombreVariable { get; set; }
 
         public float? Puntos { get; set; }
 

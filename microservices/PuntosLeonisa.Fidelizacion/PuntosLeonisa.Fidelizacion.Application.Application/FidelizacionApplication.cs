@@ -1235,61 +1235,63 @@ public class FidelizacionApplication : IFidelizacionApplication
 
             guardarLiquidacionPuntos(data);
 
-            //buscar la cedula y actualizar el usuarioinfopuntos
-            var cedulas = usuariosEncontrados.Select(x => x.Cedula).Distinct().ToList();
-            foreach (var cedula in cedulas)
-            {
-                var usuario = usuariosEncontrados.Where(p => p?.Cedula == cedula).FirstOrDefault();
-                var usuarioInfoPuntos = this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(usuario?.Email).GetAwaiter().GetResult();
-                if (usuarioInfoPuntos != null)
-                {
-                    var puntos = data.Where(x => x.Cedula == cedula).Sum(x => x.Puntos);
-                    usuarioInfoPuntos.PuntosAcumulados += (int?)puntos;
-                    usuarioInfoPuntos.PuntosDisponibles += (int?)puntos;
-                    await this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuarioInfoPuntos);
+            ////buscar la cedula y actualizar el usuarioinfopuntos
+            //var cedulas = usuariosEncontrados.Select(x => x.Cedula).Distinct().ToList();
+            //foreach (var cedula in cedulas)
+            //{
+            //    var usuario = usuariosEncontrados.Where(p => p?.Cedula == cedula).FirstOrDefault();
+            //    var usuarioInfoPuntos = this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(usuario?.Email).GetAwaiter().GetResult();
+            //    if (usuarioInfoPuntos != null)
+            //    {
+            //        var puntos = data.Where(x => x.Cedula == cedula).Sum(x => x.Puntos);
+            //        usuarioInfoPuntos.PuntosAcumulados += (int?)puntos;
+            //        usuarioInfoPuntos.PuntosDisponibles += (int?)puntos;
+            //        usuarioInfoPuntos.FechaActualizacion = DateTime.Now;
+
+            //        await this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuarioInfoPuntos);
 
 
 
-                }
-                else
-                {
-                    // create new usuarioinfopuntos
+            //    }
+            //    else
+            //    {
+            //        // create new usuarioinfopuntos
 
-                    var puntos = data.Where(x => x?.Cedula == cedula).Sum(x => x.Puntos);
-                    var usuarioInfoPuntosNuevo = new UsuarioInfoPuntos
-                    {
-                        Cedula = cedula,
-                        PuntosAcumulados = (int?)puntos,
-                        PuntosDisponibles = (int?)puntos,
-                        PuntosRedimidos = 0,
-                        PuntosEnCarrito = 0,
-                        Nombres = usuario.Nombres,
-                        Apellidos = usuario.Apellidos,
-                        Email = usuario.Email,
-                        FechaActualizacion = DateTime.Now
+            //        var puntos = data.Where(x => x?.Cedula == cedula).Sum(x => x.Puntos);
+            //        var usuarioInfoPuntosNuevo = new UsuarioInfoPuntos
+            //        {
+            //            Cedula = cedula,
+            //            PuntosAcumulados = (int?)puntos,
+            //            PuntosDisponibles = (int?)puntos,
+            //            PuntosRedimidos = 0,
+            //            PuntosEnCarrito = 0,
+            //            Nombres = usuario.Nombres,
+            //            Apellidos = usuario.Apellidos,
+            //            Email = usuario.Email,
+            //            FechaActualizacion = DateTime.Now
 
-                    };
-                    await this.unitOfWork.UsuarioInfoPuntosRepository.Add(usuarioInfoPuntosNuevo);
+            //        };
+            //        await this.unitOfWork.UsuarioInfoPuntosRepository.Add(usuarioInfoPuntosNuevo);
 
-                    //// add extracto and call function
-                    //var extracto = new Extractos
-                    //{
-                    //    Id = Guid.NewGuid().ToString(),
-                    //    Usuario = usuario,
-                    //    Fecha = DateTime.Now,
-                    //    ValorMovimiento = (int?)puntos,
-                    //    Descripcion = "Liquidacion de puntos",
-                    //    OrigenMovimiento = "Liquidacion de puntos",
-                    //};
-                    //this.unitOfWork.ExtractosRepository.Add(extracto);
+            //        //// add extracto and call function
+            //        //var extracto = new Extractos
+            //        //{
+            //        //    Id = Guid.NewGuid().ToString(),
+            //        //    Usuario = usuario,
+            //        //    Fecha = DateTime.Now,
+            //        //    ValorMovimiento = (int?)puntos,
+            //        //    Descripcion = "Liquidacion de puntos",
+            //        //    OrigenMovimiento = "Liquidacion de puntos",
+            //        //};
+            //        //this.unitOfWork.ExtractosRepository.Add(extracto);
 
 
 
-                }
+            //    }
 
-                this.unitOfWork.SaveChangesSync();
+            //    this.unitOfWork.SaveChangesSync();
 
-            }
+            //}
 
             emailGeneric = new EmailDTO()
             {
@@ -1313,7 +1315,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             {
                 Subject = "Liquidacion de puntos",
                 SenderName = "Mis sueños a un clic",
-                Message = "Se ha realizado la liquidacion de puntos con error " + ex.Message,
+                Message = "Se ha realizado la liquidacion de puntos con error " + ex.Message + " cedula : " + data.FirstOrDefault().Cedula,
                 Recipients = new string[] { "danielmg12361@gmail.com" }
             };
             this.usuarioExternalService.SendMailGeneric(emailGeneric);
@@ -1331,6 +1333,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             Puntos = (int?)x.Puntos,
             Publico = x.Publico,
             Id_Variable = x.Id_Variable,
+            NombreVariable = x.NombreVariable,
             PuntoVenta = x.PuntoVenta,
             Usuario = x.Usuario,
             Cedula = x.Cedula
@@ -1353,7 +1356,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                     Anio = item.Anho.ToString(),
                     Mes = item.Mes.ToString(),
                     ValorMovimiento = (int?)item.Puntos,
-                    Descripcion = $"En {item.PuntoVenta} con porcentaje {item.Porcentaje} para la variable {item.Id_Variable}",
+                    Descripcion = $"En {item.PuntoVenta} con porcentaje {item.Porcentaje} para la variable {item.NombreVariable}",
                     OrigenMovimiento = "Liquidacion de puntos",
                 };
                 this.unitOfWork.ExtractosRepository.Add(extracto).GetAwaiter().GetResult();
