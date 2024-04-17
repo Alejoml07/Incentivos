@@ -195,6 +195,31 @@ public class SeguridadApplication : IUsuarioApplication
     public async Task<GenericResponse<UsuarioDto>> GetById(string id)
     {
         var responseRawData = await usuarioRepository.GetById(id);
+        if (responseRawData == null)
+        {
+            var response2 = await this.getUsuarioExternalService.GetUsuarioByCedula(id);
+
+            if (response2 == null)
+            {
+                response.IsSuccess = false;
+                return response;
+            }
+            else
+            {
+                var usuario = mapper.Map<Usuario>(response2);
+                usuario.Id = Guid.NewGuid().ToString();
+                usuario.Email = usuario.Email.Trim();
+                usuario.Celular = usuario.Celular.Trim();
+                usuario.Cedula = usuario.Cedula.Trim();
+                usuario.TipoUsuario = "Asesoras vendedoras";
+                await usuarioRepository.Add(usuario);
+
+                var responseData2 = mapper.Map<UsuarioDto>(usuario);
+                response.Result = responseData2;
+
+                return response;
+            }
+        }
         var responseData = mapper.Map<UsuarioDto>(responseRawData);
         response.Result = responseData;
 

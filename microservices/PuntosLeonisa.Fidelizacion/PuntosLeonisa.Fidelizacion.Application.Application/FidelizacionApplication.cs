@@ -16,8 +16,10 @@ using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Helpers;
 using PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces;
 using PuntosLeonisa.Products.Domain.Model;
 using PuntosLeonisa.Seguridad.Application.Core;
+using System;
 using System.Data;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 
 namespace PuntosLeonisa.Fidelizacion.Application;
 
@@ -1004,7 +1006,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             await this.unitOfWork.UsuarioRedencionRepository.Add(data);
             this.unitOfWork.SaveChangesSync();
 
-            return new GenericResponse<bool> 
+            return new GenericResponse<bool>
             {
                 Result = true
             };
@@ -1311,11 +1313,21 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
         catch (Exception ex)
         {
+            StringBuilder sb = new StringBuilder(ex.Message);
+            Exception auxException = ex.InnerException;
+            while (auxException != null)
+            {
+                sb.Append(auxException.Message);
+                sb.Append("-");
+                auxException = auxException.InnerException;
+            }
+
+            var mensaje = $" La  cedula : {data.FirstOrDefault().Cedula} Se ha realizado la liquidacion de puntos con error {sb.ToString()}";
             var emailGeneric = new EmailDTO()
             {
                 Subject = "Liquidacion de puntos",
                 SenderName = "Mis sueños a un clic",
-                Message = "Se ha realizado la liquidacion de puntos con error " + ex.Message + " cedula : " + data.FirstOrDefault().Cedula,
+                Message = mensaje,
                 Recipients = new string[] { "danielmg12361@gmail.com" }
             };
             this.usuarioExternalService.SendMailGeneric(emailGeneric);
@@ -1453,7 +1465,7 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         //var extractos = await this.unitOfWork.ExtractosRepository.GetByPredicateAsync(p => p.OrigenMovimiento == "Liquidacion de puntos" && p.Mes == "2");
         ////var extractosSinUsuario = extractos.Where(x => x.Usuario == null).ToList();
-        var fidelizacionPuntos = await this.unitOfWork.FidelizacionPuntosRepository.GetByPredicateAsync(p=> p.Mes ==2);
+        var fidelizacionPuntos = await this.unitOfWork.FidelizacionPuntosRepository.GetByPredicateAsync(p => p.Mes == 2);
 
         //foreach (var extracto in extractos)
         //{
@@ -1482,7 +1494,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                 OrigenMovimiento = "Liquidacion de puntos",
                 Mes = item.Mes.ToString(),
                 Anio = item.Anho.ToString()
-               
+
             };
             extractosCreados.Add(extracto);
             await this.unitOfWork.ExtractosRepository.Add(extracto);
@@ -1525,7 +1537,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                 if (data.FirstOrDefault().OrigenMovimiento == "Puntos Adquiridos")
                 {
                     var usuario = await this.usuarioExternalService.GetUserLiteByCedula(extracto.Usuario.Cedula);
-                    if(usuario == null)
+                    if (usuario == null)
                     {
                         usuario = await this.usuarioExternalService.GetUserByEmail(extracto.Usuario.Email);
                     }
@@ -1796,6 +1808,7 @@ public class FidelizacionApplication : IFidelizacionApplication
 
             item.PuntosAcumulados = (int?)puntosAcumulados;
             item.PuntosDisponibles = (int?)puntosDisponibles;
+            item.FechaActualizacion = DateTime.Now;
             this.unitOfWork.UsuarioInfoPuntosRepository.Update(item);
         }
 
