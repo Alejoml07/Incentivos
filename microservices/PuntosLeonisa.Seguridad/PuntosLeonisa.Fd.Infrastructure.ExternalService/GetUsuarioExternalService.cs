@@ -37,5 +37,20 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService
                 return null;
             }
         }
+
+        public async Task<UsuarioDto> GetUsuarioByCedula(string cedula)
+        {
+            try
+            {
+                var azf = $"https://appsvcnpsecurity.azurewebsites.net/api/Persona/ValidarUsuarioParaIncentivosPorCedula/{cedula}";
+                var response = await httpClientAgent.GetRequest<UsuarioDto>(new Uri(azf));
+                return response;
+            }
+            catch (Exception ex)
+            {
+
+                return null;
+            }
+        }
     }
 }
