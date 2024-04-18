@@ -36,7 +36,7 @@
               "RelativeDocumentMoniker": "src\\ApiGateway\\Ocelot-Prod.json",
               "ToolTip": "C:\\PL.BackEnd\\IncentivosService\\LeonisaGateway\\PuntosLeonisa.Gateway\\src\\ApiGateway\\Ocelot-Prod.json",
               "RelativeToolTip": "src\\ApiGateway\\Ocelot-Prod.json",
-              "ViewState": "AQIAAGcCAAAAAAAAAADwv0wCAAAnAAAA",
+              "ViewState": "AQIAAPgDAAAAAAAAAAAkwAgEAAA/AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2024-03-22T12:41:47.612Z",
               "IsPinned": true,
@@ -53,7 +53,8 @@
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2024-04-01T20:36:06.163Z",
-              "IsPinned": true
+              "IsPinned": true,
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -78,7 +79,8 @@
               "RelativeToolTip": "src\\ApiGateway\\Ocelot.json",
               "ViewState": "AQIAABECAAAAAAAAAADwvxsCAAA0AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-02-19T14:53:57.46Z"
+              "WhenOpened": "2024-02-19T14:53:57.46Z",
+              "EditorCaption": ""
             }
           ]
         }

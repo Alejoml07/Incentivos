@@ -36,7 +36,6 @@ namespace Productos
             builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             builder.Services.AddScoped<IProveedorRepository, ProveedorRepository>();
             builder.Services.AddScoped<ITokenRepository, TokenRepository>();
-            builder.Services.AddScoped<IPuntoDeVentaRepository, PuntoDeVentaRepository>();
             //Add Service
 
             builder.Services.AddScoped<IHttpClientAgent, HttpClientAgents>();

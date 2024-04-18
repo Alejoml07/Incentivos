@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace PuntosLeonisa.Seguridad.Infrasctructure.Repositorie
 {
-    public class PuntoDeVentaRepository : Repository<PuntoDeVenta>, IPuntoDeVentaRepository
+    public class PuntoDeVentaRepository : Repository<PuntoDeVenta>
     {
         internal SeguridadContext _context;
         public PuntoDeVentaRepository(SeguridadContext context) : base(context)

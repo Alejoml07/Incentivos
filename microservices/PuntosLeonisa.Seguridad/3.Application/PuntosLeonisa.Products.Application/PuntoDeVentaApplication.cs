@@ -2,6 +2,8 @@
 using PuntosLeonisa.Seguridad.Application.Core;
 using PuntosLeonisa.Seguridad.Domain.Interfaces;
 using PuntosLeonisa.Seguridad.Domain.Model;
+using PuntosLeonisa.Seguridad.Domain.Service.DTO.PuntosDeVenta;
+using PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios;
 using PuntosLeonisa.Seguridad.Domain.Service.Interfaces;
 using PuntosLeonisa.Seguridad.Infrasctructure.Common.Communication;
 
@@ -12,7 +14,7 @@ namespace PuntosLeonisa.Seguridad.Application
         private readonly IMapper mapper;
         private readonly IUsuarioRepository usuarioRepository;
         private readonly IPuntoDeVentaRepository puntoDeVentaRepository;
-        private readonly GenericResponse<PuntoDeVenta> response;
+        private readonly GenericResponse<PuntoDeVentaDto> response;
 
         public PuntoDeVentaApplication(IMapper mapper, IUsuarioRepository usuarioRepository, IPuntoDeVentaRepository puntoDeVentaRepository)
         {
@@ -24,10 +26,10 @@ namespace PuntosLeonisa.Seguridad.Application
             this.mapper = mapper;
             this.usuarioRepository = usuarioRepository;
             this.puntoDeVentaRepository = puntoDeVentaRepository;
-            response = new GenericResponse<PuntoDeVenta>();
+            response = new GenericResponse<PuntoDeVentaDto>();
         }
 
-        public async Task<GenericResponse<PuntoDeVenta>> Add(PuntoDeVenta value)
+        public async Task<GenericResponse<PuntoDeVentaDto>> Add(PuntoDeVentaDto value)
         {
             try
             {
@@ -52,12 +54,12 @@ namespace PuntosLeonisa.Seguridad.Application
             
         }
 
-        public Task<GenericResponse<PuntoDeVenta[]>> AddRange(PuntoDeVenta[] value)
+        public Task<GenericResponse<PuntoDeVentaDto[]>> AddRange(PuntoDeVentaDto[] value)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<GenericResponse<PuntoDeVenta>> Delete(PuntoDeVenta value)
+        public async Task<GenericResponse<PuntoDeVentaDto>> Delete(PuntoDeVentaDto value)
         {
             try
             {
@@ -65,7 +67,7 @@ namespace PuntosLeonisa.Seguridad.Application
                 if (response != null)
                 {
                     await this.puntoDeVentaRepository.Delete(value);
-                    return new GenericResponse<PuntoDeVenta>
+                    return new GenericResponse<PuntoDeVentaDto>
                     {
                         IsSuccess = true,
                         Message = "Punto de venta eliminado correctamente"
@@ -73,7 +75,7 @@ namespace PuntosLeonisa.Seguridad.Application
                 }
                 else
                 {
-                    return new GenericResponse<PuntoDeVenta>
+                    return new GenericResponse<PuntoDeVentaDto>
                     {
                         IsSuccess = false,
                         Message = "El punto de venta no existe"
@@ -88,19 +90,19 @@ namespace PuntosLeonisa.Seguridad.Application
             
         }
 
-        public Task<GenericResponse<PuntoDeVenta>> DeleteById(string id)
+        public Task<GenericResponse<PuntoDeVentaDto>> DeleteById(string id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<GenericResponse<IEnumerable<PuntoDeVenta>>> GetAll()
+        public async Task<GenericResponse<IEnumerable<PuntoDeVentaDto>>> GetAll()
         {
             try
             {
                 var response = await this.puntoDeVentaRepository.GetAll();
                 if(response != null)
                 {
-                    return new GenericResponse<IEnumerable<PuntoDeVenta>>
+                    return new GenericResponse<IEnumerable<PuntoDeVentaDto>>
                     {
                         IsSuccess = true,
                         Message = "Puntos de venta encontrados",
@@ -109,7 +111,7 @@ namespace PuntosLeonisa.Seguridad.Application
                 }
                 else
                 {
-                    return new GenericResponse<IEnumerable<PuntoDeVenta>>
+                    return new GenericResponse<IEnumerable<PuntoDeVentaDto>>
                     {
                         IsSuccess = false,
                         Message = "No se encontraron puntos de venta",
@@ -127,14 +129,14 @@ namespace PuntosLeonisa.Seguridad.Application
             
         }
 
-        public async Task<GenericResponse<PuntoDeVenta>> GetById(string id)
+        public async Task<GenericResponse<PuntoDeVentaDto>> GetById(string id)
         {
             try
             {
                 var response = await this.puntoDeVentaRepository.GetById(id);
                 if (response != null)
                 {
-                    return new GenericResponse<PuntoDeVenta>
+                    return new GenericResponse<PuntoDeVentaDto>
                     {
                         IsSuccess = true,
                         Message = "Punto de venta encontrado",
@@ -143,7 +145,7 @@ namespace PuntosLeonisa.Seguridad.Application
                 }
                 else
                 {
-                    return new GenericResponse<PuntoDeVenta>
+                    return new GenericResponse<PuntoDeVentaDto>
                     {
                         IsSuccess = false,
                         Message = "Punto de venta no encontrado",
@@ -158,7 +160,8 @@ namespace PuntosLeonisa.Seguridad.Application
             }
         }
 
-        public Task<GenericResponse<PuntoDeVenta>> Update(PuntoDeVenta value)
+
+        public Task<GenericResponse<PuntoDeVentaDto>> Update(PuntoDeVentaDto value)
         {
             throw new NotImplementedException();
         }

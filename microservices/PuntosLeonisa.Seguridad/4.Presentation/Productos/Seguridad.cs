@@ -14,7 +14,6 @@ using PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios;
 using PuntosLeonisa.Seguridad.Application.Core;
 using System.Collections.Generic;
 using PuntosLeonisa.Seguridad.Domain.Service.Interfaces;
-using PuntosLeonisa.Seguridad.Application;
 
 namespace Usuarios
 {
