@@ -66,10 +66,7 @@ app.Use(async (context, next) =>
 
     if (context.Request.Headers.Any(p => p.Key == "keyApi"))
     {
-<<<<<<< HEAD
-=======
 
->>>>>>> 57dcb672b378c3d32c4c67e53271acbc507cd4d6
         //if (!ValidarUrlOrigen(urlOrigen))
         //{
         //    context.Response.StatusCode = 403; // Prohibido
