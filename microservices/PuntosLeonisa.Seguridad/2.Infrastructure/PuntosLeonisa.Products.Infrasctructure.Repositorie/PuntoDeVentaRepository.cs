@@ -1,8 +1,10 @@
-﻿using PuntosLeonisa.Infrasctructure.Core.Repository;
+﻿using PuntosLeonisa.Domain.Core.Repository;
+using PuntosLeonisa.Infrasctructure.Core.Repository;
 using PuntosLeonisa.infrastructure.Persistence.CosmoDb;
 using PuntosLeonisa.Products.Domain.Model;
 using PuntosLeonisa.Seguridad.Domain.Interfaces;
 using PuntosLeonisa.Seguridad.Domain.Model;
+using PuntosLeonisa.Seguridad.Domain.Service.DTO.PuntosDeVenta;
 using PuntosLeonisa.Seguridad.Domain.Service.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace PuntosLeonisa.Seguridad.Infrasctructure.Repositorie
 {
-    public class PuntoDeVentaRepository : Repository<PuntoDeVenta>
+    public class PuntoDeVentaRepository : Repository<PuntoDeVenta>, IPuntoDeVentaRepository
     {
         internal SeguridadContext _context;
         public PuntoDeVentaRepository(SeguridadContext context) : base(context)

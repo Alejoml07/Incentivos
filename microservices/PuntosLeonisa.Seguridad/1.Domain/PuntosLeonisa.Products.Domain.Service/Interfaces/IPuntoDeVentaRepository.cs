@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PuntosLeonisa.Seguridad.Domain.Service.Interfaces
 {
-    public interface IPuntoDeVentaRepository : IRepository<PuntoDeVentaDto>
+    public interface IPuntoDeVentaRepository : IRepository<PuntoDeVenta>
     {
     }
 }

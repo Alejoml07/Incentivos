@@ -396,6 +396,81 @@
       "Key": "GetUsuarioBasicRoute"
     },
     //Termina Usuario
+
+
+    //Comienza Puntos De Venta
+
+    {
+      "UpstreamPathTemplate": "/api/AddPuntoDeVenta",
+      "DownstreamPathTemplate": "/api/AddPuntoDeVenta",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azseguridadtest.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "AddPuntoDeVentaRoute"
+    },
+
+    {
+      "UpstreamPathTemplate": "/api/PuntosDeVenta/GetPuntosDeVenta",
+      "DownstreamPathTemplate": "/api/PuntosDeVenta/GetPuntosDeVenta",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azseguridadtest.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetPuntosDeVentaRoute"
+    },
+
+    {
+      "UpstreamPathTemplate": "/api/PuntoDeVenta/GetPuntoDeVenta/{id}",
+      "DownstreamPathTemplate": "/api/PuntoDeVenta/GetPuntoDeVenta/{id}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azseguridadtest.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetPuntoDeVentaRoute"
+    },
+
+    {
+      "UpstreamPathTemplate": "/api/PuntosDeVenta/DeletePuntoDeVenta/{id}",
+      "DownstreamPathTemplate": "/api/PuntosDeVenta/DeletePuntoDeVenta/{id}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azseguridadtest.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "DeletePuntoDeVentaRoute"
+    },
     //Empieza productos
     {
       "UpstreamPathTemplate": "/api/Productos/Producto",
@@ -542,42 +617,6 @@
         }
       ],
       "Key": "GetProductByProveedorRoute"
-    },
-
-    {
-      "UpstreamPathTemplate": "/api/Productos/AddBanner",
-      "DownstreamPathTemplate": "/api/Productos/AddBanner",
-      "DownstreamScheme": "https",
-      "UpstreamHttpMethod": [ "Post" ],
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "azproductostest.azurewebsites.net",
-          "Port": 443
-        }
-      ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      },
-      "Key": "AddBannerRoute"
-    },
-
-    {
-      "UpstreamPathTemplate": "/api/Productos/GetBannerById",
-      "DownstreamPathTemplate": "/api/Productos/GetBannerById",
-      "DownstreamScheme": "https",
-      "UpstreamHttpMethod": [ "Post" ],
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "azproductostest.azurewebsites.net",
-          "Port": 443
-        }
-      ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      },
-      "Key": "GetBannerByIdRoute"
     },
 
     {

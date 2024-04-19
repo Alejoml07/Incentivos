@@ -95,9 +95,9 @@ C:\SourceCode\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGate
 C:\SourceCode\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\obj\Debug\net8.0\ApiGateway.genruntimeconfig.cache
 C:\SourceCode\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\obj\Debug\net8.0\ref\ApiGateway.dll
 C:\PL.BackEnd\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\bin\Debug\net8.0\appsettings.Development.json
-C:\PL.BackEnd\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\bin\Debug\net8.0\Ocelot-Relese.json
 C:\PL.BackEnd\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\bin\Debug\net8.0\appsettings.json
 C:\PL.BackEnd\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\bin\Debug\net8.0\Ocelot-Prod.json
+C:\PL.BackEnd\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\bin\Debug\net8.0\Ocelot-Relese.json
 C:\PL.BackEnd\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\bin\Debug\net8.0\Ocelot.json
 C:\PL.BackEnd\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\bin\Debug\net8.0\ApiGateway.exe
 C:\PL.BackEnd\IncentivosService\LeonisaGateway\PuntosLeonisa.Gateway\src\ApiGateway\bin\Debug\net8.0\ApiGateway.deps.json

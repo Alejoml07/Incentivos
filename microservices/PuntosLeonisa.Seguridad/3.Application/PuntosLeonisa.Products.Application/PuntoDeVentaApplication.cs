@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.Azure.Cosmos.Serialization.HybridRow.Schemas;
+using PuntosLeonisa.Products.Application.Core.Interfaces;
+using PuntosLeonisa.Products.Domain.Model;
 using PuntosLeonisa.Seguridad.Application.Core;
 using PuntosLeonisa.Seguridad.Domain.Interfaces;
 using PuntosLeonisa.Seguridad.Domain.Model;
@@ -6,17 +9,17 @@ using PuntosLeonisa.Seguridad.Domain.Service.DTO.PuntosDeVenta;
 using PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios;
 using PuntosLeonisa.Seguridad.Domain.Service.Interfaces;
 using PuntosLeonisa.Seguridad.Infrasctructure.Common.Communication;
+using PuntosLeonisa.Seguridad.Infrasctructure.Repositorie;
 
 namespace PuntosLeonisa.Seguridad.Application
 {
     public class PuntoDeVentaApplication : IPuntoDeVentaApplication
     {
         private readonly IMapper mapper;
-        private readonly IUsuarioRepository usuarioRepository;
         private readonly IPuntoDeVentaRepository puntoDeVentaRepository;
         private readonly GenericResponse<PuntoDeVentaDto> response;
 
-        public PuntoDeVentaApplication(IMapper mapper, IUsuarioRepository usuarioRepository, IPuntoDeVentaRepository puntoDeVentaRepository)
+        public PuntoDeVentaApplication(IMapper mapper, IPuntoDeVentaRepository puntoDeVentaRepository)
         {
             if (puntoDeVentaRepository is null)
             {
@@ -24,7 +27,6 @@ namespace PuntosLeonisa.Seguridad.Application
             }
 
             this.mapper = mapper;
-            this.usuarioRepository = usuarioRepository;
             this.puntoDeVentaRepository = puntoDeVentaRepository;
             response = new GenericResponse<PuntoDeVentaDto>();
         }
@@ -33,16 +35,19 @@ namespace PuntosLeonisa.Seguridad.Application
         {
             try
             {
-                var puntoDeVenta = this.puntoDeVentaRepository.GetById(value.Id);
+                var puntoDeVenta = await this.puntoDeVentaRepository.GetById(value.Id ?? "");
                 if (puntoDeVenta != null)
                 {
-                    await this.puntoDeVentaRepository.Update(value);
+                    //agregar mapping de datos de punto de venta
+
+                    await this.puntoDeVentaRepository.Update(puntoDeVenta);
                     return response;
                 }
                 else
                 {
+                    var punto = this.mapper.Map<PuntoDeVenta>(value);
                     value.Id = Guid.NewGuid().ToString();
-                    await this.puntoDeVentaRepository.Add(value);
+                    await this.puntoDeVentaRepository.Add(punto);
                     return response;
                 }
             }
@@ -59,74 +64,38 @@ namespace PuntosLeonisa.Seguridad.Application
             throw new NotImplementedException();
         }
 
-        public async Task<GenericResponse<PuntoDeVentaDto>> Delete(PuntoDeVentaDto value)
-        {
-            try
-            {
-                var response = await this.puntoDeVentaRepository.GetById(value.Id);
-                if (response != null)
-                {
-                    await this.puntoDeVentaRepository.Delete(value);
-                    return new GenericResponse<PuntoDeVentaDto>
-                    {
-                        IsSuccess = true,
-                        Message = "Punto de venta eliminado correctamente"
-                    };
-                }
-                else
-                {
-                    return new GenericResponse<PuntoDeVentaDto>
-                    {
-                        IsSuccess = false,
-                        Message = "El punto de venta no existe"
-                    };
-                }
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            
-        }
-
-        public Task<GenericResponse<PuntoDeVentaDto>> DeleteById(string id)
+        public Task<GenericResponse<PuntoDeVentaDto>> Delete(PuntoDeVentaDto value)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<GenericResponse<IEnumerable<PuntoDeVentaDto>>> GetAll()
+        public async Task<GenericResponse<PuntoDeVentaDto>> DeleteById(string id)
         {
             try
             {
-                var response = await this.puntoDeVentaRepository.GetAll();
-                if(response != null)
-                {
-                    return new GenericResponse<IEnumerable<PuntoDeVentaDto>>
-                    {
-                        IsSuccess = true,
-                        Message = "Puntos de venta encontrados",
-                        Result = response
-                    };
-                }
-                else
-                {
-                    return new GenericResponse<IEnumerable<PuntoDeVentaDto>>
-                    {
-                        IsSuccess = false,
-                        Message = "No se encontraron puntos de venta",
-                        Result = null
+                var ToDelete = await this.puntoDeVentaRepository.GetById(id) ?? throw new ArgumentException("Usuario no encontrado");
 
-                    };
-                }
-                
+                await puntoDeVentaRepository.Delete(ToDelete);
+                response.Result = mapper.Map<PuntoDeVentaDto>(ToDelete);
+                return response;
             }
             catch (Exception)
             {
-
                 throw;
             }
-            
+        }
+
+        public async Task<GenericResponse<IEnumerable<PuntoDeVentaDto>>> GetAll()
+        {
+            var puntos = await puntoDeVentaRepository.GetAll();
+            var PuntoDto = mapper.Map<PuntoDeVentaDto[]>(puntos);
+            var responseOnly = new GenericResponse<IEnumerable<PuntoDeVentaDto>>
+            {
+                Result = PuntoDto
+            };
+
+            return responseOnly;
+
         }
 
         public async Task<GenericResponse<PuntoDeVentaDto>> GetById(string id)
@@ -134,13 +103,14 @@ namespace PuntosLeonisa.Seguridad.Application
             try
             {
                 var response = await this.puntoDeVentaRepository.GetById(id);
+                var responseDto = this.mapper.Map<PuntoDeVentaDto>(response);
                 if (response != null)
                 {
                     return new GenericResponse<PuntoDeVentaDto>
                     {
                         IsSuccess = true,
                         Message = "Punto de venta encontrado",
-                        Result = response
+                        Result = responseDto
                     };
                 }
                 else

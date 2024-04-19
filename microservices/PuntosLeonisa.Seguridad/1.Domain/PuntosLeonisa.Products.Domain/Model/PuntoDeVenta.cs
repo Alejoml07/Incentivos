@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PuntosLeonisa.Seguridad.Domain.Model
 {
-    public class PuntoDeVenta
+    public class PuntoDeVenta : IDisposable
     {
         public string? Id { get; set; }
         public string? Nombre { get; set; }
@@ -19,5 +20,15 @@ namespace PuntosLeonisa.Seguridad.Domain.Model
         public DateTime? FechaActualizacion { get; set; }
         public int? Eliminado { get; set; }
 
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+
+            return JsonConvert.SerializeObject(this, Formatting.Indented);
+        }
     }
 }
