@@ -29,10 +29,10 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
             return response;
         }
 
-        public async Task<int> GetNroOrdenOP(NroPedidoOP nroOrden)
+        public async Task<ResultNroPedidoOp> GetNroOrdenOP(NroPedidoOP nroOrden)
         {
             var azf = $"{_configuration["AzfGenerateRDL"]}{_configuration["GenerateConsecutiveOrderRDL"]}";
-            var response = await httpClientAgent.PostRequest<int, NroPedidoOP>(new Uri(azf), nroOrden);
+            var response = await httpClientAgent.PostRequest<ResultNroPedidoOp, NroPedidoOP>(new Uri(azf), nroOrden);
             return response;
         }
     }

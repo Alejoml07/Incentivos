@@ -89,6 +89,7 @@ namespace Logistic.Infrastructure.Agents.AgentsImpl
                 var TransientErrorRetryPolicy = _transientRetry.GetTransientRetry();
                 var httpClient = _httpClientFactory.CreateClient();
                 httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+                httpClient.DefaultRequestHeaders.Add("Authorization", _configuration["Authorization"]);
                 var resultData = await CircuitBreakerPolicy.ExecuteAsync(() =>
                         TransientErrorRetryPolicy.ExecuteAsync(() =>
                         httpClient.PostAsync(requestUrl, contentHttp))
@@ -115,7 +116,10 @@ namespace Logistic.Infrastructure.Agents.AgentsImpl
                 var TransientErrorRetryPolicy = _transientRetry.GetTransientRetry();
                 var httpClient = _httpClientFactory.CreateClient();
                 httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
-                httpClient.DefaultRequestHeaders.Add("Authorization", _configuration["Authorization"]);
+                httpClient.DefaultRequestHeaders.Add("user", _configuration["userOp"]);
+                httpClient.DefaultRequestHeaders.Add("password", _configuration["passwordOp"]);
+                //convierte el usuario y contraseña en base64
+                var byteArray = Encoding.ASCII.GetBytes($"{_configuration["userOp"]}:{_configuration["passwordOp"]}");
                 httpClient.DefaultRequestHeaders.Add("AuthenticationToken", _configuration["AuthenticationTokenAPI"]);
                 var resultData = await CircuitBreakerPolicy.ExecuteAsync(() =>
                         TransientErrorRetryPolicy.ExecuteAsync(() =>

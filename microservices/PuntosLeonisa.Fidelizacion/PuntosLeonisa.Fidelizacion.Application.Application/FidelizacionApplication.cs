@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Azure;
+using Polly.Caching;
 using PuntosLeonisa.fidelizacion.Domain.Service.DTO.PuntosManuales;
 using PuntosLeonisa.Fidelizacion.Application.Core.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
@@ -841,6 +842,31 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
     }
 
+
+    public static string AsignarCodigo(string codigo)
+    {
+        // Diccionario de departamentos y sus códigos
+        Dictionary<string, string> centroCosto = new Dictionary<string, string>
+    {
+        { "BARRANQUILLA", "060387" },
+        { "BOGOTA", "030545" },
+        { "CALI", "041705" },
+        { "MEDELLIN", "022754" },
+        
+    };
+
+        // Verificar si el departamento está en el diccionario
+        if (centroCosto.ContainsKey(codigo.ToUpper()))
+        {
+            return centroCosto[codigo.ToUpper()];
+        }
+        else
+        {
+            return codigo;
+        }
+    }
+
+
     public async Task<GenericResponse<bool>> CreateRedencion(UsuarioRedencion data)
     {
         try
@@ -848,154 +874,171 @@ public class FidelizacionApplication : IFidelizacionApplication
             data.Id = Guid.NewGuid().ToString();
             data.FechaRedencion = DateTime.Now;
             data.ValorMovimiento = data.ValorMovimiento * 85;
-            //var tender = "";
-            //if (data.Usuario.TipoUsuario == "Asesoras Vendedoras")
-            //{
-            //    tender = "REL";
-            //}
-            //else
-            //{
-            //    tender = "REV";
-            //}
-            //var ordenOP = new OrdenOP();
-            //var operationType = new NroPedidoOP
-            //{
-            //    operationType = "Pedido"
-            //};
-            //var result = new ResultNroPedidoOp();
-            //if (data.ProductosCarrito.Any(p => p.ProveedorLite.Nit == "800081664"))
-            //{
-            //    //result.sequentialGenerated = this.ordenOPExternalService.GetNroOrdenOP(operationType).GetAwaiter().GetResult();
-            //}
-            //ordenOP.additionalField5 = "";
-            //ordenOP.allowBackOrder = "Y";
-            //ordenOP.avscode = "";
-            //ordenOP.baseSubTotal = ((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity)) / 1.19;
-            //ordenOP.billingInformation = new BillingInformation
-            //{
-            //    addressLine1 = data.Envio.DireccionBasic,
-            //    addressLine2 = data.Envio.DireccionComplemento,
-            //    addressLine3 = "",
-            //    city = data.Envio.Ciudad,
-            //    colonia = "",
-            //    companyName = "",
-            //    country = "CO",
-            //    emailAddress = data.Envio.Email,
-            //    firstName = data.Envio.Nombres,
-            //    lastName = data.Envio.Apellidos,
-            //    middleInitial = "",
-            //    municipioDelegacion = data.Envio.Departamento,
-            //    phoneNumber = data.Envio.Celular,
-            //    stateProvince = AsignarDepartamento(data.Envio.Departamento), //HACER TRABLA DE ASIGNACION
-            //    zipCode = "",
-            //};
+            var tender = "";
+            double basesubtotalConDosDecimales = Math.Round(((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity)) / 1.19, 2);
+            double subtotalConDosDecimales = Math.Round(((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity)) / 1.19, 2);
+            double taxConDosDecimales = Math.Round(((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) / 1.19) * 0.19, 2);
+            double totalConDosDecimales = Math.Round((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity), 2);
+            if (data.Usuario.TipoUsuario == "Asesoras vendedoras")
+            {
+                tender = "REL";
+            }
+            else
+            {
+                tender = "REV";
+            }
+            var ordenop = new OrdenOP();
+            var operationtype = new NroPedidoOP();
+            var result = new ResultNroPedidoOp();
+            if(data.ProductosCarrito.Any(p => p.ProveedorLite.Nit == "800081664"))
+{
+                if (this.ordenOPExternalService != null)
+                {
+                    result = this.ordenOPExternalService.GetNroOrdenOP(operationtype).GetAwaiter().GetResult();
+                }
+                else
+                {
+                    // Manejar el caso en que ordenOPExternalService sea null
+                    // Puedes lanzar una excepción, registrar un mensaje de error, o tomar otra acción apropiada
+                    throw new Exception("La instancia de ordenOPExternalService es nula.");
+                }
+            }
+            ordenop.additionalField5 = "";
+            ordenop.allowBackOrder = "y";
+            ordenop.avscode = "";
+            ordenop.baseSubTotal = basesubtotalConDosDecimales;
+            ordenop.billingInformation = new BillingInformation
+            {
+                addressLine1 = data.Envio.DireccionBasic,
+                addressLine2 = data.Envio.DireccionComplemento,
+                addressLine3 = "",
+                city = data.Envio.Ciudad,
+                colonia = "",
+                companyName = "",
+                country = "co",
+                emailAddress = data.Envio.Email,
+                firstName = data.Envio.Nombres,
+                lastName = data.Envio.Apellidos,
+                middleInitial = "",
+                municipioDelegacion = data.Envio.Ciudad,
+                phoneNumber = data.Envio.Celular,
+                stateProvince = AsignarDepartamento(data.Envio.Departamento), 
+                zipCode = "",
+            };
 
-            //ordenOP.cid_CVV2Response = "";
-            //ordenOP.comments = "";
-            //ordenOP.countryCode = "574";
-            //ordenOP.discount = 0;
-            //ordenOP.dniID = data.Usuario.Cedula;
-            //ordenOP.expirationDate = "";
-            //ordenOP.freeShipping = false;
-            //ordenOP.giftCertificateAmount = 0;
-            //ordenOP.giftWrapping = "0";
-            //ordenOP.invoice = "";
-            //ordenOP.ipAddress = "";
-            //ordenOP.languageId = 0;
-            //ordenOP.loguinUser = "";
-            //ordenOP.macAddress = data.Usuario.CentroCosto;
-            //ordenOP.memberId = 0;
-            //ordenOP.message = "";
-            //ordenOP.orderDate = DateTime.Now.ToShortDateString();
-            //ordenOP.orderNumber = (int)result.sequentialGenerated;
-            //ordenOP.orderRecipient = new OrderRecipient
-            //{
-            //    items = new List<Item>(),
-            //    address = new Address
-            //    {
-            //        addressLine1 = data.Envio.DireccionBasic,
-            //        addressLine2 = data.Envio.DireccionComplemento,
-            //        addressLine3 = "",
-            //        city = data.Envio.Ciudad,
-            //        colonia = "",
-            //        companyName = "",
-            //        country = "CO",
-            //        emailAddress = data.Envio.Email,
-            //        firstName = data.Envio.Nombres,
-            //        lastName = data.Envio.Apellidos,
-            //        middleInitial = "",
-            //        municipioDelegacion = data.Envio.Departamento,
-            //        phoneNumber = data.Envio.Celular,
-            //        stateProvince = AsignarDepartamento(data.Envio.Departamento), //HACER TRABLA DE ASIGNACION
-            //        zipCode = ""
-            //    },
+            ordenop.cid_CVV2Response = "";
+            ordenop.comments = "";
+            ordenop.countryCode = "574";
+            ordenop.discount = 0;
+            ordenop.dniID = data.Usuario.Cedula;
+            ordenop.expirationDate = "";
+            ordenop.freeShipping = false;
+            ordenop.giftCertificateAmount = 0;
+            ordenop.giftWrapping = "0";
+            ordenop.invoice = "";
+            ordenop.ipAddress = "";
+            ordenop.languageId = 0;
+            ordenop.loguinUser = "";
+            if(data.Usuario.TipoUsuario == "Asesoras vendedoras")
+            {
+                ordenop.macAddress = AsignarCodigo(data.Usuario.Agencia);
+            }
+            else
+            {
+                ordenop.macAddress = "";
+            }
+            ordenop.memberId = 0;
+            ordenop.message = "";
+            ordenop.orderDate = DateTime.Now.ToShortDateString();
+            ordenop.orderNumber = result.ParsedResult.sequentialGenerated;
+            ordenop.orderRecipient = new OrderRecipient
+            {
+                items = new List<Item>(),
+                address = new Address
+                {
+                    addressLine1 = data.Envio.DireccionBasic,
+                    addressLine2 = data.Envio.DireccionComplemento,
+                    addressLine3 = "",
+                    city = data.Envio.Ciudad,
+                    colonia = "",
+                    companyName = "",
+                    country = "co",
+                    emailAddress = data.Envio.Email,
+                    firstName = data.Envio.Nombres,
+                    lastName = data.Envio.Apellidos,
+                    middleInitial = "",
+                    municipioDelegacion = data.Envio.Ciudad,
+                    phoneNumber = data.Envio.Celular,
+                    stateProvince = AsignarDepartamento(data.Envio.Departamento), 
+                    zipCode = ""
+                },
 
-            //    baseSubTotal = ((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity)) / 1.19,
-            //    discount = 0,
-            //    giftMessageText = "",
-            //    giftWrapping = 0,
-            //    recipientId = 0,
-            //    shipping = "0",
-            //    shippingMethod = "",
-            //    subTotal = ((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity)) / 1.19,
-            //    tax = ((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) / 1.19) * 0.19,
-            //    total = (double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity)
-            //};
+                baseSubTotal = basesubtotalConDosDecimales,
+                discount = 0,
+                giftMessageText = "",
+                giftWrapping = 0,
+                recipientId = 0,
+                shipping = "0",
+                shippingMethod = "",
+                subTotal = subtotalConDosDecimales,
+                tax = taxConDosDecimales,
+                total = totalConDosDecimales
+            };
 
-            //ordenOP.preauthDate = "";
-            //ordenOP.preauthorization = "";
-            //ordenOP.promotionCode = "";
-            //ordenOP.shipComplete = "";
-            //ordenOP.shipping = "0";
-            //ordenOP.status = "";
-            //ordenOP.subTotal = ((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity)) / 1.19;
-            //ordenOP.tax = ((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) / 1.19) * 0.19;
-            //ordenOP.tenderBank = "";
-            //ordenOP.tenderCode = tender;
-            //ordenOP.tenderReference = "leonisa";
-            //ordenOP.total = (double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity);
-            //ordenOP.transactionId = "";
+            ordenop.preauthDate = "";
+            ordenop.preauthorization = "";
+            ordenop.promotionCode = "";
+            ordenop.shipComplete = "";
+            ordenop.shipping = "0";
+            ordenop.status = "";
+            ordenop.subTotal = subtotalConDosDecimales;
+            ordenop.tax = taxConDosDecimales;
+            ordenop.tenderBank = "";
+            ordenop.tenderCode = tender;
+            ordenop.tenderReference = "leonisa";
+            ordenop.total = totalConDosDecimales;
+            ordenop.transactionId = "";
 
             foreach (var item in data.ProductosCarrito)
             {
                 item.Id = Guid.NewGuid().ToString();
-                //    //TODO : Realizar el envio de datos al OP
-                //    if (item.ProveedorLite.Nit == "800081664")
-                //    {
-                //        var productITem = new Item()
-                //        {
-                //            barCode = item.EAN,
-                //            discount = 0,
-                //            giftCardExpirationDate = "01/01/0001",
-                //            giftCardFromName = "",
-                //            giftCardMessage = "",
-                //            giftCardNumber = "",
-                //            giftCardToEmailAddress = "",
-                //            giftCardToName = "",
-                //            giftCardVerification = 0,
-                //            giftQuantity = 0,
-                //            isGiftCard = "N",
-                //            isGiftWrap = "N",
-                //            isHardCopy = "N",
-                //            isOnSale = "999",
-                //            isTaxFree = "N",
-                //            itemName = item.Nombre,
-                //            itemPrice = (double)item.Precio,
-                //            price = (double)item.Precio,
-                //            quantity = (int)item.Quantity,
-                //            salePrice = (double)item.Precio,
-                //            sku = item.EAN
-                //        };
+                //TODO : Realizar el envio de datos al OP
+                if (item.ProveedorLite.Nit == "800081664")
+                {
+                    var productITem = new Item()
+                    {
+                        barCode = item.EAN,
+                        discount = 0,
+                        giftCardExpirationDate = "01/01/0001",
+                        giftCardFromName = "",
+                        giftCardMessage = "",
+                        giftCardNumber = "",
+                        giftCardToEmailAddress = "",
+                        giftCardToName = "",
+                        giftCardVerification = 0,
+                        giftQuantity = 0,
+                        isGiftCard = "N",
+                        isGiftWrap = "N",
+                        isHardCopy = "N",
+                        isOnSale = "999",
+                        isTaxFree = "N",
+                        itemName = item.Nombre,
+                        itemPrice = (double)item.Precio,
+                        price = (double)item.Precio,
+                        quantity = (int)item.Quantity,
+                        salePrice = (double)item.Precio,
+                        sku = item.EAN
+                    };
 
-                //        ordenOP.orderRecipient.items.Add(productITem);
-                //    }
+                    ordenop.orderRecipient.items.Add(productITem);
+                }
             }
 
 
 
             if (data.ProductosCarrito.Any(p => p.ProveedorLite.Nit == "800081664"))
             {
-                //await this.ordenOPExternalService.EnviarOrdenOP(ordenOP);
+                await this.ordenOPExternalService.EnviarOrdenOP(ordenop);
             }
 
             data.PuntosRedimidos = data.GetSumPuntos();

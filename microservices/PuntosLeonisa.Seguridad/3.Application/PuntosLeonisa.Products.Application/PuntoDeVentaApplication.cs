@@ -46,7 +46,6 @@ namespace PuntosLeonisa.Seguridad.Application
                 else
                 {
                     var punto = this.mapper.Map<PuntoDeVenta>(value);
-                    value.Id = Guid.NewGuid().ToString();
                     await this.puntoDeVentaRepository.Add(punto);
                     return response;
                 }

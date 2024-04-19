@@ -47,6 +47,7 @@ namespace Productos
             builder.Services.AddScoped<ITransientRetry, TransientRetry>();
             builder.Services.AddScoped<IUsuarioExternalService, UsuarioExternalServices>();
             builder.Services.AddScoped<IProductoExternalService, ProductoExternalServices>();
+            builder.Services.AddScoped<IOrdenOPExternalService, OrdenOPExternalServices>();
 
         }
     }

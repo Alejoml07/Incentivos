@@ -40,7 +40,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
         public int? memberId { get; set; }
         public string? message { get; set; }
         public string? orderDate { get; set; }
-        public int? orderNumber { get; set; }
+        public string? orderNumber { get; set; }
         public OrderRecipient? orderRecipient { get; set; }
         public string? preauthDate { get; set; }
         public string? preauthorization { get; set; }
