@@ -519,4 +519,22 @@ public class ProductosApplication : IProductApplication
             throw;
         }
     }
+
+    public async Task<GenericResponse<IEnumerable<ProductoDto>>> GetProductByProveedorOrAll(string nit)
+    {
+        try
+        {
+            var responseRawData = await this.productoRepository.GetProductByProveedorOrAll(nit);
+            var responseData = this.mapper.Map<IEnumerable<ProductoDto>>(responseRawData);
+            var newResponse = new GenericResponse<IEnumerable<ProductoDto>>();
+            newResponse.Result = responseData;
+            return newResponse;
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+
+    }
 }

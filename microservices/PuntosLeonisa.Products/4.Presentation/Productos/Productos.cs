@@ -491,6 +491,41 @@ namespace Productos
                 return GetFunctionError(log, "Error al obtener los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("GetProductByProveedorOrAll")]
+        [OpenApiOperation(operationId: "GetProductByProveedor", tags: new[] { "Productos/GetProductByProveedorOrAll" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
+        public async Task<IActionResult> GetProductByProveedorOrAll(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Productos/GetProductByProveedorOrAll/{nit}")] HttpRequest req,
+        string nit,  // <-- Parámetro adicional
+        ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+
+                if (string.IsNullOrEmpty(nit))
+                {
+                    throw new ArgumentException($"'{nameof(nit)}' cannot be null or empty.", nameof(nit));
+                }
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+                var producto = await this.productoApplication.GetProductByProveedorOrAll(nit);
+                return new OkObjectResult(producto);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 

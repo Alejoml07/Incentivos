@@ -563,6 +563,25 @@
       "Key": "deleteProductRoute"
     },
     {
+      "UpstreamPathTemplate": "/api/Productos/GetProductByProveedorOrAll/{nit}",
+      "DownstreamPathTemplate": "/api/Productos/GetProductByProveedorOrAll/{nit}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azproductostest.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetProductByProveedorOrAllRoute"
+    },
+
+
+    {
       "UpstreamPathTemplate": "/api/Productos/Codificacion/ProductInventory",
       "DownstreamPathTemplate": "/api/Productos/Codificacion/ProductInventory",
       "DownstreamScheme": "https",
