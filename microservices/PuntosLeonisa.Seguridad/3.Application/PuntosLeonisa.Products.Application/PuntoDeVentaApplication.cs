@@ -39,8 +39,8 @@ namespace PuntosLeonisa.Seguridad.Application
                 if (puntoDeVenta != null)
                 {
                     //agregar mapping de datos de punto de venta
-
-                    await this.puntoDeVentaRepository.Update(puntoDeVenta);
+                    var punto = this.mapper.Map<PuntoDeVenta>(value);
+                    await this.puntoDeVentaRepository.Update(punto);
                     return response;
                 }
                 else
