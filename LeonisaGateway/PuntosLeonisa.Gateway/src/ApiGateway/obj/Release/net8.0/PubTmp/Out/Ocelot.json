@@ -562,6 +562,7 @@
       },
       "Key": "deleteProductRoute"
     },
+
     {
       "UpstreamPathTemplate": "/api/Productos/GetProductByProveedorOrAll/{nit}",
       "DownstreamPathTemplate": "/api/Productos/GetProductByProveedorOrAll/{nit}",
