@@ -13,8 +13,9 @@ namespace PuntosLeonisa.Seguridad.Domain.Service.DTO.PuntosDeVenta
         public int? Codigo { get; set; }
         public string? Ciudad { get; set; }
         public string? Superficie { get; set; }
+        public string? Agencia { get; set; }
         public string? Formato { get; set; }
-        public int? Status { get; set; }
+        public string? Status { get; set; }
         public DateTime? FechaCreacion { get; set; }
         public DateTime? FechaActualizacion { get; set; }
         public int? Eliminado { get; set; }
