@@ -8,7 +8,90 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA6Qy8IVxYWkiOLTdKbMYAugAAAAACAAAAAAAQZgAAAAEAACAAAADt1sAhiBEEO0RHUG9eLKcaHGrNaPMqSJ70yTN0UOguogAAAAAOgAAAAAIAACAAAAAhD4Cd040YfIADKDpZJEdYAvw7I3U7/HEDvezZ2eNksYAAAAAZyncpibF3zsbyCqwWLV3FTg1m8NZ8Ge+0o1Waf7hihCFn4x5kUxzQjs8U/4/76HJkkUJs1rNndwUWP+LLCwsQ0UfEuDAP7sWGyK1foO92GSem8D+NDxcv1kvEUwoXxsyo+7JXqrEE26/ec4dRT865FnUwHQjLSFuoyYS6fFz3bUAAAAA7BHa737wnomQthwIln3QFCz3RDVVyi3mUavo9lWhf0HlLqHlUUZL2tRI1zcuxzItgFqr/tzq3Rdj9Oyet+VSh</EncryptedPassword>
     <_PublishTargetUrl>ftps://waws-prod-blu-143.ftp.azurewebsites.windows.net/site/wwwroot</_PublishTargetUrl>
-    <History>False|2024-04-22T16:05:22.7509084Z;</History>
+    <History>True|2024-04-22T16:28:03.5265269Z;False|2024-04-22T11:05:22.7509084-05:00;</History>
     <LastFailureDetails />
   </PropertyGroup>
+  <ItemGroup>
+    <File Include="ApiGateway.deps.json">
+      <publishTime>04/22/2024 11:26:58</publishTime>
+    </File>
+    <File Include="ApiGateway.dll">
+      <publishTime>04/22/2024 11:26:57</publishTime>
+    </File>
+    <File Include="ApiGateway.exe">
+      <publishTime>04/22/2024 11:26:57</publishTime>
+    </File>
+    <File Include="ApiGateway.pdb">
+      <publishTime>04/22/2024 11:26:57</publishTime>
+    </File>
+    <File Include="ApiGateway.runtimeconfig.json">
+      <publishTime>04/22/2024 11:26:58</publishTime>
+    </File>
+    <File Include="appsettings.Development.json">
+      <publishTime>03/12/2024 07:35:29</publishTime>
+    </File>
+    <File Include="appsettings.json">
+      <publishTime>04/19/2024 09:35:34</publishTime>
+    </File>
+    <File Include="FluentValidation.dll">
+      <publishTime>12/13/2021 09:54:04</publishTime>
+    </File>
+    <File Include="jose-jwt.dll">
+      <publishTime>12/02/2022 11:38:24</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.Authentication.JwtBearer.dll">
+      <publishTime>06/22/2022 17:50:28</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.JsonPatch.dll">
+      <publishTime>11/17/2021 22:35:10</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.MiddlewareAnalysis.dll">
+      <publishTime>11/17/2021 22:38:08</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll">
+      <publishTime>11/17/2021 22:38:40</publishTime>
+    </File>
+    <File Include="Microsoft.Extensions.DiagnosticAdapter.dll">
+      <publishTime>11/21/2021 22:02:28</publishTime>
+    </File>
+    <File Include="Microsoft.IdentityModel.JsonWebTokens.dll">
+      <publishTime>03/30/2021 14:40:56</publishTime>
+    </File>
+    <File Include="Microsoft.IdentityModel.Logging.dll">
+      <publishTime>03/30/2021 14:42:38</publishTime>
+    </File>
+    <File Include="Microsoft.IdentityModel.Protocols.dll">
+      <publishTime>03/30/2021 14:46:46</publishTime>
+    </File>
+    <File Include="Microsoft.IdentityModel.Protocols.OpenIdConnect.dll">
+      <publishTime>03/30/2021 14:58:02</publishTime>
+    </File>
+    <File Include="Microsoft.IdentityModel.Tokens.dll">
+      <publishTime>03/30/2021 14:52:10</publishTime>
+    </File>
+    <File Include="Newtonsoft.Json.Bson.dll">
+      <publishTime>11/27/2018 18:10:18</publishTime>
+    </File>
+    <File Include="Newtonsoft.Json.dll">
+      <publishTime>03/17/2021 15:03:36</publishTime>
+    </File>
+    <File Include="Ocelot-Prod.json">
+      <publishTime>04/22/2024 11:25:32</publishTime>
+    </File>
+    <File Include="Ocelot-Relese.json">
+      <publishTime>03/12/2024 07:35:29</publishTime>
+    </File>
+    <File Include="Ocelot.dll">
+      <publishTime>01/20/2022 15:44:02</publishTime>
+    </File>
+    <File Include="Ocelot.json">
+      <publishTime>04/22/2024 11:25:32</publishTime>
+    </File>
+    <File Include="System.IdentityModel.Tokens.Jwt.dll">
+      <publishTime>03/30/2021 14:39:30</publishTime>
+    </File>
+    <File Include="web.config">
+      <publishTime>04/22/2024 11:27:05</publishTime>
+    </File>
+  </ItemGroup>
 </Project>
