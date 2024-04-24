@@ -30,14 +30,12 @@ namespace Usuarioos
     public class Fidelizacion
     {
         private readonly IFidelizacionApplication puntosApplication;
-        private readonly IVariableApplication variableApplication;
         private readonly GenericResponse<PuntosManualDto> responseError;
         private readonly BadRequestObjectResult puntosApplicationErrorResult;
 
-        public Fidelizacion(IFidelizacionApplication usuarioApplication, IVariableApplication variableApplication)
+        public Fidelizacion(IFidelizacionApplication usuarioApplication)
         {
             puntosApplication = usuarioApplication;
-            this.variableApplication = variableApplication;
             this.responseError = new GenericResponse<PuntosManualDto>();
             this.puntosApplicationErrorResult = new BadRequestObjectResult(this.responseError);
         }
@@ -1044,29 +1042,29 @@ namespace Usuarioos
             }
         }
 
-        [FunctionName("AddVariable")]
-        [OpenApiOperation(operationId: "AddVariable", tags: new[] { "AddVariable" })]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Guardar la variable")]
-        public async Task<IActionResult> AddVariable(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
-            ILogger log)
-        {
+        //[FunctionName("AddVariable")]
+        //[OpenApiOperation(operationId: "AddVariable", tags: new[] { "AddVariable" })]
+        //[OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Guardar la variable")]
+        //public async Task<IActionResult> AddVariable(
+        //    [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+        //    ILogger log)
+        //{
 
-            try
-            {
-                log.LogInformation($"Puntos:GetPuntos Inicia obtener todos los Puntos. Fecha:{DateTime.UtcNow}");
-                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var data = JsonConvert.DeserializeObject<VariableDto>(requestBody);
+        //    try
+        //    {
+        //        log.LogInformation($"Puntos:GetPuntos Inicia obtener todos los Puntos. Fecha:{DateTime.UtcNow}");
+        //        string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+        //        var data = JsonConvert.DeserializeObject<VariableDto>(requestBody);
 
-                await this.variableApplication.AddVariable(data);
-                return new OkResult();
+        //        await this.puntosApplication.AddVariable(data);
+        //        return new OkResult();
 
-            }
-            catch (Exception ex)
-            {
-                return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
-            }
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
+        //    }
+        //}
     }
 }
 

@@ -4,6 +4,8 @@ using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PuntosLeonisa.Fd.Infrastructure.ExternalService.Services;
+using PuntosLeonisa.Fidelizacion.Application;
+using PuntosLeonisa.Fidelizacion.Application.Core.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork;

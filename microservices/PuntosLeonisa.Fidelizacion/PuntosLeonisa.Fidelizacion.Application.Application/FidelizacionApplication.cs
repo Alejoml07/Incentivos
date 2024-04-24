@@ -25,7 +25,7 @@ using System.Text;
 
 namespace PuntosLeonisa.Fidelizacion.Application;
 
-public class FidelizacionApplication : IFidelizacionApplication, IVariableApplication
+public class FidelizacionApplication : IFidelizacionApplication
 {
     private readonly IMapper mapper;
     private readonly GenericResponse<PuntosManualDto> response;
@@ -34,10 +34,6 @@ public class FidelizacionApplication : IFidelizacionApplication, IVariableApplic
     private readonly IProductoExternalService productoExternalService;
     private readonly IOrdenOPExternalService ordenOPExternalService;
     private readonly IUnitOfWork unitOfWork;
-    private readonly IUsuarioInfoPuntosApplication usuarioInfoPuntosApplication;
-    private readonly IVariableApplication variableApplication;
-
-
     private readonly GenericResponse<Carrito> response3;
     private readonly GenericResponse<SmsDto> response4;
     private readonly GenericResponse<Extractos> response5;
@@ -45,8 +41,7 @@ public class FidelizacionApplication : IFidelizacionApplication, IVariableApplic
         IUsuarioExternalService usuarioExternalService,
         IProductoExternalService productoExternalService,
         IOrdenOPExternalService ordenOPExternalService,
-        IUnitOfWork unitOfWork, IUsuarioInfoPuntosApplication usuarioInfoPuntosApplication, IVariableApplication variableApplication
-        )
+        IUnitOfWork unitOfWork)
     {
 
 
