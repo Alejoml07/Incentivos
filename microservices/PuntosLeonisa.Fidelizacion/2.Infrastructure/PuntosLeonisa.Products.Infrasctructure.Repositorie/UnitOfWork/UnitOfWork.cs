@@ -15,6 +15,7 @@ public class UnitOfWork : IUnitOfWork
     private IFidelizacionPuntosRepository _fidelizacionPuntosRepository;
     private IUsuarioRedencionRepository _usuarioRedencionRepository;
     private IExtractosRepository _extractosRepository;
+    private IVariableRepository _variableRepository;
 
     public UnitOfWork(FidelizacionContext fidelizacionContext)
     {
@@ -90,6 +91,15 @@ public class UnitOfWork : IUnitOfWork
         {
             _extractosRepository ??= new ExtractosRepository(_fidelizacionContext);
             return _extractosRepository;
+        }
+    }
+
+    public IVariableRepository VariableRepository
+    {
+        get
+        {
+            _variableRepository ??= new VariableRepository(_fidelizacionContext);
+            return _variableRepository;
         }
     }
 

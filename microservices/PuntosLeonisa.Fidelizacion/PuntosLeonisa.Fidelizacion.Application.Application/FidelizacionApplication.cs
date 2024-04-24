@@ -8,6 +8,7 @@ using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Carrito;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.FidelizacionPuntos;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.MovimientoPuntos;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Variables;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork;
@@ -24,7 +25,7 @@ using System.Text;
 
 namespace PuntosLeonisa.Fidelizacion.Application;
 
-public class FidelizacionApplication : IFidelizacionApplication
+public class FidelizacionApplication : IFidelizacionApplication, IVariableApplication
 {
     private readonly IMapper mapper;
     private readonly GenericResponse<PuntosManualDto> response;
@@ -34,6 +35,7 @@ public class FidelizacionApplication : IFidelizacionApplication
     private readonly IOrdenOPExternalService ordenOPExternalService;
     private readonly IUnitOfWork unitOfWork;
     private readonly IUsuarioInfoPuntosApplication usuarioInfoPuntosApplication;
+    private readonly IVariableApplication variableApplication;
 
 
     private readonly GenericResponse<Carrito> response3;
@@ -43,7 +45,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         IUsuarioExternalService usuarioExternalService,
         IProductoExternalService productoExternalService,
         IOrdenOPExternalService ordenOPExternalService,
-        IUnitOfWork unitOfWork, IUsuarioInfoPuntosApplication usuarioInfoPuntosApplication
+        IUnitOfWork unitOfWork, IUsuarioInfoPuntosApplication usuarioInfoPuntosApplication, IVariableApplication variableApplication
         )
     {
 
@@ -1858,5 +1860,117 @@ public class FidelizacionApplication : IFidelizacionApplication
         this.unitOfWork.SaveChangesSync();
 
         return Task.CompletedTask;
+    }
+
+    public async Task<GenericResponse<bool>> AddVariable(VariableDto value)
+    {
+        try
+        {
+            var variable = await this.unitOfWork.VariableRepository.GetById(value.Id);
+            if(variable != null)
+            {
+                mapper.Map(value, variable);
+                await this.unitOfWork.VariableRepository.Update(variable);
+                return new GenericResponse<bool>
+                {
+                    Result = true
+                };
+
+            }
+            else
+            {
+                var variableNueva = mapper.Map<Variable>(value);
+                variableNueva.Id = Guid.NewGuid().ToString();
+                await this.unitOfWork.VariableRepository.Add(variableNueva);
+                return new GenericResponse<bool>
+                {
+                    Result = true
+                };
+            
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    public Task<GenericResponse<bool>> DeleteVariableById(string id)
+    {
+        try
+        {
+            var variable = this.unitOfWork.VariableRepository.GetById(id).GetAwaiter().GetResult();
+            if (variable != null)
+            {
+                this.unitOfWork.VariableRepository.Delete(variable);
+                this.unitOfWork.SaveChangesSync();
+                return Task.FromResult(new GenericResponse<bool>
+                {
+                    Result = true
+                });
+            }
+            else
+            {
+                return Task.FromResult(new GenericResponse<bool>
+                {
+                    Message = "Variable no encontrada",
+                    Result = false
+                });
+
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+        
+    }
+
+    public Task<GenericResponse<VariableDto>> GetVariableById(string id)
+    {
+        try
+        {
+            var variable = this.unitOfWork.VariableRepository.GetById(id);
+            if (variable != null)
+            {
+                return Task.FromResult(new GenericResponse<VariableDto>
+                {
+                    Result = mapper.Map<VariableDto>(variable)
+                });
+            }
+            else
+            {
+                return Task.FromResult(new GenericResponse<VariableDto>
+                {
+                    Message = "Variable no encontrada",
+                    Result = null
+                });
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+       
+    }
+
+    public Task<GenericResponse<VariableDto>> GetVariable()
+    {
+        try
+        {
+            var variables = this.unitOfWork.VariableRepository.GetAll();
+            return Task.FromResult(new GenericResponse<VariableDto>
+            {
+                Result = mapper.Map<VariableDto>(variables)
+            });
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
     }
 }

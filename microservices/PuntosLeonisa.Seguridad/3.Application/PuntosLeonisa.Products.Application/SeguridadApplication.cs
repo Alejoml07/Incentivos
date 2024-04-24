@@ -360,6 +360,7 @@ public class SeguridadApplication : IUsuarioApplication
                 }
                 else
                 {
+
                     var usuario = mapper.Map<Usuario>(response);
                     usuario.Id = Guid.NewGuid().ToString();
                     usuario.Email = usuario.Email.Trim();

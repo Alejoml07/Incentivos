@@ -30,6 +30,7 @@ public class FidelizacionContext : DbContext, IDisposable
         modelBuilder.ApplyConfiguration(new UsuarioRedencionConfiguration());
         modelBuilder.ApplyConfiguration(new ExtractoConfiguration());
         modelBuilder.ApplyConfiguration(new FidelizacionPuntosConfiguration());
+        modelBuilder.ApplyConfiguration(new VariableConfiguration());
 
     }
 
