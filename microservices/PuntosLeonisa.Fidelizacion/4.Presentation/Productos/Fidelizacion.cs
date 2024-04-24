@@ -22,18 +22,22 @@ using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.FidelizacionPuntos;
 using Microsoft.Azure.ServiceBus;
 using System.Linq;
 using System.Text;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Variables;
+using PuntosLeonisa.Fidelizacion.Application.Core.Interfaces;
 
 namespace Usuarioos
 {
     public class Fidelizacion
     {
         private readonly IFidelizacionApplication puntosApplication;
+        private readonly IVariableApplication variableApplication;
         private readonly GenericResponse<PuntosManualDto> responseError;
         private readonly BadRequestObjectResult puntosApplicationErrorResult;
 
-        public Fidelizacion(IFidelizacionApplication usuarioApplication)
+        public Fidelizacion(IFidelizacionApplication usuarioApplication, IVariableApplication variableApplication)
         {
             puntosApplication = usuarioApplication;
+            this.variableApplication = variableApplication;
             this.responseError = new GenericResponse<PuntosManualDto>();
             this.puntosApplicationErrorResult = new BadRequestObjectResult(this.responseError);
         }
@@ -1037,6 +1041,30 @@ namespace Usuarioos
             catch (Exception ex)
             {
                 return GetFunctionError(log, "Error al obtener los extractos:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("AddVariable")]
+        [OpenApiOperation(operationId: "AddVariable", tags: new[] { "AddVariable" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Guardar la variable")]
+        public async Task<IActionResult> AddVariable(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+            ILogger log)
+        {
+
+            try
+            {
+                log.LogInformation($"Puntos:GetPuntos Inicia obtener todos los Puntos. Fecha:{DateTime.UtcNow}");
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<VariableDto>(requestBody);
+
+                await this.variableApplication.AddVariable(data);
+                return new OkResult();
+
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
         }
     }

@@ -524,10 +524,8 @@ public class FidelizacionApplication : IFidelizacionApplication, IVariableApplic
                     ClearWishlistAndCart(data.Usuario);
                     unitOfWork.SaveChangesSync();
                     SendNotify(data);
-                    if (data.ProductosCarrito.FirstOrDefault().Nombre != "bono")
-                    {
                         await this.productoExternalService.UpdateInventory(data.ProductosCarrito.ToArray());
-                    }
+                    
                 }
             }
 
