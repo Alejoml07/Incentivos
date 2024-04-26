@@ -77,7 +77,7 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
             }
         }
 
-        public async Task<GenericResponse<bool>> SendSmsWithMessage(Usuario usuario,string message)
+        public async Task<GenericResponse<bool>> SendSmsWithMessage(Usuario usuario, string message)
         {
             var response = new GenericResponse<bool>();
             var result = await this.SendSms(usuario, message);
@@ -94,7 +94,7 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
                     var email = new EmailDTO()
                     {
                         Message = data.GenerarHTML(),
-                        Recipients = new string[] {data?.Usuario?.Email}, //"nramirez@dissensas.com"
+                        Recipients = new string[] { data?.Usuario?.Email }, //"nramirez@dissensas.com"
                         Subject = "Redención de premio"
                     };
                     var response = this.httpClientAgent.SendMail(email);
@@ -106,15 +106,15 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
                     var email = new EmailDTO()
                     {
                         Message = data.GenerarHTML(),
-                        Recipients = new string[] { data?.Usuario?.Email}, //"danielmg12361@gmail.com
+                        Recipients = new string[] { data?.Usuario?.Email }, //"danielmg12361@gmail.com
                         Subject = "Redención de premio"
                     };
                     var response = this.httpClientAgent.SendMail(email);
 
                     return Task.FromResult(new GenericResponse<bool>() { Result = true });
                 }
-                
-                
+
+
             }
             catch (Exception ex)
             {
@@ -127,11 +127,11 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
         {
             try
             {
-                
+
                 var email = new EmailDTO()
                 {
                     Message = data.GenerarHTMLCambioEstado(data.ProductosCarrito.FirstOrDefault().ProveedorLite.Id),
-                    Recipients = new string[] { data?.Usuario?.Email},
+                    Recipients = new string[] { data?.Usuario?.Email },
                     Subject = "Cambios estado premio"
                 };
                 var response = this.httpClientAgent.SendMail(email);
@@ -149,7 +149,7 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
         {
             try
             {
-               
+
                 var response = this.httpClientAgent.SendMail(emailData);
 
                 return Task.FromResult(new GenericResponse<bool>() { Result = true });
@@ -168,7 +168,7 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
             return response;
         }
 
-        
+
         public Task<GenericResponse<IEnumerable<Usuario>>> GetUsuarios()
         {
             var azf = $"{_configuration["AzfBaseUser"]}{_configuration["GetUsuarios"]}";
@@ -176,6 +176,6 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
             return response;
         }
 
-     
+
     }
 }

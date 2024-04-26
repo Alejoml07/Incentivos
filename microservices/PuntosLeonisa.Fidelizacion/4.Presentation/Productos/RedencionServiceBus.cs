@@ -87,7 +87,7 @@ namespace PuntosLeonisa.Fidelizacion.Function
                 var data = JsonConvert.DeserializeObject<UsuarioRedencion>(myQueueItem);
                 //aqui obtienes el usuarioinfopuntos y le restas los puntos
                 
-                this.usuarioInfoPuntosApplication.RedencionPuntos(data);                                        
+                this.usuarioInfoPuntosApplication.RedencionPuntos(data).GetAwaiter().GetResult();                                        
 
                 log.LogInformation("Mensaje procesado correctamente");
             }

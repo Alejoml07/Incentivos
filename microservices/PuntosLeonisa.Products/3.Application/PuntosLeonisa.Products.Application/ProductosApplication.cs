@@ -411,7 +411,7 @@ public class ProductosApplication : IProductApplication
     {
         try
         {
-            foreach (var producto in data)
+            foreach (var producto in data)  
             {
                 var productos = await this.productoRepository.GetById(producto.EAN);
                 productos.Cantidad -= producto.Quantity;
@@ -527,7 +527,7 @@ public class ProductosApplication : IProductApplication
             var responseRawData = await this.productoRepository.GetProductByProveedorOrAll(nit);
             var responseData = this.mapper.Map<IEnumerable<ProductoDto>>(responseRawData);
             var newResponse = new GenericResponse<IEnumerable<ProductoDto>>();
-            newResponse.Result = responseData;
+            newResponse.Result = responseData.OrderByDescending(x => x.FechaCreacion); ;
             return newResponse;
         }
         catch (Exception)

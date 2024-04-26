@@ -27,7 +27,7 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
         public async Task<GenericResponse<IEnumerable<bool>>> UpdateInventory(ProductoRefence[] data)
         {
             var azf = $"{_configuration["AzfBaseProduct"]}{_configuration["UpdateInventory"]}";
-            var response = await httpClientAgent.PostRequest<GenericResponse<IEnumerable<bool>>, ProductoRefence[]>(new Uri(azf),data);
+            var response = httpClientAgent.PostRequest<GenericResponse<IEnumerable<bool>>, ProductoRefence[]>(new Uri(azf),data).GetAwaiter().GetResult();
             return response;
         }
 

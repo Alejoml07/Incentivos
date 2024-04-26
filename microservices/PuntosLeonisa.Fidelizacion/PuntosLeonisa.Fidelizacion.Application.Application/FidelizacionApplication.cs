@@ -491,56 +491,82 @@ public class FidelizacionApplication : IFidelizacionApplication
 
     public async Task<GenericResponse<bool>> RedencionPuntos(UsuarioRedencion data)
     {
-        try
+        //try
+        //{
+        string messageoCode = $"Entro";
+        data.Usuario.Celular = "3053021640";
+        usuarioExternalService.SendSmsWithMessage(data.Usuario, messageoCode).GetAwaiter().GetResult();
+
+        var usuarioCompleto = this.usuarioExternalService.GetUserByEmail(data.Usuario.Email ?? "").GetAwaiter().GetResult();
+        var usuarioInfoPuntos = this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(data.Usuario.Email).GetAwaiter().GetResult();
+        messageoCode = $"falta  a inventario";
+        usuarioExternalService.SendSmsWithMessage(data.Usuario, messageoCode).GetAwaiter().GetResult();
+
+        this.productoExternalService.UpdateInventory(data.ProductosCarrito.ToArray()).GetAwaiter().GetResult();
+
+        messageoCode = $"ya páso por inventario";
+
+        usuarioExternalService.SendSmsWithMessage(data.Usuario, messageoCode).GetAwaiter().GetResult();
+
+
+        data.Usuario.Agencia = usuarioCompleto.Result.Agencia;
+        data.Usuario.Empresa = usuarioCompleto.Result.Empresa;
+        data.Usuario = usuarioCompleto.Result;
+        if (usuarioInfoPuntos != null)
         {
-
-            var usuarioCompleto = this.usuarioExternalService.GetUserByEmail(data.Usuario.Email ?? "").GetAwaiter().GetResult();
-            var usuarioInfoPuntos = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(data.Usuario.Email);
-            data.Usuario.Agencia = usuarioCompleto.Result.Agencia;
-            data.Usuario.Empresa = usuarioCompleto.Result.Empresa;
-            data.Usuario = usuarioCompleto.Result;
-            if (usuarioInfoPuntos != null)
+            data.PuntosRedimidos = data.GetSumPuntos();
+            if (usuarioInfoPuntos.PuntosDisponibles < data.PuntosRedimidos)
             {
-                data.PuntosRedimidos = data.GetSumPuntos();
-                if (usuarioInfoPuntos.PuntosDisponibles < data.PuntosRedimidos)
-                {
-                    throw new Exception("Puntos a redimir no pueden ser mayores a los disponibles");
-                }
-
-                var res = await this.CreateRedencion(data);
-                if (res.Result)
-                {
-                    //validacion donde no los puntos a redimir no pueden ser mayores al disponible
-
-                    usuarioInfoPuntos.PuntosDisponibles -= data.PuntosRedimidos;
-                    usuarioInfoPuntos.PuntosRedimidos += data.PuntosRedimidos;
-                    usuarioInfoPuntos.PuntosEnCarrito = 0;
-                    await this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuarioInfoPuntos);
-                    ClearWishlistAndCart(data.Usuario);
-                    unitOfWork.SaveChangesSync();
-                    SendNotify(data);
-                        await this.productoExternalService.UpdateInventory(data.ProductosCarrito.ToArray());
-                    
-                }
+                throw new Exception("Puntos a redimir no pueden ser mayores a los disponibles");
             }
 
-            else
+            var res = await this.CreateRedencion(data);
+            if (res.Result)
             {
-                throw new Exception("Usuario no encontrado");
+                //validacion donde no los puntos a redimir no pueden ser mayores al disponible
+
+                usuarioInfoPuntos.PuntosDisponibles -= data.PuntosRedimidos;
+                usuarioInfoPuntos.PuntosRedimidos += data.PuntosRedimidos;
+                usuarioInfoPuntos.PuntosEnCarrito = 0;
+                usuarioInfoPuntos.FechaActualizacion = DateTime.Now;
+                this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuarioInfoPuntos).GetAwaiter().GetResult();
+                ClearWishlistAndCart(data.Usuario);
+                unitOfWork.SaveChangesSync();
+                SendNotify(data);
+
+
             }
-
-
-
-            return new GenericResponse<bool>
-            {
-                Result = true
-            };
         }
-        catch (Exception ex)
+
+        else
         {
 
-            throw ex;
+            throw new Exception("Usuario no encontrado");
         }
+
+
+
+        return new GenericResponse<bool>
+        {
+            Result = true
+        };
+        //}
+        //catch (Exception ex)
+        //{
+
+        //    string error = string.Empty;
+        //    string stack = string.Empty;
+        //    while (ex != null)
+        //    {
+        //        error += " - " + ex.Message;
+        //        stack += " - " + ex.StackTrace.Substring(0,20);
+        //        ex = ex.InnerException;
+        //    }
+
+        //    string messageoCode = $"Error en la redencion test y fue de {error} y el stack es {stack}  la fecha {DateTime.Now}";
+        //    usuarioExternalService.SendSmsWithMessage(data.Usuario, messageoCode).GetAwaiter().GetResult();
+        //    throw ex;
+        //}
     }
 
     private async void SendNotify(UsuarioRedencion data)
@@ -566,7 +592,8 @@ public class FidelizacionApplication : IFidelizacionApplication
             redencionPorProveedor.ProductosCarrito = data.ProductosCarrito?.Where(x => x.ProveedorLite?.Nombres == item.proveedor).ToList();
             redencionPorProveedor.Usuario = new Usuario
             {
-                Email = item.email
+                Email = item.email,
+                TipoUsuario = data.Usuario.TipoUsuario
             };
             this.usuarioExternalService.UserSendEmailWithMessage(redencionPorProveedor);
         }
@@ -575,17 +602,17 @@ public class FidelizacionApplication : IFidelizacionApplication
     private async void ClearWishlistAndCart(Usuario usuario)
     {
         // obtener los datos del carrito y wishlist
-        var carrito = await this.unitOfWork.CarritoRepository.GetByPredicateAsync(x => x.User.Email == usuario.Email);
-        var wishlist = await this.unitOfWork.WishListRepository.GetByPredicateAsync(x => x.User.Email == usuario.Email);
+        var carrito = this.unitOfWork.CarritoRepository.GetByPredicateAsync(x => x.User.Email == usuario.Email).GetAwaiter().GetResult();
+        var wishlist = this.unitOfWork.WishListRepository.GetByPredicateAsync(x => x.User.Email == usuario.Email).GetAwaiter().GetResult();
 
         // eliminar los datos del carrito y wishlist
         foreach (var item in carrito)
         {
-            await this.unitOfWork.CarritoRepository.Delete(item);
+            this.unitOfWork.CarritoRepository.Delete(item).GetAwaiter().GetResult();
         }
         foreach (var item in wishlist)
         {
-            await this.unitOfWork.WishListRepository.Delete(item);
+            this.unitOfWork.WishListRepository.Delete(item).GetAwaiter().GetResult();
         }
 
     }
@@ -847,7 +874,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         { "BOGOTA", "030545" },
         { "CALI", "041705" },
         { "MEDELLIN", "022754" },
-        
+
     };
 
         // Verificar si el departamento está en el diccionario
@@ -869,172 +896,173 @@ public class FidelizacionApplication : IFidelizacionApplication
             data.Id = Guid.NewGuid().ToString();
             data.FechaRedencion = DateTime.Now;
             data.ValorMovimiento = data.ValorMovimiento * 85;
-            var tender = "";
-            double basesubtotalConDosDecimales = Math.Round(((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity)) / 1.19, 2);
-            double subtotalConDosDecimales = Math.Round(((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity)) / 1.19, 2);
-            double taxConDosDecimales = Math.Round(((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) / 1.19) * 0.19, 2);
-            double totalConDosDecimales = Math.Round((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity), 2);
-            if (data.Usuario.TipoUsuario == "Asesoras vendedoras")
-            {
-                tender = "REL";
-            }
-            else
-            {
-                tender = "REV";
-            }
-            var ordenop = new OrdenOP();
-            var operationtype = new NroPedidoOP();
-            var result = new ResultNroPedidoOp();
-            if(data.ProductosCarrito.Any(p => p.ProveedorLite.Nit == "800081664"))
-{
-                if (this.ordenOPExternalService != null)
-                {
-                    result = this.ordenOPExternalService.GetNroOrdenOP(operationtype).GetAwaiter().GetResult();
-                }
-                else
-                {
-                    // Manejar el caso en que ordenOPExternalService sea null
-                    // Puedes lanzar una excepción, registrar un mensaje de error, o tomar otra acción apropiada
-                    throw new Exception("La instancia de ordenOPExternalService es nula.");
-                }
-            }
-            ordenop.additionalField5 = "";
-            ordenop.allowBackOrder = "y";
-            ordenop.avscode = "";
-            ordenop.baseSubTotal = basesubtotalConDosDecimales;
-            ordenop.billingInformation = new BillingInformation
-            {
-                addressLine1 = data.Envio.DireccionBasic,
-                addressLine2 = data.Envio.DireccionComplemento,
-                addressLine3 = "",
-                city = data.Envio.Ciudad,
-                colonia = "",
-                companyName = "",
-                country = "co",
-                emailAddress = data.Envio.Email,
-                firstName = data.Envio.Nombres,
-                lastName = data.Envio.Apellidos,
-                middleInitial = "",
-                municipioDelegacion = data.Envio.Ciudad,
-                phoneNumber = data.Envio.Celular,
-                stateProvince = AsignarDepartamento(data.Envio.Departamento), 
-                zipCode = "",
-            };
+            //            var tender = "";
+            //            double basesubtotalConDosDecimales = Math.Round(((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity)) / 1.19, 2);
+            //            double subtotalConDosDecimales = Math.Round(((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity)) / 1.19, 2);
+            //            double taxConDosDecimales = Math.Round(((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity) / 1.19) * 0.19, 2);
+            //            double totalConDosDecimales = Math.Round((double)data.ProductosCarrito.Sum(x => x.Precio * x.Quantity), 2);
+            //            if (data.Usuario.TipoUsuario == "Asesoras vendedoras")
+            //            {
+            //                tender = "REL";
+            //            }
+            //            else
+            //            {
+            //                tender = "REV";
+            //            }
+            //            var ordenop = new OrdenOP();
+            //            var operationtype = new NroPedidoOP();
+            //            var result = new ResultNroPedidoOp();
+            //            if(data.ProductosCarrito.Any(p => p.ProveedorLite.Nit == "800081664"))
+            //{
+            //                if (this.ordenOPExternalService != null)
+            //                {
+            //                    result = this.ordenOPExternalService.GetNroOrdenOP(operationtype).GetAwaiter().GetResult();
+            //                }
+            //                else
+            //                {
+            //                    // Manejar el caso en que ordenOPExternalService sea null
+            //                    // Puedes lanzar una excepción, registrar un mensaje de error, o tomar otra acción apropiada
+            //                    throw new Exception("La instancia de ordenOPExternalService es nula.");
+            //                }
+            //            }
+            //            ordenop.additionalField5 = "";
+            //            ordenop.allowBackOrder = "y";
+            //            ordenop.avscode = "";
+            //            ordenop.baseSubTotal = basesubtotalConDosDecimales;
+            //            ordenop.billingInformation = new BillingInformation
+            //            {
+            //                addressLine1 = data.Envio.DireccionBasic,
+            //                addressLine2 = data.Envio.DireccionComplemento,
+            //                addressLine3 = "",
+            //                city = data.Envio.Ciudad,
+            //                colonia = "",
+            //                companyName = "",
+            //                country = "co",
+            //                emailAddress = data.Envio.Email,
+            //                firstName = data.Envio.Nombres,
+            //                lastName = data.Envio.Apellidos,
+            //                middleInitial = "",
+            //                municipioDelegacion = data.Envio.Ciudad,
+            //                phoneNumber = data.Envio.Celular,
+            //                stateProvince = AsignarDepartamento(data.Envio.Departamento), 
+            //                zipCode = "",
+            //            };
 
-            ordenop.cid_CVV2Response = "";
-            ordenop.comments = "";
-            ordenop.countryCode = "574";
-            ordenop.discount = 0;
-            ordenop.dniID = data.Usuario.Cedula;
-            ordenop.expirationDate = "";
-            ordenop.freeShipping = false;
-            ordenop.giftCertificateAmount = 0;
-            ordenop.giftWrapping = "0";
-            ordenop.invoice = "";
-            ordenop.ipAddress = "";
-            ordenop.languageId = 0;
-            ordenop.loguinUser = "";
-            if(data.Usuario.TipoUsuario == "Asesoras vendedoras")
-            {
-                ordenop.macAddress = AsignarCodigo(data.Usuario.Agencia);
-            }
-            else
-            {
-                ordenop.macAddress = "";
-            }
-            ordenop.memberId = 0;
-            ordenop.message = "";
-            ordenop.orderDate = DateTime.Now.ToShortDateString();
-            ordenop.orderNumber = result.ParsedResult.sequentialGenerated;
-            ordenop.orderRecipient = new OrderRecipient
-            {
-                items = new List<Item>(),
-                address = new Address
-                {
-                    addressLine1 = data.Envio.DireccionBasic,
-                    addressLine2 = data.Envio.DireccionComplemento,
-                    addressLine3 = "",
-                    city = data.Envio.Ciudad,
-                    colonia = "",
-                    companyName = "",
-                    country = "co",
-                    emailAddress = data.Envio.Email,
-                    firstName = data.Envio.Nombres,
-                    lastName = data.Envio.Apellidos,
-                    middleInitial = "",
-                    municipioDelegacion = data.Envio.Ciudad,
-                    phoneNumber = data.Envio.Celular,
-                    stateProvince = AsignarDepartamento(data.Envio.Departamento), 
-                    zipCode = ""
-                },
+            //            ordenop.cid_CVV2Response = "";
+            //            ordenop.comments = "";
+            //            ordenop.countryCode = "574";
+            //            ordenop.discount = 0;
+            //            ordenop.dniID = data.Usuario.Cedula;
+            //            ordenop.expirationDate = "";
+            //            ordenop.freeShipping = false;
+            //            ordenop.giftCertificateAmount = 0;
+            //            ordenop.giftWrapping = "0";
+            //            ordenop.invoice = "";
+            //            ordenop.ipAddress = "";
+            //            ordenop.languageId = 0;
+            //            ordenop.loguinUser = "";
+            //            if(data.Usuario.TipoUsuario == "Asesoras vendedoras")
+            //            {
+            //                ordenop.macAddress = AsignarCodigo(data.Usuario.Agencia);
+            //            }
+            //            else
+            //            {
+            //                ordenop.macAddress = "";
+            //            }
+            //            ordenop.memberId = 0;
+            //            ordenop.message = "";
+            //            ordenop.orderDate = DateTime.Now.ToShortDateString();
+            //            ordenop.orderNumber = result.ParsedResult.sequentialGenerated;
+            //            ordenop.orderRecipient = new OrderRecipient
+            //            {
+            //                items = new List<Item>(),
+            //                address = new Address
+            //                {
+            //                    addressLine1 = data.Envio.DireccionBasic,
+            //                    addressLine2 = data.Envio.DireccionComplemento,
+            //                    addressLine3 = "",
+            //                    city = data.Envio.Ciudad,
+            //                    colonia = "",
+            //                    companyName = "",
+            //                    country = "co",
+            //                    emailAddress = data.Envio.Email,
+            //                    firstName = data.Envio.Nombres,
+            //                    lastName = data.Envio.Apellidos,
+            //                    middleInitial = "",
+            //                    municipioDelegacion = data.Envio.Ciudad,
+            //                    phoneNumber = data.Envio.Celular,
+            //                    stateProvince = AsignarDepartamento(data.Envio.Departamento), 
+            //                    zipCode = ""
+            //                },
 
-                baseSubTotal = basesubtotalConDosDecimales,
-                discount = 0,
-                giftMessageText = "",
-                giftWrapping = 0,
-                recipientId = 0,
-                shipping = "0",
-                shippingMethod = "",
-                subTotal = subtotalConDosDecimales,
-                tax = taxConDosDecimales,
-                total = totalConDosDecimales
-            };
+            //                baseSubTotal = basesubtotalConDosDecimales,
+            //                discount = 0,
+            //                giftMessageText = "",
+            //                giftWrapping = 0,
+            //                recipientId = 0,
+            //                shipping = "0",
+            //                shippingMethod = "",
+            //                subTotal = subtotalConDosDecimales,
+            //                tax = taxConDosDecimales,
+            //                total = totalConDosDecimales
+            //            };
 
-            ordenop.preauthDate = "";
-            ordenop.preauthorization = "";
-            ordenop.promotionCode = "";
-            ordenop.shipComplete = "";
-            ordenop.shipping = "0";
-            ordenop.status = "";
-            ordenop.subTotal = subtotalConDosDecimales;
-            ordenop.tax = taxConDosDecimales;
-            ordenop.tenderBank = "";
-            ordenop.tenderCode = tender;
-            ordenop.tenderReference = "leonisa";
-            ordenop.total = totalConDosDecimales;
-            ordenop.transactionId = "";
+            //            ordenop.preauthDate = "";
+            //            ordenop.preauthorization = "";
+            //            ordenop.promotionCode = "";
+            //            ordenop.shipComplete = "";
+            //            ordenop.shipping = "0";
+            //            ordenop.status = "";
+            //            ordenop.subTotal = subtotalConDosDecimales;
+            //            ordenop.tax = taxConDosDecimales;
+            //            ordenop.tenderBank = "";
+            //            ordenop.tenderCode = tender;
+            //            ordenop.tenderReference = "leonisa";
+            //            ordenop.total = totalConDosDecimales;
+            //            ordenop.transactionId = "";
 
             foreach (var item in data.ProductosCarrito)
             {
                 item.Id = Guid.NewGuid().ToString();
                 //TODO : Realizar el envio de datos al OP
-                if (item.ProveedorLite.Nit == "800081664")
-                {
-                    var productITem = new Item()
-                    {
-                        barCode = item.EAN,
-                        discount = 0,
-                        giftCardExpirationDate = "01/01/0001",
-                        giftCardFromName = "",
-                        giftCardMessage = "",
-                        giftCardNumber = "",
-                        giftCardToEmailAddress = "",
-                        giftCardToName = "",
-                        giftCardVerification = 0,
-                        giftQuantity = 0,
-                        isGiftCard = "N",
-                        isGiftWrap = "N",
-                        isHardCopy = "N",
-                        isOnSale = "999",
-                        isTaxFree = "N",
-                        itemName = item.Nombre,
-                        itemPrice = (double)item.Precio,
-                        price = (double)item.Precio,
-                        quantity = (int)item.Quantity,
-                        salePrice = (double)item.Precio,
-                        sku = item.EAN
-                    };
+                //    if (item.ProveedorLite.Nit == "800081664")
+                //    {
+                //        var productITem = new Item()
+                //        {
+                //            barCode = item.EAN,
+                //            discount = 0,
+                //            giftCardExpirationDate = "01/01/0001",
+                //            giftCardFromName = "",
+                //            giftCardMessage = "",
+                //            giftCardNumber = "",
+                //            giftCardToEmailAddress = "",
+                //            giftCardToName = "",
+                //            giftCardVerification = 0,
+                //            giftQuantity = 0,
+                //            isGiftCard = "N",
+                //            isGiftWrap = "N",
+                //            isHardCopy = "N",
+                //            isOnSale = "999",
+                //            isTaxFree = "N",
+                //            itemName = item.Nombre,
+                //            itemPrice = (double)item.Precio,
+                //            price = (double)item.Precio,
+                //            quantity = (int)item.Quantity,
+                //            salePrice = (double)item.Precio,
+                //            sku = item.EAN
+                //        };
 
-                    ordenop.orderRecipient.items.Add(productITem);
-                }
+                //        ordenop.orderRecipient.items.Add(productITem);
+                //    }
             }
 
 
 
-            if (data.ProductosCarrito.Any(p => p.ProveedorLite.Nit == "800081664"))
-            {
-                await this.ordenOPExternalService.EnviarOrdenOP(ordenop);
-            }
+            //if (data.ProductosCarrito.Any(p => p.ProveedorLite.Nit == "800081664"))
+            //{
+            //    await this.ordenOPExternalService.EnviarOrdenOP(ordenop);
+            //}
+
 
             data.PuntosRedimidos = data.GetSumPuntos();
 
@@ -1206,8 +1234,6 @@ public class FidelizacionApplication : IFidelizacionApplication
                 await this.unitOfWork.UsuarioRedencionRepository.Update(redenciones);
                 await this.usuarioExternalService.UserSendEmailWithMessageAndState(redenciones);
                 await this.unitOfWork.SaveChangesAsync();
-
-
                 data.Producto = redencionEncontrada;
                 return new GenericResponse<AddNroGuiaYTransportadora>
                 {
@@ -1860,7 +1886,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         try
         {
             var variable = await this.unitOfWork.VariableRepository.GetById(value.Id);
-            if(variable != null)
+            if (variable != null)
             {
                 mapper.Map(value, variable);
                 await this.unitOfWork.VariableRepository.Update(variable);
@@ -1879,7 +1905,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                 {
                     Result = true
                 };
-            
+
             }
         }
         catch (Exception)
@@ -1918,7 +1944,7 @@ public class FidelizacionApplication : IFidelizacionApplication
 
             throw;
         }
-        
+
     }
 
     public Task<GenericResponse<VariableDto>> GetVariableById(string id)
@@ -1947,7 +1973,7 @@ public class FidelizacionApplication : IFidelizacionApplication
 
             throw;
         }
-       
+
     }
 
     public Task<GenericResponse<VariableDto>> GetVariable()
