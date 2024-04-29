@@ -21,15 +21,17 @@ namespace Usuarios
     {
         private readonly IUsuarioApplication usuarioApplication;
         private readonly ISecurityService securityService;
+        private readonly ITratamientoDatosApplication tratamientoDatosApplication;
         private readonly GenericResponse<UsuarioDto> responseError;
         private readonly BadRequestObjectResult productoApplicationErrorResult;
 
-        public Seguridad(IUsuarioApplication usuarioApplication, ISecurityService securityService)
+        public Seguridad(IUsuarioApplication usuarioApplication, ISecurityService securityService, ITratamientoDatosApplication tratamientoDatosApplication)
         {
             this.usuarioApplication = usuarioApplication;
             this.securityService = securityService;
             this.responseError = new GenericResponse<UsuarioDto>();
             this.productoApplicationErrorResult = new BadRequestObjectResult(this.responseError);
+            this.tratamientoDatosApplication = tratamientoDatosApplication;
         }
 
         [FunctionName("Usuarios")]
@@ -432,8 +434,31 @@ namespace Usuarios
                 return GetFunctionError(log, "Error al obtener los extractos:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("AddTratamientoDatos")]
+        [OpenApiOperation(operationId: "Usuarios", tags: new[] { "Usuario/AddTratamientoDatos" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<TratamientoDatosDto>), Description = "Guarda la aceptacion del tratamiento de datos")]
+        public async Task<IActionResult> AddTratamientoDatos(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+            ILogger log)
+        {
+
+            try
+            {
+                log.LogInformation($"Usuario:AddTratamientoDatos Inicia a guardar el tratamiento de datos. Fecha:{DateTime.UtcNow}");
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<TratamientoDatosDto>(requestBody);
+                await this.tratamientoDatosApplication.Add(data);
+                return new OkResult();
+
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al guardar el registro, Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+
+
+        }
     }
-
-
 }
 

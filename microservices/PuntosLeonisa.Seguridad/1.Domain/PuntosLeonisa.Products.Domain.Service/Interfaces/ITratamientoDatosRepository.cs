@@ -11,6 +11,5 @@ namespace PuntosLeonisa.Seguridad.Domain.Service.Interfaces
 {
     public interface ITratamientoDatosRepository : IRepository<TratamientoDatosDto>
     {
-
     }
 }

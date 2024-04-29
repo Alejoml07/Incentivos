@@ -11,6 +11,6 @@ namespace PuntosLeonisa.Seguridad.Application.Core
 {
     public interface ITratamientoDatosApplication : IApplicationCore<TratamientoDatosDto>
     {
-
+        Task<GenericResponse<bool>> VerificarUser(string email);
     }
 }
