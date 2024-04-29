@@ -35,6 +35,7 @@ public class SeguridadContext : DbContext
         modelBuilder.ApplyConfiguration(new ProveedorConfiguration());
         modelBuilder.ApplyConfiguration(new TokenConfiguration());
         modelBuilder.ApplyConfiguration(new PuntoDeVentaConfiguration());
+        modelBuilder.ApplyConfiguration(new TratamientoDatosConfiguration());
 
     }
 

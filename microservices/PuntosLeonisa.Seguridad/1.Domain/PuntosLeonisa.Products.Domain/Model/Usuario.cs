@@ -21,6 +21,8 @@ namespace PuntosLeonisa.Products.Domain.Model
 
         public string? Apellidos { get; set; }
 
+        public bool? TratamientoDatos { get; set; }
+
         public string? Genero { get; set; }
 
         public string? Email { get; set; }

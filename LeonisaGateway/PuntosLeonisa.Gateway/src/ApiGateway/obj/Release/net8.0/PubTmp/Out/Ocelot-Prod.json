@@ -674,6 +674,24 @@
       },
       "Key": "GetBannerByIdRoute"
     },
+
+    {
+      "UpstreamPathTemplate": "/api/Productos/Codificacion/UpdateInventory",
+      "DownstreamPathTemplate": "/api/Productos/Codificacion/UpdateInventory",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "incentivosproductos.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "UpdateInventoryRoute"
+    },
     // fin productos
 
     //inicio fidelizacion

@@ -10,7 +10,6 @@ using System.Text;
 using Jose;
 using PuntosLeonisa.Seguridad.Infrasctructure.Common.Helpers;
 using PuntosLeonisa.Infrasctructure.Core.ExternalServiceInterfaces;
-using PuntosLeonisa.Seguridad.Infrasctructure.Repositorie;
 
 namespace PuntosLeonisa.Seguridad.Application;
 
@@ -40,8 +39,6 @@ public class SeguridadApplication : IUsuarioApplication
         this.getUsuarioExternalService = getUsuarioExternalService;
         response = new GenericResponse<UsuarioDto>();
         response2 = new GenericResponse<TokenDto>();
-
-
     }
 
     public async Task<GenericResponse<UsuarioDto>> Add(UsuarioDto value)
@@ -460,5 +457,6 @@ public class SeguridadApplication : IUsuarioApplication
             throw ex;
         }
     }
+    
 }
 
