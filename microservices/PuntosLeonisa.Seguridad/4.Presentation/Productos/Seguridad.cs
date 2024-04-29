@@ -436,7 +436,7 @@ namespace Usuarios
         }
 
         [FunctionName("AddTratamientoDatos")]
-        [OpenApiOperation(operationId: "Usuarios", tags: new[] { "Usuario/AddTratamientoDatos" })]
+        [OpenApiOperation(operationId: "AddTratamientoDatos", tags: new[] { "Usuario/AddTratamientoDatos" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<TratamientoDatosDto>), Description = "Guarda la aceptacion del tratamiento de datos")]
         public async Task<IActionResult> AddTratamientoDatos(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
@@ -456,8 +456,36 @@ namespace Usuarios
             {
                 return GetFunctionError(log, "Error al guardar el registro, Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
+        }
 
+        [FunctionName("GetTratamientoDatos")]
+        [OpenApiOperation(operationId: "GetTratamientoDatos", tags: new[] { "Usuario/GetTratamientoDatos" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<bool>), Description = "Valida la aceptacion del tratamiento de datos")]
+        public async Task<IActionResult> GetTratamientoDatos(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Usuario/GetTratamientoDatos")] HttpRequest req,string email,
+           ILogger log)
+        {
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
 
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+                log.LogInformation($"Usuario: GetTratamientoDatos Inicia a validar la aceptacion, Fecha:{DateTime.UtcNow}");
+                var puntos = await this.tratamientoDatosApplication.VerificarUser(email);
+                log.LogInformation($"Usuario: GetTratamientoDatos finaliza obtener la validacion sin errores. Fecha:{DateTime.UtcNow}");
+                return new OkObjectResult(puntos);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
         }
     }
 }
