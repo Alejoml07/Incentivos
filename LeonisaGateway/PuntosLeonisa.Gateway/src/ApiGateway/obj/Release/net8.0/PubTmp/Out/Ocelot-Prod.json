@@ -472,7 +472,48 @@
       "Key": "DeletePuntoDeVentaRoute"
     },
 
+    //Empieza Tratamiento de Datos
+
+    {
+      "UpstreamPathTemplate": "/api/AddTratamientoDatos",
+      "DownstreamPathTemplate": "/api/AddTratamientoDatos",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plseguridad.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "AddTratamientoDatosRoute"
+    },
+
+    {
+      "UpstreamPathTemplate": "/api/Usuario/GetTratamientoDatos/{email}",
+      "DownstreamPathTemplate": "/api/Usuario/GetTratamientoDatos/{email}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plseguridad.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetTratamientoDatosRoute"
+    },
+
+
     //Empieza productos
+
+
     {
       "UpstreamPathTemplate": "/api/Productos/Producto",
       "DownstreamPathTemplate": "/api/Productos/Producto",

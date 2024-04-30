@@ -462,7 +462,7 @@ namespace Usuarios
         [OpenApiOperation(operationId: "GetTratamientoDatos", tags: new[] { "Usuario/GetTratamientoDatos" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<bool>), Description = "Valida la aceptacion del tratamiento de datos")]
         public async Task<IActionResult> GetTratamientoDatos(
-           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Usuario/GetTratamientoDatos")] HttpRequest req,string email,
+           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Usuario/GetTratamientoDatos/{email}")] HttpRequest req,string email,
            ILogger log)
         {
             try

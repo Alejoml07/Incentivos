@@ -43,6 +43,7 @@ namespace PuntosLeonisa.Seguridad.Application
                 else
                 {
                     value.Id = Guid.NewGuid().ToString();
+                    value.FechaAceptacion = DateTime.Now;
                     await tratamientoDatosRepository.Add(value);
 
                 }
