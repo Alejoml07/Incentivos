@@ -33,22 +33,29 @@ namespace PuntosLeonisa.Seguridad.Application
         {
             try
             {
-                var datos = await tratamientoDatosRepository.GetById(value.Id);
-                if(datos != null)
+
+                // add tratamiento de datos, si el dato ya existe update
+                var tratamiento = await tratamientoDatosRepository.GetById(value.Email);
+                if (tratamiento != null)
                 {
-                    mapper.Map(value, datos);
-                    await tratamientoDatosRepository.Update(datos);
-                    
+                    await tratamientoDatosRepository.Update(value);
+                    return new GenericResponse<TratamientoDatosDto>
+                    {
+                        Message = "Registro actualizado",
+                        Result = value,
+                    };
                 }
                 else
                 {
                     value.Id = Guid.NewGuid().ToString();
                     value.FechaAceptacion = DateTime.Now;
                     await tratamientoDatosRepository.Add(value);
-
+                    return new GenericResponse<TratamientoDatosDto>
+                    {
+                        Message = "Registro agregado",
+                        Result = value,
+                    };
                 }
-                response.Result = value;
-                return response;
             }
             catch (Exception)
             {

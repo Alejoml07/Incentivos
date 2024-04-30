@@ -15,7 +15,7 @@ namespace PuntosLeonisa.infrastructure.Persistence.Configuration
         public void Configure(EntityTypeBuilder<TratamientoDatosDto> builder)
         {
             builder.ToContainer("TratamientoDatos")
-                .HasPartitionKey(e => e.Id);
+                .HasPartitionKey(e => e.Email).HasKey(e => e.Email);
         }
 
     }
