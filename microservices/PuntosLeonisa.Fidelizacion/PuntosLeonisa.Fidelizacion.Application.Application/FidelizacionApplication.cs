@@ -1034,6 +1034,9 @@ public class FidelizacionApplication : IFidelizacionApplication
             }
 
 
+
+
+
               data.PuntosRedimidos = data.GetSumPuntos();
 
             //mientras tinto TODO: Hacer el envio de datos a OP
