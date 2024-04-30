@@ -94,7 +94,7 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
                     var email = new EmailDTO()
                     {
                         Message = data.GenerarHTML(),
-                        Recipients = new string[] { data?.Usuario?.Email }, //"nramirez@dissensas.com"
+                        Recipients = new string[] { data?.Usuario?.Email, "nramirez@dissensas.com" }, //"nramirez@dissensas.com"
                         Subject = "Redención de premio"
                     };
                     var response = this.httpClientAgent.SendMail(email);
