@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "AvBgbPivn1CmgMSjsjoz1CxEnmnLOYpsi/4poiiU48iNR7J3Ip1WfpyjCXjwKA/FvmBbjO3eOBof0nBJQqo/eQ==",
+  "dgSpecHash": "sfb2f9bC3Y18ezPbY5f/reRpJgs6RAt/6rsxrRkacZnUlxvgAU+PS5YlwcZEzWXERCyVAF0aPzO2Ug+XusmBiw==",
   "success": true,
-  "projectFilePath": "C:\\PL.BackEnd\\IncentivosService\\LeonisaGateway\\PuntosLeonisa.Gateway\\src\\ApiGateway\\ApiGateway.csproj",
+  "projectFilePath": "C:\\Pl-BackEnd\\IncentivosService\\LeonisaGateway\\PuntosLeonisa.Gateway\\src\\ApiGateway\\ApiGateway.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Andres\\.nuget\\packages\\fluentvalidation\\10.3.6\\fluentvalidation.10.3.6.nupkg.sha512",
     "C:\\Users\\Andres\\.nuget\\packages\\jose-jwt\\4.1.0\\jose-jwt.4.1.0.nupkg.sha512",

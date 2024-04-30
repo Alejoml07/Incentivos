@@ -448,8 +448,8 @@ namespace Usuarios
                 log.LogInformation($"Usuario:AddTratamientoDatos Inicia a guardar el tratamiento de datos. Fecha:{DateTime.UtcNow}");
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var data = JsonConvert.DeserializeObject<TratamientoDatosDto>(requestBody);
-                await this.tratamientoDatosApplication.Add(data);
-                return new OkResult();
+                var response = await this.tratamientoDatosApplication.Add(data);
+                return new OkObjectResult(response);
 
             }
             catch (Exception ex)

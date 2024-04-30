@@ -297,9 +297,9 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
         }      
     }
 
-    public async Task<IEnumerable<Producto>> GetProductByProveedorOrAll(string nit)
+    public async Task<IEnumerable<Producto>> GetProductByProveedorOrAll(string nombre)
     {
-        var response = await _context.Set<Producto>().Where(p => p.ProveedorLite.Nit == nit).ToListAsync();
+        var response = await _context.Set<Producto>().Where(p => p.ProveedorLite.Nombres == nombre).ToListAsync();
         // si response es nulo o 0, entonces devolver todos los productos
 
         if (response == null || response.Count == 0)

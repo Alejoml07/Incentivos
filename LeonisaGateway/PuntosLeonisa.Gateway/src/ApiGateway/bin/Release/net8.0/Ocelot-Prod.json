@@ -485,10 +485,6 @@
           "Port": 443
         }
       ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      },
       "Key": "AddTratamientoDatosRoute"
     },
 
@@ -503,10 +499,6 @@
           "Port": 443
         }
       ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      },
       "Key": "GetTratamientoDatosRoute"
     },
 
@@ -606,8 +598,8 @@
     },
 
     {
-      "UpstreamPathTemplate": "/api/Productos/GetProductByProveedorOrAll/{nit}",
-      "DownstreamPathTemplate": "/api/Productos/GetProductByProveedorOrAll/{nit}",
+      "UpstreamPathTemplate": "/api/Productos/GetProductByProveedorOrAll/{nombre}",
+      "DownstreamPathTemplate": "/api/Productos/GetProductByProveedorOrAll/{nombre}",
       "DownstreamScheme": "https",
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [

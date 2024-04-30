@@ -520,11 +520,11 @@ public class ProductosApplication : IProductApplication
         }
     }
 
-    public async Task<GenericResponse<IEnumerable<ProductoDto>>> GetProductByProveedorOrAll(string nit)
+    public async Task<GenericResponse<IEnumerable<ProductoDto>>> GetProductByProveedorOrAll(string nombre)
     {
         try
         {
-            var responseRawData = await this.productoRepository.GetProductByProveedorOrAll(nit);
+            var responseRawData = await this.productoRepository.GetProductByProveedorOrAll(nombre);
             var responseData = this.mapper.Map<IEnumerable<ProductoDto>>(responseRawData);
             var newResponse = new GenericResponse<IEnumerable<ProductoDto>>();
             newResponse.Result = responseData.OrderByDescending(x => x.FechaCreacion); ;

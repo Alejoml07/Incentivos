@@ -36,12 +36,12 @@ namespace PuntosLeonisa.Seguridad.Application
 
                 // add tratamiento de datos, si el dato ya existe update
                 var tratamiento = await tratamientoDatosRepository.GetById(value.Email);
+                var usuario = await usuarioRepository.GetUsuarioByEmail(value.Email);
                 if (tratamiento != null)
                 {
-                    await tratamientoDatosRepository.Update(value);
                     return new GenericResponse<TratamientoDatosDto>
                     {
-                        Message = "Registro actualizado",
+                        Message = "El usuario ya acepto terminos y condiciones",
                         Result = value,
                     };
                 }
@@ -49,6 +49,8 @@ namespace PuntosLeonisa.Seguridad.Application
                 {
                     value.Id = Guid.NewGuid().ToString();
                     value.FechaAceptacion = DateTime.Now;
+                    usuario.TratamientoDatos= true;
+                    await usuarioRepository.Update(usuario);
                     await tratamientoDatosRepository.Add(value);
                     return new GenericResponse<TratamientoDatosDto>
                     {
@@ -115,14 +117,14 @@ namespace PuntosLeonisa.Seguridad.Application
             {
                 return Task.FromResult(new GenericResponse<bool>
                 {
-                    Message = "No se encontro el usuario",
+                    Message = "El usuario no ha aceptado termino y condiciones",
                     Result = false,
                 });
             }else
             {
                 return Task.FromResult(new GenericResponse<bool>
                 {
-                    Message = "Usuario encontrado",
+                    Message = "Usuario ya acepto terminos y condiciones",
                     Result = true,
                 });
             }
