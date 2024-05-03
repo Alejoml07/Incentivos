@@ -8,7 +8,7 @@ namespace PuntosLeonisa.Fidelizacion.Application.Core.Interfaces
         Task<GenericResponse<bool>> AddVariable(VariableDto value);  
         Task<GenericResponse<bool>> DeleteVariableById(string id);
         Task<GenericResponse<VariableDto>> GetVariableById(string id);
-        Task<GenericResponse<VariableDto>> GetVariable();
+        Task<GenericResponse<IEnumerable<VariableDto>>> GetVariables();
 
 
     }

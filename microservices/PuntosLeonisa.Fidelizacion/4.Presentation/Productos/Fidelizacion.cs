@@ -1042,29 +1042,138 @@ namespace Usuarioos
             }
         }
 
-        //[FunctionName("AddVariable")]
-        //[OpenApiOperation(operationId: "AddVariable", tags: new[] { "AddVariable" })]
-        //[OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Guardar la variable")]
-        //public async Task<IActionResult> AddVariable(
-        //    [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
-        //    ILogger log)
-        //{
+        [FunctionName("AddVariable")]
+        [OpenApiOperation(operationId: "AddVariable", tags: new[] { "AddVariable" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Guardar la variable")]
+        public async Task<IActionResult> AddVariable(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+            ILogger log)
+        {
 
-        //    try
-        //    {
-        //        log.LogInformation($"Puntos:GetPuntos Inicia obtener todos los Puntos. Fecha:{DateTime.UtcNow}");
-        //        string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-        //        var data = JsonConvert.DeserializeObject<VariableDto>(requestBody);
+            try
+            {
+                log.LogInformation($"Puntos:GetPuntos Inicia obtener todos los Puntos. Fecha:{DateTime.UtcNow}");
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<VariableDto>(requestBody);
 
-        //        await this.puntosApplication.AddVariable(data);
-        //        return new OkResult();
+                var variable = await this.puntosApplication.AddVariable(data);
+                return new OkObjectResult(variable);
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
-        //    }
-        //}
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("GetVariableById")]
+        [OpenApiOperation(operationId: "GetVariableById", tags: new[] { "GetVariableById" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con las variables")]
+        public async Task<IActionResult> GetVariableById(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetVariableById/{id}")] HttpRequest req,
+           string id,  // <-- Parámetro adicional
+           ILogger log)
+        {
+
+
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+
+                if (string.IsNullOrEmpty(id))
+                {
+                    throw new ArgumentException($"'{nameof(id)}' cannot be null or empty.", nameof(id));
+                }
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+                var variable = await this.puntosApplication.GetVariableById(id);
+
+                return new OkObjectResult(variable);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener las variables, Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("GetVariables")]
+        [OpenApiOperation(operationId: "GetVariables", tags: new[] { "GetVariables" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Lista de variables")]
+        public async Task<IActionResult> GetVariable(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+           ILogger log)
+        {
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+                log.LogInformation($"Puntos:GetVariables Inicia obtener todas las variables. Fecha:{DateTime.UtcNow}");
+                var variables = await puntosApplication.GetVariables();
+                log.LogInformation($"Puntos:GetVariables finaliza obtener todas las variables sin errores. Fecha:{DateTime.UtcNow}");
+                return new OkObjectResult(variables);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los puntos Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("DeleteVariableById")]
+        [OpenApiOperation(operationId: "DeleteVariableById", tags: new[] { "DeleteVariableById" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con las variables")]
+
+        public async Task<IActionResult> DeleteVariableById(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "DeleteVariableById/{id}")] HttpRequest req,
+           string id,  // <-- Parámetro adicional
+           ILogger log)
+        {
+
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+
+                if (string.IsNullOrEmpty(id))
+                {
+                    throw new ArgumentException($"'{nameof(id)}' cannot be null or empty.", nameof(id));
+                }
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+
+                var variable = await this.puntosApplication.DeleteVariableById(id);
+
+                return new OkObjectResult(variable);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al eliminar los puntos Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 

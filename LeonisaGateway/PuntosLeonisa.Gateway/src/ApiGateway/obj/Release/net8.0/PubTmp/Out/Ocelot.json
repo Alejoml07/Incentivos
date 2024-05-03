@@ -1265,6 +1265,81 @@
     },
 
     // fin fidelizacion-notificaciones,
+
+    // comienza variables
+
+    {
+      "DownstreamPathTemplate": "/api/AddVariable",
+      "UpstreamPathTemplate": "/api/AddVariable",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizaciontest.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "AddVariableRoute"
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/DeleteVariableById/{id}",
+      "UpstreamPathTemplate": "/api/DeleteVariableById/{id}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizaciontest.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "DeleteVariableByIdRoute"
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/GetVariables",
+      "UpstreamPathTemplate": "/api/GetVariables",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizaciontest.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetVariablesRoute"
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/GetVariableById/{id}",
+      "UpstreamPathTemplate": "/api/GetVariableById/{id}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizaciontest.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetVariableByIdRoute"
+    },
+    // Termina variables
     //Reportes
     {
       "DownstreamPathTemplate": "/api/fidelizacion/GetReporteRedencion",

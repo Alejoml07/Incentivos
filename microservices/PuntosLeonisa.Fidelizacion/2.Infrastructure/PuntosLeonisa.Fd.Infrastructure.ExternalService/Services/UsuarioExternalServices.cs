@@ -89,12 +89,12 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
         {
             try
             {
-                if (data.Usuario.TipoUsuario == "Asesoras Vendedoras")
+                if (data.Usuario.TipoUsuario == "Asesoras vendedoras" && data.ProductosCarrito.FirstOrDefault().Nombre != "bono")
                 {
                     var email = new EmailDTO()
                     {
                         Message = data.GenerarHTML(),
-                        Recipients = new string[] { data?.Usuario?.Email}, //"nramirez@dissensas.com"
+                        Recipients = new string[] { data?.Usuario?.Email}, //"nramirez@dissensas.com", "svelezs@dissensas.com"
                         Subject = "Redención de premio"
                     };
                     var response = this.httpClientAgent.SendMail(email);

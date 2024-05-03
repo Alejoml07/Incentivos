@@ -48,7 +48,7 @@ namespace PuntosLeonisa.Seguridad.Application
                 else
                 {
                     value.Id = Guid.NewGuid().ToString();
-                    value.FechaAceptacion = DateTime.Now;
+                    value.FechaAceptacion = DateTime.Now.AddHours(-5);
                     usuario.TratamientoDatos= true;
                     await usuarioRepository.Update(usuario);
                     await tratamientoDatosRepository.Add(value);
@@ -113,19 +113,20 @@ namespace PuntosLeonisa.Seguridad.Application
         {
             var usuario = usuarioRepository.GetUsuarioByEmail(email);
 
-            if(usuario == null || usuario.Result.TratamientoDatos == null || usuario.Result.TratamientoDatos == false)
-            {
-                return Task.FromResult(new GenericResponse<bool>
-                {
-                    Message = "El usuario no ha aceptado termino y condiciones",
-                    Result = false,
-                });
-            }else
+            if(usuario.Result.TratamientoDatos == true)
             {
                 return Task.FromResult(new GenericResponse<bool>
                 {
                     Message = "Usuario ya acepto terminos y condiciones",
                     Result = true,
+                });
+                
+            }else
+            {
+                return Task.FromResult(new GenericResponse<bool>
+                {
+                    Message = "El usuario no ha aceptado termino y condiciones",
+                    Result = false,
                 });
             }
 

@@ -55,6 +55,22 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
         public string? tenderReference { get; set; }
         public double? total { get; set; }
         public string? transactionId { get; set; }
+        public string? id { get; set; }
+        public string? purchaseOrder { get; set; }
+        public string? financialStatus { get; set; }
+        public string? customerId { get; set; }
+        public string? customerIdOrder { get; set; }
+        public string? currencyCodeOrder { get; set; }
+        public string? checkoutId { get; set; }
+        public string? language { get; set; }
+        public string? userId { get; set; }
+        public string? referalCode { get; set; }
+        public string? sourceName { get; set; }
+        public string? shippingCarrier { get; set; }
+        public double shippingTax { get; set; }
+        public string? customerLocale { get; set; }
+        public string? trackingCode { get; set; }
+        public string? paymentId { get; set; }
     }
 
     public class BillingInformation

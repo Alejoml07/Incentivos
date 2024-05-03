@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Azure;
+using Newtonsoft.Json.Linq;
 using Polly.Caching;
 using PuntosLeonisa.fidelizacion.Domain.Service.DTO.PuntosManuales;
 using PuntosLeonisa.Fidelizacion.Application.Core.Interfaces;
@@ -491,8 +492,8 @@ public class FidelizacionApplication : IFidelizacionApplication
 
     public async Task<GenericResponse<bool>> RedencionPuntos(UsuarioRedencion data)
     {
-       try
-       {
+        try
+        {
             var usuarioCompleto = this.usuarioExternalService.GetUserByEmail(data.Usuario.Email ?? "").GetAwaiter().GetResult();
             var usuarioInfoPuntos = this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(data.Usuario.Email).GetAwaiter().GetResult();
             data.Usuario.Agencia = usuarioCompleto.Result.Agencia;
@@ -507,22 +508,24 @@ public class FidelizacionApplication : IFidelizacionApplication
                     throw new Exception("Puntos a redimir no pueden ser mayores a los disponibles");
                 }
 
-            var res = await this.CreateRedencion(data);
-            if (res.Result)
-            {
-                //validacion donde no los puntos a redimir no pueden ser mayores al disponible
+                var res = await this.CreateRedencion(data);
+                if (res.Result)
+                {
+                    //validacion donde no los puntos a redimir no pueden ser mayores al disponible
 
-                usuarioInfoPuntos.PuntosDisponibles -= data.PuntosRedimidos;
-                usuarioInfoPuntos.PuntosRedimidos += data.PuntosRedimidos;
-                usuarioInfoPuntos.PuntosEnCarrito = 0;
-                usuarioInfoPuntos.FechaActualizacion = DateTime.Now;
-                this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuarioInfoPuntos).GetAwaiter().GetResult();
-                ClearWishlistAndCart(data.Usuario);
-                unitOfWork.SaveChangesSync();
-                SendNotify(data);
+                    usuarioInfoPuntos.PuntosDisponibles -= data.PuntosRedimidos;
+                    usuarioInfoPuntos.PuntosRedimidos += data.PuntosRedimidos;
+                    usuarioInfoPuntos.PuntosEnCarrito = 0;
+                    usuarioInfoPuntos.FechaActualizacion = DateTime.Now;
+                    this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuarioInfoPuntos).GetAwaiter().GetResult();
+                    ClearWishlistAndCart(data.Usuario);
+                    unitOfWork.SaveChangesSync();
+                    SendNotify(data);
+                }
+
             }
-
-            }else{
+            else
+            {
 
                 throw new Exception("Usuario no encontrado");
             }
@@ -532,11 +535,11 @@ public class FidelizacionApplication : IFidelizacionApplication
                 Result = true
             };
 
-       }
-       catch (Exception ex)
-       {
+        }
+        catch (Exception ex)
+        {
             throw ex;
-       }
+        }
     }
 
     private async void SendNotify(UsuarioRedencion data)
@@ -885,7 +888,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                 var operationtype = new NroPedidoOP();
                 var result = new ResultNroPedidoOp();
                 if (data.ProductosCarrito.Any(p => p.ProveedorLite.Nit == "811044814"))
-                {   
+                {
                     result = this.ordenOPExternalService.GetNroOrdenOP(operationtype).GetAwaiter().GetResult();
                 }
                 ordenop.additionalField5 = "";
@@ -969,7 +972,24 @@ public class FidelizacionApplication : IFidelizacionApplication
                     tax = taxConDosDecimales,
                     total = totalConDosDecimales
                 };
-
+                ordenop.id = "";
+                ordenop.purchaseOrder = "";
+                ordenop.financialStatus = "";
+                ordenop.customerId = "";
+                ordenop.customerIdOrder = "";
+                ordenop.currencyCodeOrder = "";
+                ordenop.checkoutId = "";
+                ordenop.language = "";
+                ordenop.userId = "";
+                ordenop.referalCode = "";
+                ordenop.sourceName = "puntos";
+                ordenop.shippingCarrier = "";
+                ordenop.shippingTax = 0.0;
+                ordenop.customerLocale = "";
+                ordenop.trackingCode = "";
+                ordenop.paymentId = "";
+                ordenop.freeShipping = false;
+                ordenop.avscode = "";
                 ordenop.preauthDate = "";
                 ordenop.preauthorization = "";
                 ordenop.promotionCode = "";
@@ -986,8 +1006,8 @@ public class FidelizacionApplication : IFidelizacionApplication
 
                 foreach (var item in data.ProductosCarrito)
                 {
-                item.Id = Guid.NewGuid().ToString();
-                
+                    item.Id = Guid.NewGuid().ToString();
+
                     if (item.ProveedorLite.Nit == "811044814")
                     {
                         var productITem = new Item()
@@ -1034,7 +1054,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             }
 
 
-              data.PuntosRedimidos = data.GetSumPuntos();
+            data.PuntosRedimidos = data.GetSumPuntos();
 
             //mientras tinto TODO: Hacer el envio de datos a OP
             var redenciones = unitOfWork.UsuarioRedencionRepository.GetNroPedido() + 1;
@@ -1859,7 +1879,9 @@ public class FidelizacionApplication : IFidelizacionApplication
             if (variable != null)
             {
                 mapper.Map(value, variable);
+                variable.FechaActualizacion = DateTime.Now;
                 await this.unitOfWork.VariableRepository.Update(variable);
+                await this.unitOfWork.SaveChangesAsync();
                 return new GenericResponse<bool>
                 {
                     Result = true
@@ -1870,7 +1892,10 @@ public class FidelizacionApplication : IFidelizacionApplication
             {
                 var variableNueva = mapper.Map<Variable>(value);
                 variableNueva.Id = Guid.NewGuid().ToString();
+                variableNueva.FechaCreacion = DateTime.Now;
+                variableNueva.FechaActualizacion = DateTime.Now;
                 await this.unitOfWork.VariableRepository.Add(variableNueva);
+                await this.unitOfWork.SaveChangesAsync();
                 return new GenericResponse<bool>
                 {
                     Result = true
@@ -1946,20 +1971,26 @@ public class FidelizacionApplication : IFidelizacionApplication
 
     }
 
-    public Task<GenericResponse<VariableDto>> GetVariable()
+    public async Task<GenericResponse<IEnumerable<VariableDto>>> GetVariables()
     {
+
         try
         {
-            var variables = this.unitOfWork.VariableRepository.GetAll();
-            return Task.FromResult(new GenericResponse<VariableDto>
-            {
-                Result = mapper.Map<VariableDto>(variables)
-            });
-        }
-        catch (Exception)
-        {
+            var variables = await this.unitOfWork.VariableRepository.GetAll();
 
-            throw;
+            // Mapear cada Variable a VariableDto
+            var variablesDto = mapper.Map<IEnumerable<VariableDto>>(variables);
+
+            var response = new GenericResponse<IEnumerable<VariableDto>>
+            {
+                Result = variablesDto
+            };
+
+            return response;
+        }
+        catch
+        {
+            throw; // Permite que la excepción se propague para un mejor manejo fuera de este método
         }
     }
 }
