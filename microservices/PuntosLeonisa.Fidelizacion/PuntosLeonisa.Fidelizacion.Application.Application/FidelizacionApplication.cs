@@ -1942,31 +1942,31 @@ public class FidelizacionApplication : IFidelizacionApplication
 
     }
 
-    public Task<GenericResponse<VariableDto>> GetVariableById(string id)
+    public async Task<GenericResponse<VariableDto>> GetVariableById(string id)
     {
         try
         {
-            var variable = this.unitOfWork.VariableRepository.GetById(id);
+            var variable = await this.unitOfWork.VariableRepository.GetById(id);
             if (variable != null)
             {
-                return Task.FromResult(new GenericResponse<VariableDto>
+                var variableDto = mapper.Map<VariableDto>(variable);
+                return new GenericResponse<VariableDto>
                 {
-                    Result = mapper.Map<VariableDto>(variable)
-                });
+                    Result = variableDto
+                };
             }
             else
             {
-                return Task.FromResult(new GenericResponse<VariableDto>
+                return new GenericResponse<VariableDto>
                 {
                     Message = "Variable no encontrada",
                     Result = null
-                });
+                };
             }
         }
-        catch (Exception)
+        catch
         {
-
-            throw;
+            throw; // Permite que la excepción se propague para un mejor manejo fuera de este método
         }
 
     }
@@ -1977,10 +1977,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         try
         {
             var variables = await this.unitOfWork.VariableRepository.GetAll();
-
-            // Mapear cada Variable a VariableDto
             var variablesDto = mapper.Map<IEnumerable<VariableDto>>(variables);
-
             var response = new GenericResponse<IEnumerable<VariableDto>>
             {
                 Result = variablesDto
@@ -1990,7 +1987,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
         catch
         {
-            throw; // Permite que la excepción se propague para un mejor manejo fuera de este método
+            throw; 
         }
     }
 }
