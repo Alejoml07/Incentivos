@@ -318,7 +318,7 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
         var Page = 1;
         var PageSize = 10;
         List<Producto>? productos = null;
-        productos = await _context.Set<Producto>().Where(x => x.Nombre.Contains(data.Busqueda)).Where(x => x.Roles.Contains(data.TipoUsuario) && x.Puntos != null && x.Cantidad != 0).ToListAsync();
+        productos = await _context.Set<Producto>().Where(x => x.Nombre.ToLower().Contains(data.Busqueda)).Where(x => x.Roles.Contains(data.TipoUsuario) && x.Puntos != null && x.Cantidad != 0).ToListAsync();
 
         // Agrupar los datos en memoria
         var groupedData = productos.GroupBy(p => p.Referencia)
