@@ -531,7 +531,7 @@ namespace Productos
         [OpenApiOperation(operationId: "GetProductsForSearchAll", tags: new[] { "Productos/GetProductsForSearchAll" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
         public async Task<IActionResult> GetProductsForSearchAll(
-           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Productos/GetProductsForSearchAll")] HttpRequest req,  // <-- Parámetro adicional
+           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Productos/GetProductsForSearchAll")] HttpRequest req,
            ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
