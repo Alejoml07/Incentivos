@@ -537,4 +537,49 @@ public class ProductosApplication : IProductApplication
         }
 
     }
+
+    public async Task<GenericResponse<PagedResult<ProductoDto>>> GetProductsBySearch(SearchDto data)
+    {
+        try
+        {
+            if(data.Busqueda == null || data.Busqueda == "")
+            {
+                //si busqueda es nulo o vacio se retornan todos los productos
+                var response2 = await this.productoRepository.GetProductsForSearchAll(data);
+                // ayudame a agruparlo por referencia
+                var productos2 = response2.Data.SelectMany(group => group.ToList()).ToList().GroupBy(p => p.Referencia).Select(g => g.FirstOrDefault());
+                var pageresult2 = new PagedResult<Producto>();
+                pageresult2.PageNumber = response2.PageNumber;
+                pageresult2.PageSize = response2.PageSize;
+                pageresult2.TotalCount = response2.TotalCount;
+                pageresult2.Data = productos2;
+                return new GenericResponse<PagedResult<ProductoDto>>()
+                {
+                    Result = this.mapper.Map<PagedResult<ProductoDto>>(pageresult2)
+                };
+
+            }
+            else
+            {
+                var response = await this.productoRepository.GetProductsForSearch(data);
+                var productos = response.Data.SelectMany(group => group.ToList()).ToList().GroupBy(p => p.Referencia).Select(g => g.FirstOrDefault());
+                var pageresult = new PagedResult<Producto>();
+                pageresult.PageNumber = response.PageNumber;
+                pageresult.PageSize = response.PageSize;
+                pageresult.TotalCount = response.TotalCount;
+                pageresult.Data = productos;
+                return new GenericResponse<PagedResult<ProductoDto>>()
+                {
+                    Result = this.mapper.Map<PagedResult<ProductoDto>>(pageresult)
+                };
+            }
+            
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+        
+    }
 }

@@ -1966,7 +1966,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
         catch
         {
-            throw; // Permite que la excepción se propague para un mejor manejo fuera de este método
+            throw; 
         }
 
     }

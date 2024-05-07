@@ -10,6 +10,7 @@ using PuntosLeonisa.Products.Domain.Service.DTO.Productos;
 using System.Reflection.Metadata;
 using System.Collections;
 using System.Collections.Generic;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace PuntosLeonisa.Products.Infrasctructure.Repositorie;
 public class ProductoRepository : Repository<Producto>, IProductoRepository
@@ -310,6 +311,62 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
         {
             return response;
         }
+    }
+
+    public async Task<PagedResult<IGrouping<string, Producto>>> GetProductsForSearch(SearchDto data)
+    {
+        var Page = 1;
+        var PageSize = 10;
+        List<Producto>? productos = null;
+        productos = await _context.Set<Producto>().Where(x => x.Nombre.Contains(data.Busqueda)).Where(x => x.Roles.Contains(data.TipoUsuario) && x.Puntos != null && x.Cantidad != 0).ToListAsync();
+
+        // Agrupar los datos en memoria
+        var groupedData = productos.GroupBy(p => p.Referencia)
+                                         .Skip((Page - 1) * PageSize)
+                                         .Take(PageSize)
+                                         .ToList();
+
+        // Calcular el total de grupos
+        int totalGroups = productos.GroupBy(p => p.Referencia).Count();
+
+        // Resultado paginado con agrupación
+        var pagedResult = new PagedResult<IGrouping<string, Producto>>
+        {
+            Data = groupedData,
+            TotalCount = totalGroups,
+            PageNumber = Page,
+            PageSize = PageSize
+        };
+
+        return pagedResult;
+    }
+
+    public async Task<PagedResult<IGrouping<string, Producto>>> GetProductsForSearchAll(SearchDto data)
+    {
+        var Page = 1;
+        var PageSize = 10;
+        List<Producto>? productos = null;
+        productos = await _context.Set<Producto>().Where(x => x.Roles.Contains(data.TipoUsuario) && x.Puntos != null && x.Cantidad != 0).ToListAsync();
+
+        // Agrupar los datos en memoria
+        var groupedData = productos.GroupBy(p => p.Referencia)
+                                         .Skip((Page - 1) * PageSize)
+                                         .Take(PageSize)
+                                         .ToList();
+
+        // Calcular el total de grupos
+        int totalGroups = productos.GroupBy(p => p.Referencia).Count();
+
+        // Resultado paginado con agrupación
+        var pagedResult = new PagedResult<IGrouping<string, Producto>>
+        {
+            Data = groupedData,
+            TotalCount = totalGroups,
+            PageNumber = Page,
+            PageSize = PageSize
+        };
+
+        return pagedResult;
     }
 
     #endregion

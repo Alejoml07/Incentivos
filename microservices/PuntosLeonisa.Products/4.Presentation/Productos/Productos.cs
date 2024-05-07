@@ -526,6 +526,46 @@ namespace Productos
                 return GetFunctionError(log, "Error al obtener los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("GetProductsForSearchAll")]
+        [OpenApiOperation(operationId: "GetProductsForSearchAll", tags: new[] { "Productos/GetProductsForSearchAll" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
+        public async Task<IActionResult> GetProductsForSearchAll(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Productos/GetProductsForSearchAll")] HttpRequest req,  // <-- Parámetro adicional
+           ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+                string tipoUsuario = string.Empty;
+                if (req.Headers.TryGetValue("Type", out StringValues tuEncabezadoValues))
+                {
+                    tipoUsuario = tuEncabezadoValues.FirstOrDefault();
+                }
+                log.LogInformation($"Product:ObtenerFiltros Inicia obtener todos los filtros. Fecha:{DateTime.UtcNow}");
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var TipeUser = JsonConvert.DeserializeObject<SearchDto>(requestBody);
+                TipeUser.TipoUsuario = tipoUsuario;
+
+                var producto = await this.productoApplication.GetProductsBySearch(TipeUser);
+
+                return new OkObjectResult(producto);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 
