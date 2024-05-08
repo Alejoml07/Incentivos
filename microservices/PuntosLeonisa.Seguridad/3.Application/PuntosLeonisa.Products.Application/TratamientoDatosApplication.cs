@@ -121,7 +121,15 @@ namespace PuntosLeonisa.Seguridad.Application
                     Result = true,
                 });
                 
-            }else
+            }else if (usuario.Result.TratamientoDatos == false && usuario.Result.TipoUsuario == "Asesoras vendedoras")
+            {
+                return Task.FromResult(new GenericResponse<bool>
+                {
+                    Message = "El usuario no ha aceptado termino y condiciones",
+                    Result = false,
+                });
+            }
+            else
             {
                 return Task.FromResult(new GenericResponse<bool>
                 {
