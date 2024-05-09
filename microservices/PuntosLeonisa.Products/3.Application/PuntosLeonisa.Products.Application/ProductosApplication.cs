@@ -413,9 +413,17 @@ public class ProductosApplication : IProductApplication
         {
             foreach (var producto in data)  
             {
-                var productos = await this.productoRepository.GetById(producto.EAN);
-                productos.Cantidad -= producto.Quantity;
-                await this.productoRepository.Update(productos);
+                if(producto.ProveedorLite.Nit == "811044814")
+                {
+                    continue;
+                }
+                else
+                {
+                    var productos = await this.productoRepository.GetById(producto.EAN);
+                    productos.Cantidad -= producto.Quantity;
+                    await this.productoRepository.Update(productos);
+                }
+                
             }
             return new GenericResponse<IEnumerable<bool>>()
             {
