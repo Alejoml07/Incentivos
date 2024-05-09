@@ -25,8 +25,11 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
         public async Task<bool> EnviarOrdenOP(OrdenOP ordenOP)
         {
             var azf = $"{_configuration["AzfOrdenOP"]}{_configuration["receiveOrder"]}";
-            var response = await httpClientAgent.PostRequestWhitHeader<bool, OrdenOP>(new Uri(azf), ordenOP);
-            return response;
+            
+            var response = await httpClientAgent.PostRequestWhitHeader<dynamic, OrdenOP>(new Uri(azf), ordenOP);
+            //var response2 = await httpClientAgent.PostRequestWhitHeader<bool, OrdenOP>(new Uri(azf), ordenOP);
+            bool response2 = true;
+            return response2;
         }
 
         public async Task<ResultNroPedidoOp> GetNroOrdenOP(NroPedidoOP nroOrden)
