@@ -316,7 +316,7 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
     public async Task<PagedResult<IGrouping<string, Producto>>> GetProductsForSearch(SearchDto data)
     {
         var Page = 1;
-        var PageSize = 10;
+        var PageSize = 12;
         List<Producto>? productos = null;
         productos = await _context.Set<Producto>().Where(x => x.Nombre.ToLower().Contains(data.Busqueda)).Where(x => x.Roles.Contains(data.TipoUsuario) && x.Puntos != null && x.Cantidad != 0).ToListAsync();
 
@@ -344,7 +344,7 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
     public async Task<PagedResult<IGrouping<string, Producto>>> GetProductsForSearchAll(SearchDto data)
     {
         var Page = 1;
-        var PageSize = 10;
+        var PageSize = 12;
         List<Producto>? productos = null;
         productos = await _context.Set<Producto>().Where(x => x.Roles.Contains(data.TipoUsuario) && x.Puntos != null && x.Cantidad != 0).ToListAsync();
 
