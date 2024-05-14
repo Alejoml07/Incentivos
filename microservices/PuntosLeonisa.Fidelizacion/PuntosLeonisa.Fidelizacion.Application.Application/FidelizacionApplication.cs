@@ -1657,12 +1657,11 @@ public class FidelizacionApplication : IFidelizacionApplication
             var usuario = this.usuarioExternalService.GetUserByEmail(email).GetAwaiter().GetResult();
             if(usuarioPuntos == null && usuario != null)
             {
+
                 // create new usuarioinfopuntos
                 var extracto = await this.unitOfWork.ExtractosRepository.GetExtractosByUsuario(usuario.Result.Cedula);
                 var puntos = extracto.Sum(x => x.ValorMovimiento);
                 var usuarioInfoPuntosNuevo = new UsuarioInfoPuntos
-
-                
                 {
                     Cedula = usuario.Result.Cedula,
                     PuntosAcumulados = (int)puntos,
