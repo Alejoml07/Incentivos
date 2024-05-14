@@ -1657,7 +1657,6 @@ public class FidelizacionApplication : IFidelizacionApplication
             var usuario = this.usuarioExternalService.GetUserByEmail(email).GetAwaiter().GetResult();
             if(usuarioPuntos == null && usuario != null)
             {
-                // create new usuarioinfopuntos
                 var usuarioInfoPuntosNuevo = new UsuarioInfoPuntos
                 {
                     Cedula = usuario.Result.Cedula,
