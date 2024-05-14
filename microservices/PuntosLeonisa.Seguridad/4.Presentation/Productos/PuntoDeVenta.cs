@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using PuntosLeonisa.Seguridad.Application.Core;
 using PuntosLeonisa.Seguridad.Domain.Service.DTO.PuntosDeVenta;
+using PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios;
 using PuntosLeonisa.Seguridad.Infrasctructure.Common.Communication;
 using System;
 using System.Collections.Generic;
@@ -167,6 +168,31 @@ namespace PuntosLeonisa.Seguridad.Function
             catch (Exception ex)
             {
                 return GetFunctionError(log, "Error al eliminar el punto de venta, Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("LoadPuntosVenta")]
+        [OpenApiOperation(operationId: "LoadPuntosVenta", tags: new[] { "Usuario/LoadPuntosVenta" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(IEnumerable<PuntoDeVentaDto>), Description = "Carga masiva de Puntos de Venta")]
+        public async Task<IActionResult> LoadUsuarios(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Usuario/LoadPuntosVenta")] HttpRequest req,
+           ILogger log)
+        {
+
+
+            try
+            {
+                log.LogInformation($"Usuario:LoadUsuarios Inicia agregar usuarios masivos. Fecha:{DateTime.UtcNow}");
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var PuntoVenta = JsonConvert.DeserializeObject<PuntoDeVentaDto[]>(requestBody);
+                var punto = await this._puntoDeVentaApplication.AddRange(PuntoVenta);
+
+                return new OkObjectResult(punto);
+
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
         }
     }

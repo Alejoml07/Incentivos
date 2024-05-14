@@ -58,9 +58,28 @@ namespace PuntosLeonisa.Seguridad.Application
             
         }
 
-        public Task<GenericResponse<PuntoDeVentaDto[]>> AddRange(PuntoDeVentaDto[] value)
+        public async Task<GenericResponse<PuntoDeVentaDto[]>> AddRange(PuntoDeVentaDto[] value)
         {
-            throw new NotImplementedException();
+            try
+            {
+
+                foreach (var item in value)
+                {
+                    await this.puntoDeVentaRepository.Add(mapper.Map<PuntoDeVenta>(item));
+
+                }
+                return new GenericResponse<PuntoDeVentaDto[]>
+                {
+                    IsSuccess = true,
+                    Message = "Puntos de venta añadidos correctamente",
+                    Result = value
+                };
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public Task<GenericResponse<PuntoDeVentaDto>> Delete(PuntoDeVentaDto value)
