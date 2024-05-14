@@ -419,6 +419,24 @@
     },
 
     {
+      "UpstreamPathTemplate": "/api/Usuario/LoadPuntosVenta",
+      "DownstreamPathTemplate": "/api/Usuario/LoadPuntosVenta",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plseguridad.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "LoadPuntosVentaRoute"
+    },
+
+    {
       "UpstreamPathTemplate": "/api/PuntosDeVenta/GetPuntosDeVenta",
       "DownstreamPathTemplate": "/api/PuntosDeVenta/GetPuntosDeVenta",
       "DownstreamScheme": "https",

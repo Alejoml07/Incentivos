@@ -6,9 +6,6 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
 <Project>
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA6Qy8IVxYWkiOLTdKbMYAugAAAAACAAAAAAAQZgAAAAEAACAAAADLecVA7gFWhCt6i3kVtfMIMesXKh+HfA3/2lBPiQQeYQAAAAAOgAAAAAIAACAAAABIYYXNGJo9VqsJDcWM0AxIA1EJ1xjYQuLKnV1DljVZ4IAAAAAcet9CukdR1Dz+EtiVPAvVXh2hhqnBGjrRTVN6mPmICf7WUS9cmrgH+GyWHaum++EuHylsrZQp+kjgkQBzAJvuXiXAV5udIXJT+bmY5Q9b582RttxUgdB3BBIdIfbjtMgzUvrTtpAMp9XpPJPq3YLxpxVf8Fn86sUrVQjcqBvGPEAAAABaPOUvVkMk2HWpffcY/P0rHgcerTN3+abWO67bscI53tDNM3dQEO7pCLBI0oeGJqGLsSawvJFYZcjxYwuXbp1d</EncryptedPassword>
-    <_PublishTargetUrl>ftps://waws-prod-blu-143.ftp.azurewebsites.windows.net/site/wwwroot</_PublishTargetUrl>
-    <History>False|2024-05-14T15:01:59.8655255Z;</History>
-    <LastFailureDetails />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA6Qy8IVxYWkiOLTdKbMYAugAAAAACAAAAAAAQZgAAAAEAACAAAACxNlNVXX0bqld+aiGayPWgRxB5zXCXdbMbwynN/lJfoAAAAAAOgAAAAAIAACAAAABpjaGgHAq2GqkKg95cR9bZp6YU4mW7F+/s+sHiAxNqCIAAAACCwasVqW13VjtT/V+OpxQOxyzLVCSvJOBuy3lYOhKHjWEvZICP0UOcmnE9KiviMqC6S0vDZ3eNEbhaOKmeUzZ9sLNa0n+dSpiTA0vWDbh8EtdD9dZJJRDi/OXE5P33r1Fasswxinpr/ZJOUt7PaFv8ReQC9KPG6lftL79p7S8dPUAAAADP8oTDcHlOILPaMRgxpRGVXNuCknYYtEtZ/r+6eFJHNi/gRaPKGhtANYHr08GEiKylDDAPRhuZmD7ydfeelpzv</EncryptedPassword>
   </PropertyGroup>
 </Project>
