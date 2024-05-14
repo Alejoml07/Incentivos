@@ -1658,7 +1658,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             if(usuarioPuntos == null && usuario != null)
             {
                 // create new usuarioinfopuntos
-                var extracto = await this.unitOfWork.ExtractosRepository.GetExtractosByUsuario(email);
+                var extracto = await this.unitOfWork.ExtractosRepository.GetExtractosByUsuario(usuario.Result.Cedula);
                 var puntos = extracto.Sum(x => x.ValorMovimiento);
                 var usuarioInfoPuntosNuevo = new UsuarioInfoPuntos
 
@@ -1678,8 +1678,8 @@ public class FidelizacionApplication : IFidelizacionApplication
 
                 await this.unitOfWork.UsuarioInfoPuntosRepository.Add(usuarioInfoPuntosNuevo);
                 await this.unitOfWork.SaveChangesAsync();
+                usuarioPuntos = usuarioInfoPuntosNuevo;
             }
-            usuarioPuntos = this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(email).GetAwaiter().GetResult();
             var bono = this.productoExternalService.GetProductByEAN(EANBono).GetAwaiter().GetResult();
             if (usuarioPuntos != null && usuario != null && bono != null)
             {
