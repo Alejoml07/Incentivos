@@ -194,6 +194,31 @@ namespace PuntosLeonisa.Seguridad.Function
                 return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("LoadPuntoVentaVar")]
+        [OpenApiOperation(operationId: "LoadPuntoVentaVar", tags: new[] { "PuntosDeVenta/LoadPuntoVentaVar" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(IEnumerable<PuntoVentaVarDto>), Description = "Carga masiva de registros de liquidacion")]
+        public async Task<IActionResult> LoadPuntoVentaVar(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "PuntosDeVenta/LoadPuntoVentaVar")] HttpRequest req,
+           ILogger log)
+        {
+
+
+            try
+            {
+                log.LogInformation($"Usuario:LoadPuntoVentaVar Inicia agregar registros masivos. Fecha:{DateTime.UtcNow}");
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var PuntoVenta = JsonConvert.DeserializeObject<PuntoVentaVarDto[]>(requestBody);
+                var punto = await this._puntoDeVentaApplication.AddPuntoVentaVar(PuntoVenta);
+
+                return new OkObjectResult(punto);
+
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 

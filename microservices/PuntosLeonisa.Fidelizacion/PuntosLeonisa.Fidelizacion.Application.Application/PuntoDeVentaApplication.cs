@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Model.Carrito;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.PuntoDeVenta;
+using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using PuntosLeonisa.Seguridad.Application.Core;
 using PuntosLeonisa.Seguridad.Domain.Service.Interfaces;
@@ -11,9 +13,10 @@ namespace PuntosLeonisa.Seguridad.Application
     {
         private readonly IMapper mapper;
         private readonly IPuntoDeVentaRepository puntoDeVentaRepository;
+        private readonly IPuntoVentaVarRepository puntoVentaVarRepository;
         private readonly GenericResponse<PuntoDeVentaDto> response;
 
-        public PuntoDeVentaApplication(IMapper mapper, IPuntoDeVentaRepository puntoDeVentaRepository)
+        public PuntoDeVentaApplication(IMapper mapper, IPuntoDeVentaRepository puntoDeVentaRepository, IPuntoVentaVarRepository puntoVentaVarRepository)
         {
             if (puntoDeVentaRepository is null)
             {
@@ -22,6 +25,7 @@ namespace PuntosLeonisa.Seguridad.Application
 
             this.mapper = mapper;
             this.puntoDeVentaRepository = puntoDeVentaRepository;
+            this.puntoVentaVarRepository = puntoVentaVarRepository;
             response = new GenericResponse<PuntoDeVentaDto>();
         }
 
@@ -50,6 +54,32 @@ namespace PuntosLeonisa.Seguridad.Application
                 throw;
             }
             
+        }
+
+        public async Task<GenericResponse<IEnumerable<PuntoVentaVarDto[]>>> AddPuntoVentaVar(PuntoVentaVarDto[] data)
+        {
+            try
+            {
+                foreach (var item in data)
+                {
+                    item.Id = Guid.NewGuid().ToString();
+                    await this.puntoVentaVarRepository.Add(mapper.Map<PuntoVentaVar>(item));
+                }
+                return new GenericResponse<IEnumerable<PuntoVentaVarDto[]>>
+                {
+                    IsSuccess = true,
+                    Message = "Punto de venta añadido correctamente",
+                    Result = new List<PuntoVentaVarDto[]>
+                    {
+                        data
+                    }
+                };
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public async Task<GenericResponse<PuntoDeVentaDto[]>> AddRange(PuntoDeVentaDto[] value)

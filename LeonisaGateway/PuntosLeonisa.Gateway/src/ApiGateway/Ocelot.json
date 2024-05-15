@@ -490,6 +490,26 @@
       "Key": "DeletePuntoDeVentaRoute"
     },
 
+    {
+      "UpstreamPathTemplate": "/api/PuntosDeVenta/LoadPuntoVentaVar",
+      "DownstreamPathTemplate": "/api/PuntosDeVenta/LoadPuntoVentaVarr",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizaciontest.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "LoadPuntoVentaVarRoute"
+    },
+
+    //termina Puntos de Venta
+
     //Comienza Tratamiento de Datos
 
     {
