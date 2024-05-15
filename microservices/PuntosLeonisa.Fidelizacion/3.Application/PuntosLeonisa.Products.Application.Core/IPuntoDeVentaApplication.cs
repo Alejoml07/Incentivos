@@ -4,7 +4,7 @@ using PuntosLeonisa.Products.Application.Core.Interfaces;
 
 namespace PuntosLeonisa.Seguridad.Application.Core
 {
-    public interface IPuntoDeVentaApplication : IApplicationCore<PuntoDeVentaDto>,IPuntoVentaVarApplication
+    public interface IPuntoDeVentaApplication : IApplicationCore<PuntoDeVentaDto>,IPuntoVentaVarApplication,IAsignacionApplication
     {
 
     }

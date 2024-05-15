@@ -35,6 +35,10 @@ namespace PuntosLeonisa.Seguridad.Domain.Service.Mapping
             CreateMap<VariableDto, Variable>();
             CreateMap<PuntoDeVenta, PuntoDeVentaDto>();
             CreateMap<PuntoDeVentaDto, PuntoDeVenta>();
+            CreateMap<PuntoVentaVar, PuntoVentaVarDto>();
+            CreateMap<PuntoVentaVarDto, PuntoVentaVar>();
+            CreateMap<Asignacion, AsignacionDto>();
+            CreateMap<AsignacionDto, Asignacion>();
 
             CreateMap<OrdenDto, UsuarioRedencion>();
             //TODO: Hacer el de usuario

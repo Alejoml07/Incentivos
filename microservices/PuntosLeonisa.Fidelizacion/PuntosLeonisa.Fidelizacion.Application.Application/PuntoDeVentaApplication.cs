@@ -59,6 +59,32 @@ namespace PuntosLeonisa.Seguridad.Application
             
         }
 
+        public async Task<GenericResponse<IEnumerable<AsignacionDto[]>>> AddAsignacion(AsignacionDto[] data)
+        {
+            try
+            {
+                foreach (var item in data)
+                {
+                    item.Id = Guid.NewGuid().ToString();
+                    await this.unitOfWork.AsignacionRepository.Add(item);
+                }
+                return new GenericResponse<IEnumerable<AsignacionDto[]>>
+                {
+                    IsSuccess = true,
+                    Message = "Asignación añadida correctamente",
+                    Result = new List<AsignacionDto[]>
+                    {
+                        data
+                    }
+                };
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<GenericResponse<IEnumerable<PuntoVentaVarDto[]>>> AddPuntoVentaVar(PuntoVentaVarDto[] data)
         {
             try
