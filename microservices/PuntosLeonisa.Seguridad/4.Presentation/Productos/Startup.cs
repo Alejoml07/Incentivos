@@ -36,7 +36,6 @@ namespace Productos
             builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             builder.Services.AddScoped<IProveedorRepository, ProveedorRepository>();
             builder.Services.AddScoped<ITokenRepository, TokenRepository>();
-            builder.Services.AddScoped<IPuntoDeVentaRepository, PuntoDeVentaRepository>();
             builder.Services.AddScoped<ITratamientoDatosRepository, TratamientoDatosRepository>();
             //Add Service
 
@@ -49,7 +48,6 @@ namespace Productos
 
             builder.Services.AddScoped<IUsuarioApplication, SeguridadApplication>();
             builder.Services.AddScoped<IProveedorApplication, ProveedorApplication>();
-            builder.Services.AddScoped<IPuntoDeVentaApplication, PuntoDeVentaApplication>();
             builder.Services.AddScoped<ITratamientoDatosApplication, TratamientoDatosApplication>();
 
         }

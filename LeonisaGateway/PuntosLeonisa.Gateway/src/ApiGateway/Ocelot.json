@@ -407,7 +407,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "azseguridadtest.azurewebsites.net",
+          "Host": "azfidelizaciontest.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -425,7 +425,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "azseguridadtest.azurewebsites.net",
+          "Host": "azfidelizaciontest.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -443,7 +443,7 @@
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "azseguridadtest.azurewebsites.net",
+          "Host": "azfidelizaciontest.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -461,7 +461,7 @@
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "azseguridadtest.azurewebsites.net",
+          "Host": "azfidelizaciontest.azurewebsites.net",
           "Port": 443
         }
       ],
@@ -479,7 +479,7 @@
       "UpstreamHttpMethod": [ "Delete" ],
       "DownstreamHostAndPorts": [
         {
-          "Host": "azseguridadtest.azurewebsites.net",
+          "Host": "azfidelizaciontest.azurewebsites.net",
           "Port": 443
         }
       ],

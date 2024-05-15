@@ -6,6 +6,8 @@ using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
 using UsuarioEnvio = PuntosLeonisa.Fidelizacion.Domain.Model.UsuarioEnvio;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Variables;
+using PuntosLeonisa.Fidelizacion.Domain.Model.Carrito;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.PuntoDeVenta;
 
 namespace PuntosLeonisa.Seguridad.Domain.Service.Mapping
 {
@@ -31,6 +33,8 @@ namespace PuntosLeonisa.Seguridad.Domain.Service.Mapping
             CreateMap<UsuarioEnvio, Fidelizacion.Domain.Service.DTO.Redencion.UsuarioEnvio>();
             CreateMap<Variable, VariableDto>();
             CreateMap<VariableDto, Variable>();
+            CreateMap<PuntoDeVenta, PuntoDeVentaDto>();
+            CreateMap<PuntoDeVentaDto, PuntoDeVenta>();
 
             CreateMap<OrdenDto, UsuarioRedencion>();
             //TODO: Hacer el de usuario

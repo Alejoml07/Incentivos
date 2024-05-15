@@ -3,6 +3,8 @@ using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie;
 using PuntosLeonisa.infrastructure.Persistence.CosmoDb;
+using PuntosLeonisa.Seguridad.Domain.Service.Interfaces;
+using PuntosLeonisa.Seguridad.Infrasctructure.Repositorie;
 
 public class UnitOfWork : IUnitOfWork
 {
@@ -16,6 +18,9 @@ public class UnitOfWork : IUnitOfWork
     private IUsuarioRedencionRepository _usuarioRedencionRepository;
     private IExtractosRepository _extractosRepository;
     private IVariableRepository _variableRepository;
+    private IPuntoVentaVarRepository _puntoVentaVarRepository;
+    private IPuntoDeVentaRepository _puntoDeVentaRepository;
+
 
     public UnitOfWork(FidelizacionContext fidelizacionContext)
     {
@@ -102,6 +107,24 @@ public class UnitOfWork : IUnitOfWork
             return _variableRepository;
         }
     }
+
+    public IPuntoDeVentaRepository PuntoDeVentaRepository
+    {
+        get
+        {
+            _puntoDeVentaRepository ??= new PuntoDeVentaRepository(_fidelizacionContext);
+            return _puntoDeVentaRepository;
+        }
+    }
+
+    //public IPuntoVentaVarRepository PuntoVentaVarRepository
+    //{
+    //    get
+    //    {
+    //        _puntoVentaVarRepository ??= new PuntoVentaVarRepository(_fidelizacionContext);
+    //        return _puntoVentaVarRepository;
+    //    }
+    //}
 
     public void SaveChangesSync()
     {

@@ -1,8 +1,5 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using PuntosLeonisa.Products.Domain.Model;
-using PuntosLeonisa.Seguridad.Domain.Model;
-using PuntosLeonisa.Seguridad.Domain.Service.DTO.PuntosDeVenta;
 using PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios;
 
 namespace PuntosLeonisa.Seguridad.Domain.Service.Mapping
@@ -21,10 +18,6 @@ namespace PuntosLeonisa.Seguridad.Domain.Service.Mapping
             CreateMap<ProveedorDto, Proveedor>();
             CreateMap<UsuarioBasicDto, Usuario>();
             CreateMap<Usuario, UsuarioBasicDto>();
-            CreateMap<PuntoDeVenta, PuntoDeVentaDto>();
-            CreateMap<PuntoDeVentaDto, PuntoDeVenta>();
-
-
             //TODO: Hacer el de usuario
         }
     }

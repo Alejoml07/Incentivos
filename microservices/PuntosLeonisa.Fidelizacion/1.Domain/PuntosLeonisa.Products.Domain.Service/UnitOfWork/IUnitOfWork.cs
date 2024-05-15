@@ -1,10 +1,5 @@
 ﻿using PuntosLeonisa.Fidelizacion.Domain.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork
 {
@@ -19,6 +14,8 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork
         IFidelizacionPuntosRepository FidelizacionPuntosRepository { get; }
         IExtractosRepository ExtractosRepository { get; }
         IVariableRepository VariableRepository { get; }
+        //IPuntoVentaVarRepository PuntoVentaVarRepository { get; }
+
 
 
 
