@@ -20,6 +20,7 @@ public class UnitOfWork : IUnitOfWork
     private IVariableRepository _variableRepository;
     private IPuntoVentaVarRepository _puntoVentaVarRepository;
     private IPuntoDeVentaRepository _puntoDeVentaRepository;
+    private IAsignacionRepository _asignacionRepository;
 
 
     public UnitOfWork(FidelizacionContext fidelizacionContext)
@@ -117,14 +118,23 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    //public IPuntoVentaVarRepository PuntoVentaVarRepository
-    //{
-    //    get
-    //    {
-    //        _puntoVentaVarRepository ??= new PuntoVentaVarRepository(_fidelizacionContext);
-    //        return _puntoVentaVarRepository;
-    //    }
-    //}
+    public IPuntoVentaVarRepository PuntoVentaVarRepository
+    {
+        get
+        {
+            _puntoVentaVarRepository ??= new PuntoVentaVarRepository(_fidelizacionContext);
+            return _puntoVentaVarRepository;
+        }
+    }
+
+    public IAsignacionRepository AsignacionRepository
+    {
+        get
+        {
+            _asignacionRepository ??= new AsignacionRepository(_fidelizacionContext);
+            return _asignacionRepository;
+        }
+    }
 
     public void SaveChangesSync()
     {

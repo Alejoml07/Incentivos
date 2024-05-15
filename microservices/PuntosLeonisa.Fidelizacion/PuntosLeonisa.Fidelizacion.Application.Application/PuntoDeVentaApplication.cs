@@ -3,6 +3,7 @@ using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Model.Carrito;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.PuntoDeVenta;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
+using PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using PuntosLeonisa.Seguridad.Application.Core;
 using PuntosLeonisa.Seguridad.Domain.Service.Interfaces;
@@ -14,9 +15,10 @@ namespace PuntosLeonisa.Seguridad.Application
         private readonly IMapper mapper;
         private readonly IPuntoDeVentaRepository puntoDeVentaRepository;
         private readonly IPuntoVentaVarRepository puntoVentaVarRepository;
+        private readonly IUnitOfWork unitOfWork;
         private readonly GenericResponse<PuntoDeVentaDto> response;
 
-        public PuntoDeVentaApplication(IMapper mapper, IPuntoDeVentaRepository puntoDeVentaRepository, IPuntoVentaVarRepository puntoVentaVarRepository)
+        public PuntoDeVentaApplication(IMapper mapper, IPuntoDeVentaRepository puntoDeVentaRepository, IPuntoVentaVarRepository puntoVentaVarRepository, IUnitOfWork unitOfWork)
         {
             if (puntoDeVentaRepository is null)
             {
@@ -26,6 +28,7 @@ namespace PuntosLeonisa.Seguridad.Application
             this.mapper = mapper;
             this.puntoDeVentaRepository = puntoDeVentaRepository;
             this.puntoVentaVarRepository = puntoVentaVarRepository;
+            this.unitOfWork = unitOfWork;
             response = new GenericResponse<PuntoDeVentaDto>();
         }
 
@@ -63,7 +66,7 @@ namespace PuntosLeonisa.Seguridad.Application
                 foreach (var item in data)
                 {
                     item.Id = Guid.NewGuid().ToString();
-                    await this.puntoVentaVarRepository.Add(mapper.Map<PuntoVentaVar>(item));
+                    await this.unitOfWork.PuntoVentaVarRepository.Add(mapper.Map<PuntoVentaVar>(item));
                 }
                 return new GenericResponse<IEnumerable<PuntoVentaVarDto[]>>
                 {
