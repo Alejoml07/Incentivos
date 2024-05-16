@@ -5,6 +5,7 @@ using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.PuntoDeVenta;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
+using PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces;
 using PuntosLeonisa.Seguridad.Application.Core;
 using PuntosLeonisa.Seguridad.Domain.Service.Interfaces;
 
@@ -16,9 +17,10 @@ namespace PuntosLeonisa.Seguridad.Application
         private readonly IPuntoDeVentaRepository puntoDeVentaRepository;
         private readonly IPuntoVentaVarRepository puntoVentaVarRepository;
         private readonly IUnitOfWork unitOfWork;
+        private readonly IUsuarioExternalService usuarioExternalService;
         private readonly GenericResponse<PuntoDeVentaDto> response;
 
-        public PuntoDeVentaApplication(IMapper mapper, IPuntoDeVentaRepository puntoDeVentaRepository, IPuntoVentaVarRepository puntoVentaVarRepository, IUnitOfWork unitOfWork)
+        public PuntoDeVentaApplication(IMapper mapper, IPuntoDeVentaRepository puntoDeVentaRepository, IPuntoVentaVarRepository puntoVentaVarRepository, IUnitOfWork unitOfWork, IUsuarioExternalService usuarioExternalService)
         {
             if (puntoDeVentaRepository is null)
             {
@@ -28,6 +30,7 @@ namespace PuntosLeonisa.Seguridad.Application
             this.mapper = mapper;
             this.puntoDeVentaRepository = puntoDeVentaRepository;
             this.puntoVentaVarRepository = puntoVentaVarRepository;
+            this.usuarioExternalService = usuarioExternalService;
             this.unitOfWork = unitOfWork;
             response = new GenericResponse<PuntoDeVentaDto>();
         }
@@ -66,7 +69,7 @@ namespace PuntosLeonisa.Seguridad.Application
                 foreach (var item in data)
                 {
                     item.Id = Guid.NewGuid().ToString();
-                    await this.unitOfWork.AsignacionRepository.Add(item);
+                    await this.unitOfWork.AsignacionRepository.Add(mapper.Map<Asignacion>(item));
                 }
                 return new GenericResponse<IEnumerable<AsignacionDto[]>>
                 {

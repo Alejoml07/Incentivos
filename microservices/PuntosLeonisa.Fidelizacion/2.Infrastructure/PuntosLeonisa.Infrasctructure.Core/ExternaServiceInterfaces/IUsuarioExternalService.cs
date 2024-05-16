@@ -1,4 +1,5 @@
 ﻿using PuntosLeonisa.Fidelizacion.Domain.Model;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.PuntoDeVenta;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.DTO;
@@ -17,6 +18,7 @@ namespace PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces
         Task<GenericResponse<bool>> SendMailGeneric(EmailDTO emailData);       
         Task<GenericResponse<bool>> CambiarEstado(string email);
         Task<GenericResponse<IEnumerable<Usuario>>> GetUsuarios();
+        Task<IEnumerable<Usuario[]>> GetUsuarioTPA(LiquidacionPuntos data); 
 
     }
 }

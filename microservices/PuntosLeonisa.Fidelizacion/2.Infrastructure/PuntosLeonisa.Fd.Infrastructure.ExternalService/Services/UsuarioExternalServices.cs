@@ -1,6 +1,7 @@
 ﻿using Logistic.Infrastructure.Agents.Interfaces;
 using Microsoft.Extensions.Configuration;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.PuntoDeVenta;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
@@ -176,6 +177,11 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
             return response;
         }
 
-
+        public async Task<IEnumerable<Usuario[]>> GetUsuarioTPA(LiquidacionPuntos data)
+        {
+            var azf = $"{_configuration["AzfBaseTPAUser"]}{_configuration["TimePlannerAppAPI"]}";
+            var response = await httpClientAgent.PostRequestWhitHeader<IEnumerable<Usuario[]>, LiquidacionPuntos>(new Uri(azf), data);
+            return response;
+        }
     }
 }

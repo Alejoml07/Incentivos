@@ -221,7 +221,7 @@ namespace PuntosLeonisa.Seguridad.Function
         }
 
         [FunctionName("LoadAsignacion")]
-        [OpenApiOperation(operationId: "LoadPuntoVentaVar", tags: new[] { "PuntosDeVenta/LoadAsignacion" })]
+        [OpenApiOperation(operationId: "LoadAsignacion", tags: new[] { "PuntosDeVenta/LoadAsignacion" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(IEnumerable<AsignacionDto>), Description = "Carga masiva de registros de liquidacion")]
         public async Task<IActionResult> LoadAsignacion(
            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "PuntosDeVenta/LoadAsignacion")] HttpRequest req,
