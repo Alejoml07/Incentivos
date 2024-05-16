@@ -492,9 +492,9 @@
 
     {
       "UpstreamPathTemplate": "/api/PuntosDeVenta/LoadPuntoVentaVar",
-      "DownstreamPathTemplate": "/api/PuntosDeVenta/LoadPuntoVentaVarr",
+      "DownstreamPathTemplate": "/api/PuntosDeVenta/LoadPuntoVentaVar",
       "DownstreamScheme": "https",
-      "UpstreamHttpMethod": [ "Delete" ],
+      "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
           "Host": "azfidelizacion.azurewebsites.net",

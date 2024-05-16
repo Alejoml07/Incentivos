@@ -45,6 +45,8 @@ namespace Productos
             builder.Services.AddScoped<IFidelizacionApplication, PuntosLeonisa.Fidelizacion.Application.FidelizacionApplication>();
             builder.Services.AddScoped<IExtractosRepository, ExtractosRepository>();
             builder.Services.AddScoped<IVariableRepository, VariableRepository>();
+            builder.Services.AddScoped<IPuntoVentaVarRepository, PuntoVentaVarRepository>();
+
 
             //Add ServiceProxy
             builder.Services.AddScoped<IHttpClientAgent, HttpClientAgents>();

@@ -3,20 +3,20 @@
   "WorkspaceRootPath": "C:\\PL.BackEnd\\IncentivosService\\LeonisaGateway\\PuntosLeonisa.Gateway\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C1905C2A-9E36-4A01-B9AC-F1C2FE46A1DB}|src\\ApiGateway\\ApiGateway.csproj|c:\\pl.backend\\incentivosservice\\leonisagateway\\puntosleonisa.gateway\\src\\apigateway\\ocelot-prod.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{C1905C2A-9E36-4A01-B9AC-F1C2FE46A1DB}|src\\ApiGateway\\ApiGateway.csproj|solutionrelative:src\\apigateway\\ocelot-prod.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C1905C2A-9E36-4A01-B9AC-F1C2FE46A1DB}|src\\ApiGateway\\ApiGateway.csproj|c:\\pl.backend\\incentivosservice\\leonisagateway\\puntosleonisa.gateway\\src\\apigateway\\ocelot.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{C1905C2A-9E36-4A01-B9AC-F1C2FE46A1DB}|src\\ApiGateway\\ApiGateway.csproj|solutionrelative:src\\apigateway\\ocelot.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{C1905C2A-9E36-4A01-B9AC-F1C2FE46A1DB}|src\\ApiGateway\\ApiGateway.csproj|c:\\pl.backend\\incentivosservice\\leonisagateway\\puntosleonisa.gateway\\src\\apigateway\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{C1905C2A-9E36-4A01-B9AC-F1C2FE46A1DB}|src\\ApiGateway\\ApiGateway.csproj|solutionrelative:src\\apigateway\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C1905C2A-9E36-4A01-B9AC-F1C2FE46A1DB}|src\\ApiGateway\\ApiGateway.csproj|c:\\pl.backend\\incentivosservice\\leonisagateway\\puntosleonisa.gateway\\src\\apigateway\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C1905C2A-9E36-4A01-B9AC-F1C2FE46A1DB}|src\\ApiGateway\\ApiGateway.csproj|solutionrelative:src\\apigateway\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C1905C2A-9E36-4A01-B9AC-F1C2FE46A1DB}|src\\ApiGateway\\ApiGateway.csproj|c:\\pl.backend\\incentivosservice\\leonisagateway\\puntosleonisa.gateway\\src\\apigateway\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{C1905C2A-9E36-4A01-B9AC-F1C2FE46A1DB}|src\\ApiGateway\\ApiGateway.csproj|solutionrelative:src\\apigateway\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{C1905C2A-9E36-4A01-B9AC-F1C2FE46A1DB}|src\\ApiGateway\\ApiGateway.csproj|c:\\pl.backend\\incentivosservice\\leonisagateway\\puntosleonisa.gateway\\src\\apigateway\\ocelot.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{C1905C2A-9E36-4A01-B9AC-F1C2FE46A1DB}|src\\ApiGateway\\ApiGateway.csproj|solutionrelative:src\\apigateway\\ocelot.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C1905C2A-9E36-4A01-B9AC-F1C2FE46A1DB}|src\\ApiGateway\\ApiGateway.csproj|c:\\pl.backend\\incentivosservice\\leonisagateway\\puntosleonisa.gateway\\src\\apigateway\\ocelot-prod.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{C1905C2A-9E36-4A01-B9AC-F1C2FE46A1DB}|src\\ApiGateway\\ApiGateway.csproj|solutionrelative:src\\apigateway\\ocelot-prod.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,11 +26,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\PL.BackEnd\\IncentivosService\\LeonisaGateway\\PuntosLeonisa.Gateway\\src\\ApiGateway\\appsettings.json",
               "RelativeDocumentMoniker": "src\\ApiGateway\\appsettings.json",
@@ -39,11 +39,12 @@
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2024-04-01T20:36:06.163Z",
-              "IsPinned": true
+              "IsPinned": true,
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\PL.BackEnd\\IncentivosService\\LeonisaGateway\\PuntosLeonisa.Gateway\\src\\ApiGateway\\Program.cs",
               "RelativeDocumentMoniker": "src\\ApiGateway\\Program.cs",
@@ -57,26 +58,26 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "Ocelot-Prod.json",
               "DocumentMoniker": "C:\\PL.BackEnd\\IncentivosService\\LeonisaGateway\\PuntosLeonisa.Gateway\\src\\ApiGateway\\Ocelot-Prod.json",
               "RelativeDocumentMoniker": "src\\ApiGateway\\Ocelot-Prod.json",
               "ToolTip": "C:\\PL.BackEnd\\IncentivosService\\LeonisaGateway\\PuntosLeonisa.Gateway\\src\\ApiGateway\\Ocelot-Prod.json",
               "RelativeToolTip": "src\\ApiGateway\\Ocelot-Prod.json",
-              "ViewState": "AQIAAOcBAAAAAAAAAAAkwPUBAAAJAAAA",
+              "ViewState": "AQIAAOcBAAAAAAAAAAAkwPABAAAnAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2024-03-22T12:41:47.612Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Ocelot.json",
               "DocumentMoniker": "C:\\PL.BackEnd\\IncentivosService\\LeonisaGateway\\PuntosLeonisa.Gateway\\src\\ApiGateway\\Ocelot.json",
               "RelativeDocumentMoniker": "src\\ApiGateway\\Ocelot.json",
               "ToolTip": "C:\\PL.BackEnd\\IncentivosService\\LeonisaGateway\\PuntosLeonisa.Gateway\\src\\ApiGateway\\Ocelot.json",
               "RelativeToolTip": "src\\ApiGateway\\Ocelot.json",
-              "ViewState": "AQIAAN0BAAAAAAAAAAAkwPEBAAAhAAAA",
+              "ViewState": "AQIAAO8BAAAAAAAAAAAkwOwBAAAFAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2024-02-19T14:53:57.46Z",
               "EditorCaption": ""

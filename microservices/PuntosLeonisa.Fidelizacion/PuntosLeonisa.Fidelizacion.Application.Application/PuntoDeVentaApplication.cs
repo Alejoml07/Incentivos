@@ -97,7 +97,7 @@ namespace PuntosLeonisa.Seguridad.Application
                 return new GenericResponse<IEnumerable<PuntoVentaVarDto[]>>
                 {
                     IsSuccess = true,
-                    Message = "Punto de venta añadido correctamente",
+                    Message = "Registro añadido correctamente",
                     Result = new List<PuntoVentaVarDto[]>
                     {
                         data
