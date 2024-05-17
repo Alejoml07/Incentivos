@@ -1106,6 +1106,24 @@
       "Key": "GetExtractosByUsuarioRoute"
     },
 
+    {
+      "UpstreamPathTemplate": "/api/UpdateCorreoInfoPuntos",
+      "DownstreamPathTemplate": "/api/UpdateCorreoInfoPuntos",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizaciontest.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "UpdateCorreoInfoPuntosRoute"
+    },
+
     // fin fidelizacion
     // fin puntos,
     //proveedores

@@ -349,7 +349,7 @@ public class SeguridadApplication : IUsuarioApplication
 
             if (exist == null)
             {
-                var response = await this.getUsuarioExternalService.GetUsuario(email);
+                var response = await this.getUsuarioExternalService.GetUsuarioPorEmail(email);
 
                 if (response == null)
                 {
@@ -357,14 +357,28 @@ public class SeguridadApplication : IUsuarioApplication
                 }
                 else
                 {
-
                     var usuario = mapper.Map<Usuario>(response);
-                    usuario.Id = Guid.NewGuid().ToString();
-                    usuario.Email = usuario.Email.Trim();
-                    usuario.Celular = usuario.Celular.Trim();
-                    usuario.Cedula = usuario.Cedula.Trim();
-                    usuario.TipoUsuario = "Asesoras vendedoras";
-                    await usuarioRepository.Add(usuario);
+                    var usuarioLocal = await this.usuarioRepository.GetById(response.Cedula);
+                    var contra = usuarioLocal.Pwd;
+                    if(usuarioLocal == null)
+                    {
+                        usuario.Id = Guid.NewGuid().ToString();
+                        usuario.Email = usuario.Email.Trim();
+                        usuario.Celular = usuario.Celular.Trim();
+                        usuario.Cedula = usuario.Cedula.Trim();
+                        usuario.TipoUsuario = "Asesoras vendedoras";
+                        await usuarioRepository.Add(usuario);
+                    }
+                    else
+                    {
+                        
+                        mapper.Map(response, usuarioLocal);
+                        usuarioLocal.Pwd = contra;
+                        await this.usuarioRepository.Update(usuarioLocal);
+                        var actCorreo = new UpdateInfoDto() { Cedula = usuarioLocal.Cedula, Email = usuarioLocal.Email };
+                        await this.getUsuarioExternalService.UpdateCorreoInfoPuntos(actCorreo);
+                    }
+                    
                     return new GenericResponse<bool>() { Result = false };
                 }
 
@@ -378,7 +392,7 @@ public class SeguridadApplication : IUsuarioApplication
             if (exist.Pwd != null && exist.Pwd != "")
             {
                 var pwd2 = exist.Pwd;
-                var response = await this.getUsuarioExternalService.GetUsuario(email);
+                var response = await this.getUsuarioExternalService.GetUsuarioPorCedula(exist.Cedula);
 
                 if (response != null)
                 {

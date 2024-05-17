@@ -18,7 +18,7 @@ namespace PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces
         Task<GenericResponse<bool>> SendMailGeneric(EmailDTO emailData);       
         Task<GenericResponse<bool>> CambiarEstado(string email);
         Task<GenericResponse<IEnumerable<Usuario>>> GetUsuarios();
-        Task<IEnumerable<Usuario[]>> GetUsuarioTPA(LiquidacionPuntos data); 
+        Task<IEnumerable<Usuario[]>> GetUsuarioTPA(Fecha data); 
 
     }
 }

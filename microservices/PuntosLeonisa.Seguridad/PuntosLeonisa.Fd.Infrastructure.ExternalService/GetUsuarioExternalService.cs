@@ -23,11 +23,26 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService
             this.httpClientAgent = httpClientAgent;
             this._configuration = configuration;
         }
-        public async Task<UsuarioDto> GetUsuario(string email)
+        public async Task<UsuarioDto> GetUsuarioPorEmail(string email)
         {
             try
             {
-                var azf = $"{_configuration["AzfBaseGetUser"]}{_configuration["ValidarUsuarioParaIncentivos"]}/{email}";
+                var azf = $"{_configuration["AzfBaseGetUserEmail"]}{_configuration["ValidarUsuarioParaIncentivos"]}/{email}";
+                var response = await httpClientAgent.GetRequest<UsuarioDto>(new Uri(azf));
+                return response;
+            }
+            catch (Exception ex)
+            {
+
+                return null;
+            }
+        }
+
+        public async Task<UsuarioDto> GetUsuarioPorCedula(string cedula)
+        {
+            try
+            {
+                var azf = $"{_configuration["AzfBaseGetUserCedula"]}{_configuration["ValidarUsuarioParaIncentivosPorCedula"]}/{cedula}";
                 var response = await httpClientAgent.GetRequest<UsuarioDto>(new Uri(azf));
                 return response;
             }
@@ -51,6 +66,13 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService
 
                 return null;
             }
+        }
+
+        public async Task<GenericResponse<bool>> UpdateCorreoInfoPuntos(UpdateInfoDto data)
+        {
+            var azf = $"{_configuration["AzfBaseUser"]}{_configuration["UpdateCorreoInfoPuntos"]}";
+            var response = await httpClientAgent.PostRequest<GenericResponse<bool>, UpdateInfoDto>(new Uri(azf), data);
+            return response;
         }
     }
 }

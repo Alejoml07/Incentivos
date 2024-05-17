@@ -1174,6 +1174,37 @@ namespace Usuarioos
                 return GetFunctionError(log, "Error al eliminar los puntos Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("UpdateCorreoInfoPuntos")]
+        [OpenApiOperation(operationId: "UpdateCorreoInfoPuntos", tags: new[] { "UpdateCorreoInfoPuntos" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Update correo de infoPuntos")]
+
+        public async Task<IActionResult> UpdateCorreoInfoPuntos(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "UpdateCorreoInfoPuntos")] HttpRequest req,
+           ILogger log)
+        {
+
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+
+
+                log.LogInformation($"Puntos:UpdateCorreoInfoPuntos Inicia a hacer update del correo. Fecha:{DateTime.UtcNow}");
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<UpdateInfoDto>(requestBody);
+                var res = await this.puntosApplication.UpdateCorreoInfoPuntos(data);
+                return new OkObjectResult(res);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al hacer update del correo:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 

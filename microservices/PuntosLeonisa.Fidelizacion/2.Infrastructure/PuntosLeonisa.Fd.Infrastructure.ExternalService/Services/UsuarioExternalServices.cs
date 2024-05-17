@@ -95,7 +95,7 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
                     var email = new EmailDTO()
                     {
                         Message = data.GenerarHTML(),
-                        Recipients = new string[] { data?.Usuario?.Email}, //"nramirez@dissensas.com", "svelezs@dissensas.com"
+                        Recipients = new string[] { data?.Usuario?.Email, "svelezs@dissensas.com" }, //"nramirez@dissensas.com", "svelezs@dissensas.com"
                         Subject = "Redención de premio"
                     };
                     var response = this.httpClientAgent.SendMail(email);
@@ -177,10 +177,10 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
             return response;
         }
 
-        public async Task<IEnumerable<Usuario[]>> GetUsuarioTPA(LiquidacionPuntos data)
+        public async Task<IEnumerable<Usuario[]>> GetUsuarioTPA(Fecha data)
         {
             var azf = $"{_configuration["AzfBaseTPAUser"]}{_configuration["TimePlannerAppAPI"]}";
-            var response = await httpClientAgent.PostRequestWhitHeader<IEnumerable<Usuario[]>, LiquidacionPuntos>(new Uri(azf), data);
+            var response = await httpClientAgent.PostRequestWhitHeader<IEnumerable<Usuario[]>, Fecha>(new Uri(azf), data);
             return response;
         }
     }

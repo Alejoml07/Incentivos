@@ -10,7 +10,9 @@ namespace PuntosLeonisa.Infrasctructure.Core.ExternalServiceInterfaces
 {
     public interface IGetUsuarioExternalService
     {
-        Task<UsuarioDto> GetUsuario(string email);
+        Task<UsuarioDto> GetUsuarioPorEmail(string cedula);
+        Task<UsuarioDto> GetUsuarioPorCedula(string cedula);
         Task<UsuarioDto> GetUsuarioByCedula(string email);
+        Task<GenericResponse<bool>> UpdateCorreoInfoPuntos(UpdateInfoDto data);
     }
 }

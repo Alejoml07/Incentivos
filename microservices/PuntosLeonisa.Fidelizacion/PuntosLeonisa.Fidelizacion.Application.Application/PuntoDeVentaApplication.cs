@@ -8,6 +8,7 @@ using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces;
 using PuntosLeonisa.Seguridad.Application.Core;
 using PuntosLeonisa.Seguridad.Domain.Service.Interfaces;
+using System.Windows.Markup;
 
 namespace PuntosLeonisa.Seguridad.Application
 {
@@ -204,6 +205,46 @@ namespace PuntosLeonisa.Seguridad.Application
             }
         }
 
+        //public async Task<GenericResponse<bool>> LiquidacionPuntosMes(LiquidacionPuntos data)
+        //{
+        //    try
+        //    {
+        //        var mes = 0; 
+        //        if(data.Fecha.Mes < 10)
+        //        {
+        //            mes = '0' + data.Fecha.Mes;
+        //        }
+        //        else
+        //        {
+        //            mes = data.Fecha.Mes;
+        //        }
+
+        //        var fecha = new Fecha
+        //        {
+        //            Anho = data.Fecha.Anho,
+        //            Mes = mes
+        //        };
+
+        //        var resultAser = await this.usuarioExternalService.GetUsuarioTPA(fecha);
+
+        //        var cont = 0;
+        //        if (resultAser != null)
+        //        {
+        //            foreach (var item in resultAser)
+        //            {
+        //                cont++;
+        //                var valuser = await this.usuarioExternalService.GetUserByEmail(item.FirstOrDefault().Cedula);
+
+        //            }
+        //        }
+
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
 
         public Task<GenericResponse<PuntoDeVentaDto>> Update(PuntoDeVentaDto value)
         {

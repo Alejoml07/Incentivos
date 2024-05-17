@@ -16,6 +16,14 @@ public class UsuarioInfoPuntosRepository : Repository<UsuarioInfoPuntos>, IUsuar
 
     public FidelizacionContext Context => context;
 
+    public Task<UsuarioInfoPuntos> GetUsuarioByCedula(string? cedula)
+    {
+        var response = context.Set<UsuarioInfoPuntos>()
+                              .AsNoTracking()
+                              .FirstOrDefault(x => x.Cedula == cedula);
+        return Task.FromResult(response);
+    }
+
     public async Task<UsuarioInfoPuntos> GetUsuarioByEmail(string? email)
     {
         if (string.IsNullOrWhiteSpace(email))
