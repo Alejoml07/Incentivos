@@ -104,8 +104,7 @@ namespace PuntosLeonisa.Seguridad.Function
             return token;
         }
 
-        [FunctionName("
-            orreo")]
+        [FunctionName("ValidarCorreo")]
         [OpenApiOperation(operationId: "ValidarCorreo", tags: new[] { "Seguridad/ValidarCorreo/" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Verifica si el correo existe")]
         public async Task<IActionResult> ValidarCorreo(

@@ -368,18 +368,19 @@ public class SeguridadApplication : IUsuarioApplication
                         usuario.Cedula = usuario.Cedula.Trim();
                         usuario.TipoUsuario = "Asesoras vendedoras";
                         await usuarioRepository.Add(usuario);
+                        return new GenericResponse<bool>() { Result = false };
                     }
                     else
-                    {
-                        
+                    {                        
                         mapper.Map(response, usuarioLocal);
                         usuarioLocal.Pwd = contra;
                         await this.usuarioRepository.Update(usuarioLocal);
                         var actCorreo = new UpdateInfoDto() { Cedula = usuarioLocal.Cedula, Email = usuarioLocal.Email };
                         await this.getUsuarioExternalService.UpdateCorreoInfoPuntos(actCorreo);
+                        return new GenericResponse<bool>() { Result = true };
                     }
                     
-                    return new GenericResponse<bool>() { Result = false };
+                    
                 }
 
             }

@@ -209,8 +209,8 @@ namespace PuntosLeonisa.Seguridad.Application
         //{
         //    try
         //    {
-        //        var mes = 0; 
-        //        if(data.Fecha.Mes < 10)
+        //        var mes = 0;
+        //        if (data.Fecha.Mes < 10)
         //        {
         //            mes = '0' + data.Fecha.Mes;
         //        }
