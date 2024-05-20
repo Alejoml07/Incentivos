@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Polly.Caching;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Model.Carrito;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.PuntoDeVenta;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Usuarios;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
@@ -219,10 +221,20 @@ namespace PuntosLeonisa.Seguridad.Application
         //            mes = data.Fecha.Mes;
         //        }
 
+
+        //        var user = new ValidarUsuarioDto
+        //        {
+        //            NombreUsuario = "43614188",
+		      //      Contrasena = "43614188"
+        //        };
+
+        //        var result = await this.usuarioExternalService.ValidarUsuario(user);
+        //        var token = result.data.Token;
+
         //        var fecha = new Fecha
         //        {
         //            Anho = data.Fecha.Anho,
-        //            Mes = mes
+        //            Mes = mes,
         //        };
 
         //        var resultAser = await this.usuarioExternalService.GetUsuarioTPA(fecha);

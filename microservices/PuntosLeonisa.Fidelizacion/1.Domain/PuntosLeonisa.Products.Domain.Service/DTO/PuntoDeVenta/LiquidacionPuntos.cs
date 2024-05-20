@@ -17,6 +17,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.PuntoDeVenta
     {
         public int Mes { get; set; }
         public int Anho { get; set; }
+
     }
 
     

@@ -112,6 +112,7 @@ namespace Logistic.Infrastructure.Agents.AgentsImpl
             {
                 string jsonString = JsonConvert.SerializeObject(content);
                 HttpContent contentHttp = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                
                 var CircuitBreakerPolicy = _circuitBreaker.GetCircuitBreaker();
                 var TransientErrorRetryPolicy = _transientRetry.GetTransientRetry();
                 var httpClient = _httpClientFactory.CreateClient();
@@ -119,6 +120,7 @@ namespace Logistic.Infrastructure.Agents.AgentsImpl
                 //httpClient.DefaultRequestHeaders.Add("user", _configuration["userOp"]);
                 //httpClient.DefaultRequestHeaders.Add("password", _configuration["passwordOp"]);
                 httpClient.DefaultRequestHeaders.Add("Authorization", _configuration["AuthorizationOP"]);
+                //httpClient.DefaultRequestHeaders.Add("Bearer",);
                 //convierte el usuario y contraseña en base64
                 var byteArray = Encoding.ASCII.GetBytes($"{_configuration["userOp"]}:{_configuration["passwordOp"]}");
                 httpClient.DefaultRequestHeaders.Add("AuthenticationToken", _configuration["AuthenticationTokenAPI"]);

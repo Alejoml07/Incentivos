@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.PuntoDeVenta;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Usuarios;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.DTO;
@@ -181,6 +182,13 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
         {
             var azf = $"{_configuration["AzfBaseTPAUser"]}{_configuration["TimePlannerAppAPI"]}";
             var response = await httpClientAgent.PostRequestWhitHeader<IEnumerable<Usuario[]>, Fecha>(new Uri(azf), data);
+            return response;
+        }
+
+        public async Task<Usuario> ValidarUsuario(ValidarUsuarioDto data)
+        {
+            var azf = $"{_configuration["AzfBaseValidarUsuario"]}{_configuration["ValidarUsuario"]}";
+            var response = await httpClientAgent.PostRequest<Usuario, ValidarUsuarioDto>(new Uri(azf), data);
             return response;
         }
     }
