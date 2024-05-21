@@ -217,5 +217,34 @@ namespace Logistic.Infrastructure.Agents.AgentsImpl
             return Task.FromResult(true);
 
         }
+
+        public async Task<T1> PostRequestWithToken<T1, T2>(Uri requestUrl, T2 content, string token)
+        {
+            try
+            {
+                string jsonString = JsonConvert.SerializeObject(content);
+                HttpContent contentHttp = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+                var CircuitBreakerPolicy = _circuitBreaker.GetCircuitBreaker();
+                var TransientErrorRetryPolicy = _transientRetry.GetTransientRetry();
+                var httpClient = _httpClientFactory.CreateClient();
+                httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+                httpClient.DefaultRequestHeaders.Add("Bearer", token);
+                //convierte el usuario y contraseña en base64
+                var resultData = await CircuitBreakerPolicy.ExecuteAsync(() =>
+                        TransientErrorRetryPolicy.ExecuteAsync(() =>
+                        httpClient.PostAsync(requestUrl, contentHttp))
+                    );
+                var response = await resultData.Content.ReadAsStringAsync();
+#pragma warning disable CS8603 // Posible tipo de valor devuelto de referencia nulo
+                return JsonConvert.DeserializeObject<T1>(response);
+#pragma warning restore CS8603 // Posible tipo de valor devuelto de referencia nulo
+            }
+            catch (Exception ex)
+            {
+                Exception exception = new("Failed" + ex.InnerException + "\n" + ex.Message);
+                throw exception;
+            }
+        }
     }
 }

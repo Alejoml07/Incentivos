@@ -207,56 +207,65 @@ namespace PuntosLeonisa.Seguridad.Application
             }
         }
 
-        //public async Task<GenericResponse<bool>> LiquidacionPuntosMes(LiquidacionPuntos data)
-        //{
-        //    try
-        //    {
-        //        var mes = 0;
-        //        if (data.Fecha.Mes < 10)
-        //        {
-        //            mes = '0' + data.Fecha.Mes;
-        //        }
-        //        else
-        //        {
-        //            mes = data.Fecha.Mes;
-        //        }
+        public async Task<GenericResponse<bool>> LiquidacionPuntosMes(LiquidacionPuntos data)
+        {
+            try
+            {
+                string mes = "";
+                int mesNumerico;
+
+                if (int.TryParse(data.Fecha.Mes, out mesNumerico))
+                {
+                    if (mesNumerico < 10)
+                    {
+                        mes = "0" + data.Fecha.Mes;
+                    }
+                    else
+                    {
+                        mes = data.Fecha.Mes;
+                    }
+                }
 
 
-        //        var user = new ValidarUsuarioDto
-        //        {
-        //            NombreUsuario = "43614188",
-		      //      Contrasena = "43614188"
-        //        };
+                var user = new ValidarUsuarioDto
+                {
+                    NombreUsuario = "43614188",
+                    Contrasena = "43614188"
+                };
 
-        //        var result = await this.usuarioExternalService.ValidarUsuario(user);
-        //        var token = result.data.Token;
+                var result = await this.usuarioExternalService.ValidarUsuario(user);
+                var Token = result.Data.Token;
 
-        //        var fecha = new Fecha
-        //        {
-        //            Anho = data.Fecha.Anho,
-        //            Mes = mes,
-        //        };
+                var fecha = new Fecha
+                {
+                    Anho = data.Fecha.Anho,
+                    Mes = mes,
+                };
 
-        //        var resultAser = await this.usuarioExternalService.GetUsuarioTPA(fecha);
+                var resultAser = await this.usuarioExternalService.GetUsuarioTPA(fecha, Token);
 
-        //        var cont = 0;
-        //        if (resultAser != null)
-        //        {
-        //            foreach (var item in resultAser)
-        //            {
-        //                cont++;
-        //                var valuser = await this.usuarioExternalService.GetUserByEmail(item.FirstOrDefault().Cedula);
+                var cont = 0;
+                if (resultAser != null)
+                {
+                    foreach (var item in resultAser)
+                    {
+                        cont++;
+                        var valuser = await this.usuarioExternalService.GetUserByEmail(item.FirstOrDefault().Cedula);
+                    }
+                }
+                return new GenericResponse<bool>
+                {
+                    IsSuccess = true,
+                    Message = "Liquidación de puntos realizada correctamente",
+                    Result = true
+                };
+            }
+            catch (Exception)
+            {
 
-        //            }
-        //        }
-
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-        //}
+                throw;
+            }
+        }
 
         public Task<GenericResponse<PuntoDeVentaDto>> Update(PuntoDeVentaDto value)
         {

@@ -34,6 +34,8 @@
 
         public string? contraseña { get; set; }
 
+        public string? Token { get; set; }
+
     }
 }
 

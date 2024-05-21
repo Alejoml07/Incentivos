@@ -7,6 +7,6 @@ namespace PuntosLeonisa.Seguridad.Application.Core
 {
     public interface IPuntoDeVentaApplication : IApplicationCore<PuntoDeVentaDto>,IPuntoVentaVarApplication,IAsignacionApplication
     {
-        //Task<GenericResponse<bool>> LiquidacionPuntosMes(LiquidacionPuntos data);
+        Task<GenericResponse<bool>> LiquidacionPuntosMes(LiquidacionPuntos data);
     }
 }

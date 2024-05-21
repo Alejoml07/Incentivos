@@ -202,8 +202,6 @@ namespace PuntosLeonisa.Seguridad.Function
            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "PuntosDeVenta/LoadPuntoVentaVar")] HttpRequest req,
            ILogger log)
         {
-
-
             try
             {
                 log.LogInformation($"Usuario:LoadPuntoVentaVar Inicia agregar registros masivos. Fecha:{DateTime.UtcNow}");
@@ -236,6 +234,30 @@ namespace PuntosLeonisa.Seguridad.Function
                 var PuntoVenta = JsonConvert.DeserializeObject<AsignacionDto[]>(requestBody);
                 var punto = await this._puntoDeVentaApplication.AddAsignacion(PuntoVenta);
 
+                return new OkObjectResult(punto);
+
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al guardar los registros:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("LiquidacionPuntosMes")]
+        [OpenApiOperation(operationId: "LiquidacionPuntosMes", tags: new[] { "PuntosDeVenta/LiquidacionPuntosMes" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(IEnumerable<LiquidacionPuntos>), Description = "Carga masiva de registros de liquidacion")]
+        public async Task<IActionResult> LiquidacionPuntosMes(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "PuntosDeVenta/LiquidacionPuntosMes")] HttpRequest req,
+           ILogger log)
+        {
+
+
+            try
+            {
+                log.LogInformation($"PuntosDeVenta:LoadAsignacion Inicia agregar registros masivos. Fecha:{DateTime.UtcNow}");
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var PuntoVenta = JsonConvert.DeserializeObject<LiquidacionPuntos>(requestBody);
+                var punto = await this._puntoDeVentaApplication.LiquidacionPuntosMes(PuntoVenta);
                 return new OkObjectResult(punto);
 
             }
