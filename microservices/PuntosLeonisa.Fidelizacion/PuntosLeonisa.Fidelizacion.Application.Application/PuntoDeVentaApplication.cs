@@ -8,6 +8,7 @@ using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces;
+using PuntosLeonisa.Products.Domain.Model;
 using PuntosLeonisa.Seguridad.Application.Core;
 using PuntosLeonisa.Seguridad.Domain.Service.Interfaces;
 using System.Windows.Markup;
@@ -250,7 +251,30 @@ namespace PuntosLeonisa.Seguridad.Application
                     foreach (var item in resultAser)
                     {
                         cont++;
-                        var valuser = await this.usuarioExternalService.GetUserByEmail(item.FirstOrDefault().Cedula);
+                        var valuser = await this.usuarioExternalService.GetUserLiteByCedula(item.Cedula);
+                        if(valuser == null)
+                        {
+                            var NuevoUser = new Usuario()
+                            {
+                                Cedula = item.Cedula,
+                                Nombres = "pendiente",
+                                Apellidos = "pendiente",
+                                Email = "pendiente",                                
+                            };
+                            var NuevoInfo = new UsuarioInfoPuntos()
+                            {
+                                //crear infopuntos
+                                Cedula = item.Cedula,
+                                PuntosAcumulados = 0,
+                                PuntosDisponibles = 0,
+                                PuntosEnCarrito = 0,
+                                PuntosRedimidos = 0,
+                            };
+                            await this.usuarioExternalService.AddUsuarioLiquidacion(NuevoUser);
+                            await this.unitOfWork.UsuarioInfoPuntosRepository.Add(NuevoInfo);
+                            
+                        }
+
                     }
                 }
                 return new GenericResponse<bool>

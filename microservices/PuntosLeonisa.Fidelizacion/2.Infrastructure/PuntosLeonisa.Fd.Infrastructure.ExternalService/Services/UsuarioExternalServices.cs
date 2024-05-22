@@ -178,10 +178,10 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
             return response;
         }
 
-        public async Task<IEnumerable<Usuario[]>> GetUsuarioTPA(Fecha data, string token)
+        public async Task<IEnumerable<Porcentajes>> GetUsuarioTPA(Fecha data, string token)
         {
             var azf = $"{_configuration["AzfBaseTPAUser"]}{_configuration["TimePlannerAppAPI"]}";
-            var response = await httpClientAgent.PostRequestWithToken<IEnumerable<Usuario[]>, Fecha>(new Uri(azf), data, token);
+            var response = await httpClientAgent.PostRequestWithToken<IEnumerable<Porcentajes>, Fecha>(new Uri(azf), data, token);
             return response;
         }
 
@@ -189,6 +189,13 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
         {
             var azf = $"{_configuration["AzfBaseValidarUsuario"]}{_configuration["ValidarUsuario"]}";
             var response = await httpClientAgent.PostRequest<UsuarioTpa, ValidarUsuarioDto>(new Uri(azf), data);
+            return response;
+        }
+
+        public async Task<GenericResponse<Usuario>> AddUsuarioLiquidacion(Usuario data)
+        {
+            var azf = $"{_configuration["AzfBaseUser"]}{_configuration["AddUsuarioTPA"]}";
+            var response = await httpClientAgent.PostRequest<GenericResponse<Usuario>, Usuario>(new Uri(azf), data);
             return response;
         }
     }
