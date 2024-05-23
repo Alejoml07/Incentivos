@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Polly.Caching;
+using PuntosLeonisa.Fidelizacion.Domain;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Model.Carrito;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.PuntoDeVenta;
@@ -90,6 +91,33 @@ namespace PuntosLeonisa.Seguridad.Application
 
                 throw;
             }
+        }
+
+        public async Task<GenericResponse<IEnumerable<PuntoVentaHistoriaDto[]>>> AddPuntoVentaHistoria(PuntoVentaHistoriaDto[] data)
+        {
+            try
+            {
+                foreach (var item in data)
+                {
+                    item.Id = Guid.NewGuid().ToString();
+                    await this.unitOfWork.PuntoVentaHistoria.Add(mapper.Map<PuntoVentaHistoria>(item));
+                }
+                return new GenericResponse<IEnumerable<PuntoVentaHistoriaDto[]>>
+                {
+                    IsSuccess = true,
+                    Message = "Registro añadido correctamente",
+                    Result = new List<PuntoVentaHistoriaDto[]>
+                    {
+                        data
+                    }
+                };
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
         public async Task<GenericResponse<IEnumerable<PuntoVentaVarDto[]>>> AddPuntoVentaVar(PuntoVentaVarDto[] data)
@@ -272,7 +300,8 @@ namespace PuntosLeonisa.Seguridad.Application
                             };
                             await this.usuarioExternalService.AddUsuarioLiquidacion(NuevoUser);
                             await this.unitOfWork.UsuarioInfoPuntosRepository.Add(NuevoInfo);
-                            
+                            await this.unitOfWork.SaveChangesAsync();
+                            valuser = await this.usuarioExternalService.GetUserLiteByCedula(item.Cedula);
                         }
 
                     }
