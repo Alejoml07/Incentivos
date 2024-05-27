@@ -358,8 +358,7 @@ public class SeguridadApplication : IUsuarioApplication
                 else
                 {
                     var usuario = mapper.Map<Usuario>(response);
-                    var usuarioLocal = await this.usuarioRepository.GetById(response.Cedula);
-                    var contra = usuarioLocal.Pwd;
+                    var usuarioLocal = await this.usuarioRepository.GetById(response.Cedula ?? "");
                     if(usuarioLocal == null)
                     {
                         usuario.Id = Guid.NewGuid().ToString();
@@ -371,7 +370,8 @@ public class SeguridadApplication : IUsuarioApplication
                         return new GenericResponse<bool>() { Result = false };
                     }
                     else
-                    {                        
+                    {
+                        var contra = usuarioLocal.Pwd;
                         mapper.Map(response, usuarioLocal);
                         usuarioLocal.Pwd = contra;
                         await this.usuarioRepository.Update(usuarioLocal);
