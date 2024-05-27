@@ -218,9 +218,7 @@ namespace Logistic.Infrastructure.Agents.AgentsImpl
 
         }
 
-<<<<<<< HEAD
-        
-=======
+
         public async Task<T1> PostRequestWithToken<T1, T2>(Uri requestUrl, T2 content, string token)
         {
             try
@@ -249,6 +247,5 @@ namespace Logistic.Infrastructure.Agents.AgentsImpl
                 throw exception;
             }
         }
->>>>>>> 279dab805d056b4e6099538c9d2b0cbd94f21fca
     }
 }

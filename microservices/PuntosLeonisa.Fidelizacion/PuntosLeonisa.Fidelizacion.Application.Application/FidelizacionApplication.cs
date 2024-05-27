@@ -2074,4 +2074,19 @@ public class FidelizacionApplication : IFidelizacionApplication
             throw;
         }
     }
+
+    public Task<GenericResponse<ReporteDto>> GetMetricasByState(ReporteDto data)
+    {
+        
+            var reporteOriginal = this.unitOfWork.UsuarioRedencionRepository.GetReporteRedencion(data);
+            data.ContadorPendiente = reporteOriginal.Where(x => x.ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Pendiente)).Count();
+            data.ContadorCancelado = reporteOriginal.Where(x => x.ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Cancelado)).Count();
+            data.ContadorEnviado = reporteOriginal.Where(x => x.ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Enviado)).Count();
+
+        return Task.FromResult(new GenericResponse<ReporteDto>
+        {
+            Result = data
+        });
+        
+    }
 }
