@@ -175,9 +175,14 @@ public class ProductosApplication : IProductApplication
                     if (productoExist != null)
                     {
                         if (productoExist.ProveedorLite == null)
+                        {
                             productoExist.ProveedorLite = producto.ProveedorLite;
-                            this.mapper.Map(producto, productoExist);
-                            await this.productoRepository.Update(productoExist);
+                        }                            
+                            this.mapper.Map(productoExist, producto);
+                            producto.Precio = productoExist.Precio;
+                            producto.PrecioOferta = productoExist.PrecioOferta;
+                            producto.Puntos = productoExist.Puntos;
+                            await this.productoRepository.Update(producto);
                     }
                     else
                     {

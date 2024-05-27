@@ -3,6 +3,7 @@ using Polly.Caching;
 using PuntosLeonisa.Fidelizacion.Domain;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Model.Carrito;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.FidelizacionPuntos;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.PuntoDeVenta;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Usuarios;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
@@ -64,7 +65,7 @@ namespace PuntosLeonisa.Seguridad.Application
 
                 throw;
             }
-            
+
         }
 
         public async Task<GenericResponse<IEnumerable<AsignacionDto[]>>> AddAsignacion(AsignacionDto[] data)
@@ -117,7 +118,7 @@ namespace PuntosLeonisa.Seguridad.Application
 
                 throw;
             }
-            
+
         }
 
         public async Task<GenericResponse<IEnumerable<PuntoVentaVarDto[]>>> AddPuntoVentaVar(PuntoVentaVarDto[] data)
@@ -236,15 +237,86 @@ namespace PuntosLeonisa.Seguridad.Application
             }
         }
 
+
+        public async Task<GenericResponse<bool>> EliminarExcels(LiquidacionPuntos data)
+        {
+            try
+            {
+                var ToDeleteHistoria = await this.unitOfWork.PuntoVentaHistoria.GetPuntoVentaHistoriaByMesAndAnio(data);
+                var ToDeleteVar = await this.unitOfWork.PuntoVentaVarRepository.GetPuntoVentaVarByMesAndAnio(data);
+                if (ToDeleteHistoria != null)
+                {
+                    foreach (var item in ToDeleteHistoria)
+                    {
+                        await this.unitOfWork.PuntoVentaHistoria.Delete(item);
+                    }
+                    await this.unitOfWork.SaveChangesAsync();
+                }
+                if (ToDeleteVar != null)
+                {
+                    foreach (var item in ToDeleteVar)
+                    {
+                        await this.unitOfWork.PuntoVentaVarRepository.Delete(item);
+                    }
+                    await this.unitOfWork.SaveChangesAsync();
+                }
+                return new GenericResponse<bool>
+                {
+                    IsSuccess = true,
+                    Message = "Registros eliminados correctamente",
+                    Result = true
+                };             
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<GenericResponse<bool>> AddExcels(PuntoVentaVarDto data)
+        {
+            try
+            {
+                var ToAddHistoria = new PuntoVentaHistoriaDto
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    IdPuntoVenta = data.IdPuntoVenta,
+                    IdPresupuesto = data.Presupuesto,
+                    Mes = data.Mes,
+                    Ano = data.Anio,
+                    FechaCreacion = DateTime.Now,
+                    FechaActualizacion = DateTime.Now
+                };
+                await this.unitOfWork.PuntoVentaVarRepository.Add(mapper.Map<PuntoVentaVar>(data));
+                await this.unitOfWork.PuntoVentaHistoria.Add(mapper.Map<PuntoVentaHistoria>(ToAddHistoria));
+                await this.unitOfWork.SaveChangesAsync();
+                return new GenericResponse<bool>
+                {
+                    IsSuccess = true,
+                    Message = "Registros añadidos correctamente",
+                    Result = true
+                };
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<GenericResponse<bool>> LiquidacionPuntosMes(LiquidacionPuntos data)
         {
             try
             {
+                EliminarExcels(data);
+                AddExcels(data.Registro);
                 string mes = "";
                 int mesNumerico;
 
                 if (int.TryParse(data.Fecha.Mes, out mesNumerico))
                 {
+
                     if (mesNumerico < 10)
                     {
                         mes = "0" + data.Fecha.Mes;

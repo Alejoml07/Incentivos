@@ -85,7 +85,7 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
     public async Task<PagedResult<IGrouping<string, Producto>>> GetProductsByFiltersAndRange(ProductosFilters queryObject)
     {
 
-        var query = _context.Set<Producto>().Where(x => x.Roles.Contains(queryObject.TipoUsuario) && x.Puntos != null && x.Cantidad != 0).AsQueryable();
+        var query = _context.Set<Producto>().Where(x => x.Roles.Contains(queryObject.TipoUsuario) && x.Puntos != null && x.Cantidad != 0 && x.Estado != "2").AsQueryable();
 
         Expression? combinedExpression = null;
         var parameter = Expression.Parameter(typeof(Producto), "p");
@@ -318,7 +318,7 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
         var Page = 1;
         var PageSize = 12;
         List<Producto>? productos = null;
-        productos = await _context.Set<Producto>().Where(x => x.Nombre.ToLower().Contains(data.Busqueda)).Where(x => x.Roles.Contains(data.TipoUsuario) && x.Puntos != null && x.Cantidad != 0).ToListAsync();
+        productos = await _context.Set<Producto>().Where(x => x.Nombre.ToLower().Contains(data.Busqueda)).Where(x => x.Roles.Contains(data.TipoUsuario) && x.Puntos != null && x.Cantidad != 0 && x.Estado != "2").ToListAsync();
 
         // Agrupar los datos en memoria
         var groupedData = productos.GroupBy(p => p.Referencia)
@@ -346,7 +346,7 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
         var Page = 1;
         var PageSize = 12;
         List<Producto>? productos = null;
-        productos = await _context.Set<Producto>().Where(x => x.Roles.Contains(data.TipoUsuario) && x.Puntos != null && x.Cantidad != 0).ToListAsync();
+        productos = await _context.Set<Producto>().Where(x => x.Roles.Contains(data.TipoUsuario) && x.Puntos != null && x.Cantidad != 0 && x.Estado != "2").ToListAsync();
 
         // Agrupar los datos en memoria
         var groupedData = productos.GroupBy(p => p.Referencia)
