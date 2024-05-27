@@ -5,8 +5,8 @@ using PuntosLeonisa.Products.Application.Core.Interfaces;
 
 namespace PuntosLeonisa.Seguridad.Application.Core
 {
-    public interface IPuntoDeVentaApplication : IApplicationCore<PuntoDeVentaDto>,IPuntoVentaVarApplication,IAsignacionApplication
+    public interface IPuntoDeVentaApplication : IApplicationCore<PuntoDeVentaDto>,IPuntoVentaVarApplication,IAsignacionApplication, IPuntoVentaHistoriaApplication
     {
-        //Task<GenericResponse<bool>> LiquidacionPuntosMes(LiquidacionPuntos data);
+        Task<GenericResponse<bool>> LiquidacionPuntosMes(LiquidacionPuntos data);
     }
 }

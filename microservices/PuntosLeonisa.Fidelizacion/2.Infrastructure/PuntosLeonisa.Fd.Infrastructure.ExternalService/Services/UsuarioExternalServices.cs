@@ -178,17 +178,24 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
             return response;
         }
 
-        public async Task<IEnumerable<Usuario[]>> GetUsuarioTPA(Fecha data)
+        public async Task<IEnumerable<Porcentajes>> GetUsuarioTPA(Fecha data, string token)
         {
             var azf = $"{_configuration["AzfBaseTPAUser"]}{_configuration["TimePlannerAppAPI"]}";
-            var response = await httpClientAgent.PostRequestWhitHeader<IEnumerable<Usuario[]>, Fecha>(new Uri(azf), data);
+            var response = await httpClientAgent.PostRequestWithToken<IEnumerable<Porcentajes>, Fecha>(new Uri(azf), data, token);
             return response;
         }
 
-        public async Task<Usuario> ValidarUsuario(ValidarUsuarioDto data)
+        public async Task<UsuarioTpa> ValidarUsuario(ValidarUsuarioDto data)
         {
             var azf = $"{_configuration["AzfBaseValidarUsuario"]}{_configuration["ValidarUsuario"]}";
-            var response = await httpClientAgent.PostRequest<Usuario, ValidarUsuarioDto>(new Uri(azf), data);
+            var response = await httpClientAgent.PostRequest<UsuarioTpa, ValidarUsuarioDto>(new Uri(azf), data);
+            return response;
+        }
+
+        public async Task<GenericResponse<Usuario>> AddUsuarioLiquidacion(Usuario data)
+        {
+            var azf = $"{_configuration["AzfBaseUser"]}{_configuration["AddUsuarioTPA"]}";
+            var response = await httpClientAgent.PostRequest<GenericResponse<Usuario>, Usuario>(new Uri(azf), data);
             return response;
         }
     }

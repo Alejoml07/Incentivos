@@ -866,6 +866,14 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
+            if (data.PuntosRedimidos == 0 && data.Envio.Observaciones != "Liquidacion puntos en bono")
+            {
+                return new GenericResponse<bool>
+                {
+                    Result = false,
+                    Message = "No se puede redimir 0 puntos"
+                };
+            }
             data.Id = Guid.NewGuid().ToString();
             data.FechaRedencion = DateTime.Now;
             data.ValorMovimiento = data.ValorMovimiento * 85;

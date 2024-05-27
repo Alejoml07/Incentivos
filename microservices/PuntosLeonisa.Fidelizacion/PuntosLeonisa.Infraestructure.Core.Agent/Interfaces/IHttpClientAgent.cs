@@ -8,6 +8,7 @@ namespace Logistic.Infrastructure.Agents.Interfaces
         Task<string> GetRequestXml<T1>(Uri requestUrl);
         Task<T1> PostRequest<T1, T2>(Uri requestUrl, T2 content);
         Task<T1> PostRequestWhitHeader<T1, T2>(Uri requestUrl, T2 content);
+        Task<T1> PostRequestWithToken<T1, T2>(Uri requestUrl, T2 content, string token);
         Task<T1> PutRequest<T1, T2>(Uri requestUrl, T2 content);
         Task<string> PostStringAsync<T>(Uri requestUrl, T content);
         Task<bool> SendMail(EmailDTO email);
