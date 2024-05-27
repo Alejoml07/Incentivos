@@ -10,7 +10,6 @@ namespace Logistic.Infrastructure.Agents.Interfaces
         Task<T1> PostRequestWhitHeader<T1, T2>(Uri requestUrl, T2 content);
         Task<T1> PutRequest<T1, T2>(Uri requestUrl, T2 content);
         Task<string> PostStringAsync<T>(Uri requestUrl, T content);
-
         Task<bool> SendMail(EmailDTO email);
     }
 }
