@@ -153,6 +153,46 @@ public class ProductosApplication : IProductApplication
                 banner.Imagen6 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
             }
         }
+        if (!string.IsNullOrEmpty(banner.Imagen7))
+        {
+            if (!banner.Imagen7.Contains("https://stgactincentivos.blob.core.windows.net"))
+            {
+                byte[] bytes = Convert.FromBase64String(banner.Imagen7);
+                banner.Imagen7 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            }
+        }
+        if (!string.IsNullOrEmpty(banner.Imagen8))
+        {
+            if (!banner.Imagen8.Contains("https://stgactincentivos.blob.core.windows.net"))
+            {
+                byte[] bytes = Convert.FromBase64String(banner.Imagen8);
+                banner.Imagen8 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            }
+        }
+        if (!string.IsNullOrEmpty(banner.Imagen9))
+        {
+            if (!banner.Imagen9.Contains("https://stgactincentivos.blob.core.windows.net"))
+            {
+                byte[] bytes = Convert.FromBase64String(banner.Imagen9);
+                banner.Imagen9 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            }
+        }
+        if (!string.IsNullOrEmpty(banner.Imagen10))
+        {
+            if (!banner.Imagen10.Contains("https://stgactincentivos.blob.core.windows.net"))
+            {
+                byte[] bytes = Convert.FromBase64String(banner.Imagen10);
+                banner.Imagen10 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            }
+        }
+        if (!string.IsNullOrEmpty(banner.Imagen11))
+        {
+            if (!banner.Imagen11.Contains("https://stgactincentivos.blob.core.windows.net"))
+            {
+                byte[] bytes = Convert.FromBase64String(banner.Imagen11);
+                banner.Imagen11 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+            }
+        }
     }
 
     public async Task<GenericResponse<Tuple<ProductoDto[], List<string>>>> AddRangeProducts(ProductoDto[] value)
