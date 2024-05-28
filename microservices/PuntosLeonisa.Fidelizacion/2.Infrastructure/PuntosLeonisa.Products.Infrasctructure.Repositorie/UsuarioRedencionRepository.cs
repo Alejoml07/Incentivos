@@ -53,5 +53,7 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
             var redencion = this.context.Set<UsuarioRedencion>().Where(x => x.FechaRedencion >= data.FechaInicio && x.FechaRedencion <= data.FechaFin).ToList();
             return redencion;
         }
+
+        
     }
 }

@@ -15,5 +15,6 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces
         IEnumerable<UsuarioRedencion> GetRedencionesWithProductsByProveedor(string proveedor);
         IEnumerable<UsuarioRedencion> GetRedencionesWithProductsByEmail(string email);
         IEnumerable<UsuarioRedencion> GetReporteRedencion(ReporteDto data);
+
     }
 }
