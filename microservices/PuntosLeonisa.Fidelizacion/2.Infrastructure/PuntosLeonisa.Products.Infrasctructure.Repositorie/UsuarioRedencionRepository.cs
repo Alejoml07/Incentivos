@@ -6,6 +6,7 @@ using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
 using PuntosLeonisa.Infrasctructure.Core.Repository;
 using PuntosLeonisa.infrastructure.Persistence.CosmoDb;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
@@ -49,45 +50,66 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
 
         public IEnumerable<UsuarioRedencion> GetReporteRedencion(ReporteDto data)
         {
-            if(data.TipoUsuario != null && data.FechaFin != null && data.FechaInicio != null && data.Proveedor != null)
+            if (data.TipoUsuario != "" && data.FechaFin != null && data.FechaInicio != null && data.Proveedor != "")
             {
                 data.FechaFin = new DateTime(data.FechaFin.Value.Year, data.FechaFin.Value.Month, data.FechaFin.Value.Day, 23, 59, 59);
-                var red = this.context.Set<UsuarioRedencion>().Where(x => x.Usuario.TipoUsuario == data.TipoUsuario && x.FechaRedencion >= data.FechaInicio && x.FechaRedencion <= data.FechaFin && x.ProductosCarrito.FirstOrDefault().ProveedorLite.Nombres == data.Proveedor).ToList();
+                var red = this.context.Set<UsuarioRedencion>()
+                    .Where(x => x.Usuario.TipoUsuario == data.TipoUsuario
+                                && x.FechaRedencion >= data.FechaInicio
+                                && x.FechaRedencion <= data.FechaFin)
+                    .AsEnumerable()
+                    .Where(x => x.ProductosCarrito != null && x.ProductosCarrito.Any(p => p != null && p.ProveedorLite != null && p.ProveedorLite.Nit == data.Proveedor))
+                    .ToList();
                 return red;
-
             }
-            if(data.FechaFin != null && data.FechaInicio != null && data.TipoUsuario != null)
+            if (data.FechaFin != null && data.FechaInicio != null && data.TipoUsuario != "")
             {
                 data.FechaFin = new DateTime(data.FechaFin.Value.Year, data.FechaFin.Value.Month, data.FechaFin.Value.Day, 23, 59, 59);
-                var redencion = this.context.Set<UsuarioRedencion>().Where(x => x.FechaRedencion >= data.FechaInicio && x.FechaRedencion <= data.FechaFin && x.Usuario.TipoUsuario == data.TipoUsuario).ToList();
+                var redencion = this.context.Set<UsuarioRedencion>()
+                    .Where(x => x.FechaRedencion >= data.FechaInicio
+                                && x.FechaRedencion <= data.FechaFin
+                                && x.Usuario.TipoUsuario == data.TipoUsuario)
+                    .ToList();
                 return redencion;
             }
-            if(data.TipoUsuario != null && data.Proveedor != null)
+            if (data.TipoUsuario != "" && data.Proveedor != "")
             {
-                var redencion = this.context.Set<UsuarioRedencion>().Where(x => x.Usuario.TipoUsuario == data.TipoUsuario && x.ProductosCarrito.FirstOrDefault().ProveedorLite.Nombres == data.Proveedor).ToList();
+                var redencion = this.context.Set<UsuarioRedencion>()
+                    .Where(x => x.Usuario.TipoUsuario == data.TipoUsuario)
+                    .AsEnumerable()
+                    .Where(x => x.ProductosCarrito != null && x.ProductosCarrito.Any(p => p != null && p.ProveedorLite != null && p.ProveedorLite.Nit == data.Proveedor))
+                    .ToList();
                 return redencion;
             }
-            if(data.FechaFin != null && data.FechaInicio != null)
+            if (data.FechaFin != null && data.FechaInicio != null)
             {
                 data.FechaFin = new DateTime(data.FechaFin.Value.Year, data.FechaFin.Value.Month, data.FechaFin.Value.Day, 23, 59, 59);
-                var redencion = this.context.Set<UsuarioRedencion>().Where(x => x.FechaRedencion >= data.FechaInicio && x.FechaRedencion <= data.FechaFin).ToList();
+                var redencion = this.context.Set<UsuarioRedencion>()
+                    .Where(x => x.FechaRedencion >= data.FechaInicio
+                                && x.FechaRedencion <= data.FechaFin)
+                    .ToList();
                 return redencion;
             }
-            if(data.TipoUsuario != null)
+            if (data.TipoUsuario != "")
             {
-                var redencion = this.context.Set<UsuarioRedencion>().Where(x => x.Usuario.TipoUsuario == data.TipoUsuario).ToList();
+                var redencion = this.context.Set<UsuarioRedencion>()
+                    .Where(x => x.Usuario.TipoUsuario == data.TipoUsuario)
+                    .ToList();
                 return redencion;
             }
-            if(data.Proveedor != null)
+            if (!string.IsNullOrEmpty(data.Proveedor))
             {
-                var redencion = this.context.Set<UsuarioRedencion>().Where(x => x.ProductosCarrito.FirstOrDefault().ProveedorLite.Nombres == data.Proveedor).ToList();
+                var redencion = this.context.Set<UsuarioRedencion>()
+                    .AsEnumerable()
+                    .Where(x => x.ProductosCarrito != null && x.ProductosCarrito.Any(p => p != null && p.ProveedorLite != null && p.ProveedorLite.Nit == data.Proveedor))
+                    .ToList();
                 return redencion;
             }
             else
             {
                 var redencion = this.context.Set<UsuarioRedencion>().ToList();
                 return redencion;
-            }            
-        }        
+            }
+        }
     }
 }

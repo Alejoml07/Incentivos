@@ -1226,6 +1226,27 @@ namespace Usuarioos
                 return GetFunctionError(log, "Error al obtener los reportes:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("GetMetricasPorDia")]
+        [OpenApiOperation(operationId: "GetMetricasPorDia", tags: new[] { "GetMetricasPorDia" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los reportes por fechas")]
+        public async Task<IActionResult> GetMetricasPorDia(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/GetMetricasPorDia")] HttpRequest req, ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<ReporteDto>(requestBody);
+                var response = await this.puntosApplication.GetMetricasPorDia(data);
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los reportes:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 
