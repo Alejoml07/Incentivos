@@ -2092,34 +2092,49 @@ public class FidelizacionApplication : IFidelizacionApplication
 
         DateTime fechaInicio = data.FechaInicio.Value;
         DateTime fechaFin = data.FechaFin.Value;
+        var data2 = new ReporteDto
+        {
+            FechaInicio = new DateTime(2024,01,01),
+            FechaFin = fechaFin,
+            TipoUsuario = data.TipoUsuario,
+            Proveedor = data.Proveedor,
+        };
 
         // Obtén el reporte original basado en el DTO de entrada
-        var reporteOriginal = this.unitOfWork.UsuarioRedencionRepository.GetReporteRedencion(data);
+        var reporteOriginal = this.unitOfWork.UsuarioRedencionRepository.GetReporteRedencion(data2);
 
         // Crea una instancia del DTO para las métricas
         var metricas = new MetricasDto();
 
-        // Calcula las métricas para los primeros 10 días a partir de la FechaInicio
-        for (int i = 0; i < 10; i++)
+        // Calcula las métricas para todos los días
+        for (int i = 0; i <= (fechaFin - fechaInicio).Days; i++)
         {
             DateTime targetDate = fechaInicio.AddDays(i);
             int count = reporteOriginal
-                .Where(x => x.FechaRedencion.HasValue && x.FechaRedencion.Value.Date == targetDate.Date && x.ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Pendiente))
+                .Where(x => x.FechaRedencion.HasValue && x.FechaRedencion.Value.Date <= targetDate.Date && x.ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Pendiente))
                 .Count();
 
-            // Asigna el contador correspondiente al día
-            switch (i + 1)
+            // Accumulate the count for each day
+            if (i < 9)
             {
-                case 1: metricas.Contador1 = count; break;
-                case 2: metricas.Contador2 = count; break;
-                case 3: metricas.Contador3 = count; break;
-                case 4: metricas.Contador4 = count; break;
-                case 5: metricas.Contador5 = count; break;
-                case 6: metricas.Contador6 = count; break;
-                case 7: metricas.Contador7 = count; break;
-                case 8: metricas.Contador8 = count; break;
-                case 9: metricas.Contador9 = count; break;
-                case 10: metricas.Contador10 = count; break;
+                switch (i + 1)
+                {
+                    case 1: metricas.Contador1 = count; break;
+                    case 2: metricas.Contador2 = count; break;
+                    case 3: metricas.Contador3 = count; break;
+                    case 4: metricas.Contador4 = count; break;
+                    case 5: metricas.Contador5 = count; break;
+                    case 6: metricas.Contador6 = count; break;
+                    case 7: metricas.Contador7 = count; break;
+                    case 8: metricas.Contador8 = count; break;
+                    case 9: metricas.Contador9 = count; break;
+                }
+            }
+            else
+            {
+                metricas.Contador10 =reporteOriginal
+                    .Where(x => x.FechaRedencion.HasValue && x.FechaRedencion.Value.Date <= fechaFin && x.ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Pendiente))
+                    .Count();
             }
         }
 

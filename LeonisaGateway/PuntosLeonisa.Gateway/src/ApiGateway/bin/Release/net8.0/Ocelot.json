@@ -1452,6 +1452,24 @@
     },
 
     {
+      "DownstreamPathTemplate": "/api/fidelizacion/GetMetricasPorDia",
+      "UpstreamPathTemplate": "/api/fidelizacion/GetMetricasPorDia",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizaciontest.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetMetricasPorDiaRoute"
+    },
+
+    {
       "DownstreamPathTemplate": "/api/fidelizacion/GetUsuarioInfoPuntosAll",
       "UpstreamPathTemplate": "/api/fidelizacion/GetUsuarioInfoPuntosAll",
       "DownstreamScheme": "https",

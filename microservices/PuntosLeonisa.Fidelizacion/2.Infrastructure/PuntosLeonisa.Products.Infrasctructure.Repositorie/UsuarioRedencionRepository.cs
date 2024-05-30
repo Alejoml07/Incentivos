@@ -81,6 +81,17 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
                     .ToList();
                 return redencion;
             }
+            if(data.Proveedor != "" && data.FechaFin != null && data.FechaInicio != null)
+            {
+                data.FechaFin = new DateTime(data.FechaFin.Value.Year, data.FechaFin.Value.Month, data.FechaFin.Value.Day, 23, 59, 59);
+                var redencion = this.context.Set<UsuarioRedencion>()
+                    .Where(x => x.FechaRedencion >= data.FechaInicio
+                                && x.FechaRedencion <= data.FechaFin)
+                    .AsEnumerable()
+                    .Where(x => x.ProductosCarrito != null && x.ProductosCarrito.Any(p => p != null && p.ProveedorLite != null && p.ProveedorLite.Nit == data.Proveedor))
+                    .ToList();
+                return redencion;
+            }
             if (data.FechaFin != null && data.FechaInicio != null)
             {
                 data.FechaFin = new DateTime(data.FechaFin.Value.Year, data.FechaFin.Value.Month, data.FechaFin.Value.Day, 23, 59, 59);
