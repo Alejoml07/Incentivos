@@ -5,6 +5,7 @@ using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Carrito;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.FidelizacionPuntos;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.MovimientoPuntos;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Usuarios;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Variables;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
 using PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork;
@@ -1220,10 +1221,23 @@ public class FidelizacionApplication : IFidelizacionApplication
                 redencionEncontrada.NroGuia = data.Producto.NroGuia;
                 redencionEncontrada.Transportadora = data.Producto.Transportadora;
                 redencionEncontrada.Estado = redencionEncontrada.GetEstadoOrdenItem();
+                if (redencionEncontrada.Estado == EstadoOrdenItem.Pendiente)
+                {
+                    redencionEncontrada.FechaActPendiente = DateTime.Now;
+                }
+                if (redencionEncontrada.Estado == EstadoOrdenItem.Enviado)
+                {
+                    redencionEncontrada.FechaActEnviado = DateTime.Now;
+                }
+                if (redencionEncontrada.Estado == EstadoOrdenItem.Cancelado)
+                {
+                    redencionEncontrada.FechaActCancelado = DateTime.Now;
+                }
                 await this.unitOfWork.UsuarioRedencionRepository.Update(redenciones);
                 await this.usuarioExternalService.UserSendEmailWithMessageAndState(redenciones);
                 await this.unitOfWork.SaveChangesAsync();
                 data.Producto = redencionEncontrada;
+                var red = await this.unitOfWork.UsuarioRedencionRepository.GetById(data.Id);
                 return new GenericResponse<AddNroGuiaYTransportadora>
                 {
 
@@ -2115,7 +2129,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                 .Count();
 
             // Accumulate the count for each day
-            if (i < 9)
+            if (i < 10)
             {
                 switch (i + 1)
                 {
@@ -2128,11 +2142,12 @@ public class FidelizacionApplication : IFidelizacionApplication
                     case 7: metricas.Contador7 = count; break;
                     case 8: metricas.Contador8 = count; break;
                     case 9: metricas.Contador9 = count; break;
+                    case 10: metricas.Contador10 = count; break;
                 }
             }
             else
             {
-                metricas.Contador10 =reporteOriginal
+                metricas.Contador11 =reporteOriginal
                     .Where(x => x.FechaRedencion.HasValue && x.FechaRedencion.Value.Date <= fechaFin && x.ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Pendiente))
                     .Count();
             }
@@ -2143,5 +2158,40 @@ public class FidelizacionApplication : IFidelizacionApplication
         {
             Result = metricas
         });
+    }
+
+    public Task<IEnumerable<GenericResponse<MetricasGeneralDto[]>>> GetMetricasGeneral()
+    {
+        try
+        {
+            var metricas = new List<GenericResponse<MetricasGeneralDto[]>>();
+            var data = new ReporteDto
+            {
+                FechaInicio = new DateTime(2024, 01, 01),
+                FechaFin = DateTime.Now,
+                TipoUsuario = "",
+                Proveedor = "",
+            };
+            var reporteOriginal = this.unitOfWork.UsuarioRedencionRepository.GetReporteRedencion(data);
+            foreach (var reporte in reporteOriginal)
+            {
+                var metricasGeneral = new MetricasGeneralDto
+                {
+                    Redencion = reporte,
+                    ContadorPendiente = reporte.ProductosCarrito.Where(x => x.Estado == EstadoOrdenItem.Pendiente).Count(),
+                    
+                };
+                metricas.Add(new GenericResponse<MetricasGeneralDto[]>
+                {
+                    Result = new MetricasGeneralDto[] { metricasGeneral }
+                });
+            }
+            return Task.FromResult(metricas.AsEnumerable());
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
     }
 }

@@ -1247,6 +1247,25 @@ namespace Usuarioos
                 return GetFunctionError(log, "Error al obtener los reportes:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("GetMetricasGeneral")]
+        [OpenApiOperation(operationId: "GetMetricasGeneral", tags: new[] { "GetMetricasGeneral" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los reportes por fechas")]
+        public async Task<IActionResult> GetMetricasGeneral(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "fidelizacion/GetMetricasGeneral")] HttpRequest req, ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                var response = await this.puntosApplication.GetMetricasGeneral();
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los reportes:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 
