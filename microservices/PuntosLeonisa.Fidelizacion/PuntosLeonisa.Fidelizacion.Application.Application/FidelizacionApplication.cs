@@ -2166,12 +2166,15 @@ public class FidelizacionApplication : IFidelizacionApplication
         {
             var metricas = new List<GenericResponse<MetricasGeneralDto[]>>();
             var reporteOriginal = this.unitOfWork.UsuarioRedencionRepository.GetReporteRedencion(data);
+            //filtrame el reporteOriginal unicamente por los productos que esten en estado pendiente
+            reporteOriginal = reporteOriginal.Where(x => x.ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Pendiente)).ToList();
             foreach (var reporte in reporteOriginal)
             {
+                var cont = reporte.FechaRedencion.HasValue ? (int)(DateTime.Now - reporte.FechaRedencion.Value).TotalDays : 0;
                 var metricasGeneral = new MetricasGeneralDto
                 {
-                    Redencion = reporte,
-                    ContadorPendiente = reporte.ProductosCarrito.Where(x => x.Estado == EstadoOrdenItem.Pendiente).Count(),
+                    Producto = reporte.ProductosCarrito.FirstOrDefault(),
+                    ContadorPendiente = cont,
                     
                 };
                 metricas.Add(new GenericResponse<MetricasGeneralDto[]>

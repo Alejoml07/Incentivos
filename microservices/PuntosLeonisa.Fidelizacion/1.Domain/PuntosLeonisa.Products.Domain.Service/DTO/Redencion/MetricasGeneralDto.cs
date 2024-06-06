@@ -10,6 +10,6 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
     public class MetricasGeneralDto
     {
         public int? ContadorPendiente { get; set; }
-        public UsuarioRedencion? Redencion { get; set; }
+        public ProductoRefence? Producto { get; set; }
     }
 }

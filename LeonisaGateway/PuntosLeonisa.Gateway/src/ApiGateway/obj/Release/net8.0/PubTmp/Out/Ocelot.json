@@ -1437,7 +1437,7 @@
       "DownstreamPathTemplate": "/api/fidelizacion/GetMetricasGeneral",
       "UpstreamPathTemplate": "/api/fidelizacion/GetMetricasGeneral",
       "DownstreamScheme": "https",
-      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
           "Host": "azfidelizaciontest.azurewebsites.net",
