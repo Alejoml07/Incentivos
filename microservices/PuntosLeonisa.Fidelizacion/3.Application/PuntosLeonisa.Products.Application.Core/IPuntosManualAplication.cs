@@ -26,7 +26,7 @@ public interface IFidelizacionApplication : IApplicationCore<PuntosManualDto>, I
     Task<GenericResponse<IEnumerable<UsuarioRedencion>>> GetReporteRedencion(ReporteDto data);
     Task<GenericResponse<ReporteDto>> GetMetricasByState(ReporteDto data);
     Task<GenericResponse<MetricasDto>> GetMetricasPorDia(ReporteDto data);
-    Task<IEnumerable<GenericResponse<MetricasGeneralDto[]>>> GetMetricasGeneral();
+    Task<IEnumerable<GenericResponse<MetricasGeneralDto[]>>> GetMetricasGeneral(ReporteDto data);
     Task<GenericResponse<IEnumerable<Extractos>>> GetExtractosByUserAndDate(ReporteDto data);
     Task<GenericResponse<IEnumerable<Extractos>>> UpdateMesYAño(ReporteDto data);
     Task<GenericResponse<IEnumerable<Extractos>>> UpdateUser();

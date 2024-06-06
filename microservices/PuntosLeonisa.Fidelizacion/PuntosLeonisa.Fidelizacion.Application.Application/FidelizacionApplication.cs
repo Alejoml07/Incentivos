@@ -2160,18 +2160,11 @@ public class FidelizacionApplication : IFidelizacionApplication
         });
     }
 
-    public Task<IEnumerable<GenericResponse<MetricasGeneralDto[]>>> GetMetricasGeneral()
+    public Task<IEnumerable<GenericResponse<MetricasGeneralDto[]>>> GetMetricasGeneral(ReporteDto data)
     {
         try
         {
             var metricas = new List<GenericResponse<MetricasGeneralDto[]>>();
-            var data = new ReporteDto
-            {
-                FechaInicio = new DateTime(2024, 01, 01),
-                FechaFin = DateTime.Now,
-                TipoUsuario = "",
-                Proveedor = "",
-            };
             var reporteOriginal = this.unitOfWork.UsuarioRedencionRepository.GetReporteRedencion(data);
             foreach (var reporte in reporteOriginal)
             {

@@ -1436,6 +1436,24 @@
     },
 
     {
+      "DownstreamPathTemplate": "/api/fidelizacion/GetMetricasGeneral",
+      "UpstreamPathTemplate": "/api/fidelizacion/GetMetricasGeneral",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetMetricasGeneralRoute"
+    },
+
+    {
       "DownstreamPathTemplate": "/api/fidelizacion/GetMetricasByState",
       "UpstreamPathTemplate": "/api/fidelizacion/GetMetricasByState",
       "DownstreamScheme": "https",

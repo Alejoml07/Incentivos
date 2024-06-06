@@ -1252,13 +1252,15 @@ namespace Usuarioos
         [OpenApiOperation(operationId: "GetMetricasGeneral", tags: new[] { "GetMetricasGeneral" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los reportes por fechas")]
         public async Task<IActionResult> GetMetricasGeneral(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "fidelizacion/GetMetricasGeneral")] HttpRequest req, ILogger log)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/GetMetricasGeneral")] HttpRequest req, ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             try
             {
-                var response = await this.puntosApplication.GetMetricasGeneral();
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<ReporteDto>(requestBody);
+                var response = await this.puntosApplication.GetMetricasGeneral(data);
                 return new OkObjectResult(response);
             }
             catch (Exception ex)

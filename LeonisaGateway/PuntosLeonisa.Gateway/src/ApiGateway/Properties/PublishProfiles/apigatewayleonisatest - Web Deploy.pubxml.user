@@ -6,8 +6,8 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
 <Project>
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA7i4yw9pVEUSIatRTcCPlIAAAAAACAAAAAAADZgAAwAAAABAAAACEpGoV0FvInLluOJQLaRK9AAAAAASAAACgAAAAEAAAADvqO7VssQjeCd9CHbBfYymAAAAAl0HRFbOQdr+nObZSOPc8uiieONuJevBgrVW4tOlMAHa08So49rhRdLwcTMM72IFJaaZxqMR5JKxty6FPV6l0r7epQj6od2qsT6oLZmtbi3tGHoZyU6az2dMbi0WP/BpymDTcjnB4zi1dWZOv+DYTuT5lU8CmV2NatI5jEfKnetkUAAAAsNJa0Xg/MpSr4KUohPKIMVEGmyc=</EncryptedPassword>
-    <History>True|2024-05-30T12:40:32.1789894Z||;</History>
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA7i4yw9pVEUSIatRTcCPlIAAAAAACAAAAAAADZgAAwAAAABAAAABsWnSgCCu+dV05MdnK6z0xAAAAAASAAACgAAAAEAAAAKWgWGw3futtDy9YaDjiNoiAAAAAHoLJ7lph5zU6MN6tySg38+UFyPxQEw8epcLpVO8YL9yhhUYeuEPolOvBRWKODPw+yGOE5V9vdwr3tKSkbvL4aep/J7Up5ERp78exeWbgm0b4lKb7qeJwSxmajUOs99qPSmcHhapvqZuh+r7FZlIcycJISVB91zsS0Oj2mH6bI5gUAAAAqSbWa82hkEu8AsCQ5KsZgBy7mLc=</EncryptedPassword>
+    <History>True|2024-06-06T14:59:11.9487461Z||;True|2024-06-06T08:58:43.1467879-05:00||;</History>
     <LastFailureDetails />
   </PropertyGroup>
 </Project>
