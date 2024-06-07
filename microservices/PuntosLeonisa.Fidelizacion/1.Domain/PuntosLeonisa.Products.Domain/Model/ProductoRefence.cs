@@ -137,8 +137,6 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
             return EstadoOrdenItem.Pendiente;
 
         }
-
-
     }
 }
     public enum EstadoOrdenItem
