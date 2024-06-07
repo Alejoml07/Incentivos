@@ -64,6 +64,11 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
                 return EstadoOrden.EnvioParcial;
             }
 
+            if (ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Entregado) && total > 1 && totalEntregados != total)
+            {
+                return EstadoOrden.EntregadoParcial;
+            }
+
             if (ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Pendiente))
             {
                 return EstadoOrden.Pendiente;
@@ -234,6 +239,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
         public string? DireccionBasic { get; set; }
         public string? DireccionComplemento { get; set; }
         public string? Celular { get; set; }
+        public string? Celular2 { get; set; }
         public string? Email { get; set; }
         public string? Ciudad { get; set; }
         public string? Departamento { get; set; }
@@ -247,7 +253,8 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
         Enviado,
         EnvioParcial,
         Cancelado,
-        Entregado
+        Entregado,
+        EntregadoParcial
     }
 
 }

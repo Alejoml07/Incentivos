@@ -2106,51 +2106,76 @@ public class FidelizacionApplication : IFidelizacionApplication
 
         DateTime fechaInicio = data.FechaInicio.Value;
         DateTime fechaFin = data.FechaFin.Value;
-        var data2 = new ReporteDto
-        {
-            FechaInicio = new DateTime(2024,01,01),
-            FechaFin = fechaFin,
-            TipoUsuario = data.TipoUsuario,
-            Proveedor = data.Proveedor,
-        };
 
         // Obtén el reporte original basado en el DTO de entrada
-        var reporteOriginal = this.unitOfWork.UsuarioRedencionRepository.GetReporteRedencion(data2);
-
+        var reporteOriginal = this.unitOfWork.UsuarioRedencionRepository.GetReporteRedencion(data);
+        reporteOriginal = reporteOriginal
+                .Where(x => x.ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Pendiente))
+                .ToList();
         // Crea una instancia del DTO para las métricas
-        var metricas = new MetricasDto();
-
-        // Calcula las métricas para todos los días
-        for (int i = 0; i <= (fechaFin - fechaInicio).Days; i++)
+        var metricas = new MetricasDto()
         {
-            DateTime targetDate = fechaInicio.AddDays(i);
-            int count = reporteOriginal
-                .Where(x => x.FechaRedencion.HasValue && x.FechaRedencion.Value.Date <= targetDate.Date && x.ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Pendiente))
-                .Count();
+            Contador1 = 0,
+            Contador2 = 0,
+            Contador3 = 0,
+            Contador4 = 0,
+            Contador5 = 0,
+            Contador6 = 0,
+            Contador7 = 0,
+            Contador8 = 0,
+            Contador9 = 0,
+            Contador10 = 0,
+            Contador11 = 0
+        };
 
-            // Accumulate the count for each day
-            if (i < 10)
+
+        foreach (var item in reporteOriginal)
+        {
+            if((DateTime.Now - item.FechaRedencion.Value).Days == 1)
             {
-                switch (i + 1)
-                {
-                    case 1: metricas.Contador1 = count; break;
-                    case 2: metricas.Contador2 = count; break;
-                    case 3: metricas.Contador3 = count; break;
-                    case 4: metricas.Contador4 = count; break;
-                    case 5: metricas.Contador5 = count; break;
-                    case 6: metricas.Contador6 = count; break;
-                    case 7: metricas.Contador7 = count; break;
-                    case 8: metricas.Contador8 = count; break;
-                    case 9: metricas.Contador9 = count; break;
-                    case 10: metricas.Contador10 = count; break;
-                }
+                metricas.Contador1++;
             }
-            else
+            if ((DateTime.Now - item.FechaRedencion.Value).Days == 2)
             {
-                metricas.Contador11 =reporteOriginal
-                    .Where(x => x.FechaRedencion.HasValue && x.FechaRedencion.Value.Date <= fechaFin && x.ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Pendiente))
-                    .Count();
+                metricas.Contador2++;
             }
+            if ((DateTime.Now - item.FechaRedencion.Value).Days == 3)
+            {
+                metricas.Contador3++;
+            }
+            if ((DateTime.Now - item.FechaRedencion.Value).Days == 4)
+            {
+                metricas.Contador4++;
+            }
+            if ((DateTime.Now - item.FechaRedencion.Value).Days == 5)
+            {
+                metricas.Contador5++;
+            }
+            if ((DateTime.Now - item.FechaRedencion.Value).Days == 6)
+            {
+                metricas.Contador6++;
+            }
+            if ((DateTime.Now - item.FechaRedencion.Value).Days == 7)
+            {
+                metricas.Contador7++;
+            }
+            if ((DateTime.Now - item.FechaRedencion.Value).Days == 8)
+            {
+                metricas.Contador8++;
+            }
+            if ((DateTime.Now - item.FechaRedencion.Value).Days == 9)
+            {
+                metricas.Contador9++;
+            }
+            if ((DateTime.Now - item.FechaRedencion.Value).Days == 10)
+            {
+                metricas.Contador10++;
+            }
+            if((DateTime.Now - item.FechaRedencion.Value).Days > 10)
+            {
+                metricas.Contador11++;
+            }
+
         }
 
         // Devuelve la respuesta con las métricas calculadas
@@ -2160,33 +2185,31 @@ public class FidelizacionApplication : IFidelizacionApplication
         });
     }
 
-    public Task<IEnumerable<GenericResponse<MetricasGeneralDto[]>>> GetMetricasGeneral(ReporteDto data)
+    public Task<IEnumerable<UsuarioRedencion>> GetMetricasGeneral(ReporteDto data)
     {
         try
         {
-            var metricas = new List<GenericResponse<MetricasGeneralDto[]>>();
             var reporteOriginal = this.unitOfWork.UsuarioRedencionRepository.GetReporteRedencion(data);
-            //filtrame el reporteOriginal unicamente por los productos que esten en estado pendiente
-            reporteOriginal = reporteOriginal.Where(x => x.ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Pendiente)).ToList();
+
+            // Filtrar reporteOriginal unicamente por los productos que esten en estado pendiente
+            reporteOriginal = reporteOriginal
+                .Where(x => x.ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Pendiente))
+                .ToList();
+
+            // Actualizar el contador pendiente
             foreach (var reporte in reporteOriginal)
             {
-                var cont = reporte.FechaRedencion.HasValue ? (int)(DateTime.Now - reporte.FechaRedencion.Value).TotalDays : 0;
-                var metricasGeneral = new MetricasGeneralDto
+                foreach (var item in reporte.ProductosCarrito)
                 {
-                    Producto = reporte.ProductosCarrito.FirstOrDefault(),
-                    ContadorPendiente = cont,
-                    
-                };
-                metricas.Add(new GenericResponse<MetricasGeneralDto[]>
-                {
-                    Result = new MetricasGeneralDto[] { metricasGeneral }
-                });
+                    item.ContadorPendiente = (DateTime.Now - reporte.FechaRedencion.Value).Days;
+                }
             }
-            return Task.FromResult(metricas.AsEnumerable());
+
+            // Devolver la lista de UsuarioRedencion
+            return Task.FromResult(reporteOriginal.AsEnumerable());
         }
         catch (Exception)
         {
-
             throw;
         }
     }

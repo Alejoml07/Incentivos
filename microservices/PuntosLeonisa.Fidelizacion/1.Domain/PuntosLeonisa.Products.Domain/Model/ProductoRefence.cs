@@ -117,6 +117,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
         public DateTime? FechaActEnviado { get; set; }
 
         public DateTime? FechaActCancelado { get; set; }
+        public int? ContadorPendiente { get; set; }
 
         public EstadoOrdenItem GetEstadoOrdenItem()
         {
