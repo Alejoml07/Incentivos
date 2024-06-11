@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
 {
-    public class AddNroGuiaYTransportadora
+    public class NroPedidoDto
     {
-        public string? Id { get; set; }
-        public ProductoRefence Producto { get; set; }
+        public int NroPedido { get; set; }
+        public ProductoRefence? Producto { get; set; }
     }
 }

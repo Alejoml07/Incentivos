@@ -1000,6 +1000,25 @@
       },
       "Key": "AddNroGuiaYTransportadoraRoute"
     },
+
+    {
+      "UpstreamPathTemplate": "/api/fidelizacion/AddNroGuiaYTransportadoraMasivo",
+      "DownstreamPathTemplate": "/api/fidelizacion/AddNroGuiaYTransportadoraMasivo",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "AddNroGuiaYTransportadoraMasivoRoute"
+    },
+
     {
       "UpstreamPathTemplate": "/api/fidelizacion/GetUsuariosRedencionPuntosByProveedor/{id}",
       "DownstreamPathTemplate": "/api/fidelizacion/GetUsuariosRedencionPuntosByProveedor/{id}",

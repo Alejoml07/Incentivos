@@ -239,7 +239,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
         public string? DireccionBasic { get; set; }
         public string? DireccionComplemento { get; set; }
         public string? Celular { get; set; }
-        public string? Celular2 { get; set; }
+        public string? CelularSecundario { get; set; }
         public string? Email { get; set; }
         public string? Ciudad { get; set; }
         public string? Departamento { get; set; }

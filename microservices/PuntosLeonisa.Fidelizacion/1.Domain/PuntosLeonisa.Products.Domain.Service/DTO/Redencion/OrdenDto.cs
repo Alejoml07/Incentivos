@@ -34,7 +34,8 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
         public string? Direccion { get; set; }
         public string? Ciudad { get; set; }
         public string? Departamento { get; set; }
-        public string? Telefono { get; set; }
+        public string? Celular { get; set; }
+        public string? CelularSecundario { get; set; }
         public string? Email { get; set; }
         public string? TipoDocumento { get; set; }
         public string? Documento { get; set; }

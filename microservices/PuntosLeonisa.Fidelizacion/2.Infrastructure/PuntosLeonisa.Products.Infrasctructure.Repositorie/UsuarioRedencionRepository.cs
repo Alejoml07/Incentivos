@@ -122,5 +122,11 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
                 return redencion;
             }
         }
+
+        public async Task<UsuarioRedencion> GetUsuarioRedencionByNroPedido(int data)
+        {
+            var redencion = await this.context.Set<UsuarioRedencion>().Where(x => x.NroPedido == data).FirstOrDefaultAsync();
+            return redencion;
+        }                              
     }
 }

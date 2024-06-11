@@ -5,7 +5,6 @@ using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Carrito;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.FidelizacionPuntos;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.MovimientoPuntos;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
-using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Usuarios;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Variables;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
 using PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork;
@@ -1213,7 +1212,6 @@ public class FidelizacionApplication : IFidelizacionApplication
             {
                 var redencionEncontrada = redenciones.ProductosCarrito.Where(x => x.Id == data.Producto.Id).FirstOrDefault();
                 if (redencionEncontrada == null)
-
                 {
                     throw new Exception("Redencion no encontrada");
                 }
@@ -1232,6 +1230,10 @@ public class FidelizacionApplication : IFidelizacionApplication
                 if (redencionEncontrada.Estado == EstadoOrdenItem.Cancelado)
                 {
                     redencionEncontrada.FechaActCancelado = DateTime.Now;
+                }
+                if (redencionEncontrada.Estado == EstadoOrdenItem.Entregado)
+                {
+                    redencionEncontrada.FechaActEntregado = DateTime.Now;
                 }
                 await this.unitOfWork.UsuarioRedencionRepository.Update(redenciones);
                 await this.usuarioExternalService.UserSendEmailWithMessageAndState(redenciones);
@@ -2210,6 +2212,42 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
         catch (Exception)
         {
+            throw;
+        }
+    }
+
+    public async Task<GenericResponse<IEnumerable<bool>>> AddNroGuiaYTransportadoraMasivo(NroPedidoDto[] data)
+    {
+        try
+        {
+            foreach (var item in data)
+            {
+                var redencion = await this.unitOfWork.UsuarioRedencionRepository.GetUsuarioRedencionByNroPedido(item.NroPedido);
+                var redencionEncontrada = redencion.ProductosCarrito.Where(x => x.EAN == item.Producto.EAN).FirstOrDefault();
+                if (redencion != null && redencionEncontrada != null)
+                {
+                    redencionEncontrada.Estado = EstadoOrdenItem.Enviado;
+                    redencionEncontrada.NroGuia = item.Producto.NroGuia;
+                    redencionEncontrada.Transportadora = item.Producto.Transportadora;
+                    redencionEncontrada.FechaActEnviado = DateTime.Now;
+                    item.Producto = redencionEncontrada;
+                    await this.unitOfWork.UsuarioRedencionRepository.Update(redencion);
+                    await this.usuarioExternalService.UserSendEmailWithMessageAndState(redencion);
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            await this.unitOfWork.SaveChangesAsync();
+            return new GenericResponse<IEnumerable<bool>>
+            {
+                Result = new List<bool> { true }
+            };
+        }
+        catch (Exception)
+        {
+
             throw;
         }
     }

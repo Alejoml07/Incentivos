@@ -22,7 +22,7 @@ public interface IFidelizacionApplication : IApplicationCore<PuntosManualDto>, I
     Task<GenericResponse<bool>> AddExtracto(Extractos data);
     Task<GenericResponse<IEnumerable<Extractos>>> GetExtractos();
     Task<GenericResponse<IEnumerable<bool>>> AddExtractos(Extractos[] data);
-    Task<GenericResponse<IEnumerable<Extractos>>> GetExtractosByUsuario(string cedula); 
+    Task<GenericResponse<IEnumerable<Extractos>>> GetExtractosByUsuario(string cedula);
     Task<GenericResponse<IEnumerable<UsuarioRedencion>>> GetReporteRedencion(ReporteDto data);
     Task<GenericResponse<ReporteDto>> GetMetricasByState(ReporteDto data);
     Task<GenericResponse<MetricasDto>> GetMetricasPorDia(ReporteDto data);
@@ -33,5 +33,6 @@ public interface IFidelizacionApplication : IApplicationCore<PuntosManualDto>, I
     Task<GenericResponse<IEnumerable<UsuarioRedencion>>> UpdateEmpresaYAgencia();
     Task<IEnumerable<Extractos>> GenerateExtratosByFidelizacionPuntos();
     Task RecalcularPuntos();
+    Task<GenericResponse<IEnumerable<bool>>> AddNroGuiaYTransportadoraMasivo(NroPedidoDto[] data);
 }
 
