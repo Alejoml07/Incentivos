@@ -2187,7 +2187,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         });
     }
 
-    public Task<IEnumerable<UsuarioRedencion>> GetMetricasGeneral(ReporteDto data)
+    public async Task<IEnumerable<UsuarioRedencion>> GetMetricasGeneral(ReporteDto data)
     {
         try
         {
@@ -2195,7 +2195,7 @@ public class FidelizacionApplication : IFidelizacionApplication
 
             // Filtrar reporteOriginal unicamente por los productos que esten en estado pendiente
             reporteOriginal = reporteOriginal
-                .Where(x => x.ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Pendiente))
+                .Where(x => x.ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Pendiente || p.Estado == EstadoOrdenItem.Enviado))
                 .ToList();
 
             // Actualizar el contador pendiente
@@ -2203,12 +2203,23 @@ public class FidelizacionApplication : IFidelizacionApplication
             {
                 foreach (var item in reporte.ProductosCarrito)
                 {
-                    item.ContadorPendiente = (DateTime.Now - reporte.FechaRedencion.Value).Days;
-                }
-            }
+                    if(item.Estado == EstadoOrdenItem.Pendiente)
+                    {
+                        item.ContadorPendiente = (DateTime.Now - reporte.FechaRedencion.Value).Days;
 
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                    
+                }
+                await this.unitOfWork.UsuarioRedencionRepository.Update(reporte);
+                await this.unitOfWork.SaveChangesAsync();
+                    
+            }
             // Devolver la lista de UsuarioRedencion
-            return Task.FromResult(reporteOriginal.AsEnumerable());
+            return reporteOriginal;
         }
         catch (Exception)
         {
@@ -2230,6 +2241,40 @@ public class FidelizacionApplication : IFidelizacionApplication
                     redencionEncontrada.NroGuia = item.Producto.NroGuia;
                     redencionEncontrada.Transportadora = item.Producto.Transportadora;
                     redencionEncontrada.FechaActEnviado = DateTime.Now;
+                    item.Producto = redencionEncontrada;
+                    await this.unitOfWork.UsuarioRedencionRepository.Update(redencion);
+                    await this.usuarioExternalService.UserSendEmailWithMessageAndState(redencion);
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            await this.unitOfWork.SaveChangesAsync();
+            return new GenericResponse<IEnumerable<bool>>
+            {
+                Result = new List<bool> { true }
+            };
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    public async Task<GenericResponse<IEnumerable<bool>>> CambiarEstadoEntregadoMasivo(NroPedidoEntregadoDto[] data)
+    {
+        try
+        {
+            foreach (var item in data)
+            {
+                var redencion = await this.unitOfWork.UsuarioRedencionRepository.GetUsuarioRedencionByNroPedido(item.NroPedido);
+                var redencionEncontrada = redencion.ProductosCarrito.Where(x => x.EAN == item.Producto.EAN).FirstOrDefault();
+                if (redencion != null && redencionEncontrada != null)
+                {
+                    redencionEncontrada.Estado = EstadoOrdenItem.Entregado;
+                    redencionEncontrada.FechaActEntregado = DateTime.Now;
                     item.Producto = redencionEncontrada;
                     await this.unitOfWork.UsuarioRedencionRepository.Update(redencion);
                     await this.usuarioExternalService.UserSendEmailWithMessageAndState(redencion);

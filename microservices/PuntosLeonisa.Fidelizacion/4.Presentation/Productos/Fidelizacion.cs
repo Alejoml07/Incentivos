@@ -1289,6 +1289,27 @@ namespace Usuarioos
                 return GetFunctionError(log, "Error al obtener los reportes:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("CambiarEstadoEntregadoMasivo")]
+        [OpenApiOperation(operationId: "CambiarEstadoEntregadoMasivo", tags: new[] { "CambiarEstadoEntregadoMasivo" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los reportes por fechas")]
+        public async Task<IActionResult> CambiarEstadoEntregadoMasivo(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/CambiarEstadoEntregadoMasivo")] HttpRequest req, ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<NroPedidoEntregadoDto[]>(requestBody);
+                var response = await this.puntosApplication.CambiarEstadoEntregadoMasivo(data);
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los reportes:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 
