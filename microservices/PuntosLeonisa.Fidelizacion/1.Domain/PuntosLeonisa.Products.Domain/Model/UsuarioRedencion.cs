@@ -59,7 +59,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
             var totalEnviados = ProductosCarrito.Count(p => p.Estado == EstadoOrdenItem.Enviado);
             var totalEntregados = ProductosCarrito.Count(p => p.Estado == EstadoOrdenItem.Entregado);
 
-            if (ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Enviado) && total > 1 && totalEnviados2 != total)
+            if (ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Enviado) && total > 1 && totalEnviados2 != total && totalEntregados == 0)
             {
                 return EstadoOrden.EnvioParcial;
             }

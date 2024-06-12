@@ -502,6 +502,10 @@ public class FidelizacionApplication : IFidelizacionApplication
                 }
 
                 var res = await this.CreateRedencion(data);
+                if(res.Message == "No se puede redimir 0 puntos")
+                {
+                    throw new Exception(res.Message);
+                }
                 if (res.Result)
                 {
                     //validacion donde no los puntos a redimir no pueden ser mayores al disponible
@@ -1771,7 +1775,6 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
-
             var reporteOriginal = this.unitOfWork.UsuarioRedencionRepository.GetReporteRedencion(data);
             //necesito separar las ordenes añadiendo unicamente un producto por orden
             var reporte = new List<UsuarioRedencion>();

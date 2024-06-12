@@ -50,7 +50,7 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
 
         public IEnumerable<UsuarioRedencion> GetReporteRedencion(ReporteDto data)
         {
-            if (data.TipoUsuario != "" && data.FechaFin != null && data.FechaInicio != null && data.Proveedor != "")
+            if (data.TipoUsuario != "" && data.TipoUsuario != null && data.FechaFin != null && data.FechaInicio != null && data.Proveedor != "" && data.Proveedor != null)
             {
                 data.FechaFin = new DateTime(data.FechaFin.Value.Year, data.FechaFin.Value.Month, data.FechaFin.Value.Day, 23, 59, 59);
                 var red = this.context.Set<UsuarioRedencion>()
@@ -62,7 +62,7 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
                     .ToList();
                 return red;
             }
-            if (data.FechaFin != null && data.FechaInicio != null && data.TipoUsuario != "")
+            if (data.FechaFin != null && data.FechaInicio != null && data.TipoUsuario != "" && data.TipoUsuario != null)
             {
                 data.FechaFin = new DateTime(data.FechaFin.Value.Year, data.FechaFin.Value.Month, data.FechaFin.Value.Day, 23, 59, 59);
                 var redencion = this.context.Set<UsuarioRedencion>()
@@ -72,7 +72,7 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
                     .ToList();
                 return redencion;
             }
-            if (data.TipoUsuario != "" && data.Proveedor != "")
+            if (data.TipoUsuario != "" && data.Proveedor != "" && data.TipoUsuario != null && data.Proveedor != null)
             {
                 var redencion = this.context.Set<UsuarioRedencion>()
                     .Where(x => x.Usuario.TipoUsuario == data.TipoUsuario)
@@ -81,7 +81,7 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
                     .ToList();
                 return redencion;
             }
-            if(data.Proveedor != "" && data.FechaFin != null && data.FechaInicio != null)
+            if(data.Proveedor != "" && data.Proveedor != null && data.FechaFin != null && data.FechaInicio != null)
             {
                 data.FechaFin = new DateTime(data.FechaFin.Value.Year, data.FechaFin.Value.Month, data.FechaFin.Value.Day, 23, 59, 59);
                 var redencion = this.context.Set<UsuarioRedencion>()
