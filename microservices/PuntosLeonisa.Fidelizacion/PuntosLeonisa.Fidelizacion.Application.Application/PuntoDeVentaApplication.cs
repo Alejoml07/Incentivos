@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Polly.Caching;
-using PuntosLeonisa.Fidelizacion.Domain;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Model.Carrito;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.FidelizacionPuntos;

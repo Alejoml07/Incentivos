@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using PuntosLeonisa.Fidelizacion.Domain;
+using PuntosLeonisa.Fidelizacion.Domain.Model;
 
 namespace PuntosLeonisa.infrastructure.Persistence.Configuration
 {

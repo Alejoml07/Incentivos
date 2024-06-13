@@ -1576,6 +1576,24 @@
         "AllowedScopes": []
       },
       "Key": "GetExtractosByUsuarioAndDateRoute"
+    },
+    //Scanner
+    {
+      "DownstreamPathTemplate": "/api/fidelizacion/AddUsuarioScanner",
+      "UpstreamPathTemplate": "/api/fidelizacion/AddUsuarioScanner",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizaciontest.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "AddUsuarioScannerRoute"
     }
   ],
   "GlobalConfiguration": {

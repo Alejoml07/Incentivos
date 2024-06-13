@@ -5,6 +5,7 @@ using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Carrito;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.FidelizacionPuntos;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.MovimientoPuntos;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Scanner;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Variables;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
 using PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork;
@@ -27,6 +28,7 @@ public class FidelizacionApplication : IFidelizacionApplication
     private readonly IUsuarioExternalService usuarioExternalService;
     private readonly IProductoExternalService productoExternalService;
     private readonly IOrdenOPExternalService ordenOPExternalService;
+    private readonly IUsuarioScannerExternalService usuarioScannerExternalService;
     private readonly IUnitOfWork unitOfWork;
     private readonly GenericResponse<Carrito> response3;
     private readonly GenericResponse<SmsDto> response4;
@@ -35,6 +37,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         IUsuarioExternalService usuarioExternalService,
         IProductoExternalService productoExternalService,
         IOrdenOPExternalService ordenOPExternalService,
+        IUsuarioScannerExternalService usuarioScannerExternalService,
         IUnitOfWork unitOfWork)
     {
 
@@ -43,6 +46,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         this.usuarioExternalService = usuarioExternalService;
         this.productoExternalService = productoExternalService;
         this.ordenOPExternalService = ordenOPExternalService;
+        this.usuarioScannerExternalService = usuarioScannerExternalService;
         this.unitOfWork = unitOfWork;
         response = new GenericResponse<PuntosManualDto>();
         response2 = new GenericResponse<WishListDto>();
@@ -2292,6 +2296,80 @@ public class FidelizacionApplication : IFidelizacionApplication
             {
                 Result = new List<bool> { true }
             };
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    public async Task<GenericResponse<UsuarioScannerDto>> AddUsuarioScanner(PeticionCedulaDto data)
+    {
+        try
+        {
+            var usuarioScanner = await this.usuarioScannerExternalService.GetUsuarioScanner(data);
+            if (usuarioScanner.codigoError == "004")
+            {
+                //crear lista de dataCompradoras
+                var dataCompradoras = new List<DataCompradora>
+                {
+                    new DataCompradora
+                    {
+                        estado = "",
+                        identificacion = data.identificacion
+                    }
+                };
+                var UsuarioNoEncontrado = new UsuarioScanner
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    dataCompradoras = dataCompradoras
+                };
+                await this.unitOfWork.UsuarioScannerRepository.Add(UsuarioNoEncontrado);
+                await this.unitOfWork.SaveChangesAsync();
+                return new GenericResponse<UsuarioScannerDto>
+                {
+                    Result = mapper.Map<UsuarioScannerDto>(UsuarioNoEncontrado),
+                    Message = "Usuario No Encontrado"
+
+                };
+            }
+            else
+            {
+                if (usuarioScanner != null)
+                {
+                    if (usuarioScanner.dataCompradoras.FirstOrDefault().estado == "")
+                    {
+                        var userScanner = mapper.Map<UsuarioScanner>(usuarioScanner);
+                        userScanner.Id = Guid.NewGuid().ToString();
+                        await this.unitOfWork.UsuarioScannerRepository.Add(userScanner);
+                        await this.unitOfWork.SaveChangesAsync();
+                        return new GenericResponse<UsuarioScannerDto>
+                        {
+                            Result = mapper.Map<UsuarioScannerDto>(userScanner),
+                            Message = "Usuario Activo"
+
+                        };
+                    }
+                    else
+                    {
+                        var userScanner = mapper.Map<UsuarioScanner>(usuarioScanner);
+                        userScanner.Id = Guid.NewGuid().ToString();
+                        await this.unitOfWork.UsuarioScannerRepository.Add(userScanner);
+                        await this.unitOfWork.SaveChangesAsync();
+                        return new GenericResponse<UsuarioScannerDto>
+                        {
+                            Result = mapper.Map<UsuarioScannerDto>(userScanner),
+                            Message = "Usuario Inactivo"
+                        };
+                    }
+                }
+                return new GenericResponse<UsuarioScannerDto>
+                {
+                    Result = null,
+                    Message = "Usuario no encontrado"
+                };
+            }
         }
         catch (Exception)
         {

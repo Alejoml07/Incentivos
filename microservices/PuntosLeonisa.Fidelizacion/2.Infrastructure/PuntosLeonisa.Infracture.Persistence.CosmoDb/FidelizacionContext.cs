@@ -35,6 +35,7 @@ public class FidelizacionContext : DbContext, IDisposable
         modelBuilder.ApplyConfiguration(new PuntoVentaVarConfiguration());
         modelBuilder.ApplyConfiguration(new AsignacionConfiguration());
         modelBuilder.ApplyConfiguration(new PuntoVentaHistoriaConfiguration());
+        modelBuilder.ApplyConfiguration(new UsuarioScannerConfiguration());
 
     }
 

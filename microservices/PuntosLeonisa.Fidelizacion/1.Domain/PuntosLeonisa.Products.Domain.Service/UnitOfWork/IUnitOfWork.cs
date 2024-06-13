@@ -17,6 +17,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork
         IPuntoVentaVarRepository PuntoVentaVarRepository { get; }
         IAsignacionRepository AsignacionRepository { get; }
         IPuntoVentaHistoriaRepository PuntoVentaHistoria { get; }
+        IUsuarioScannerRepository UsuarioScannerRepository { get; }
 
 
 

@@ -23,7 +23,7 @@ using Microsoft.Azure.ServiceBus;
 using System.Linq;
 using System.Text;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Variables;
-using PuntosLeonisa.Fidelizacion.Application.Core.Interfaces;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Scanner;
 
 namespace Usuarioos
 {
@@ -1303,6 +1303,27 @@ namespace Usuarioos
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var data = JsonConvert.DeserializeObject<NroPedidoEntregadoDto[]>(requestBody);
                 var response = await this.puntosApplication.CambiarEstadoEntregadoMasivo(data);
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los reportes:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("AddUsuarioScanner")]
+        [OpenApiOperation(operationId: "AddUsuarioScanner", tags: new[] { "AddUsuarioScanner" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los reportes por fechas")]
+        public async Task<IActionResult> AddUsuarioScanner(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/AddUsuarioScanner")] HttpRequest req, ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<PeticionCedulaDto>(requestBody);
+                var response = await this.puntosApplication.AddUsuarioScanner(data);
                 return new OkObjectResult(response);
             }
             catch (Exception ex)

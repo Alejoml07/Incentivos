@@ -90,6 +90,7 @@ namespace Logistic.Infrastructure.Agents.AgentsImpl
                 var httpClient = _httpClientFactory.CreateClient();
                 httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
                 httpClient.DefaultRequestHeaders.Add("Authorization", _configuration["Authorization"]);
+                httpClient.DefaultRequestHeaders.Add("Authorization", _configuration["AuthorizationScanner"]);
                 var resultData = await CircuitBreakerPolicy.ExecuteAsync(() =>
                         TransientErrorRetryPolicy.ExecuteAsync(() =>
                         httpClient.PostAsync(requestUrl, contentHttp))
@@ -106,6 +107,32 @@ namespace Logistic.Infrastructure.Agents.AgentsImpl
             }
         }
 
+        public async Task<T1> PostRequestScanner<T1, T2>(Uri requestUrl, T2 content)
+        {
+            try
+            {
+                string jsonString = JsonConvert.SerializeObject(content);
+                HttpContent contentHttp = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                var CircuitBreakerPolicy = _circuitBreaker.GetCircuitBreaker();
+                var TransientErrorRetryPolicy = _transientRetry.GetTransientRetry();
+                var httpClient = _httpClientFactory.CreateClient();
+                httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+                httpClient.DefaultRequestHeaders.Add("Authorization", _configuration["AuthorizationScanner"]);
+                var resultData = await CircuitBreakerPolicy.ExecuteAsync(() =>
+                        TransientErrorRetryPolicy.ExecuteAsync(() =>
+                        httpClient.PostAsync(requestUrl, contentHttp))
+                    );
+                var response = await resultData.Content.ReadAsStringAsync();
+#pragma warning disable CS8603 // Posible tipo de valor devuelto de referencia nulo
+                return JsonConvert.DeserializeObject<T1>(response);
+#pragma warning restore CS8603 // Posible tipo de valor devuelto de referencia nulo
+            }
+            catch (Exception ex)
+            {
+                Exception exception = new("Failed" + ex.InnerException + "\n" + ex.Message);
+                throw exception;
+            }
+        }
         public async Task<T1> PostRequestWhitHeader<T1, T2>(Uri requestUrl, T2 content)
         {
             try

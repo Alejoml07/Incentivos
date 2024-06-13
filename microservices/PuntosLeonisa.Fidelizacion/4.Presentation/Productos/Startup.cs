@@ -47,6 +47,7 @@ namespace Productos
             builder.Services.AddScoped<IVariableRepository, VariableRepository>();
             builder.Services.AddScoped<IPuntoVentaVarRepository, PuntoVentaVarRepository>();
             builder.Services.AddScoped<IAsignacionRepository, AsignacionRepository>();
+            builder.Services.AddScoped<IUsuarioScannerRepository, UsuarioScannerRepository>();
 
 
             //Add ServiceProxy
@@ -56,8 +57,8 @@ namespace Productos
             builder.Services.AddScoped<IUsuarioExternalService, UsuarioExternalServices>();
             builder.Services.AddScoped<IProductoExternalService, ProductoExternalServices>();
             builder.Services.AddScoped<IOrdenOPExternalService, OrdenOPExternalServices>();
+            builder.Services.AddScoped<IUsuarioScannerExternalService, UsuarioScannerExternalServices>();
             builder.Services.AddScoped<IPuntoDeVentaApplication, PuntoDeVentaApplication>();
-
         }
     }
 }

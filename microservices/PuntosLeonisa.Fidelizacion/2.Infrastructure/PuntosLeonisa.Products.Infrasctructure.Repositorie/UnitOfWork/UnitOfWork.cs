@@ -22,6 +22,7 @@ public class UnitOfWork : IUnitOfWork
     private IPuntoDeVentaRepository _puntoDeVentaRepository;
     private IAsignacionRepository _asignacionRepository;
     private IPuntoVentaHistoriaRepository _puntoVentaHistoriaRepository;
+    private IUsuarioScannerRepository _usuarioScannerRepository;
 
 
     public UnitOfWork(FidelizacionContext fidelizacionContext)
@@ -145,6 +146,15 @@ public class UnitOfWork : IUnitOfWork
             return _puntoVentaHistoriaRepository;
         }
         
+    }
+
+    public IUsuarioScannerRepository UsuarioScannerRepository
+    {
+        get
+        {
+            _usuarioScannerRepository ??= new UsuarioScannerRepository(_fidelizacionContext);
+            return _usuarioScannerRepository;
+        }
     }
 
     public void SaveChangesSync()

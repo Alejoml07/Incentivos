@@ -10,7 +10,7 @@ using PuntosLeonisa.Products.Application.Core.Interfaces;
 
 namespace PuntosLeonisa.Seguridad.Application.Core;
 
-public interface IFidelizacionApplication : IApplicationCore<PuntosManualDto>, IUsuarioInfoPuntosApplication, IVariableApplication
+public interface IFidelizacionApplication : IApplicationCore<PuntosManualDto>, IUsuarioInfoPuntosApplication, IVariableApplication, IUsuarioScannerApplication
 {
     Task<GenericResponse<WishListDto>> WishListAdd(WishListDto wishList);
     Task<bool> WishListDeleteById(string id);
