@@ -1371,6 +1371,25 @@ namespace Usuarioos
                 return GetFunctionError(log, "Error al obtener los reportes:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("GetUsuarioRedencionByNroPedido")]
+        [OpenApiOperation(operationId: "GetUsuarioRedencionByNroPedido", tags: new[] { "GetUsuarioRedencionByNroPedido" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los reportes por fechas")]
+        public async Task<IActionResult> GetUsuarioRedencionByNroPedido(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "fidelizacion/GetUsuarioRedencionByNroPedido/{nropedido}")] HttpRequest req, ILogger log, int nropedido)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                var response = await this.puntosApplication.GetUsuarioRedencionByNroPedido(nropedido);
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los reportes:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 

@@ -504,7 +504,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                 }
 
                 var res = await this.CreateRedencion(data);
-                if(res.Message == "No se puede redimir 0 puntos")
+                if (res.Message == "No se puede redimir 0 puntos")
                 {
                     throw new Exception(res.Message);
                 }
@@ -1676,7 +1676,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             await this.usuarioExternalService.CambiarEstado(email);
             var usuarioPuntos = this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(email).GetAwaiter().GetResult();
             var usuario = this.usuarioExternalService.GetUserByEmail(email).GetAwaiter().GetResult();
-            if(usuarioPuntos == null && usuario != null)
+            if (usuarioPuntos == null && usuario != null)
             {
 
                 // create new usuarioinfopuntos
@@ -2009,7 +2009,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
         catch
         {
-            throw; 
+            throw;
         }
 
     }
@@ -2030,7 +2030,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
         catch
         {
-            throw; 
+            throw;
         }
     }
 
@@ -2042,7 +2042,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             {
                 var variable = mapper.Map<Variable>(value);
                 await this.unitOfWork.VariableRepository.Add(variable);
-                await this.unitOfWork.SaveChangesAsync();                
+                await this.unitOfWork.SaveChangesAsync();
             }
             return new GenericResponse<bool>
             {
@@ -2091,17 +2091,17 @@ public class FidelizacionApplication : IFidelizacionApplication
 
     public Task<GenericResponse<ReporteDto>> GetMetricasByState(ReporteDto data)
     {
-        
-            var reporteOriginal = this.unitOfWork.UsuarioRedencionRepository.GetReporteRedencion(data);
-            data.ContadorPendiente = reporteOriginal.Where(x => x.ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Pendiente)).Count();
-            data.ContadorCancelado = reporteOriginal.Where(x => x.ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Cancelado)).Count();
-            data.ContadorEnviado = reporteOriginal.Where(x => x.ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Enviado)).Count();
+
+        var reporteOriginal = this.unitOfWork.UsuarioRedencionRepository.GetReporteRedencion(data);
+        data.ContadorPendiente = reporteOriginal.Where(x => x.ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Pendiente)).Count();
+        data.ContadorCancelado = reporteOriginal.Where(x => x.ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Cancelado)).Count();
+        data.ContadorEnviado = reporteOriginal.Where(x => x.ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Enviado)).Count();
 
         return Task.FromResult(new GenericResponse<ReporteDto>
         {
             Result = data
         });
-        
+
     }
 
     public async Task<GenericResponse<MetricasDto>> GetMetricasPorDia(ReporteDto data)
@@ -2138,7 +2138,7 @@ public class FidelizacionApplication : IFidelizacionApplication
 
         foreach (var item in reporteOriginal)
         {
-            if((DateTime.Now - item.FechaRedencion.Value).Days == 1)
+            if ((DateTime.Now - item.FechaRedencion.Value).Days == 1)
             {
                 metricas.Contador1++;
             }
@@ -2178,7 +2178,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             {
                 metricas.Contador10++;
             }
-            if((DateTime.Now - item.FechaRedencion.Value).Days > 10)
+            if ((DateTime.Now - item.FechaRedencion.Value).Days > 10)
             {
                 metricas.Contador11++;
             }
@@ -2208,7 +2208,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             {
                 foreach (var item in reporte.ProductosCarrito)
                 {
-                    if(item.Estado == EstadoOrdenItem.Pendiente)
+                    if (item.Estado == EstadoOrdenItem.Pendiente)
                     {
                         item.ContadorPendiente = (DateTime.Now - reporte.FechaRedencion.Value).Days;
 
@@ -2217,11 +2217,11 @@ public class FidelizacionApplication : IFidelizacionApplication
                     {
                         continue;
                     }
-                    
+
                 }
                 await this.unitOfWork.UsuarioRedencionRepository.Update(reporte);
                 await this.unitOfWork.SaveChangesAsync();
-                    
+
             }
             // Devolver la lista de UsuarioRedencion
             return reporteOriginal;
@@ -2439,5 +2439,28 @@ public class FidelizacionApplication : IFidelizacionApplication
 
     }
 
-    
+    public async Task<GenericResponse<UsuarioRedencion>> GetUsuarioRedencionByNroPedido(int nropedido)
+    {
+        try
+        {
+            var redencion = await this.unitOfWork.UsuarioRedencionRepository.GetUsuarioRedencionByNroPedido(nropedido);
+            if(redencion != null)
+            {
+                return new GenericResponse<UsuarioRedencion>
+                {
+                    Result = redencion
+                };
+            }
+            return new GenericResponse<UsuarioRedencion>
+            {
+                Result = null,
+                Message = "Redencion no encontrada con ese Numero de pedido"
+            };
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
 }

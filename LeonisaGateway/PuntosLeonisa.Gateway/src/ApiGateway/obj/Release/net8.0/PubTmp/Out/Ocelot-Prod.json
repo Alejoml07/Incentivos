@@ -1544,6 +1544,27 @@
       "Key": "GetMetricasPorDiaRoute"
     },
 
+    //fin reportes
+    //Comienza Garantias
+
+    {
+      "DownstreamPathTemplate": "/api/fidelizacion/GetUsuarioRedencionByNroPedido/{nropedido}",
+      "UpstreamPathTemplate": "/api/fidelizacion/GetUsuarioRedencionByNroPedido/{nropedido}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetUsuarioRedencionByNroPedidoRoute"
+    },
+
     {
       "DownstreamPathTemplate": "/api/fidelizacion/GetUsuarioInfoPuntosAll",
       "UpstreamPathTemplate": "/api/fidelizacion/GetUsuarioInfoPuntosAll",
