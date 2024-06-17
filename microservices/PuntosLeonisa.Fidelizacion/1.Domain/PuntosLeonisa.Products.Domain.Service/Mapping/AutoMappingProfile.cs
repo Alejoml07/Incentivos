@@ -46,7 +46,6 @@ namespace PuntosLeonisa.Seguridad.Domain.Service.Mapping
             CreateMap<UsuarioScannerDto, UsuarioScanner>();
             CreateMap<DataCompradora, DataCompradoraDto>();
             CreateMap<DataCompradoraDto, DataCompradora>();
-
             CreateMap<OrdenDto, UsuarioRedencion>();
             //TODO: Hacer el de usuario
         }

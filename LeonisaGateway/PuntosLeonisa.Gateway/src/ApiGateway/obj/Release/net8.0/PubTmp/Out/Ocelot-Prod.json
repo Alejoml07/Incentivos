@@ -1020,6 +1020,24 @@
     },
 
     {
+      "UpstreamPathTemplate": "/api/fidelizacion/CambiarEstadoEntregado",
+      "DownstreamPathTemplate": "/api/fidelizacion/CambiarEstadoEntregado",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "CambiarEstadoEntregadoRoute"
+    },
+
+    {
       "UpstreamPathTemplate": "/api/fidelizacion/CambiarEstadoEntregadoMasivo",
       "DownstreamPathTemplate": "/api/fidelizacion/CambiarEstadoEntregadoMasivo",
       "DownstreamScheme": "https",
@@ -1579,7 +1597,7 @@
       },
       "Key": "GetExtractosByUsuarioAndDateRoute"
     }
-    
+
   ],
   "GlobalConfiguration": {
 

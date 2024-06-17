@@ -1,4 +1,5 @@
-﻿using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Scanner;
+﻿using PuntosLeonisa.Fidelizacion.Domain.Model;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Scanner;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using System;
 using System.Collections.Generic;
@@ -11,5 +12,6 @@ namespace PuntosLeonisa.Fidelizacion.Application.Core.Interfaces
     public interface IUsuarioScannerApplication
     {
         Task<GenericResponse<UsuarioScannerDto>> AddUsuarioScanner(PeticionCedulaDto data);
+        Task<GenericResponse<DataCompradora[]>> GetUsuarioScanner();
     }
 }

@@ -221,8 +221,6 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
-
-
             if (carrito.Id == null)
             {
                 carrito.Id = Guid.NewGuid().ToString();
@@ -2377,4 +2375,69 @@ public class FidelizacionApplication : IFidelizacionApplication
             throw;
         }
     }
+
+    public async Task<GenericResponse<DataCompradora[]>> GetUsuarioScanner()
+    {
+        try
+        {
+            var usuario = await this.unitOfWork.UsuarioScannerRepository.GetAll();
+            // hacer una lista de tipo DataCompradoraDto
+            var dataCompradoras = new List<DataCompradora>();
+            foreach (var item in usuario)
+            {
+                foreach (var data in item.dataCompradoras)
+                {
+                    dataCompradoras.Add(data);
+                }
+            }
+            return new GenericResponse<DataCompradora[]>
+            {
+                Result = mapper.Map<DataCompradora[]>(dataCompradoras)
+            };
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    public async Task<GenericResponse<AddNroGuiaYTransportadora>> CambiarEstadoEntregado(AddNroGuiaYTransportadora data)
+    {
+
+        var redenciones = await this.unitOfWork.UsuarioRedencionRepository.GetById(data.Id);
+        try
+        {
+            if (redenciones != null)
+            {
+                var redencionEncontrada = redenciones.ProductosCarrito.Where(x => x.Id == data.Producto.Id).FirstOrDefault();
+                if (redencionEncontrada == null)
+                {
+                    throw new Exception("Redencion no encontrada");
+                }
+
+                redencionEncontrada.Estado = EstadoOrdenItem.Entregado;
+                redencionEncontrada.FechaActEntregado = DateTime.Now;
+                await this.unitOfWork.UsuarioRedencionRepository.Update(redenciones);
+                await this.usuarioExternalService.UserSendEmailWithMessageAndState(redenciones);
+                await this.unitOfWork.SaveChangesAsync();
+                data.Producto = redencionEncontrada;
+                var red = await this.unitOfWork.UsuarioRedencionRepository.GetById(data.Id);
+                return new GenericResponse<AddNroGuiaYTransportadora>
+                {
+
+                    Result = data
+                };
+
+            }
+            return null;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+
+    }
+
+    
 }

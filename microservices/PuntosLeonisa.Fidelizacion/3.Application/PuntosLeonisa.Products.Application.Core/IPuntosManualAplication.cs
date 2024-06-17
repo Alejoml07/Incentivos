@@ -35,6 +35,7 @@ public interface IFidelizacionApplication : IApplicationCore<PuntosManualDto>, I
     Task RecalcularPuntos();
     Task<GenericResponse<IEnumerable<bool>>> AddNroGuiaYTransportadoraMasivo(NroPedidoDto[] data);
     Task<GenericResponse<IEnumerable<bool>>> CambiarEstadoEntregadoMasivo(NroPedidoEntregadoDto[] data);
+    Task<GenericResponse<AddNroGuiaYTransportadora>> CambiarEstadoEntregado(AddNroGuiaYTransportadora data);
 
 }
 

@@ -1331,6 +1331,46 @@ namespace Usuarioos
                 return GetFunctionError(log, "Error al obtener los reportes:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("CambiarEstadoEntregado")]
+        [OpenApiOperation(operationId: "CambiarEstadoEntregado", tags: new[] { "CambiarEstadoEntregado" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los reportes por fechas")]
+        public async Task<IActionResult> CambiarEstadoEntregado(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/CambiarEstadoEntregado")] HttpRequest req, ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<AddNroGuiaYTransportadora>(requestBody);
+                var response = await this.puntosApplication.CambiarEstadoEntregado(data);
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los reportes:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("GetUsuarioScanner")]
+        [OpenApiOperation(operationId: "GetUsuarioScanner", tags: new[] { "GetUsuarioScanner" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los reportes por fechas")]
+        public async Task<IActionResult> GetUsuarioScanner(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "fidelizacion/GetUsuarioScanner")] HttpRequest req, ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {                
+                var response = await this.puntosApplication.GetUsuarioScanner();
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los reportes:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 
