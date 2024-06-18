@@ -9,6 +9,7 @@ using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Variables;
 using PuntosLeonisa.Fidelizacion.Domain.Model.Carrito;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.PuntoDeVenta;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Scanner;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Garantias;
 
 namespace PuntosLeonisa.Seguridad.Domain.Service.Mapping
 {
@@ -47,6 +48,8 @@ namespace PuntosLeonisa.Seguridad.Domain.Service.Mapping
             CreateMap<DataCompradora, DataCompradoraDto>();
             CreateMap<DataCompradoraDto, DataCompradora>();
             CreateMap<OrdenDto, UsuarioRedencion>();
+            CreateMap<Garantia, GarantiaDto>();
+            CreateMap<GarantiaDto, Garantia>();
             //TODO: Hacer el de usuario
         }
     }

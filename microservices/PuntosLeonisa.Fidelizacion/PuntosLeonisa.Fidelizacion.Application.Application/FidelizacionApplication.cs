@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using Newtonsoft.Json.Linq;
 using PuntosLeonisa.fidelizacion.Domain.Service.DTO.PuntosManuales;
+using PuntosLeonisa.Fidelizacion.Domain;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Carrito;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.FidelizacionPuntos;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Garantias;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.MovimientoPuntos;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Scanner;
@@ -2455,6 +2458,50 @@ public class FidelizacionApplication : IFidelizacionApplication
             {
                 Result = null,
                 Message = "Redencion no encontrada con ese Numero de pedido"
+            };
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    private static async Task UploadImageToGarantia(GarantiaDto data)
+    {
+        var azureHelper = new AzureHelper("DefaultEndpointsProtocol=https;AccountName=stgactincentivos;AccountKey=mtBoBaUJu8BKcHuCfdWzk1au7Upgif0rlzD+BlfAJZBsvQ02CiGzCNG5gj1li10GF8RpUwz6h+Mj+AStMOwyTA==;EndpointSuffix=core.windows.net");
+        if (!string.IsNullOrEmpty(data.Imagen1))
+        {
+            byte[] bytes = Convert.FromBase64String(data.Imagen1);
+            data.Imagen1 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+        }
+        if (!string.IsNullOrEmpty(data.Imagen2))
+        {
+            byte[] bytes = Convert.FromBase64String(data.Imagen2);
+            data.Imagen2 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+        }
+        if (!string.IsNullOrEmpty(data.Imagen3))
+        {
+            byte[] bytes = Convert.FromBase64String(data.Imagen3);
+            data.Imagen3 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
+        }
+    }
+
+    public async Task<GenericResponse<GarantiaDto>> AddGarantia(GarantiaDto data)
+    {
+        try
+        {
+            var garantia = mapper.Map<Garantia>(data);
+            garantia.Id = Guid.NewGuid().ToString();
+            await UploadImageToGarantia(data);
+            garantia.FechaReclamacion = DateTime.Now;
+            garantia.Estado = "Pendiente";
+            garantia.NroTicket = this.unitOfWork.GarantiaRepository.GetNroGarantia() +1;
+            await this.unitOfWork.GarantiaRepository.Add(garantia);
+            await this.unitOfWork.SaveChangesAsync();
+            return new GenericResponse<GarantiaDto>
+            {
+                Result = data
             };
         }
         catch (Exception)

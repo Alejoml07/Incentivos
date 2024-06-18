@@ -23,6 +23,7 @@ public class UnitOfWork : IUnitOfWork
     private IAsignacionRepository _asignacionRepository;
     private IPuntoVentaHistoriaRepository _puntoVentaHistoriaRepository;
     private IUsuarioScannerRepository _usuarioScannerRepository;
+    private IGarantiaRepository _garantiaRepository;
 
 
     public UnitOfWork(FidelizacionContext fidelizacionContext)
@@ -154,6 +155,15 @@ public class UnitOfWork : IUnitOfWork
         {
             _usuarioScannerRepository ??= new UsuarioScannerRepository(_fidelizacionContext);
             return _usuarioScannerRepository;
+        }
+    }
+
+    public IGarantiaRepository GarantiaRepository
+    {
+        get
+        {
+            _garantiaRepository ??= new GarantiaRepository(_fidelizacionContext);
+            return _garantiaRepository;
         }
     }
 

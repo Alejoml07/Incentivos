@@ -24,6 +24,9 @@ using System.Linq;
 using System.Text;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Variables;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Scanner;
+using Azure.Storage.Blobs.Models;
+using Azure.Storage.Blobs;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Garantias;
 
 namespace Usuarioos
 {
@@ -1383,6 +1386,67 @@ namespace Usuarioos
             try
             {
                 var response = await this.puntosApplication.GetUsuarioRedencionByNroPedido(nropedido);
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los reportes:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("UploadImageToBlob")]
+        public static async Task<IActionResult> UploadImageToBlob(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+        ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+            _ = await req.ReadFormAsync();
+            var file = req.Form.Files["image"];
+
+            if (file == null || file.Length == 0)
+            {
+                return new BadRequestObjectResult("File missing");
+            }
+
+            string connectionString = "DefaultEndpointsProtocol=https;AccountName=stgactincentivos;AccountKey=mtBoBaUJu8BKcHuCfdWzk1au7Upgif0rlzD+BlfAJZBsvQ02CiGzCNG5gj1li10GF8RpUwz6h+Mj+AStMOwyTA==;EndpointSuffix=core.windows.net";
+            string containerName = "$web";
+            string blobName = "/img/" + Path.GetRandomFileName() + Path.GetExtension(file.FileName);
+
+            BlobServiceClient blobServiceClient = new(connectionString);
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+            BlobClient blobClient = containerClient.GetBlobClient(blobName);
+
+            string mimeType = file.ContentType;
+
+            BlobUploadOptions uploadOptions = new()
+            {
+                HttpHeaders = new BlobHttpHeaders { ContentType = mimeType }
+            };
+
+            using (var stream = file.OpenReadStream())
+            {
+                await blobClient.UploadAsync(stream, uploadOptions);
+            }
+
+            string blobUrl = blobClient.Uri.ToString();
+
+            return new OkObjectResult(new { message = $"Imagen {blobName} subida exitosamente.", url = blobUrl });
+
+        }
+
+        [FunctionName("AddGarantia")]
+        [OpenApiOperation(operationId: "AddGarantia", tags: new[] { "AddGarantia" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los reportes por fechas")]
+        public async Task<IActionResult> AddGarantia(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/AddGarantia")] HttpRequest req, ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<GarantiaDto>(requestBody);
+                var response = await this.puntosApplication.AddGarantia(data);
                 return new OkObjectResult(response);
             }
             catch (Exception ex)

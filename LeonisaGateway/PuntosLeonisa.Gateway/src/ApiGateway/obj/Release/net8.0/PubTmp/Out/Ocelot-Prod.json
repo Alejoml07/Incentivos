@@ -1566,6 +1566,25 @@
     },
 
     {
+      "DownstreamPathTemplate": "/api/fidelizacion/AddGarantia",
+      "UpstreamPathTemplate": "/api/fidelizacion/AddGarantia",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "AddGarantiaRoute"
+    },
+    //Fin Garantias
+
+    {
       "DownstreamPathTemplate": "/api/fidelizacion/GetUsuarioInfoPuntosAll",
       "UpstreamPathTemplate": "/api/fidelizacion/GetUsuarioInfoPuntosAll",
       "DownstreamScheme": "https",

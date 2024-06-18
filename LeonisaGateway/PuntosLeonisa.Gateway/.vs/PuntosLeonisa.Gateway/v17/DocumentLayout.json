@@ -49,10 +49,11 @@
               "RelativeDocumentMoniker": "src\\ApiGateway\\Program.cs",
               "ToolTip": "C:\\MSAUC_Backend\\IncentivosService\\LeonisaGateway\\PuntosLeonisa.Gateway\\src\\ApiGateway\\Program.cs",
               "RelativeToolTip": "src\\ApiGateway\\Program.cs",
-              "ViewState": "AQIAAG8AAAAAAAAAAAAAAIoAAAAXAAAA",
+              "ViewState": "AQIAAGsAAAAAAAAAAABRwIoAAAAXAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-04-01T20:34:47.349Z",
-              "IsPinned": true
+              "IsPinned": true,
+              "EditorCaption": ""
             },
             {
               "$type": "Bookmark",
@@ -66,7 +67,7 @@
               "RelativeDocumentMoniker": "src\\ApiGateway\\Ocelot-Prod.json",
               "ToolTip": "C:\\MSAUC_Backend\\IncentivosService\\LeonisaGateway\\PuntosLeonisa.Gateway\\src\\ApiGateway\\Ocelot-Prod.json",
               "RelativeToolTip": "src\\ApiGateway\\Ocelot-Prod.json",
-              "ViewState": "AQIAAP4FAAAAAAAAAAAIwBQGAAAhAAAA",
+              "ViewState": "AQIAABgGAAAAAAAAAAAIwC8GAAAGAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2024-03-22T12:41:47.612Z",
               "EditorCaption": ""
@@ -79,7 +80,7 @@
               "RelativeDocumentMoniker": "src\\ApiGateway\\Ocelot.json",
               "ToolTip": "C:\\MSAUC_Backend\\IncentivosService\\LeonisaGateway\\PuntosLeonisa.Gateway\\src\\ApiGateway\\Ocelot.json",
               "RelativeToolTip": "src\\ApiGateway\\Ocelot.json",
-              "ViewState": "AQIAAAMGAAAAAAAAAAAIwAkGAAAAAAAA",
+              "ViewState": "AQIAABMGAAAAAAAAAAAIwC0GAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2024-02-19T14:53:57.46Z",
               "EditorCaption": ""

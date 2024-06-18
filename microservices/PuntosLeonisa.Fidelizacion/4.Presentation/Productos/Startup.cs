@@ -48,6 +48,7 @@ namespace Productos
             builder.Services.AddScoped<IPuntoVentaVarRepository, PuntoVentaVarRepository>();
             builder.Services.AddScoped<IAsignacionRepository, AsignacionRepository>();
             builder.Services.AddScoped<IUsuarioScannerRepository, UsuarioScannerRepository>();
+            builder.Services.AddScoped<IGarantiaRepository, GarantiaRepository>();
 
 
             //Add ServiceProxy
