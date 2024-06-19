@@ -1445,7 +1445,7 @@ namespace Usuarioos
             try
             {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var data = JsonConvert.DeserializeObject<GarantiaDto>(requestBody);
+                var data = JsonConvert.DeserializeObject<Garantia>(requestBody);
                 var response = await this.puntosApplication.AddGarantia(data);
                 return new OkObjectResult(response);
             }

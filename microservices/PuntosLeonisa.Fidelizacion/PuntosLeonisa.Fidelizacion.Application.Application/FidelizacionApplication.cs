@@ -2467,11 +2467,12 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
     }
 
-    private static async Task UploadImageToGarantia(GarantiaDto data)
+    private static async Task UploadImageToGarantia(Garantia data)
     {
         var azureHelper = new AzureHelper("DefaultEndpointsProtocol=https;AccountName=stgactincentivos;AccountKey=mtBoBaUJu8BKcHuCfdWzk1au7Upgif0rlzD+BlfAJZBsvQ02CiGzCNG5gj1li10GF8RpUwz6h+Mj+AStMOwyTA==;EndpointSuffix=core.windows.net");
         if (!string.IsNullOrEmpty(data.Imagen1))
         {
+
             byte[] bytes = Convert.FromBase64String(data.Imagen1);
             data.Imagen1 = await azureHelper.UploadFileToBlobAsync(bytes, ".webp", "image/webp");
         }
@@ -2487,21 +2488,38 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
     }
 
-    public async Task<GenericResponse<GarantiaDto>> AddGarantia(GarantiaDto data)
+    public async Task<GenericResponse<bool>> AddGarantia(Garantia data)
     {
         try
         {
-            var garantia = mapper.Map<Garantia>(data);
-            garantia.Id = Guid.NewGuid().ToString();
+            data.Id = Guid.NewGuid().ToString();
             await UploadImageToGarantia(data);
-            garantia.FechaReclamacion = DateTime.Now;
-            garantia.Estado = "Pendiente";
-            garantia.NroTicket = this.unitOfWork.GarantiaRepository.GetNroGarantia() +1;
-            await this.unitOfWork.GarantiaRepository.Add(garantia);
+            data.FechaReclamacion = DateTime.Now;
+            data.Estado = "Pendiente";
+            data.NroTicket = this.unitOfWork.GarantiaRepository.GetNroGarantia() +1;
+            await this.unitOfWork.GarantiaRepository.Add(data);
             await this.unitOfWork.SaveChangesAsync();
-            return new GenericResponse<GarantiaDto>
+            return new GenericResponse<bool>
             {
-                Result = data
+                Result = true
+            };
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    public async Task<GenericResponse<IEnumerable<GarantiaDto>>> GetGarantias()
+    {
+        try
+        {
+            var garantias = await this.unitOfWork.GarantiaRepository.GetAll();
+            var garantiasDto = mapper.Map<IEnumerable<GarantiaDto>>(garantias);
+            return new GenericResponse<IEnumerable<GarantiaDto>>
+            {
+                Result = garantiasDto
             };
         }
         catch (Exception)
