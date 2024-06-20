@@ -2499,6 +2499,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             data.NroTicket = this.unitOfWork.GarantiaRepository.GetNroGarantia() +1;
             await this.unitOfWork.GarantiaRepository.Add(data);
             await this.unitOfWork.SaveChangesAsync();
+            await this.usuarioExternalService.SendMailGarantiaEnviada(data);
             return new GenericResponse<bool>
             {
                 Result = true
@@ -2511,15 +2512,42 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
     }
 
-    public async Task<GenericResponse<IEnumerable<GarantiaDto>>> GetGarantias()
+    public async Task<GenericResponse<IEnumerable<GarantiaDto>>> GetGarantiasByProveedorOrAll(string proveedor)
     {
         try
         {
-            var garantias = await this.unitOfWork.GarantiaRepository.GetAll();
+            var garantias = await this.unitOfWork.GarantiaRepository.GetGarantiaByProveedorOrAll(proveedor);
             var garantiasDto = mapper.Map<IEnumerable<GarantiaDto>>(garantias);
             return new GenericResponse<IEnumerable<GarantiaDto>>
             {
                 Result = garantiasDto
+            };
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    public async Task<GenericResponse<bool>> CambiarEstadosGarantia(Garantia data)
+    {
+        try
+        {
+            var garantia = await this.unitOfWork.GarantiaRepository.GetById(data.Id);
+            if(garantia != null)
+            {
+                garantia.Estado = data.Estado;
+                garantia.ObservacionEstado = data.ObservacionEstado;
+                garantia.ObservacionProveedor = data.ObservacionProveedor;
+                await this.unitOfWork.GarantiaRepository.Update(garantia);
+                await this.unitOfWork.SaveChangesAsync();
+                await this.usuarioExternalService.SendMailGarantia(garantia);
+            }       
+                            
+            return new GenericResponse<bool>
+            {
+                Result = true
             };
         }
         catch (Exception)

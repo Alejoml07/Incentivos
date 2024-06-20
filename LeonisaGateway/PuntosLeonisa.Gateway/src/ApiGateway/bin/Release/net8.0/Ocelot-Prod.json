@@ -1582,6 +1582,41 @@
       },
       "Key": "AddGarantiaRoute"
     },
+
+    {
+      "DownstreamPathTemplate": "/api/fidelizacion/GetGarantiasByProveedorOrAll/{proveedor}",
+      "UpstreamPathTemplate": "/api/fidelizacion/GetGarantiasByProveedorOrAll/{proveedor}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetGarantiasRoute"
+    },
+    {
+      "DownstreamPathTemplate": "/api/fidelizacion/CambiarEstadosGarantia",
+      "UpstreamPathTemplate": "/api/fidelizacion/CambiarEstadosGarantia",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "CambiarEstadosGarantiaRoute"
+    },
     //Fin Garantias
 
     {

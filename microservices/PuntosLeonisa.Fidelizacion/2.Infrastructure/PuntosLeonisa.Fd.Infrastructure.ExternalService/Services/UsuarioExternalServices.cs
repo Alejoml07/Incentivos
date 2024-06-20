@@ -198,5 +198,49 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
             var response = await httpClientAgent.PostRequest<GenericResponse<Usuario>, Usuario>(new Uri(azf), data);
             return response;
         }
+
+        public Task<GenericResponse<bool>> SendMailGarantia(Garantia data)
+        {
+            try
+            {
+
+                var email = new EmailDTO()
+                {
+                    Message = data.GenerarHTMLGarantia(),
+                    Recipients = new string[] {data.Email},
+                    Subject = "Cambio estado garantia"
+                };
+                var response = this.httpClientAgent.SendMail(email);
+
+                return Task.FromResult(new GenericResponse<bool>() { Result = true });
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public Task<GenericResponse<bool>> SendMailGarantiaEnviada(Garantia data)
+        {
+            try
+            {
+
+                var email = new EmailDTO()
+                {
+                    Message = data.GenerarHTMLGarantiaEnviada(),
+                    Recipients = new string[] { data.Email },
+                    Subject = "Peticion garantia exitosa"
+                };
+                var response = this.httpClientAgent.SendMail(email);
+
+                return Task.FromResult(new GenericResponse<bool>() { Result = true });
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
     }
 }

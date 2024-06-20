@@ -1454,6 +1454,46 @@ namespace Usuarioos
                 return GetFunctionError(log, "Error al obtener los reportes:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("GetGarantiasByProveedorOrAll")]
+        [OpenApiOperation(operationId: "GetGarantiasByProveedorOrAll", tags: new[] { "GetGarantiasByProveedorOrAll" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los reportes por fechas")]
+        public async Task<IActionResult> GetGarantiasByProveedorOrAll(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "fidelizacion/GetGarantiasByProveedorOrAll/{proveedor}")] HttpRequest req, ILogger log, string proveedor)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                var response = await this.puntosApplication.GetGarantiasByProveedorOrAll(proveedor);
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los reportes:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("CambiarEstadosGarantia")]
+        [OpenApiOperation(operationId: "CambiarEstadosGarantia", tags: new[] { "CambiarEstadosGarantia" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los reportes por fechas")]
+        public async Task<IActionResult> CambiarEstadosGarantia(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/CambiarEstadosGarantia")] HttpRequest req, ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<Garantia>(requestBody);
+                var response = await this.puntosApplication.CambiarEstadosGarantia(data);
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los reportes:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 

@@ -10,5 +10,6 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces
     public interface IGarantiaRepository : IRepository<Garantia>
     {
         int GetNroGarantia();
+        Task<IEnumerable<Garantia>> GetGarantiaByProveedorOrAll(string proveedor);
     }
 }
