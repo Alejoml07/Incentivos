@@ -221,7 +221,7 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
             }
         }
 
-        public Task<GenericResponse<bool>> SendMailGarantiaEnviada(Garantia data)
+        public Task<GenericResponse<bool>> SendMailGarantiaEnviada(Garantia data, string CorreoProveedor)
         {
             try
             {
@@ -229,7 +229,7 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
                 var email = new EmailDTO()
                 {
                     Message = data.GenerarHTMLGarantiaEnviada(),
-                    Recipients = new string[] { data.Email },
+                    Recipients = new string[] {data.Email,CorreoProveedor}, //"dalzate@votre.com.co", "sburgos@votre.com.co"
                     Subject = "Peticion garantia exitosa"
                 };
                 var response = this.httpClientAgent.SendMail(email);

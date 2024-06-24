@@ -18,7 +18,7 @@ namespace PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces
         Task<GenericResponse<bool>> UserSendEmailWithMessageAndState(UsuarioRedencion data);
         Task<GenericResponse<bool>> SendMailGeneric(EmailDTO emailData);       
         Task<GenericResponse<bool>> SendMailGarantia(Garantia data);
-        Task<GenericResponse<bool>> SendMailGarantiaEnviada(Garantia data);
+        Task<GenericResponse<bool>> SendMailGarantiaEnviada(Garantia datan, string CorreoProveedor);
         Task<GenericResponse<bool>> CambiarEstado(string email);
         Task<GenericResponse<IEnumerable<Usuario>>> GetUsuarios();
         Task<IEnumerable<Porcentajes>> GetUsuarioTPA(Fecha data, string token);

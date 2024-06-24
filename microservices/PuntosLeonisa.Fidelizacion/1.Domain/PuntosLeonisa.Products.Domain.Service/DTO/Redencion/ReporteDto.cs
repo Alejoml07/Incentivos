@@ -17,6 +17,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion
         public int? ContadorPendiente { get; set; }
         public int? ContadorEnviado { get; set; }
         public int? ContadorCancelado { get; set; }
+        public int? ContadorEntregado { get; set; }
         public string? TipoUsuario { get; set; }
         public string? Proveedor { get; set; }
     }

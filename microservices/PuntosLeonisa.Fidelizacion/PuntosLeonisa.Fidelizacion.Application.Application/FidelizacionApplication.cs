@@ -2099,6 +2099,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         data.ContadorPendiente = reporteOriginal.Where(x => x.ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Pendiente)).Count();
         data.ContadorCancelado = reporteOriginal.Where(x => x.ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Cancelado)).Count();
         data.ContadorEnviado = reporteOriginal.Where(x => x.ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Enviado)).Count();
+        data.ContadorEntregado = reporteOriginal.Where(x => x.ProductosCarrito.Any(p => p.Estado == EstadoOrdenItem.Entregado)).Count();
 
         return Task.FromResult(new GenericResponse<ReporteDto>
         {
@@ -2499,7 +2500,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             data.NroTicket = this.unitOfWork.GarantiaRepository.GetNroGarantia() +1;
             await this.unitOfWork.GarantiaRepository.Add(data);
             await this.unitOfWork.SaveChangesAsync();
-            await this.usuarioExternalService.SendMailGarantiaEnviada(data);
+            await this.usuarioExternalService.SendMailGarantiaEnviada(data,data.CorreoProveedor);
             return new GenericResponse<bool>
             {
                 Result = true
@@ -2520,7 +2521,8 @@ public class FidelizacionApplication : IFidelizacionApplication
             var garantiasDto = mapper.Map<IEnumerable<GarantiaDto>>(garantias);
             return new GenericResponse<IEnumerable<GarantiaDto>>
             {
-                Result = garantiasDto
+                // necesito ordenar las garantias por nro de ticket de manera ascendente
+                Result = garantiasDto.OrderByDescending(p => p.NroTicket)
             };
         }
         catch (Exception)
@@ -2540,6 +2542,8 @@ public class FidelizacionApplication : IFidelizacionApplication
                 garantia.Estado = data.Estado;
                 garantia.ObservacionEstado = data.ObservacionEstado;
                 garantia.ObservacionProveedor = data.ObservacionProveedor;
+                garantia.NroGuia = data.NroGuia;
+                garantia.Transportadora = data.Transportadora;
                 await this.unitOfWork.GarantiaRepository.Update(garantia);
                 await this.unitOfWork.SaveChangesAsync();
                 await this.usuarioExternalService.SendMailGarantia(garantia);
