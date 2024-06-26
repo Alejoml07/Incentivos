@@ -45,6 +45,8 @@ namespace PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios
         public string? EmpresaRepresentativa { get; set; }
 
         public string? Pwd { get; set; }
+        public string? Ciudad { get; set; }
+        public string? Departamento { get; set; }
 
     }
 }

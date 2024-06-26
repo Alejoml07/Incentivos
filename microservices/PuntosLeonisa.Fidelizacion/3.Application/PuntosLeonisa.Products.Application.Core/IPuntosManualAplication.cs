@@ -2,6 +2,7 @@
 using PuntosLeonisa.Fidelizacion.Application.Core.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Carrito;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Garantias;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.WishList;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
@@ -36,7 +37,7 @@ public interface IFidelizacionApplication : IApplicationCore<PuntosManualDto>, I
     Task<GenericResponse<IEnumerable<bool>>> AddNroGuiaYTransportadoraMasivo(NroPedidoDto[] data);
     Task<GenericResponse<IEnumerable<bool>>> CambiarEstadoEntregadoMasivo(NroPedidoEntregadoDto[] data);
     Task<GenericResponse<AddNroGuiaYTransportadora>> CambiarEstadoEntregado(AddNroGuiaYTransportadora data);
-    Task<GenericResponse<UsuarioRedencion>> GetUsuarioRedencionByNroPedido(int nropedido);
+    Task<GenericResponse<UsuarioRedencion>> GetUsuarioRedencionByNroPedido(UsuarioNroPedido data);
 
 }
 

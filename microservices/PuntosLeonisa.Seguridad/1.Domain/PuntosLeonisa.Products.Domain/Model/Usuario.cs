@@ -49,7 +49,8 @@ namespace PuntosLeonisa.Products.Domain.Model
 
         public string? Pwd { get; set; }
         public string Code2F { get; set; }
-
+        public string? Ciudad { get; set; }
+        public string? Departamento { get; set; }
         public void Dispose()
         {
             throw new NotImplementedException();

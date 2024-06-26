@@ -29,5 +29,6 @@ namespace PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios
         public string? Empresa { get; set; }
 
         public string Tkn { get; set; }
+        public string? Ciudad { get; set; }
     }
 }

@@ -11,6 +11,7 @@
         public string? Email { get; set; }
 
         public double? Descuento { get; set; }
+        public string? CiudadRestringida { get; set; }
 
     }
 }

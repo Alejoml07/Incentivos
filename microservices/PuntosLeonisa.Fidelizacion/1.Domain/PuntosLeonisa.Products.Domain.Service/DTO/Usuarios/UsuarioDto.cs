@@ -35,6 +35,8 @@
         public string? contraseña { get; set; }
 
         public string? Token { get; set; }
+        public string? Ciudad { get; set; }
+        public string? Departamento { get; set; }
 
     }
 }

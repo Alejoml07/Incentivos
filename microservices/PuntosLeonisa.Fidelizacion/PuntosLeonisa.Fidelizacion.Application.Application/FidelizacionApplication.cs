@@ -2212,6 +2212,10 @@ public class FidelizacionApplication : IFidelizacionApplication
             {
                 foreach (var item in reporte.ProductosCarrito)
                 {
+                    if(item.ContadorPendiente == null)
+                    {
+                        item.ContadorPendiente = 0;
+                    }
                     if (item.Estado == EstadoOrdenItem.Pendiente)
                     {
                         item.ContadorPendiente = (DateTime.Now - reporte.FechaRedencion.Value).Days;
@@ -2443,11 +2447,27 @@ public class FidelizacionApplication : IFidelizacionApplication
 
     }
 
-    public async Task<GenericResponse<UsuarioRedencion>> GetUsuarioRedencionByNroPedido(int nropedido)
+    public async Task<GenericResponse<UsuarioRedencion>> GetUsuarioRedencionByNroPedido(UsuarioNroPedido data)
     {
         try
         {
-            var redencion = await this.unitOfWork.UsuarioRedencionRepository.GetUsuarioRedencionByNroPedido(nropedido);
+            var redencion = await this.unitOfWork.UsuarioRedencionRepository.GetUsuarioRedencionByNroPedido(data.NroPedido);
+            if(data.TipoUsuario == "Super Usuario")
+            {
+               return new GenericResponse<UsuarioRedencion>
+               {
+                    Result = redencion
+               };
+            }
+
+            if(redencion.Usuario.Email != data.Email)
+            {
+                return new GenericResponse<UsuarioRedencion>
+                {
+                    Result = null,
+                    Message = "Este Nro de pedido no esta asociado a este usuario"
+                };
+            }
             if(redencion != null)
             {
                 return new GenericResponse<UsuarioRedencion>
@@ -2495,7 +2515,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         {
             data.Id = Guid.NewGuid().ToString();
             await UploadImageToGarantia(data);
-            data.FechaReclamacion = DateTime.Now;
+            data.FechaReclamacion = DateTime.Now.AddHours(-5);
             data.Estado = "Pendiente";
             data.NroTicket = this.unitOfWork.GarantiaRepository.GetNroGarantia() +1;
             await this.unitOfWork.GarantiaRepository.Add(data);

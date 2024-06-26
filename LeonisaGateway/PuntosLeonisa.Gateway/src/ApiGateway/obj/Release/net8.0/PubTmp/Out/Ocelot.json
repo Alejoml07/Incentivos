@@ -1545,10 +1545,10 @@
     //Comienza Garantias
 
     {
-      "DownstreamPathTemplate": "/api/fidelizacion/GetUsuarioRedencionByNroPedido/{nropedido}",
-      "UpstreamPathTemplate": "/api/fidelizacion/GetUsuarioRedencionByNroPedido/{nropedido}",
+      "DownstreamPathTemplate": "/api/fidelizacion/GetUsuarioRedencionByNroPedido",
+      "UpstreamPathTemplate": "/api/fidelizacion/GetUsuarioRedencionByNroPedido",
       "DownstreamScheme": "https",
-      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
           "Host": "azfidelizaciontest.azurewebsites.net",

@@ -96,7 +96,7 @@ namespace PuntosLeonisa.Products.Domain.Service.DTO.Productos
 
         public string? Tamaño { get; set; }
 
-
+        public string? CiudadRestringida { get; set; }
 
     }
 }

@@ -1379,13 +1379,15 @@ namespace Usuarioos
         [OpenApiOperation(operationId: "GetUsuarioRedencionByNroPedido", tags: new[] { "GetUsuarioRedencionByNroPedido" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los reportes por fechas")]
         public async Task<IActionResult> GetUsuarioRedencionByNroPedido(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "fidelizacion/GetUsuarioRedencionByNroPedido/{nropedido}")] HttpRequest req, ILogger log, int nropedido)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/GetUsuarioRedencionByNroPedido")] HttpRequest req, ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             try
             {
-                var response = await this.puntosApplication.GetUsuarioRedencionByNroPedido(nropedido);
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<UsuarioNroPedido>(requestBody);
+                var response = await this.puntosApplication.GetUsuarioRedencionByNroPedido(data);
                 return new OkObjectResult(response);
             }
             catch (Exception ex)

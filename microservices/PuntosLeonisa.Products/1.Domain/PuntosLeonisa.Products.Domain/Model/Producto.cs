@@ -99,6 +99,7 @@ public class Producto :IDisposable
     public string? Tamaño { get; set; }
 
     public string? Inventario { get; set; }
+    public string? CiudadRestringida { get; set; }
 
     public void Dispose() => throw new NotImplementedException();
 

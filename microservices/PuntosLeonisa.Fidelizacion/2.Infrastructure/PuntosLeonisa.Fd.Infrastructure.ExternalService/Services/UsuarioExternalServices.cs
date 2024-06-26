@@ -4,12 +4,10 @@ using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.PuntoDeVenta;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Usuarios;
-using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.DTO;
 using PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces;
 using PuntosLeonisa.Products.Domain.Model;
-using System.Net.Http;
 using System.Web;
 using System.Xml;
 
@@ -207,7 +205,7 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
                 var email = new EmailDTO()
                 {
                     Message = data.GenerarHTMLGarantia(),
-                    Recipients = new string[] {data.Email},
+                    Recipients = new string[] {data.Email}, //,"dalzate@votre.com.co" 
                     Subject = "Cambio estado garantia"
                 };
                 var response = this.httpClientAgent.SendMail(email);
@@ -216,7 +214,6 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
             }
             catch (Exception ex)
             {
-
                 throw;
             }
         }
@@ -225,12 +222,11 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
         {
             try
             {
-
                 var email = new EmailDTO()
                 {
                     Message = data.GenerarHTMLGarantiaEnviada(),
                     Recipients = new string[] {data.Email,CorreoProveedor}, //"dalzate@votre.com.co", "sburgos@votre.com.co"
-                    Subject = "Peticion garantia exitosa"
+                    Subject = "Petición garantía exitosa"
                 };
                 var response = this.httpClientAgent.SendMail(email);
 

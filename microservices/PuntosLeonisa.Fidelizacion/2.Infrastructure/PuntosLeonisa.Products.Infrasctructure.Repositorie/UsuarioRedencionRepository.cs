@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Cosmos.Storage.Internal;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Garantias;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
 using PuntosLeonisa.Infrasctructure.Core.Repository;
@@ -123,9 +124,9 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
             }
         }
 
-        public async Task<UsuarioRedencion> GetUsuarioRedencionByNroPedido(int data)
+        public async Task<UsuarioRedencion> GetUsuarioRedencionByNroPedido(int nropedido)
         {
-            var redencion = await this.context.Set<UsuarioRedencion>().Where(x => x.NroPedido == data).FirstOrDefaultAsync();
+            var redencion = await this.context.Set<UsuarioRedencion>().Where(x => x.NroPedido == nropedido).FirstOrDefaultAsync();
             return redencion;
         }                              
     }
