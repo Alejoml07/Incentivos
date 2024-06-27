@@ -2517,6 +2517,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             await UploadImageToGarantia(data);
             data.FechaReclamacion = DateTime.Now.AddHours(-5);
             data.Estado = "Pendiente";
+            data.EAN = data.EAN;
             data.NroTicket = this.unitOfWork.GarantiaRepository.GetNroGarantia() +1;
             await this.unitOfWork.GarantiaRepository.Add(data);
             await this.unitOfWork.SaveChangesAsync();
@@ -2564,6 +2565,8 @@ public class FidelizacionApplication : IFidelizacionApplication
                 garantia.ObservacionProveedor = data.ObservacionProveedor;
                 garantia.NroGuia = data.NroGuia;
                 garantia.Transportadora = data.Transportadora;
+                garantia.FechaPedido = data.FechaPedido;
+                garantia.TipoReclamacion = data.TipoReclamacion;
                 await this.unitOfWork.GarantiaRepository.Update(garantia);
                 await this.unitOfWork.SaveChangesAsync();
                 await this.usuarioExternalService.SendMailGarantia(garantia);
@@ -2580,4 +2583,23 @@ public class FidelizacionApplication : IFidelizacionApplication
             throw;
         }
     }
+
+    public async Task<GenericResponse<IEnumerable<GarantiaDto>>> GetGarantiasByUser(string email)
+    {
+        try
+        {
+            var garantias = await this.unitOfWork.GarantiaRepository.GetGarantiaByEmail(email);
+            var garantiasDto = mapper.Map<IEnumerable<GarantiaDto>>(garantias);
+            return new GenericResponse<IEnumerable<GarantiaDto>>
+            {
+                Result = garantiasDto.OrderByDescending(p => p.FechaReclamacion)
+            };            
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+        
+        
 }

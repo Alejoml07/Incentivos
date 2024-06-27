@@ -1617,6 +1617,24 @@
       },
       "Key": "CambiarEstadosGarantiaRoute"
     },
+
+    {
+      "DownstreamPathTemplate": "/api/fidelizacion/GetGarantiasByUser/{email}",
+      "UpstreamPathTemplate": "/api/fidelizacion/GetGarantiasByUser/{email}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetGarantiasByUserRoute"
+    },
     //Fin Garantias
 
     {

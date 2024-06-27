@@ -13,6 +13,12 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
             this.context = context;
         }
 
+        public Task<IEnumerable<Garantia>> GetGarantiaByEmail(string email)
+        {
+            return Task.FromResult(this.context.Set<Garantia>().Where(x => x.Email == email).AsEnumerable());
+            
+        }
+
         public Task<IEnumerable<Garantia>> GetGarantiaByProveedorOrAll(string proveedor)
         {
             //si el proveedor es nulo o vacio, se retornan todas las garantias

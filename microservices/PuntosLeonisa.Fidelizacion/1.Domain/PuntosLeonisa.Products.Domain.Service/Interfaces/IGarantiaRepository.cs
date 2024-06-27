@@ -11,5 +11,6 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces
     {
         int GetNroGarantia();
         Task<IEnumerable<Garantia>> GetGarantiaByProveedorOrAll(string proveedor);
+        Task<IEnumerable<Garantia>> GetGarantiaByEmail(string email);
     }
 }

@@ -9,5 +9,6 @@ namespace PuntosLeonisa.Fidelizacion.Application.Core.Interfaces
         Task<GenericResponse<bool>> AddGarantia(Garantia data);
         Task<GenericResponse<IEnumerable<GarantiaDto>>> GetGarantiasByProveedorOrAll(string proveedor);
         Task<GenericResponse<bool>> CambiarEstadosGarantia(Garantia data);
+        Task<GenericResponse<IEnumerable<GarantiaDto>>> GetGarantiasByUser(string email);
     }
 }

@@ -27,5 +27,6 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Garantias
         public string? Estado { get; set; }
         public string? ObservacionEstado { get; set; }
         public string? ObservacionProveedor { get; set; }
+        public string? EAN { get; set; }
     }
 }
