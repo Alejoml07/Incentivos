@@ -1,5 +1,6 @@
 ﻿using PuntosLeonisa.Fidelizacion.Domain.Interfaces;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
+using PuntosLeonisa.Seguridad.Domain.Service.Interfaces;
 
 namespace PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork
 {
@@ -19,6 +20,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork
         IPuntoVentaHistoriaRepository PuntoVentaHistoria { get; }
         IUsuarioScannerRepository UsuarioScannerRepository { get; }
         IGarantiaRepository GarantiaRepository { get; }
+        IPuntoDeVentaRepository PuntoDeVentaRepository { get; }
 
 
 

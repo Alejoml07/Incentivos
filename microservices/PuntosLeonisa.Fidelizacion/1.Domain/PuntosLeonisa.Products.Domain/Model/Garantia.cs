@@ -75,7 +75,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
             }
             if (this.Estado == "En progreso")
             {
-                sb.Append("<p>Queremos informarte que el estado de tu garantia ha cambiado a " + this.Estado + "</p>");
+                sb.Append("<p>Queremos informarte que el estado de tu garantía ha cambiado a: " + this.Estado + "</p>");
                 sb.Append("<p>estamos atendiendo tu caso.</p>");
                 sb.Append("<table class=\"tabla-estilizada\">");
                 sb.Append("<tr><th class=\"encabezado-tabla\">Ticket de reclamacion</th><th class=\"encabezado-tabla\">Fecha reclamacion</th><th class=\"encabezado-tabla\">Nro de pedido</th><th class=\"encabezado-tabla\">Proveedor</th><th class=\"encabezado-tabla\">Producto</th><th class=\"encabezado-tabla\">Observacion Proveedor</th></tr>");
@@ -86,8 +86,8 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
             }
             if (this.Estado == "Atendida")
             {
-                sb.Append("<p>Queremos informarte que el estado de tu garantia ha cambiado a " + this.Estado + "</p>");
-                sb.Append("<p>" + this.ObservacionProveedor + ".</p>");
+                sb.Append("<p>Queremos informarte que el estado de tu garantía ha cambiado a: " + this.Estado + "</p>");
+                sb.Append("<p>" + this.ObservacionProveedor + "</p>");
                 sb.Append("<p>Número de guía: " + this.NroGuia + "</p>");
                 sb.Append("<p>Transportadora: " + this.Transportadora + "</p>");               
                 sb.Append("<table class=\"tabla-estilizada\">");

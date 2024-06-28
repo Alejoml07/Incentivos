@@ -10,7 +10,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.PuntoDeVenta
     public class LiquidacionPuntos
     {
         public Fecha Fecha { get; set; }
-        public PuntoVentaVarDto Registro { get; set; }
+        public PuntoVentaVarDto[] Registro { get; set; }
     }
 
     public class Fecha

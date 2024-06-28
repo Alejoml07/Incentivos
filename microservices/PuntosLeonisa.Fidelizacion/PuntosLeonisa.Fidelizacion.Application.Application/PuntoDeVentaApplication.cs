@@ -309,7 +309,96 @@ namespace PuntosLeonisa.Seguridad.Application
             try
             {
                 EliminarExcels(data);
-                AddExcels(data.Registro);
+                foreach (var item in data.Registro)
+                {
+                    AddExcels(item);
+                }
+                foreach (var item in data.Registro)
+                {
+                    if(!string.IsNullOrEmpty(item.IdPuntoVenta) && !string.IsNullOrEmpty(item.IdVariable))
+                    {
+                        var idPuntoVenta = int.Parse(item.IdPuntoVenta);
+                        var id_ptventa = await this.unitOfWork.PuntoDeVentaRepository.GetPuntoDeVentaByCodigo(idPuntoVenta);
+                        var id_variable = await this.unitOfWork.VariableRepository.GetVariablesByCodigo(item.IdVariable);
+
+                        var pventa = new PuntoVentaVarDto
+                        {
+                            Mes = data.Fecha.Mes,
+                            Anio = data.Fecha.Anho,
+                            IdPuntoVenta = id_ptventa.Id,
+                            IdVariable = id_variable.FirstOrDefault().Id
+                        };
+
+                        var valptexisten = await this.unitOfWork.PuntoVentaVarRepository.GetPuntoVentaVar(pventa);
+
+                        if(item.Presupuesto == null || item.Presupuesto == "")
+                        {
+                            item.Presupuesto = "0";
+                        }else if(item.ValReal == null || item.ValReal == "")
+                        {
+                            item.ValReal = "0";
+                        }else if(item.Cumplimiento == null || item.Cumplimiento == "")
+                        {
+                            item.Cumplimiento = "0";
+                        }
+
+                        if(valptexisten != null)
+                        {
+                            var exist = new PuntoVentaVar
+                            {
+                                Presupuesto = item.Presupuesto,
+                                ValReal = item.ValReal,
+                                Cumplimiento = item.Cumplimiento
+                            };
+                            await this.unitOfWork.PuntoVentaVarRepository.Update(exist);
+                            await this.unitOfWork.SaveChangesAsync();
+                        }
+                        else
+                        {
+                            var exist = new PuntoVentaVar
+                            {
+                                IdPuntoVenta = id_ptventa.Id,
+                                IdVariable = id_variable.FirstOrDefault().Id,
+                                Mes = data.Fecha.Mes,
+                                Anio = data.Fecha.Anho,
+                                Presupuesto = item.Presupuesto,
+                                ValReal = item.ValReal,
+                                Cumplimiento = item.Cumplimiento,
+                            };
+                            await this.unitOfWork.PuntoVentaVarRepository.Add(exist);
+                            await this.unitOfWork.SaveChangesAsync();
+                        }
+                        var PtoHistoria = new PuntoVentaHistoria
+                        {
+                            IdPuntoVenta= id_ptventa.Id,
+                            Mes = data.Fecha.Mes,
+                            Ano = data.Fecha.Anho
+                        };
+                        var validarPtVentaHistoria = await this.unitOfWork.PuntoVentaHistoria.GetPuntoVentaHistoriaById(PtoHistoria);
+
+                        if(validarPtVentaHistoria.Count() == 0)
+                        {
+                            var crearRegistro = new PuntoVentaHistoria
+                            {
+                                IdVariable = id_variable.FirstOrDefault().Id,
+                                IdPuntoVenta = id_ptventa.Id,
+                            };
+                        }
+                    }
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+                //--------------------------------------------------------------------------------------------------------------
                 string mes = "";
                 int mesNumerico;
 
@@ -374,7 +463,6 @@ namespace PuntosLeonisa.Seguridad.Application
                             await this.unitOfWork.SaveChangesAsync();
                             valuser = await this.usuarioExternalService.GetUserLiteByCedula(item.Cedula);
                         }
-
                     }
                 }
                 return new GenericResponse<bool>

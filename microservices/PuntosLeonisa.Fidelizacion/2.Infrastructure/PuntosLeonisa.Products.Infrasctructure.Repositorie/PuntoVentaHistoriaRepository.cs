@@ -15,6 +15,12 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
             _context = context;
         }
 
+        public async Task<IEnumerable<PuntoVentaHistoria>> GetPuntoVentaHistoriaById(PuntoVentaHistoria data)
+        {
+            var response = _context.Set<PuntoVentaHistoria>().Where(x => x.IdPuntoVenta == data.IdPuntoVenta && x.Mes == data.Mes && x.Ano == data.Ano);
+            return response;
+        }
+
         public async Task<IEnumerable<PuntoVentaHistoria>> GetPuntoVentaHistoriaByMesAndAnio(LiquidacionPuntos data)
         {
             var response = _context.Set<PuntoVentaHistoria>().Where(x => x.Mes == data.Fecha.Mes && x.Ano == data.Fecha.Anho);

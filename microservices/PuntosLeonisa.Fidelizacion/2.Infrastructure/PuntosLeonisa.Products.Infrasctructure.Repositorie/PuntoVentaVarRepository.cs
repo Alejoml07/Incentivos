@@ -22,6 +22,12 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
             this.context = context;
         }
 
+        public Task<PuntoVentaVar> GetPuntoVentaVar(PuntoVentaVarDto data)
+        {
+            var response = context.Set<PuntoVentaVar>().Where(x => x.IdPuntoVenta == data.IdPuntoVenta && x.IdVariable == data.IdVariable && x.Mes == data.Mes && x.Anio == data.Anio).FirstOrDefault();
+            return Task.FromResult(response);
+        }
+
         public Task<IEnumerable<PuntoVentaVar>> GetPuntoVentaVarByMesAndAnio(LiquidacionPuntos data)
         {
             var response = context.Set<PuntoVentaVar>().Where(x => x.Mes == data.Fecha.Mes && x.Anio == data.Fecha.Anho);

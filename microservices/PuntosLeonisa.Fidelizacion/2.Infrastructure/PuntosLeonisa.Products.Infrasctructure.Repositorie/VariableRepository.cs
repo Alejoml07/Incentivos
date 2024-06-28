@@ -19,5 +19,11 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
         {
             this.context = context;
         }
+
+        public Task<IEnumerable<Variable>> GetVariablesByCodigo(string codigo)
+        {
+            var response = context.Set<Variable>().Where(x => x.Codigo == codigo);
+            return Task.FromResult(response.AsEnumerable());
+        }
     }
 }

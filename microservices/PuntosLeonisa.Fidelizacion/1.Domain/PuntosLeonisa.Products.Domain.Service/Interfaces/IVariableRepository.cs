@@ -10,5 +10,6 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces
 {
     public interface IVariableRepository : IRepository<Variable>
     {
+        Task<IEnumerable<Variable>> GetVariablesByCodigo(string codigo);
     }
 }
