@@ -386,6 +386,7 @@ namespace PuntosLeonisa.Seguridad.Application
                                 Presupuesto = item.Presupuesto,
                                 ValReal = item.ValReal,
                                 Cumplimiento = item.Cumplimiento,
+                                CodigoPuntoVenta = item.CodigoPuntoVenta
                             };
                             await this.unitOfWork.PuntoVentaVarRepository.Add(exist);
                             await this.unitOfWork.SaveChangesAsync();
