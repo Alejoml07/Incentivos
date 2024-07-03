@@ -90,7 +90,6 @@ namespace Logistic.Infrastructure.Agents.AgentsImpl
                 var httpClient = _httpClientFactory.CreateClient();
                 httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
                 httpClient.DefaultRequestHeaders.Add("Authorization", _configuration["Authorization"]);
-                httpClient.DefaultRequestHeaders.Add("Authorization", _configuration["AuthorizationScanner"]);
                 var resultData = await CircuitBreakerPolicy.ExecuteAsync(() =>
                         TransientErrorRetryPolicy.ExecuteAsync(() =>
                         httpClient.PostAsync(requestUrl, contentHttp))

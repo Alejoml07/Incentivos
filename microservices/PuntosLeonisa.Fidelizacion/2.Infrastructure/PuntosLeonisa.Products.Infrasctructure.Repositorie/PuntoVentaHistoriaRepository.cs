@@ -1,4 +1,5 @@
-﻿using PuntosLeonisa.Fidelizacion.Domain.Model;
+﻿using Microsoft.EntityFrameworkCore;
+using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.FidelizacionPuntos;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.PuntoDeVenta;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
@@ -17,13 +18,16 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
 
         public async Task<IEnumerable<PuntoVentaHistoria>> GetPuntoVentaHistoriaById(PuntoVentaHistoria data)
         {
-            var response = _context.Set<PuntoVentaHistoria>().Where(x => x.IdPuntoVenta == data.IdPuntoVenta && x.Mes == data.Mes && x.Ano == data.Ano);
+            var response = await _context.Set<PuntoVentaHistoria>().Where(x => x.IdPuntoVenta == data.IdPuntoVenta && x.Mes == data.Mes && x.Ano == data.Ano).ToListAsync();
             return response;
         }
 
-        public async Task<IEnumerable<PuntoVentaHistoria>> GetPuntoVentaHistoriaByMesAndAnio(LiquidacionPuntos data)
+        public async Task<IEnumerable<PuntoVentaHistoria>> GetPuntoVentaHistoriaByMesAndAnio(PuntoVentaHistoria data)
         {
-            var response = _context.Set<PuntoVentaHistoria>().Where(x => x.Mes == data.Fecha.Mes && x.Ano == data.Fecha.Anho);
+            var response = await _context.Set<PuntoVentaHistoria>()
+                .Where(x => x.Mes == data.Mes && x.Ano == data.Ano)
+                .ToListAsync(); 
+
             return response;
         }
     }

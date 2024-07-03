@@ -573,6 +573,20 @@
       ],
       "Key": "getProductosRoute"
     },
+
+    {
+      "UpstreamPathTemplate": "/api/Productos/GetProductByName/{nombre}",
+      "DownstreamPathTemplate": "/api/Productos/GetProductByName/{nombre}",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "incentivosproductos.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "GetProductByNameRoute"
+    },
     {
       "UpstreamPathTemplate": "/api/Productos/Mk/GetByRef/{referencia}",
       "DownstreamPathTemplate": "/api/Productos/GetByRef/{referencia}",
@@ -1636,6 +1650,25 @@
       "Key": "GetGarantiasByUserRoute"
     },
     //Fin Garantias
+    //Liquidacion Puntos Mes
+
+    {
+      "DownstreamPathTemplate": "/api/fidelizacion/LiquidacionPuntosMes",
+      "UpstreamPathTemplate": "/api/fidelizacion/LiquidacionPuntosMes",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "LiquidacionPuntosMesRoute"
+    },
 
     {
       "DownstreamPathTemplate": "/api/fidelizacion/GetUsuarioInfoPuntosAll",

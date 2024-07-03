@@ -369,6 +369,12 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
         return pagedResult;
     }
 
+    public async Task<IEnumerable<Producto>> GetProductByName(string nombre)
+    {
+        var response = await _context.Set<Producto>().Where(p => p.Nombre == nombre).ToListAsync();
+        return response;
+    }
+
     #endregion
 
 

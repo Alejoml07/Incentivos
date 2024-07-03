@@ -14,6 +14,7 @@ namespace PuntosLeonisa.Products.Domain.Interfaces
         Task<IEnumerable<Producto>> GetByRef(string referencia);
         Task<IEnumerable<Producto>> GetProductByProveedor(string nit);
         Task<IEnumerable<Producto>> GetProductByProveedorOrAll(string nombre);
+        Task<IEnumerable<Producto>> GetProductByName(string nombre);
 
     }
 }

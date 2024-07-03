@@ -1,4 +1,5 @@
-﻿using PuntosLeonisa.Fidelizacion.Domain.Model;
+﻿using Microsoft.EntityFrameworkCore;
+using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Model.Carrito;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.FidelizacionPuntos;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.PuntoDeVenta;
@@ -24,14 +25,14 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
 
         public Task<PuntoVentaVar> GetPuntoVentaVar(PuntoVentaVarDto data)
         {
-            var response = context.Set<PuntoVentaVar>().Where(x => x.IdPuntoVenta == data.IdPuntoVenta && x.IdVariable == data.IdVariable && x.Mes == data.Mes && x.Anio == data.Anio).FirstOrDefault();
+            var response = context.Set<PuntoVentaVar>().Where(x => x.IdVariable == data.IdPuntoVenta && x.IdVariable == data.IdVariable && x.Mes == data.Mes && x.Anio == data.Anio).FirstOrDefault();
             return Task.FromResult(response);
         }
 
-        public Task<IEnumerable<PuntoVentaVar>> GetPuntoVentaVarByMesAndAnio(LiquidacionPuntos data)
+        public async Task<IEnumerable<PuntoVentaVar>> GetPuntoVentaVarByMesAndAnio(PuntoVentaVar data)
         {
-            var response = context.Set<PuntoVentaVar>().Where(x => x.Mes == data.Fecha.Mes && x.Anio == data.Fecha.Anho);
-            return Task.FromResult(response.AsEnumerable());
+            var response = await context.Set<PuntoVentaVar>().Where(x => x.Mes == data.Mes && x.Anio == data.Anio).ToListAsync();
+            return response;
         }
     }
 }

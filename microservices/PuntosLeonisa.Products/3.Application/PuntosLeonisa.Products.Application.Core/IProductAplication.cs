@@ -24,5 +24,6 @@ public interface IProductApplication : IApplicationCore<ProductoDto>
     Task<GenericResponse<Banner>> GetBannerById(Banner data);
     Task<GenericResponse<IEnumerable<ProductoDto>>> GetProductByProveedorOrAll(string proveedor);
     Task<GenericResponse<PagedResult<ProductoDto>>> GetProductsBySearch(SearchDto data);
+    Task<GenericResponse<IEnumerable<ProductoDto>>> GetProductByName(string nombre);
 }
 

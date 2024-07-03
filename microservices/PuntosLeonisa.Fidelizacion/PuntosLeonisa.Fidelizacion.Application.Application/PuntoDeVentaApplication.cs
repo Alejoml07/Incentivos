@@ -12,6 +12,7 @@ using PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces;
 using PuntosLeonisa.Products.Domain.Model;
 using PuntosLeonisa.Seguridad.Application.Core;
 using PuntosLeonisa.Seguridad.Domain.Service.Interfaces;
+using System.Text.RegularExpressions;
 using System.Windows.Markup;
 
 namespace PuntosLeonisa.Seguridad.Application
@@ -241,8 +242,19 @@ namespace PuntosLeonisa.Seguridad.Application
         {
             try
             {
-                var ToDeleteHistoria = await this.unitOfWork.PuntoVentaHistoria.GetPuntoVentaHistoriaByMesAndAnio(data);
-                var ToDeleteVar = await this.unitOfWork.PuntoVentaVarRepository.GetPuntoVentaVarByMesAndAnio(data);
+                var historia = new PuntoVentaHistoria
+                {
+                    Mes = data.Fecha.Mes,
+                    Ano = data.Fecha.Anho
+                };
+
+                var ventaVar = new PuntoVentaVar
+                {
+                    Mes = data.Fecha.Mes,
+                    Anio = data.Fecha.Anho
+                };
+                var ToDeleteHistoria = await this.unitOfWork.PuntoVentaHistoria.GetPuntoVentaHistoriaByMesAndAnio(historia);
+                var ToDeleteVar = await this.unitOfWork.PuntoVentaVarRepository.GetPuntoVentaVarByMesAndAnio(ventaVar);
                 if (ToDeleteHistoria != null)
                 {
                     foreach (var item in ToDeleteHistoria)
@@ -308,16 +320,20 @@ namespace PuntosLeonisa.Seguridad.Application
         {
             try
             {
-                EliminarExcels(data);
+                await EliminarExcels(data);
+                //foreach (var item in data.Registro)
+                //{
+                //    item.Mes = data.Fecha.Mes;
+                //    item.Anio = data.Fecha.Anho;
+                //    item.Id = Guid.NewGuid().ToString();
+                //    await AddExcels(item);
+                //}
                 foreach (var item in data.Registro)
                 {
-                    AddExcels(item);
-                }
-                foreach (var item in data.Registro)
-                {
-                    if(!string.IsNullOrEmpty(item.IdPuntoVenta) && !string.IsNullOrEmpty(item.IdVariable))
+                    if (!string.IsNullOrEmpty(item.IdPuntoVenta) && !string.IsNullOrEmpty(item.IdVariable))
                     {
-                        var idPuntoVenta = int.Parse(item.IdPuntoVenta);
+                        var match = Regex.Match(item.IdPuntoVenta, @"\d+");                        
+                        var idPuntoVenta = int.Parse(match.Value);                                                   
                         var id_ptventa = await this.unitOfWork.PuntoDeVentaRepository.GetPuntoDeVentaByCodigo(idPuntoVenta);
                         var id_variable = await this.unitOfWork.VariableRepository.GetVariablesByCodigo(item.IdVariable);
 
@@ -326,23 +342,25 @@ namespace PuntosLeonisa.Seguridad.Application
                             Mes = data.Fecha.Mes,
                             Anio = data.Fecha.Anho,
                             IdPuntoVenta = id_ptventa.Id,
-                            IdVariable = id_variable.FirstOrDefault().Id
+                            IdVariable = id_variable.Id
                         };
 
                         var valptexisten = await this.unitOfWork.PuntoVentaVarRepository.GetPuntoVentaVar(pventa);
 
-                        if(item.Presupuesto == null || item.Presupuesto == "")
+                        if (item.Presupuesto == null || item.Presupuesto == "")
                         {
                             item.Presupuesto = "0";
-                        }else if(item.ValReal == null || item.ValReal == "")
+                        }
+                        else if (item.ValReal == null || item.ValReal == "")
                         {
                             item.ValReal = "0";
-                        }else if(item.Cumplimiento == null || item.Cumplimiento == "")
+                        }
+                        else if (item.Cumplimiento == null || item.Cumplimiento == "")
                         {
                             item.Cumplimiento = "0";
                         }
 
-                        if(valptexisten != null)
+                        if (valptexisten != null)
                         {
                             var exist = new PuntoVentaVar
                             {
@@ -357,8 +375,9 @@ namespace PuntosLeonisa.Seguridad.Application
                         {
                             var exist = new PuntoVentaVar
                             {
+                                Id = Guid.NewGuid().ToString(),
                                 IdPuntoVenta = id_ptventa.Id,
-                                IdVariable = id_variable.FirstOrDefault().Id,
+                                IdVariable = id_variable.Id,
                                 Mes = data.Fecha.Mes,
                                 Anio = data.Fecha.Anho,
                                 Presupuesto = item.Presupuesto,
@@ -370,35 +389,55 @@ namespace PuntosLeonisa.Seguridad.Application
                         }
                         var PtoHistoria = new PuntoVentaHistoria
                         {
-                            IdPuntoVenta= id_ptventa.Id,
+                            IdPuntoVenta = id_ptventa.Id,
                             Mes = data.Fecha.Mes,
                             Ano = data.Fecha.Anho
                         };
                         var validarPtVentaHistoria = await this.unitOfWork.PuntoVentaHistoria.GetPuntoVentaHistoriaById(PtoHistoria);
 
-                        if(validarPtVentaHistoria.Count() == 0)
+                        if (validarPtVentaHistoria.Count() == 0)
                         {
                             var crearRegistro = new PuntoVentaHistoria
                             {
-                                IdVariable = id_variable.FirstOrDefault().Id,
+                                Id = Guid.NewGuid().ToString(),
+                                IdVariable = id_variable.Id,
                                 IdPuntoVenta = id_ptventa.Id,
+                                IdPresupuesto = 600,
+                                Mes = data.Fecha.Mes,
+                                Ano = data.Fecha.Anho,
                             };
+                            await this.unitOfWork.PuntoVentaHistoria.Add(crearRegistro);
+                            await this.unitOfWork.SaveChangesAsync();
+                        }
+                        else
+                        {
+                            var variablesP = validarPtVentaHistoria.FirstOrDefault().IdVariable;
+                            var arrayVariables = variablesP.Split("|");
+
+                            var arrayVariablesFinal = new List<string>();
+                            foreach (var itemV in arrayVariables)
+                            {
+                                if (itemV != null)
+                                {
+                                    arrayVariablesFinal.Add(itemV);
+                                }
+                            }
+
+                            arrayVariablesFinal.Add(id_variable.Id);
+                            var variablesString = string.Join("|", arrayVariablesFinal);
+                            var updateRegistro = new PuntoVentaHistoria
+                            {
+                                Id = validarPtVentaHistoria.FirstOrDefault().Id,
+                                Mes = data.Fecha.Mes,
+                                Ano = data.Fecha.Anho,
+                                IdVariable = variablesString
+                            };
+                            await this.unitOfWork.PuntoVentaHistoria.Update(updateRegistro);
+
                         }
                     }
                 }
 
-
-
-
-
-
-
-
-
-
-
-
-                //--------------------------------------------------------------------------------------------------------------
                 string mes = "";
                 int mesNumerico;
 
@@ -463,6 +502,8 @@ namespace PuntosLeonisa.Seguridad.Application
                             await this.unitOfWork.SaveChangesAsync();
                             valuser = await this.usuarioExternalService.GetUserLiteByCedula(item.Cedula);
                         }
+                        //TODO: FORMULA DE PUNTOS
+
                     }
                 }
                 return new GenericResponse<bool>

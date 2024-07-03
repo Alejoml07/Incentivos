@@ -635,4 +635,22 @@ public class ProductosApplication : IProductApplication
         }
         
     }
+
+    public async Task<GenericResponse<IEnumerable<ProductoDto>>> GetProductByName(string nombre)
+    {
+        try
+        {
+            var producto = await this.productoRepository.GetProductByName(nombre);
+            var response = this.mapper.Map<IEnumerable<ProductoDto>>(producto);
+            return new GenericResponse<IEnumerable<ProductoDto>>()
+            {
+                Result = response
+            };
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
 }
