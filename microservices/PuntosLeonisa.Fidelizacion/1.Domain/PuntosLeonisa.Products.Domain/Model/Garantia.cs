@@ -56,7 +56,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
             sb.Append("<div style=\"text-align: center; padding: 20px;\">");
             if (this.Estado == "Rechazado")
             {
-                sb.Append("<p>Queremos informarte que el estado de tu garantía ha cambiado a: " + this.Estado + ", Razón: " + this.ObservacionEstado + "</p>");
+                sb.Append("<p>Queremos informarte que el estado de tu garantía ha cambiado.  Razón: " + this.ObservacionEstado + "</p>");
                 if (this.ObservacionEstado == "No se pudo contactar")
                 {
                     sb.Append("<p>Pronto nos pondremos en contacto contigo. Debes estar pendiente de tu teléfono y correo electrónico.</p>");
@@ -67,7 +67,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
                 }
 
                 sb.Append("<table class=\"tabla-estilizada\">");
-                sb.Append("<tr><th class=\"encabezado-tabla\">Ticket de reclamacion</th><th class=\"encabezado-tabla\">Fecha reclamacion</th><th class=\"encabezado-tabla\">Nro de pedido</th><th class=\"encabezado-tabla\">Proveedor</th><th class=\"encabezado-tabla\">Producto</th><th class=\"encabezado-tabla\">Observacion Proveedor</th></tr>");
+                sb.Append("<tr><th class=\"encabezado-tabla\">Ticket de reclamación</th><th class=\"encabezado-tabla\">Fecha reclamación</th><th class=\"encabezado-tabla\">Nro de pedido</th><th class=\"encabezado-tabla\">Proveedor</th><th class=\"encabezado-tabla\">Producto</th><th class=\"encabezado-tabla\">Observación proveedor</th></tr>");
                 sb.AppendFormat("<tr><td class=\"celda-tabla\">{0}</td><td class=\"celda-tabla\">{1}</td><td class=\"celda-tabla\">{2}</td><td class=\"celda-tabla\">{3}</td><td class=\"celda-tabla\">{4}</td><td class=\"celda-tabla\">{5}</td></tr>",
                             this.NroTicket, this.FechaReclamacion, this.NroPedido, this.Proveedor, this.Producto, this.ObservacionEstado);
 
@@ -78,7 +78,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
                 sb.Append("<p>Queremos informarte que el estado de tu garantía ha cambiado a: " + this.Estado + "</p>");
                 sb.Append("<p>estamos atendiendo tu caso.</p>");
                 sb.Append("<table class=\"tabla-estilizada\">");
-                sb.Append("<tr><th class=\"encabezado-tabla\">Ticket de reclamacion</th><th class=\"encabezado-tabla\">Fecha reclamacion</th><th class=\"encabezado-tabla\">Nro de pedido</th><th class=\"encabezado-tabla\">Proveedor</th><th class=\"encabezado-tabla\">Producto</th><th class=\"encabezado-tabla\">Observacion Proveedor</th></tr>");
+                sb.Append("<tr><th class=\"encabezado-tabla\">Ticket de reclamación</th><th class=\"encabezado-tabla\">Fecha reclamación</th><th class=\"encabezado-tabla\">Nro de pedido</th><th class=\"encabezado-tabla\">Proveedor</th><th class=\"encabezado-tabla\">Producto</th><th class=\"encabezado-tabla\">Observación proveedor</th></tr>");
                 sb.AppendFormat("<tr><td class=\"celda-tabla\">{0}</td><td class=\"celda-tabla\">{1}</td><td class=\"celda-tabla\">{2}</td><td class=\"celda-tabla\">{3}</td><td class=\"celda-tabla\">{4}</td><td class=\"celda-tabla\">{5}</td></tr>",
                             this.NroTicket, this.FechaReclamacion, this.NroPedido, this.Proveedor, this.Producto, this.ObservacionEstado);
 
@@ -91,7 +91,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
                 sb.Append("<p>Número de guía: " + this.NroGuia + "</p>");
                 sb.Append("<p>Transportadora: " + this.Transportadora + "</p>");               
                 sb.Append("<table class=\"tabla-estilizada\">");
-                sb.Append("<tr><th class=\"encabezado-tabla\">Ticket de reclamacion</th><th class=\"encabezado-tabla\">Fecha reclamacion</th><th class=\"encabezado-tabla\">Nro de pedido</th><th class=\"encabezado-tabla\">Proveedor</th><th class=\"encabezado-tabla\">Producto</th><th class=\"encabezado-tabla\">Observacion Proveedor</th></tr>");
+                sb.Append("<tr><th class=\"encabezado-tabla\">Ticket de reclamación</th><th class=\"encabezado-tabla\">Fecha reclamación</th><th class=\"encabezado-tabla\">Nro de pedido</th><th class=\"encabezado-tabla\">Proveedor</th><th class=\"encabezado-tabla\">Producto</th><th class=\"encabezado-tabla\">Observación proveedor</th></tr>");
                 sb.AppendFormat("<tr><td class=\"celda-tabla\">{0}</td><td class=\"celda-tabla\">{1}</td><td class=\"celda-tabla\">{2}</td><td class=\"celda-tabla\">{3}</td><td class=\"celda-tabla\">{4}</td><td class=\"celda-tabla\">{5}</td></tr>",
                             this.NroTicket, this.FechaReclamacion, this.NroPedido, this.Proveedor, this.Producto, this.ObservacionEstado);
 
@@ -122,7 +122,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
             sb.Append("<div style=\"text-align: center; padding: 20px;\">");
             sb.Append("<p>Tu reclamación ha sido solicitada con éxito:</p>");
             sb.Append("<table class=\"tabla-estilizada\">");
-            sb.Append("<tr><th class=\"encabezado-tabla\">Ticket de reclamación</th><th class=\"encabezado-tabla\">Nro Pedido</th><th class=\"encabezado-tabla\">Fecha reclamación</th><th class=\"encabezado-tabla\">Proveedor</th><th class=\"encabezado-tabla\">Producto</th><th class=\"encabezado-tabla\">Observación Usuario</th></tr>");
+            sb.Append("<tr><th class=\"encabezado-tabla\">Ticket de reclamación</th><th class=\"encabezado-tabla\">Nro pedido</th><th class=\"encabezado-tabla\">Fecha reclamación</th><th class=\"encabezado-tabla\">Proveedor</th><th class=\"encabezado-tabla\">Producto</th><th class=\"encabezado-tabla\">Observación usuario</th></tr>");
             sb.AppendFormat("<tr><td class=\"celda-tabla\">{0}</td><td class=\"celda-tabla\">{1}</td><td class=\"celda-tabla\">{2}</td><td class=\"celda-tabla\">{3}</td><td class=\"celda-tabla\">{4}</td><td class=\"celda-tabla\">{5}</td></tr>",
                         this.NroTicket, this.NroPedido, this.FechaReclamacion, this.Proveedor, this.Producto, this.Observacion);
 

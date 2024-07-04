@@ -15,7 +15,7 @@ namespace PuntosLeonisa.Seguridad.Infrasctructure.Repositorie
             _context = context;
         }
 
-        public Task<PuntoDeVenta> GetPuntoDeVentaByCodigo(int codigo)
+        public Task<PuntoDeVenta> GetPuntoDeVentaByCodigo(string codigo)
         {
             var response = _context.Set<PuntoDeVenta>().Where(x => x.Codigo == codigo).FirstOrDefault();
             return Task.FromResult(response);

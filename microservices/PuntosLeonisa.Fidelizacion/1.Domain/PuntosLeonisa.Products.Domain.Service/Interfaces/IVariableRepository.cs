@@ -11,5 +11,6 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces
     public interface IVariableRepository : IRepository<Variable>
     {
         Task<Variable> GetVariablesByCodigo(string codigo);
+        Task<Variable> GetVariablesParaBase(PuntoVentaVar data);
     }
 }

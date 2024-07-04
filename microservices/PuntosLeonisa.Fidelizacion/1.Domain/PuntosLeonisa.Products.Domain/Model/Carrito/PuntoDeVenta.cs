@@ -6,7 +6,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model.Carrito
     {
         public string? Id { get; set; }
         public string? Nombre { get; set; }
-        public int? Codigo { get; set; }
+        public string? Codigo { get; set; }
         public string? Ciudad { get; set; }
         public string? Superficie { get; set; }
         public string? Agencia { get; set; }

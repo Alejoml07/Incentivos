@@ -1,4 +1,5 @@
-﻿using PuntosLeonisa.Fidelizacion.Domain.Model;
+﻿using Microsoft.EntityFrameworkCore;
+using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Variables;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
 using PuntosLeonisa.Infrasctructure.Core.Repository;
@@ -23,6 +24,12 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
         public Task<Variable> GetVariablesByCodigo(string codigo)
         {
             var response = context.Set<Variable>().Where(x => x.Codigo == codigo).FirstOrDefault();
+            return Task.FromResult(response);
+        }
+
+        public Task<Variable> GetVariablesParaBase(PuntoVentaVar data)
+        {
+            var response = context.Set<Variable>().Where(x => x.Id == data.IdVariable && x.Status == "1" && x.Eliminado == "0").FirstOrDefault();
             return Task.FromResult(response);
         }
     }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation.Validators;
 using Polly.Caching;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Model.Carrito;
@@ -154,7 +155,8 @@ namespace PuntosLeonisa.Seguridad.Application
 
                 foreach (var item in value)
                 {
-                    await this.puntoDeVentaRepository.Add(mapper.Map<PuntoDeVenta>(item));
+                    await this.unitOfWork.PuntoDeVentaRepository.Add(mapper.Map<PuntoDeVenta>(item));
+                    await this.unitOfWork.SaveChangesAsync();
 
                 }
                 return new GenericResponse<PuntoDeVentaDto[]>
@@ -332,9 +334,9 @@ namespace PuntosLeonisa.Seguridad.Application
                 {
                     if (!string.IsNullOrEmpty(item.IdPuntoVenta) && !string.IsNullOrEmpty(item.IdVariable))
                     {
-                        var match = Regex.Match(item.IdPuntoVenta, @"\d+");                        
-                        var idPuntoVenta = int.Parse(match.Value);                                                   
-                        var id_ptventa = await this.unitOfWork.PuntoDeVentaRepository.GetPuntoDeVentaByCodigo(idPuntoVenta);
+                        //var match = Regex.Match(item.IdPuntoVenta, @"\d+");                        
+                        //var idPuntoVenta = int.Parse(match.Value);                                                   
+                        var id_ptventa = await this.unitOfWork.PuntoDeVentaRepository.GetPuntoDeVentaByCodigo(item.IdPuntoVenta);
                         var id_variable = await this.unitOfWork.VariableRepository.GetVariablesByCodigo(item.IdVariable);
 
                         var pventa = new PuntoVentaVarDto
@@ -355,9 +357,9 @@ namespace PuntosLeonisa.Seguridad.Application
                         {
                             item.ValReal = "0";
                         }
-                        else if (item.Cumplimiento == null || item.Cumplimiento == "")
+                        else if (item.Cumplimiento == null)
                         {
-                            item.Cumplimiento = "0";
+                            item.Cumplimiento = 0;
                         }
 
                         if (valptexisten != null)
@@ -377,6 +379,7 @@ namespace PuntosLeonisa.Seguridad.Application
                             {
                                 Id = Guid.NewGuid().ToString(),
                                 IdPuntoVenta = id_ptventa.Id,
+                                CodigoPuntoVenta = id_ptventa.Codigo.ToString(),
                                 IdVariable = id_variable.Id,
                                 Mes = data.Fecha.Mes,
                                 Anio = data.Fecha.Anho,
@@ -425,14 +428,12 @@ namespace PuntosLeonisa.Seguridad.Application
 
                             arrayVariablesFinal.Add(id_variable.Id);
                             var variablesString = string.Join("|", arrayVariablesFinal);
-                            var updateRegistro = new PuntoVentaHistoria
-                            {
-                                Id = validarPtVentaHistoria.FirstOrDefault().Id,
-                                Mes = data.Fecha.Mes,
-                                Ano = data.Fecha.Anho,
-                                IdVariable = variablesString
-                            };
+                            var updateRegistro = await this.unitOfWork.PuntoVentaHistoria.GetById(validarPtVentaHistoria.FirstOrDefault().Id);
+                            updateRegistro.IdVariable = variablesString;
+                            updateRegistro.Mes = data.Fecha.Mes;
+                            updateRegistro.Ano = data.Fecha.Anho;
                             await this.unitOfWork.PuntoVentaHistoria.Update(updateRegistro);
+                            await this.unitOfWork.SaveChangesAsync();
 
                         }
                     }
@@ -500,11 +501,72 @@ namespace PuntosLeonisa.Seguridad.Application
                             await this.usuarioExternalService.AddUsuarioLiquidacion(NuevoUser);
                             await this.unitOfWork.UsuarioInfoPuntosRepository.Add(NuevoInfo);
                             await this.unitOfWork.SaveChangesAsync();
+
                             valuser = await this.usuarioExternalService.GetUserLiteByCedula(item.Cedula);
                         }
                         //TODO: FORMULA DE PUNTOS
+                        var vari = new PuntoVentaVar
+                        {
+                            Mes = data.Fecha.Mes,
+                            Anio = data.Fecha.Anho,
+                            CodigoPuntoVenta = item.CodigoPuntoVenta
+                        };
+                        var variables = await this.unitOfWork.PuntoVentaVarRepository.GetPuntosByCodigoUsuario(vari);
+                        if (variables.Count() > 0)
+                        {
+                            foreach (var item2 in variables)
+                            {
+                                string porcentajeString = item.Porcentaje;
+                                float porcentajeFloat = float.Parse(porcentajeString);
+                                float porclaborado = porcentajeFloat / 100;                               
+                                var cumplimiento = item2.Cumplimiento / 100;
 
+                                var bases = await unitOfWork.VariableRepository.GetVariablesParaBase(item2);
+                                
+                                if(item2.IdVariable == "22" && item2.Cumplimiento >= 100.5)
+                                {
+                                    if(item2.Cumplimiento > 111)
+                                    {
+                                        cumplimiento = 111 / 100;
+                                    }
+                                    else
+                                    {
+                                        cumplimiento = item2.Cumplimiento / 100;
+                                    }
+                                    var one_port = 1 / 100;
+
+                                    var ptsobt = porclaborado * (cumplimiento - one_port) * bases.Base;
+                                    ptsobt = Math.Floor((double)ptsobt);
+                                }
+                                else
+                                {
+                                    var ptsobt = 0;
+                                }
+
+                                if (item2.IdVariable == "22")
+                                {
+                                    var consp = new PuntoVentaVar
+                                    {
+                                        IdPuntoVenta = item2.IdPuntoVenta,
+                                        IdVariable = "22",
+                                    };
+                                    var resultadoConsultaPresupuesto = await unitOfWork.PuntoVentaVarRepository.GetConsultaPresupuesto(consp);
+
+                                }
+                                else
+                                {
+                                    var resultadoConsultaPresupuesto = new PuntoVentaVar
+                                    {
+                                        IdPuntoVenta = "",
+                                        IdVariable = "",
+                                    };
+                                }
+                                
+                                
+                            }
+                        }
                     }
+
                 }
                 return new GenericResponse<bool>
                 {

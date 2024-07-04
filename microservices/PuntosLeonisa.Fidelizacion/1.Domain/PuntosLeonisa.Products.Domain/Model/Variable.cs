@@ -10,7 +10,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
     {
         public string? Id { get; set; }
         public string? Nombre { get; set; }
-        public string? Base { get; set; }
+        public double? Base { get; set; }
         public string? Status { get; set; }
         public DateTime? FechaCreacion { get; set; }
         public DateTime? FechaActualizacion { get; set; }
