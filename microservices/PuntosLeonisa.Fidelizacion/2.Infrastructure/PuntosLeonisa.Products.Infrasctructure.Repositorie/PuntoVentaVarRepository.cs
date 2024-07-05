@@ -17,7 +17,7 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
 
         public Task<PuntoVentaVar> GetConsultaPresupuesto(PuntoVentaVar data)
         {
-            var response = context.Set<PuntoVentaVar>().Where(x => x.IdVariable == data.IdVariable && x.IdPuntoVenta == data.IdPuntoVenta).FirstOrDefault();
+            var response = context.Set<PuntoVentaVar>().Where(x => x.IdVariable == data.IdVariable && x.IdPuntoVenta == data.IdPuntoVenta && x.Mes == data.Mes && x.Anio == data.Anio).FirstOrDefault();
             return Task.FromResult(response);
         }
 
