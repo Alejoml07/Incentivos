@@ -332,7 +332,7 @@ namespace PuntosLeonisa.Seguridad.Application
                 //}
                 foreach (var item in data.Registro)
                 {
-                    if (!string.IsNullOrEmpty(item.IdPuntoVenta) && !string.IsNullOrEmpty(item.IdVariable))
+                    if (item.IdPuntoVenta != null && !string.IsNullOrEmpty(item.IdVariable))
                     {
                         //var match = Regex.Match(item.IdPuntoVenta, @"\d+");                        
                         //var idPuntoVenta = int.Parse(match.Value);                                                   
