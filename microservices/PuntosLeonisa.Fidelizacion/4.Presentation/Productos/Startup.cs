@@ -49,6 +49,7 @@ namespace Productos
             builder.Services.AddScoped<IAsignacionRepository, AsignacionRepository>();
             builder.Services.AddScoped<IUsuarioScannerRepository, UsuarioScannerRepository>();
             builder.Services.AddScoped<IGarantiaRepository, GarantiaRepository>();
+            builder.Services.AddScoped<ISeguimientoLiquidacionRepository, SeguimientoLiquidacionRepository>();
 
 
             //Add ServiceProxy
