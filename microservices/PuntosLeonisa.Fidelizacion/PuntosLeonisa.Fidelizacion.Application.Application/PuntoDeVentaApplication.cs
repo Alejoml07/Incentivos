@@ -386,7 +386,6 @@ namespace PuntosLeonisa.Seguridad.Application
                                 Presupuesto = item.Presupuesto,
                                 ValReal = item.ValReal,
                                 Cumplimiento = item.Cumplimiento,
-                                CodigoPuntoVenta = item.CodigoPuntoVenta
                             };
                             await this.unitOfWork.PuntoVentaVarRepository.Add(exist);
                             await this.unitOfWork.SaveChangesAsync();
@@ -481,14 +480,14 @@ namespace PuntosLeonisa.Seguridad.Application
                     {
                         cont++;
                         var valuser = await this.usuarioExternalService.GetUserLiteByCedula(item.Cedula);
-                        if(valuser == null)
+                        if (valuser == null)
                         {
                             var NuevoUser = new Usuario()
                             {
                                 Cedula = item.Cedula,
                                 Nombres = "pendiente",
                                 Apellidos = "pendiente",
-                                Email = "pendiente",                                
+                                Email = "pendiente",
                             };
                             var NuevoInfo = new UsuarioInfoPuntos()
                             {
@@ -519,14 +518,14 @@ namespace PuntosLeonisa.Seguridad.Application
                             {
                                 string porcentajeString = item.Porcentaje;
                                 float porcentajeFloat = float.Parse(porcentajeString);
-                                float porclaborado = porcentajeFloat / 100;                               
+                                float porclaborado = porcentajeFloat / 100;
                                 var cumplimiento = item2.Cumplimiento / 100;
 
                                 var bases = await unitOfWork.VariableRepository.GetVariablesParaBase(item2);
-                                
-                                if(item2.IdVariable == "22" && item2.Cumplimiento >= 100.5)
+
+                                if (item2.IdVariable == "22" && item2.Cumplimiento >= 100.5)
                                 {
-                                    if(item2.Cumplimiento > 111)
+                                    if (item2.Cumplimiento > 111)
                                     {
                                         cumplimiento = 111 / 100;
                                     }
@@ -562,8 +561,8 @@ namespace PuntosLeonisa.Seguridad.Application
                                         IdVariable = "",
                                     };
                                 }
-                                
-                                
+
+
                             }
                         }
                     }
