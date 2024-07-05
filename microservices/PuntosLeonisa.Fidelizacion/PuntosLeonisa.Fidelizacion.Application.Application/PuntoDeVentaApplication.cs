@@ -398,7 +398,6 @@ namespace PuntosLeonisa.Seguridad.Application
                         }
                     }
                 }
-
                 string mes = "";
                 int mesNumerico;
 
@@ -414,7 +413,6 @@ namespace PuntosLeonisa.Seguridad.Application
                         mes = data.Fecha.Mes;
                     }
                 }
-
 
                 var user = new ValidarUsuarioDto
                 {
@@ -543,6 +541,19 @@ namespace PuntosLeonisa.Seguridad.Application
                                     puntosUsuario.PuntosDisponibles = puntosUsuario.PuntosDisponibles + (int)ptsobt;
                                     await this.unitOfWork.UsuarioInfoPuntosRepository.Update(puntosUsuario);                                    
                                     await this.unitOfWork.SaveChangesAsync();
+                                    var seguimiento = new SeguimientoLiquidacion
+                                    {
+                                        Id = Guid.NewGuid().ToString(),
+                                        Cedula = valuser.Result.Cedula,
+                                        Mes = data.Fecha.Mes,
+                                        Anio = data.Fecha.Anho,
+                                        PtoVenta = item2.CodigoPuntoVenta,
+                                        Porcentaje = item.Porcentaje,
+                                        Puntos = (int)ptsobt,
+                                        IdVariable = item2.IdVariable
+                                    };
+                                    await AddSeguimientoLiquidacion(seguimiento);
+                                    await this.unitOfWork.SaveChangesAsync();
                                     var extracto = new Extractos
                                     {
                                         Id = Guid.NewGuid().ToString(),
@@ -580,6 +591,21 @@ namespace PuntosLeonisa.Seguridad.Application
         public Task<GenericResponse<PuntoDeVentaDto>> Update(PuntoDeVentaDto value)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<bool> AddSeguimientoLiquidacion(SeguimientoLiquidacion data)
+        {
+            try
+            {
+                await this.unitOfWork.SeguimientoLiquidacionRepository.Add(data);
+                await this.unitOfWork.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }
