@@ -535,7 +535,7 @@ namespace PuntosLeonisa.Seguridad.Application
                                     }
                                 }
                                 var puntosUsuario = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByCedula(valuser.Result.Cedula);
-                                if (puntosUsuario != null)
+                                if (puntosUsuario != null && ptsobt != 0 && ptsobt != null)
                                 {                                    
                                     puntosUsuario.PuntosAcumulados = puntosUsuario.PuntosAcumulados + (int)ptsobt;
                                     puntosUsuario.PuntosDisponibles = puntosUsuario.PuntosDisponibles + (int)ptsobt;

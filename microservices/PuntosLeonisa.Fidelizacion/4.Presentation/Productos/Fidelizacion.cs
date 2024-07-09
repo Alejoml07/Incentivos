@@ -1069,6 +1069,29 @@ namespace Usuarioos
             }
         }
 
+        [FunctionName("AddVariables")]
+        [OpenApiOperation(operationId: "AddVariables", tags: new[] { "AddVariables" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Guardar la variable")]
+        public async Task<IActionResult> AddVariables(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+            ILogger log)
+        {
+
+            try
+            {
+                log.LogInformation($"Puntos:GetPuntos Inicia obtener todos los Puntos. Fecha:{DateTime.UtcNow}");
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<Variable[]>(requestBody);
+                var variable = await this.puntosApplication.AddVariables(data);
+                return new OkObjectResult(variable);
+
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
         [FunctionName("GetVariableById")]
         [OpenApiOperation(operationId: "GetVariableById", tags: new[] { "GetVariableById" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con las variables")]

@@ -2037,14 +2037,13 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
     }
 
-    public async Task<GenericResponse<bool>> AddVariables(VariableDto[] value)
+    public async Task<GenericResponse<bool>> AddVariables(Variable[] value)
     {
         try
         {
             foreach (var item in value)
             {
-                var variable = mapper.Map<Variable>(value);
-                await this.unitOfWork.VariableRepository.Add(variable);
+                await this.unitOfWork.VariableRepository.Add(item);
                 await this.unitOfWork.SaveChangesAsync();
             }
             return new GenericResponse<bool>
