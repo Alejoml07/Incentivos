@@ -31,7 +31,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
         public string? Transportadora { get; set; }
         public string? CorreoProveedor { get; set; }
         public string? TipoReclamacion { get; set; }
-        public DateTime? FechaPedido { get; set; }
+        public DateTime? FechaRedencion { get; set; }
         public string? EAN { get; set; }
 
         public string GenerarHTMLGarantia()

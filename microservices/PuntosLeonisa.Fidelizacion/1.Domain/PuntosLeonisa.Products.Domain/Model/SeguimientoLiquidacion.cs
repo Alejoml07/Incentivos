@@ -13,7 +13,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
         public string? Mes { get; set; }
         public string? Anio { get; set; }
         public string? PtoVenta { get; set; }
-        public string? Porcentaje { get; set; }
+        public double? Cumplimiento { get; set; }
         public double? Puntos { get; set; }
         public string? IdVariable { get; set; }
     }

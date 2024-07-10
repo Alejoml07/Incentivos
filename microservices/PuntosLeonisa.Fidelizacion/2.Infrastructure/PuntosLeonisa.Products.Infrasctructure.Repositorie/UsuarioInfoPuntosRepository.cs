@@ -16,12 +16,11 @@ public class UsuarioInfoPuntosRepository : Repository<UsuarioInfoPuntos>, IUsuar
 
     public FidelizacionContext Context => context;
 
-    public Task<UsuarioInfoPuntos> GetUsuarioByCedula(string? cedula)
+    public async Task<UsuarioInfoPuntos> GetUsuarioByCedula(string? cedula)
     {
-        var response = context.Set<UsuarioInfoPuntos>()
-                              .AsNoTracking()
-                              .FirstOrDefault(x => x.Cedula == cedula);
-        return Task.FromResult(response);
+        //traeme el primer registro que coincida con la cedula
+        var response = await context.Set<UsuarioInfoPuntos>().Where(x => x.Cedula == cedula).FirstOrDefaultAsync();
+        return response;
     }
 
     public async Task<UsuarioInfoPuntos> GetUsuarioByEmail(string? email)

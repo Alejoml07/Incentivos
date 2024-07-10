@@ -845,10 +845,10 @@ public class FidelizacionApplication : IFidelizacionApplication
         // Diccionario de departamentos y sus códigos
         Dictionary<string, string> centroCosto = new Dictionary<string, string>
     {
-        { "BARRANQUILLA", "060387" },
-        { "BOGOTA", "030545" },
-        { "CALI", "041705" },
-        { "MEDELLIN", "022754" },
+        { "BARRANQUILLA", "060514" },
+        { "BOGOTA", "030877" },
+        { "CALI", "041845" },
+        { "MEDELLIN", "023964" },
 
     };
 
@@ -943,7 +943,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             //    }
             //    else
             //    {
-            //        ordenop.macAddress = "";
+            //        ordenop.macAddress = "012138";
             //    }
             //    ordenop.memberId = 0;
             //    ordenop.message = "";
@@ -2564,7 +2564,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                 garantia.ObservacionProveedor = data.ObservacionProveedor;
                 garantia.NroGuia = data.NroGuia;
                 garantia.Transportadora = data.Transportadora;
-                garantia.FechaPedido = data.FechaPedido;
+                garantia.FechaRedencion = data.FechaRedencion;
                 garantia.TipoReclamacion = data.TipoReclamacion;
                 await this.unitOfWork.GarantiaRepository.Update(garantia);
                 await this.unitOfWork.SaveChangesAsync();
@@ -2599,6 +2599,58 @@ public class FidelizacionApplication : IFidelizacionApplication
             throw;
         }
     }
-        
-        
+
+    public async Task<GenericResponse<bool>> ActualizarYCrearInfoPuntos()
+    {
+        try
+        {
+            var usuario = await this.usuarioExternalService.GetUsuarios();
+            foreach (var item in usuario.Result)
+            {
+                var usuarioInfoPuntos = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByCedula(item.Cedula);
+                if (usuarioInfoPuntos == null)
+                {
+                    var extractos = await this.unitOfWork.ExtractosRepository.GetExtractosByUser(item.Cedula);
+                    var puntosDisponibles = extractos.Sum(x => x.ValorMovimiento);
+                    var puntosAcumulados = extractos.Where(p => p.OrigenMovimiento == "Liquidacion de puntos" || p.OrigenMovimiento == "Puntos Adquiridos").Sum(x => x.ValorMovimiento);
+                    var usuarioInfoPuntosNuevo = new UsuarioInfoPuntos
+                    {
+                        Cedula = item.Cedula,
+                        PuntosAcumulados = (int)puntosAcumulados,
+                        PuntosDisponibles = (int)puntosDisponibles,
+                        PuntosRedimidos = 0,
+                        PuntosEnCarrito = 0,
+                        Nombres = item.Nombres,
+                        Apellidos = item.Apellidos,
+                        Email = item.Email,
+                        FechaActualizacion = DateTime.Now
+
+                    };
+
+                    await this.unitOfWork.UsuarioInfoPuntosRepository.Add(usuarioInfoPuntosNuevo);
+                    await this.unitOfWork.SaveChangesAsync();
+                }
+                else
+                {
+                    var extractos = await this.unitOfWork.ExtractosRepository.GetExtractosByUser(item.Cedula);
+                    var puntosDisponibles = extractos.Sum(x => x.ValorMovimiento);
+                    var puntosAcumulados = extractos.Where(p => p.OrigenMovimiento == "Liquidacion de puntos" || p.OrigenMovimiento == "Puntos Adquiridos").Sum(x => x.ValorMovimiento);
+                    usuarioInfoPuntos.PuntosAcumulados = (int)puntosAcumulados;
+                    usuarioInfoPuntos.PuntosDisponibles = (int)puntosDisponibles;
+                    usuarioInfoPuntos.FechaActualizacion = DateTime.Now;
+                    await this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuarioInfoPuntos);
+                    await this.unitOfWork.SaveChangesAsync();
+                }
+            }
+            return new GenericResponse<bool>
+            {
+                Result = true
+            };
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
 }

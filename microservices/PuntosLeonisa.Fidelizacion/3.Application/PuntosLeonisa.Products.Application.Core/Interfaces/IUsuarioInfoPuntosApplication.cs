@@ -29,5 +29,6 @@ namespace PuntosLeonisa.Fidelizacion.Application.Core.Interfaces
         Task<GenericResponse<bool>> GuardarLiquidacionPuntos(IEnumerable<LiquidacionPuntosDto> data);
         Task<GenericResponse<bool>> CambiarEstadoYLiquidarPuntos(string email);
         Task<GenericResponse<bool>> UpdateCorreoInfoPuntos(UpdateInfoDto data);
+        Task<GenericResponse<bool>> ActualizarYCrearInfoPuntos();
     }
 }

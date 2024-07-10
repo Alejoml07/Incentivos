@@ -1722,10 +1722,9 @@
       "Key": "GetExtractosByUsuarioAndDateRoute"
     },
     //Liquidacion Puntos Mes
-
     {
-      "DownstreamPathTemplate": "/api/fidelizacion/LiquidacionPuntosMes",
-      "UpstreamPathTemplate": "/api/fidelizacion/LiquidacionPuntosMes",
+      "DownstreamPathTemplate": "/api/PuntosDeVenta/LiquidacionPuntosMes",
+      "UpstreamPathTemplate": "/api/PuntosDeVenta/LiquidacionPuntosMes",
       "DownstreamScheme": "https",
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [

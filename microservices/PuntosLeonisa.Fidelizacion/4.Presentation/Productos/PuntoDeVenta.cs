@@ -289,6 +289,26 @@ namespace PuntosLeonisa.Seguridad.Function
                 return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("GetInfoWithSpace")]
+        [OpenApiOperation(operationId: "GetInfoWithSpace", tags: new[] { "PuntosDeVenta/GetInfoWithSpace" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(IEnumerable<PuntoVentaHistoriaDto>), Description = "Carga masiva de registros de liquidacion")]
+        public async Task<IActionResult> GetInfoWithSpace(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "PuntosDeVenta/GetInfoWithSpace")] HttpRequest req,
+           ILogger log)
+        {
+            try
+            {
+                log.LogInformation($"Usuario:LoadPuntoVentaHistoria Inicia agregar registros masivos. Fecha:{DateTime.UtcNow}");
+                var punto = await this._puntoDeVentaApplication.GetInfoWithSpace();
+                return new OkObjectResult(punto);
+
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 
