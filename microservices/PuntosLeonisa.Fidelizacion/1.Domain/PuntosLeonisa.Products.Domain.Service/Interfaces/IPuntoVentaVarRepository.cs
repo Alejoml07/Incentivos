@@ -11,7 +11,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces
 {
     public interface IPuntoVentaVarRepository : IRepository<PuntoVentaVar>
     {
-        Task<IEnumerable<PuntoVentaVar>> GetPuntoVentaVarByMesAndAnio(PuntoVentaVar data);
+        Task<IEnumerable<PuntoVentaVar>> DeletePuntoVentaVarByMesAndAnio(PuntoVentaVar data);
         Task<PuntoVentaVar> GetPuntoVentaVar(PuntoVentaVarDto data);
         Task<IEnumerable<PuntoVentaVar>> GetPuntosByCodigoUsuario(PuntoVentaVar data);
         Task<PuntoVentaVar> GetConsultaPresupuesto(PuntoVentaVar data);

@@ -1689,6 +1689,24 @@
     },
 
     {
+      "DownstreamPathTemplate": "/api/PuntosDeVenta/AddAndDeleteVentaVarAndHistoria",
+      "UpstreamPathTemplate": "/api/PuntosDeVenta/AddAndDeleteVentaVarAndHistoria",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "AddAndDeleteVentaVarAndHistoriaRoute"
+    },
+
+    {
       "DownstreamPathTemplate": "/api/fidelizacion/GetUsuarioInfoPuntosAll",
       "UpstreamPathTemplate": "/api/fidelizacion/GetUsuarioInfoPuntosAll",
       "DownstreamScheme": "https",

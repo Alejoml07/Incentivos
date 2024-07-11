@@ -22,13 +22,16 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
             return response;
         }
 
-        public async Task<IEnumerable<PuntoVentaHistoria>> GetPuntoVentaHistoriaByMesAndAnio(PuntoVentaHistoria data)
+        public async Task<IEnumerable<PuntoVentaHistoria>> DeletePuntoVentaHistoriaByMesAndAnio(PuntoVentaHistoria data)
         {
-            var response = await _context.Set<PuntoVentaHistoria>()
-                .Where(x => x.Mes == data.Mes && x.Ano == data.Ano)
-                .ToListAsync(); 
+            {
+                var registros = await _context.Set<PuntoVentaHistoria>()
+                    .Where(x => x.Mes == data.Mes && x.Ano == data.Ano)
+                    .ToListAsync();
 
-            return response;
+                _context.Set<PuntoVentaHistoria>().RemoveRange(registros);
+                return registros;
+            }
         }
     }
 }

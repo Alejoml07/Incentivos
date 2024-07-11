@@ -267,6 +267,29 @@ namespace PuntosLeonisa.Seguridad.Function
             }
         }
 
+        [FunctionName("AddAndDeleteVentaVarAndHistoria")]
+        [OpenApiOperation(operationId: "AddAndDeleteVentaVarAndHistoria", tags: new[] { "PuntosDeVenta/AddAndDeleteVentaVarAndHistoria" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(IEnumerable<LiquidacionPuntos>), Description = "Carga masiva de registros de liquidacion")]
+        public async Task<IActionResult> AddAndDeleteVentaVarAndHistoria(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "PuntosDeVenta/AddAndDeleteVentaVarAndHistoria")] HttpRequest req,
+           ILogger log)
+        {
+
+
+            try
+            {
+                log.LogInformation($"PuntosDeVenta:LoadAsignacion Inicia agregar registros masivos. Fecha:{DateTime.UtcNow}");
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var PuntoVenta = JsonConvert.DeserializeObject<LiquidacionPuntos>(requestBody);
+                var punto = await this._puntoDeVentaApplication.AddAndDeleteVentaVarAndHistoria(PuntoVenta);
+                return new OkObjectResult(punto);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al guardar los registros:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
         [FunctionName("LoadPuntoVentaHistoria")]
         [OpenApiOperation(operationId: "LoadPuntoVentaHistoria", tags: new[] { "PuntosDeVenta/LoadPuntoVentaHistoria" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(IEnumerable<PuntoVentaHistoriaDto>), Description = "Carga masiva de registros de liquidacion")]

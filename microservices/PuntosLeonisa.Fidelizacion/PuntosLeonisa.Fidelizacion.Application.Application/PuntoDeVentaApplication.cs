@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
-using FluentValidation.Validators;
-using Polly.Caching;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Model.Carrito;
-using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.FidelizacionPuntos;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.PuntoDeVenta;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Usuarios;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
@@ -13,8 +10,6 @@ using PuntosLeonisa.Infrasctructure.Core.ExternaServiceInterfaces;
 using PuntosLeonisa.Products.Domain.Model;
 using PuntosLeonisa.Seguridad.Application.Core;
 using PuntosLeonisa.Seguridad.Domain.Service.Interfaces;
-using System.Text.RegularExpressions;
-using System.Windows.Markup;
 
 namespace PuntosLeonisa.Seguridad.Application
 {
@@ -255,30 +250,15 @@ namespace PuntosLeonisa.Seguridad.Application
                     Mes = data.Fecha.Mes,
                     Anio = data.Fecha.Anho
                 };
-                var ToDeleteHistoria = await this.unitOfWork.PuntoVentaHistoria.GetPuntoVentaHistoriaByMesAndAnio(historia);
-                var ToDeleteVar = await this.unitOfWork.PuntoVentaVarRepository.GetPuntoVentaVarByMesAndAnio(ventaVar);
-                if (ToDeleteHistoria != null)
-                {
-                    foreach (var item in ToDeleteHistoria)
-                    {
-                        await this.unitOfWork.PuntoVentaHistoria.Delete(item);
-                    }
-                    await this.unitOfWork.SaveChangesAsync();
-                }
-                if (ToDeleteVar != null)
-                {
-                    foreach (var item in ToDeleteVar)
-                    {
-                        await this.unitOfWork.PuntoVentaVarRepository.Delete(item);
-                    }
-                    await this.unitOfWork.SaveChangesAsync();
-                }
+                var ToDeleteHistoria = await this.unitOfWork.PuntoVentaHistoria.DeletePuntoVentaHistoriaByMesAndAnio(historia);
+                var ToDeleteVar = await this.unitOfWork.PuntoVentaVarRepository.DeletePuntoVentaVarByMesAndAnio(ventaVar);
+                await this.unitOfWork.SaveChangesAsync();
                 return new GenericResponse<bool>
                 {
                     IsSuccess = true,
                     Message = "Registros eliminados correctamente",
                     Result = true
-                };             
+                };
             }
             catch (Exception)
             {
@@ -349,7 +329,7 @@ namespace PuntosLeonisa.Seguridad.Application
                             };
                             await this.usuarioExternalService.AddUsuarioLiquidacion(NuevoUser);
                             await this.unitOfWork.UsuarioInfoPuntosRepository.Add(NuevoInfo);
-                            await this.unitOfWork.SaveChangesAsync();
+                            //await this.unitOfWork.SaveChangesAsync();
 
                             valuser = await this.usuarioExternalService.GetUserLiteByCedula(item.Cedula);
                         }
@@ -440,7 +420,7 @@ namespace PuntosLeonisa.Seguridad.Application
                                     };
 
                                     await this.unitOfWork.UsuarioInfoPuntosRepository.Add(NuevoInfo);
-                                    await this.unitOfWork.SaveChangesAsync();
+                                    //await this.unitOfWork.SaveChangesAsync();
                                 }
                                 puntosUsuario = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByCedula(item.Cedula.Trim());
                                 if (puntosUsuario != null)
@@ -448,7 +428,7 @@ namespace PuntosLeonisa.Seguridad.Application
                                     puntosUsuario.PuntosAcumulados += (int)ptsobt;
                                     puntosUsuario.PuntosDisponibles += (int)ptsobt;
                                     await this.unitOfWork.UsuarioInfoPuntosRepository.Update(puntosUsuario);
-                                    await this.unitOfWork.SaveChangesAsync();
+                                    //await this.unitOfWork.SaveChangesAsync();
                                     var seguimiento = new SeguimientoLiquidacion
                                     {
                                         Id = Guid.NewGuid().ToString(),
@@ -461,7 +441,7 @@ namespace PuntosLeonisa.Seguridad.Application
                                         IdVariable = item2.IdVariable
                                     };
                                     await AddSeguimientoLiquidacion(seguimiento);
-                                    await this.unitOfWork.SaveChangesAsync();
+                                    //await this.unitOfWork.SaveChangesAsync();
                                     //var extracto = new Extractos
                                     //{
                                     //    Id = Guid.NewGuid().ToString(),
@@ -482,6 +462,7 @@ namespace PuntosLeonisa.Seguridad.Application
                     }
 
                 }
+                await this.unitOfWork.SaveChangesAsync();
                 return new GenericResponse<bool>
                 {
                     IsSuccess = true,
@@ -500,7 +481,32 @@ namespace PuntosLeonisa.Seguridad.Application
         {
             try
             {
-                await EliminarExcels(data);
+                //var Excel = new Dictionary<string, List<PuntoVentaVarDto>>();
+                //foreach (var item in data.Registro)
+                //{
+                //    item.Id = Guid.NewGuid().ToString();
+                //    if (Excel.TryGetValue(item.Id, out List<PuntoVentaVarDto> exc))
+                //    {
+                //        exc.Add(item);
+                //        Excel[item.Id] = exc;
+                //    }
+                //    else
+                //    {
+                //        var items = new List<PuntoVentaVarDto>
+                //        {
+                //            item
+                //        };
+                //        Excel[item.Id] = items;
+                //    }
+                //}
+               
+                //var datos = Excel.ToArray();
+
+                //for (int i = 0; i < datos.Length; i++)
+                //{
+                    
+                //}
+                
                 foreach (var item in data.Registro)
                 {
                     if (item.IdPuntoVenta != null && !string.IsNullOrEmpty(item.IdVariable))
@@ -543,7 +549,6 @@ namespace PuntosLeonisa.Seguridad.Application
                                 Cumplimiento = item.Cumplimiento
                             };
                             await this.unitOfWork.PuntoVentaVarRepository.Update(exist);
-                            await this.unitOfWork.SaveChangesAsync();
                         }
                         else
                         {
@@ -560,7 +565,6 @@ namespace PuntosLeonisa.Seguridad.Application
                                 Cumplimiento = item.Cumplimiento,
                             };
                             await this.unitOfWork.PuntoVentaVarRepository.Add(exist);
-                            await this.unitOfWork.SaveChangesAsync();
                         }
                         var PtoHistoria = new PuntoVentaHistoria
                         {
@@ -582,7 +586,6 @@ namespace PuntosLeonisa.Seguridad.Application
                                 Ano = data.Fecha.Anho,
                             };
                             await this.unitOfWork.PuntoVentaHistoria.Add(crearRegistro);
-                            await this.unitOfWork.SaveChangesAsync();
                         }
                         else
                         {
@@ -605,11 +608,11 @@ namespace PuntosLeonisa.Seguridad.Application
                             updateRegistro.Mes = data.Fecha.Mes;
                             updateRegistro.Ano = data.Fecha.Anho;
                             await this.unitOfWork.PuntoVentaHistoria.Update(updateRegistro);
-                            await this.unitOfWork.SaveChangesAsync();
 
                         }
                     }
                 }
+                await this.unitOfWork.SaveChangesAsync();
                 return new GenericResponse<bool>
                 {
                     IsSuccess = true,

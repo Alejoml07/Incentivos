@@ -1739,6 +1739,24 @@
       },
       "Key": "LiquidacionPuntosMesRoute"
     },
+
+    {
+      "DownstreamPathTemplate": "/api/PuntosDeVenta/AddAndDeleteVentaVarAndHistoria",
+      "UpstreamPathTemplate": "/api/PuntosDeVenta/AddAndDeleteVentaVarAndHistoria",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizaciontest.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "AddAndDeleteVentaVarAndHistoriaRoute"
+    },
     //Scanner
     {
       "DownstreamPathTemplate": "/api/fidelizacion/AddUsuarioScanner",

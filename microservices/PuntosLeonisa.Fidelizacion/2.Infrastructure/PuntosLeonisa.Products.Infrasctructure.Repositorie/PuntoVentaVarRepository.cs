@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Polly;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.PuntoDeVenta;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
@@ -33,10 +34,13 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
             return Task.FromResult(response);
         }
 
-        public async Task<IEnumerable<PuntoVentaVar>> GetPuntoVentaVarByMesAndAnio(PuntoVentaVar data)
+        public async Task<IEnumerable<PuntoVentaVar>> DeletePuntoVentaVarByMesAndAnio(PuntoVentaVar data)
         {
-            var response = await context.Set<PuntoVentaVar>().Where(x => x.Mes == data.Mes && x.Anio == data.Anio).ToListAsync();
-            return response;
+            var registros = await context.Set<PuntoVentaVar>()
+                   .Where(x => x.Mes == data.Mes && x.Anio == data.Anio)
+                   .ToListAsync();
+            context.Set<PuntoVentaVar>().RemoveRange(registros);
+            return registros;
         }
     }
 }
