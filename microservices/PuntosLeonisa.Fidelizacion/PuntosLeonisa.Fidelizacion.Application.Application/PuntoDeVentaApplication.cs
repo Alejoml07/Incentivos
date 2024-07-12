@@ -329,7 +329,6 @@ namespace PuntosLeonisa.Seguridad.Application
                             };
                             await this.usuarioExternalService.AddUsuarioLiquidacion(NuevoUser);
                             await this.unitOfWork.UsuarioInfoPuntosRepository.Add(NuevoInfo);
-                            //await this.unitOfWork.SaveChangesAsync();
 
                             valuser = await this.usuarioExternalService.GetUserLiteByCedula(item.Cedula);
                         }
@@ -420,7 +419,6 @@ namespace PuntosLeonisa.Seguridad.Application
                                     };
 
                                     await this.unitOfWork.UsuarioInfoPuntosRepository.Add(NuevoInfo);
-                                    //await this.unitOfWork.SaveChangesAsync();
                                 }
                                 puntosUsuario = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByCedula(item.Cedula.Trim());
                                 if (puntosUsuario != null)
@@ -428,7 +426,6 @@ namespace PuntosLeonisa.Seguridad.Application
                                     puntosUsuario.PuntosAcumulados += (int)ptsobt;
                                     puntosUsuario.PuntosDisponibles += (int)ptsobt;
                                     await this.unitOfWork.UsuarioInfoPuntosRepository.Update(puntosUsuario);
-                                    //await this.unitOfWork.SaveChangesAsync();
                                     var seguimiento = new SeguimientoLiquidacion
                                     {
                                         Id = Guid.NewGuid().ToString(),
@@ -481,32 +478,143 @@ namespace PuntosLeonisa.Seguridad.Application
         {
             try
             {
-                //var Excel = new Dictionary<string, List<PuntoVentaVarDto>>();
-                //foreach (var item in data.Registro)
-                //{
-                //    item.Id = Guid.NewGuid().ToString();
-                //    if (Excel.TryGetValue(item.Id, out List<PuntoVentaVarDto> exc))
-                //    {
-                //        exc.Add(item);
-                //        Excel[item.Id] = exc;
-                //    }
-                //    else
-                //    {
-                //        var items = new List<PuntoVentaVarDto>
+                //        var Excel = new Dictionary<string, List<PuntoVentaVarDto>>();
+                //        foreach (var item in data.Registro)
                 //        {
-                //            item
+                //            item.Id = Guid.NewGuid().ToString();
+                //            if (Excel.TryGetValue(item.Id, out List<PuntoVentaVarDto> exc))
+                //            {
+                //                exc.Add(item);
+                //                Excel[item.Id] = exc;
+                //            }
+                //            else
+                //            {
+                //                var items = new List<PuntoVentaVarDto>
+                //                {
+                //                    item
+                //                };
+                //                Excel[item.Id] = items;
+                //            }
+                //        }
+                //        var datos = Excel.ToArray();
+
+                //        for (int i = 0; i < datos.Length; i++)
+                //        {
+                //            var item = datos[i].Value.FirstOrDefault();
+                //            if (item.IdPuntoVenta != null && !string.IsNullOrEmpty(item.IdVariable))
+                //            {
+                //                var id_ptventa = await this.unitOfWork.PuntoDeVentaRepository.GetPuntoDeVentaByCodigo(item.IdPuntoVenta);
+                //                var id_variable = await this.unitOfWork.VariableRepository.GetVariablesByCodigo(item.IdVariable);
+                //                if(id_ptventa == null || id_variable == null)
+                //                {
+                //                    continue;
+                //                }
+                //                var pventa = new PuntoVentaVarDto
+                //                {
+                //                    Mes = data.Fecha.Mes,
+                //                    Anio = data.Fecha.Anho,
+                //                    IdPuntoVenta = id_ptventa.Id,
+                //                    IdVariable = id_variable.Id
+                //                };
+                //                var valptexisten = await this.unitOfWork.PuntoVentaVarRepository.GetPuntoVentaVar(pventa);
+                //                if (item.Presupuesto == null || item.Presupuesto == "")
+                //                {
+                //                    item.Presupuesto = "0";
+                //                }
+                //                else if (item.ValReal == null || item.ValReal == "")
+                //                {
+                //                    item.ValReal = "0";
+                //                }
+                //                else if (item.Cumplimiento == null)
+                //                {
+                //                    item.Cumplimiento = 0;
+                //                }
+                //                if (valptexisten != null)
+                //                {
+                //                    var exist = new PuntoVentaVar
+                //                    {
+                //                        Presupuesto = item.Presupuesto,
+                //                        ValReal = item.ValReal,
+                //                        Cumplimiento = item .Cumplimiento
+                //                    };
+                //                    await this.unitOfWork.PuntoVentaVarRepository.Update(exist);
+                //                }
+                //                else
+                //                {
+                //                    var exist = new PuntoVentaVar
+                //                    {
+                //                        Id = Guid.NewGuid().ToString(),
+                //                        IdPuntoVenta = id_ptventa.Id,
+                //                        CodigoPuntoVenta = id_ptventa.Codigo.ToString(),
+                //                        IdVariable = id_variable.Id,
+                //                        Mes = data.Fecha.Mes,
+                //                        Anio = data.Fecha.Anho,
+                //                        Presupuesto = item.Presupuesto,
+                //                        ValReal = item.ValReal,
+                //                        Cumplimiento = item.Cumplimiento,
+                //                    };
+                //                    await this.unitOfWork.PuntoVentaVarRepository.Add(exist);
+                //                }
+                //                var PtoHistoria = new PuntoVentaHistoria
+                //                {
+                //                    IdPuntoVenta = id_ptventa.Id,
+                //                    Mes = data.Fecha.Mes,
+                //                    Ano = data.Fecha.Anho
+                //                };
+                //                var validarPtVentaHistoria = await this.unitOfWork.PuntoVentaHistoria.GetPuntoVentaHistoriaById(PtoHistoria);
+
+                //                if (validarPtVentaHistoria.Count() == 0)
+                //                {
+                //                    var crearRegistro = new PuntoVentaHistoria
+                //                    {
+                //                        Id = Guid.NewGuid().ToString(),
+                //                        IdVariable = id_variable.Id,
+                //                        IdPuntoVenta = id_ptventa.Id,
+                //                        IdPresupuesto = 600,
+                //                        Mes = data.Fecha.Mes,
+                //                        Ano = data.Fecha.Anho,
+                //                    };
+                //                    await this.unitOfWork.PuntoVentaHistoria.Add(crearRegistro);
+                //                }
+                //                else
+                //                {
+                //                    var variablesP = validarPtVentaHistoria.FirstOrDefault().IdVariable;
+                //                    var arrayVariables = variablesP.Split("|");
+
+                //                    var arrayVariablesFinal = new List<string>();
+                //                    foreach (var itemV in arrayVariables)
+                //                    {
+                //                        if (itemV != null)
+                //                        {
+                //                            arrayVariablesFinal.Add(itemV);
+                //                        }
+                //                    }
+
+                //                    arrayVariablesFinal.Add(id_variable.Id);
+                //                    var variablesString = string.Join("|", arrayVariablesFinal);
+                //                    var updateRegistro = await this.unitOfWork.PuntoVentaHistoria.GetById(validarPtVentaHistoria.FirstOrDefault().Id);
+                //                    updateRegistro.IdVariable = variablesString;
+                //                    updateRegistro.Mes = data.Fecha.Mes;
+                //                    updateRegistro.Ano = data.Fecha.Anho;
+                //                    await this.unitOfWork.PuntoVentaHistoria.Update(updateRegistro);
+
+                //                }
+                //            }
+                //        }
+                //        await this.unitOfWork.SaveChangesAsync();
+                //        return new GenericResponse<bool>
+                //        {
+                //            IsSuccess = true,
+                //            Message = "Registros añadidos correctamente",
+                //            Result = true
                 //        };
-                //        Excel[item.Id] = items;
+                //    }
+                //    catch (Exception)
+                //    {
+
+                //        throw;
                 //    }
                 //}
-               
-                //var datos = Excel.ToArray();
-
-                //for (int i = 0; i < datos.Length; i++)
-                //{
-                    
-                //}
-                
                 foreach (var item in data.Registro)
                 {
                     if (item.IdPuntoVenta != null && !string.IsNullOrEmpty(item.IdVariable))
@@ -542,13 +650,11 @@ namespace PuntosLeonisa.Seguridad.Application
 
                         if (valptexisten != null)
                         {
-                            var exist = new PuntoVentaVar
-                            {
-                                Presupuesto = item.Presupuesto,
-                                ValReal = item.ValReal,
-                                Cumplimiento = item.Cumplimiento
-                            };
-                            await this.unitOfWork.PuntoVentaVarRepository.Update(exist);
+                            valptexisten.Presupuesto = item.Presupuesto;
+                            valptexisten.ValReal = item.ValReal;
+                            valptexisten.Cumplimiento = item.Cumplimiento;
+                            
+                            await this.unitOfWork.PuntoVentaVarRepository.Update(valptexisten);
                         }
                         else
                         {
