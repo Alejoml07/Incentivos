@@ -474,6 +474,7 @@ namespace PuntosLeonisa.Seguridad.Application
             }
         }
 
+
         public async Task<GenericResponse<bool>> AddAndDeleteVentaVarAndHistoria(LiquidacionPuntos data)
         {
             try
