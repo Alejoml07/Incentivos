@@ -104,7 +104,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
             return sb.ToString();
         }
 
-        public string GenerarHTMLGarantiaEnviada()
+        public string GenerarHTMLGarantiaEnviada(DateTime? fechaRedencion)
         {
             var imgUrl = "https://incentivosvotre.web.app/assets/images/MSAUC.png";
             var sb = new StringBuilder();
@@ -120,15 +120,29 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
             sb.Append($"<img src=\"{imgUrl}\" class=\"imagen-centrada\">");
             sb.Append("</div>");
             sb.Append("<div style=\"text-align: center; padding: 20px;\">");
-            sb.Append("<p>Tu reclamación ha sido solicitada con éxito:</p>");
+            if(fechaRedencion < DateTime.Now.AddMonths(-6))
+            {
+                sb.Append("<p>Tu reclamación no ha podido ser tramitada, ya que excede el tiempo para hacerla (6 meses).</p>");
+            }
+            else
+            {
+                sb.Append("<p>Tu reclamación ha sido solicitada con éxito:</p>");
+            }
             sb.Append("<table class=\"tabla-estilizada\">");
             sb.Append("<tr><th class=\"encabezado-tabla\">Ticket de reclamación</th><th class=\"encabezado-tabla\">Nro pedido</th><th class=\"encabezado-tabla\">Fecha reclamación</th><th class=\"encabezado-tabla\">Proveedor</th><th class=\"encabezado-tabla\">Producto</th><th class=\"encabezado-tabla\">Observación usuario</th></tr>");
             sb.AppendFormat("<tr><td class=\"celda-tabla\">{0}</td><td class=\"celda-tabla\">{1}</td><td class=\"celda-tabla\">{2}</td><td class=\"celda-tabla\">{3}</td><td class=\"celda-tabla\">{4}</td><td class=\"celda-tabla\">{5}</td></tr>",
                         this.NroTicket, this.NroPedido, this.FechaReclamacion, this.Proveedor, this.Producto, this.Observacion);
 
             sb.Append("</table>");
-            sb.Append("<p>Estado actual: PENDIENTE</p>");
-            sb.Append("<p>Pronto nos pondremos en contacto contigo. Debes estar pendiente de tu teléfono y correo electrónico.</p>");
+            if (fechaRedencion < DateTime.Now.AddMonths(-6))
+            {
+                sb.Append("<p>Estado actual: RECHAZADO</p>");
+            }
+            else
+            {
+                sb.Append("<p>Estado actual: PENDIENTE</p>");
+                sb.Append("<p>Pronto nos pondremos en contacto contigo. Debes estar pendiente de tu teléfono y correo electrónico.</p>");
+            }          
             sb.Append("</div>");
             sb.Append("</div>");
             sb.Append("</body>");

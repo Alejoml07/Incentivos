@@ -2512,10 +2512,19 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
+            //Si la fecha de redencion es mayor a 6 meses hasta el dia actual no se podra redimir
+            if (data.FechaRedencion < DateTime.Now.AddMonths(-6))
+            {
+                data.Estado = "Rechazada";
+            }
+            else
+            {
+                data.Estado = "Pendiente";
+            }
+
             data.Id = Guid.NewGuid().ToString();
             await UploadImageToGarantia(data);
-            data.FechaReclamacion = DateTime.Now.AddHours(-5);
-            data.Estado = "Pendiente";
+            data.FechaReclamacion = DateTime.Now.AddHours(-5);           
             data.EAN = data.EAN;
             data.NroTicket = this.unitOfWork.GarantiaRepository.GetNroGarantia() +1;
             await this.unitOfWork.GarantiaRepository.Add(data);

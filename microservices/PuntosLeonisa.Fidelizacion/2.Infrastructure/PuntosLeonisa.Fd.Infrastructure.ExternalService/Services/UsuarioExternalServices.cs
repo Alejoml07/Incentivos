@@ -222,15 +222,31 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
         {
             try
             {
-                var email = new EmailDTO()
+                if(data.FechaRedencion < DateTime.Now.AddMonths(-6))
                 {
-                    Message = data.GenerarHTMLGarantiaEnviada(),
-                    Recipients = new string[] {data.Email,CorreoProveedor}, //"dalzate@votre.com.co", "sburgos@votre.com.co"
-                    Subject = "Petición garantía exitosa"
-                };
-                var response = this.httpClientAgent.SendMail(email);
+                    var email = new EmailDTO()
+                    {
+                        Message = data.GenerarHTMLGarantiaEnviada(data.FechaRedencion),
+                        Recipients = new string[] { data.Email, CorreoProveedor }, //"dalzate@votre.com.co", "sburgos@votre.com.co"
+                        Subject = "Petición garantía rechazada"
+                    };
+                    var response = this.httpClientAgent.SendMail(email);
 
-                return Task.FromResult(new GenericResponse<bool>() { Result = true });
+                    return Task.FromResult(new GenericResponse<bool>() { Result = true });
+                }
+                else
+                {
+                    var email = new EmailDTO()
+                    {
+                        Message = data.GenerarHTMLGarantiaEnviada(data.FechaRedencion),
+                        Recipients = new string[] { data.Email, CorreoProveedor }, //"dalzate@votre.com.co", "sburgos@votre.com.co"
+                        Subject = "Petición garantía exitosa"
+                    };
+                    var response = this.httpClientAgent.SendMail(email);
+
+                    return Task.FromResult(new GenericResponse<bool>() { Result = true });
+                }
+               
             }
             catch (Exception ex)
             {
