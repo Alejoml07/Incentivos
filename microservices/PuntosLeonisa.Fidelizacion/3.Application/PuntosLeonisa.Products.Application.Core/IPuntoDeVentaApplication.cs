@@ -8,7 +8,7 @@ namespace PuntosLeonisa.Seguridad.Application.Core
 {
     public interface IPuntoDeVentaApplication : IApplicationCore<PuntoDeVentaDto>,IPuntoVentaVarApplication,IAsignacionApplication, IPuntoVentaHistoriaApplication, ISeguimientoLiquidacionApplication
     {
-        Task<GenericResponse<bool>> LiquidacionPuntosMes(LiquidacionPuntos data, int startIndex = 0, int userBatchSize = 100);
+        Task<GenericResponse<bool>> LiquidacionPuntosMes(LiquidacionPuntos data);
         Task<GenericResponse<bool>> AddAndDeleteVentaVarAndHistoria(LiquidacionPuntos data);
         Task<GenericResponse<IEnumerable<UsuarioInfoPuntos>>> GetInfoWithSpace();
 

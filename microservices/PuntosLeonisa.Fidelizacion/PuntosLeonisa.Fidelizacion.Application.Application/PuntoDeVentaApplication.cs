@@ -267,7 +267,7 @@ namespace PuntosLeonisa.Seguridad.Application
             }
         }
 
-        public async Task<GenericResponse<bool>> LiquidacionPuntosMes(LiquidacionPuntos data, int startIndex = 0, int userBatchSize = 100)
+        public async Task<GenericResponse<bool>> LiquidacionPuntosMes(LiquidacionPuntos data)
         {
             try
             {
@@ -276,7 +276,15 @@ namespace PuntosLeonisa.Seguridad.Application
 
                 if (int.TryParse(data.Fecha.Mes, out mesNumerico))
                 {
-                    mes = mesNumerico < 10 ? "0" + data.Fecha.Mes : data.Fecha.Mes;
+
+                    if (mesNumerico < 10)
+                    {
+                        mes = "0" + data.Fecha.Mes;
+                    }
+                    else
+                    {
+                        mes = data.Fecha.Mes;
+                    }
                 }
 
                 var user = new ValidarUsuarioDto
@@ -293,27 +301,25 @@ namespace PuntosLeonisa.Seguridad.Application
                     Mes = mes,
                 };
 
-                var resultAser = (await this.usuarioExternalService.GetUsuarioTPA(fecha, Token)).ToList();
+                var resultAser = await this.usuarioExternalService.GetUsuarioTPA(fecha, Token);
 
-                if (resultAser != null && resultAser.Count > 0)
+                var cont = 0;
+                if (resultAser != null)
                 {
-                    // Definir tamaño del lote de usuarios
-                    int batchSize = userBatchSize;
-                    var batch = resultAser.Skip(startIndex).Take(batchSize).ToList();
-
-                    foreach (var item in batch)
+                    foreach (var item in resultAser)
                     {
+                        cont++;
                         var valuser = await this.usuarioExternalService.GetUserLiteByCedula(item.Cedula.Trim());
                         if (valuser == null)
                         {
-                            var NuevoUser = new Usuario
+                            var NuevoUser = new Usuario()
                             {
                                 Cedula = item.Cedula.Trim(),
                                 Nombres = "pendiente",
                                 Apellidos = "pendiente",
                                 Email = "pendiente",
                             };
-                            var NuevoInfo = new UsuarioInfoPuntos
+                            var NuevoInfo = new UsuarioInfoPuntos()
                             {
                                 Cedula = item.Cedula.Trim(),
                                 PuntosAcumulados = 0,
@@ -326,7 +332,6 @@ namespace PuntosLeonisa.Seguridad.Application
 
                             valuser = await this.usuarioExternalService.GetUserLiteByCedula(item.Cedula);
                         }
-
                         var vari = new PuntoVentaVar
                         {
                             Mes = data.Fecha.Mes,
@@ -334,104 +339,130 @@ namespace PuntosLeonisa.Seguridad.Application
                             CodigoPuntoVenta = item.CodigoPuntoVenta
                         };
                         var variables = await this.unitOfWork.PuntoVentaVarRepository.GetPuntosByCodigoUsuario(vari);
-
-                        foreach (var item2 in variables)
+                        if (variables.Count() > 0)
                         {
-                            double? ptsobt = 0;
-                            string porcentajeString = item.Porcentaje;
-                            float porcentajeFloat = float.Parse(porcentajeString);
-                            float porclaborado = porcentajeFloat / 100;
-                            var cumplimiento = item2.Cumplimiento / 100;
+                            foreach (var item2 in variables)
+                            {
+                                double? ptsobt = 0;
+                                string porcentajeString = item.Porcentaje;
+                                float porcentajeFloat = float.Parse(porcentajeString);
+                                float porclaborado = porcentajeFloat / 100;
+                                var cumplimiento = item2.Cumplimiento / 100;
 
-                            var bases = await unitOfWork.VariableRepository.GetVariablesParaBase(item2);
+                                var bases = await unitOfWork.VariableRepository.GetVariablesParaBase(item2);
 
-                            if (item2.IdVariable == "22" && item2.Cumplimiento >= 100.5)
-                            {
-                                cumplimiento = item2.Cumplimiento > 111 ? 111 / 100 : item2.Cumplimiento / 100;
-                                var one_port = 1 / 100;
-                                ptsobt = porclaborado * (cumplimiento - one_port) * bases.Base;
-                                ptsobt = Math.Floor((double)ptsobt);
-                            }
-                            else
-                            {
-                                ptsobt = 0;
-                            }
-
-                            var consp = new PuntoVentaVar
-                            {
-                                Mes = data.Fecha.Mes,
-                                Anio = data.Fecha.Anho,
-                                IdPuntoVenta = item2.IdPuntoVenta,
-                                IdVariable = "22",
-                            };
-                            var resultadoConsultaPresupuesto = await unitOfWork.PuntoVentaVarRepository.GetConsultaPresupuesto(consp);
-                            if (resultadoConsultaPresupuesto == null)
-                            {
-                                continue;
-                            }
-
-                            if (resultadoConsultaPresupuesto.Cumplimiento >= 100.5 && item2.IdVariable != "22" && item2.Cumplimiento >= 100)
-                            {
-                                cumplimiento = item2.Cumplimiento > 110 ? 110 / 100 : item2.Cumplimiento / 100;
-                                ptsobt = (porclaborado * cumplimiento) * bases.Base;
-                                ptsobt = Math.Floor((double)ptsobt);
-                            }
-
-                            if (item2.Cumplimiento >= 104.5)
-                            {
-                                ptsobt = item2.IdVariable switch
+                                if (item2.IdVariable == "22" && item2.Cumplimiento >= 100.5)
                                 {
-                                    "4" => ptsobt * 2,
-                                    "414" => ptsobt * 1.5,
-                                    _ => ptsobt
-                                };
-                            }
+                                    if (item2.Cumplimiento > 111)
+                                    {
+                                        cumplimiento = 111 / 100;
+                                    }
+                                    else
+                                    {
+                                        cumplimiento = item2.Cumplimiento / 100;
+                                    }
+                                    var one_port = 1 / 100;
 
-                            var puntosUsuario = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByCedula(item.Cedula.Trim());
-                            if (puntosUsuario == null)
-                            {
-                                var NuevoInfo = new UsuarioInfoPuntos
+                                    ptsobt = porclaborado * (cumplimiento - one_port) * bases.Base;
+                                    ptsobt = Math.Floor((double)ptsobt);
+                                }
+                                else
                                 {
-                                    Cedula = item.Cedula.Trim(),
-                                    PuntosAcumulados = 0,
-                                    PuntosDisponibles = 0,
-                                    PuntosEnCarrito = 0,
-                                    PuntosRedimidos = 0,
-                                };
+                                    ptsobt = 0;
+                                }
 
-                                await this.unitOfWork.UsuarioInfoPuntosRepository.Add(NuevoInfo);
-                            }
-                            puntosUsuario = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByCedula(item.Cedula.Trim());
-                            if (puntosUsuario != null && ptsobt != 0)
-                            {
-                                puntosUsuario.PuntosAcumulados += (int)ptsobt;
-                                puntosUsuario.PuntosDisponibles += (int)ptsobt;
-                                await this.unitOfWork.UsuarioInfoPuntosRepository.Update(puntosUsuario);
-                                var seguimiento = new SeguimientoLiquidacion
+                                var consp = new PuntoVentaVar
                                 {
-                                    Id = Guid.NewGuid().ToString(),
-                                    Cedula = item.Cedula.Trim(),
                                     Mes = data.Fecha.Mes,
                                     Anio = data.Fecha.Anho,
-                                    PtoVenta = item2.CodigoPuntoVenta,
-                                    Cumplimiento = item2.Cumplimiento,
-                                    Puntos = (int)ptsobt,
-                                    IdVariable = item2.IdVariable
+                                    IdPuntoVenta = item2.IdPuntoVenta,
+                                    IdVariable = "22",
                                 };
-                                await AddSeguimientoLiquidacion(seguimiento);
+                                var resultadoConsultaPresupuesto = await unitOfWork.PuntoVentaVarRepository.GetConsultaPresupuesto(consp);
+                                if (resultadoConsultaPresupuesto == null)
+                                {
+                                    continue;
+                                }
+
+                                if (resultadoConsultaPresupuesto.Cumplimiento >= 100.5 && item2.IdVariable != "22" && item2.Cumplimiento >= 100)
+                                {
+                                    if (item2.Cumplimiento > 110)
+                                    {
+                                        cumplimiento = 110 / 100;
+                                    }
+                                    else
+                                    {
+                                        cumplimiento = item2.Cumplimiento / 100;
+                                    }
+                                    ptsobt = (porclaborado * cumplimiento) * bases.Base;
+                                    ptsobt = Math.Floor((double)ptsobt);
+                                }
+
+                                if (item2.Cumplimiento >= 104.5)
+                                {
+                                    if (item2.IdVariable == "4")
+                                    {
+                                        ptsobt = ptsobt * 2;
+                                    }
+                                    else if (item2.IdVariable == "414")
+                                    {
+                                        ptsobt = ptsobt * 1.5;
+                                    }
+                                }
+                                var puntosUsuario = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByCedula(item.Cedula.Trim());
+                                if (puntosUsuario == null)
+                                {
+                                    var NuevoInfo = new UsuarioInfoPuntos()
+                                    {
+                                        Cedula = item.Cedula.Trim(),
+                                        PuntosAcumulados = 0,
+                                        PuntosDisponibles = 0,
+                                        PuntosEnCarrito = 0,
+                                        PuntosRedimidos = 0,
+                                    };
+
+                                    await this.unitOfWork.UsuarioInfoPuntosRepository.Add(NuevoInfo);
+                                }
+                                puntosUsuario = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByCedula(item.Cedula.Trim());
+                                if (puntosUsuario != null && ptsobt != 0)
+                                {
+                                    puntosUsuario.PuntosAcumulados += (int)ptsobt;
+                                    puntosUsuario.PuntosDisponibles += (int)ptsobt;
+                                    await this.unitOfWork.UsuarioInfoPuntosRepository.Update(puntosUsuario);
+                                    var seguimiento = new SeguimientoLiquidacion
+                                    {
+                                        Id = Guid.NewGuid().ToString(),
+                                        Cedula = item.Cedula.Trim(),
+                                        Mes = data.Fecha.Mes,
+                                        Anio = data.Fecha.Anho,
+                                        PtoVenta = item2.CodigoPuntoVenta,
+                                        Cumplimiento = item2.Cumplimiento,
+                                        Puntos = (int)ptsobt,
+                                        IdVariable = item2.IdVariable
+                                    };
+                                    await AddSeguimientoLiquidacion(seguimiento);
+                                    //await this.unitOfWork.SaveChangesAsync();
+                                    //var extracto = new Extractos
+                                    //{
+                                    //    Id = Guid.NewGuid().ToString(),
+                                    //    Anio = data.Fecha.Anho,
+                                    //    Mes = data.Fecha.Mes,
+                                    //    ValorMovimiento = (int)ptsobt,
+                                    //    Descripcion = "Liquidación de puntos por mes",
+                                    //    OrigenMovimiento = "Liquidación de puntos por mes",
+                                    //    Fecha = DateTime.Now.AddHours(-5),
+                                    //    Usuario = valuser.Result
+                                    //};
+                                    //await this.unitOfWork.ExtractosRepository.Add(extracto);
+                                    //await this.unitOfWork.SaveChangesAsync();
+                                }
+
                             }
                         }
                     }
 
-                    await this.unitOfWork.SaveChangesAsync();
-
-                    // Si hay más usuarios por procesar, llama a la función recursivamente
-                    if (startIndex + batchSize < resultAser.Count)
-                    {
-                        return await LiquidacionPuntosMes(data, startIndex + batchSize, batchSize);
-                    }
                 }
-
+                await this.unitOfWork.SaveChangesAsync();
                 return new GenericResponse<bool>
                 {
                     IsSuccess = true,
@@ -441,6 +472,7 @@ namespace PuntosLeonisa.Seguridad.Application
             }
             catch (Exception)
             {
+
                 throw;
             }
         }
