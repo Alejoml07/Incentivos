@@ -226,8 +226,8 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
                 {
                     var email = new EmailDTO()
                     {
-                        Message = data.GenerarHTMLGarantiaEnviada(data.FechaRedencion),
-                        Recipients = new string[] { data.Email, CorreoProveedor }, //"dalzate@votre.com.co", "sburgos@votre.com.co"
+                        Message = data.GenerarHTMLGarantiaEnviada(data),
+                        Recipients = new string[] { data.Email, CorreoProveedor}, //"dalzate@votre.com.co", "sburgos@votre.com.co"
                         Subject = "Petición garantía rechazada"
                     };
                     var response = this.httpClientAgent.SendMail(email);
@@ -238,8 +238,8 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
                 {
                     var email = new EmailDTO()
                     {
-                        Message = data.GenerarHTMLGarantiaEnviada(data.FechaRedencion),
-                        Recipients = new string[] { data.Email, CorreoProveedor }, //"dalzate@votre.com.co", "sburgos@votre.com.co"
+                        Message = data.GenerarHTMLGarantiaEnviada(data),
+                        Recipients = new string[] { data.Email, CorreoProveedor}, //"dalzate@votre.com.co", "sburgos@votre.com.co"
                         Subject = "Petición garantía exitosa"
                     };
                     var response = this.httpClientAgent.SendMail(email);

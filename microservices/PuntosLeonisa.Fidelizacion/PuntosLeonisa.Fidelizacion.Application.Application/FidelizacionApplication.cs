@@ -2512,7 +2512,6 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
-            //Si la fecha de redencion es mayor a 6 meses hasta el dia actual no se podra redimir
             if (data.FechaRedencion < DateTime.Now.AddMonths(-6))
             {
                 data.Estado = "Rechazada";
@@ -2521,7 +2520,6 @@ public class FidelizacionApplication : IFidelizacionApplication
             {
                 data.Estado = "Pendiente";
             }
-
             data.Id = Guid.NewGuid().ToString();
             await UploadImageToGarantia(data);
             data.FechaReclamacion = DateTime.Now.AddHours(-5);           
