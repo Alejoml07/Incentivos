@@ -13,7 +13,7 @@ namespace PuntosLeonisa.Products.Domain.Interfaces
         Task<FiltroDto> ObtenerFiltros(GeneralFiltersWithResponseDto generalFiltersWithResponseDto);
         Task<IEnumerable<Producto>> GetByRef(string referencia);
         Task<IEnumerable<Producto>> GetProductByProveedor(string nit);
-        Task<IEnumerable<Producto>> GetProductByProveedorOrAll(string nombre);
+        Task<IEnumerable<Producto>> GetProductByProveedorOrAll(TipoUsuarioDto[] data);
         Task<IEnumerable<Producto>> GetProductByName(string nombre);
 
     }

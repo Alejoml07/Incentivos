@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.PuntoDeVenta;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Variables;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
 using PuntosLeonisa.Infrasctructure.Core.Repository;
@@ -27,7 +28,7 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
             return Task.FromResult(response);
         }
 
-        public Task<Variable> GetVariablesParaBase(PuntoVentaVar data)
+        public Task<Variable> GetVariablesParaBase(PuntoVentaVarDto data)
         {
             var response = context.Set<Variable>().Where(x => x.Id == data.IdVariable && x.Status == "1" && x.Eliminado == "0").FirstOrDefault();
             return Task.FromResult(response);

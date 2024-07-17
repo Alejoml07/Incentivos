@@ -241,6 +241,23 @@
       "Key": "getUsuariosRoute"
     },
     {
+      "UpstreamPathTemplate": "/api/Usuario/GetUsuariosByTipoUsuario",
+      "DownstreamPathTemplate": "/api/Usuario/GetUsuariosByTipoUsuario",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "plseguridad.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetUsuariosByTipoUsuarioRoute"
+    },
+    {
       "UpstreamPathTemplate": "/api/Usuario/LoadUsuarios",
       "DownstreamPathTemplate": "/api/Usuario/LoadUsuarios",
       "DownstreamScheme": "https",
@@ -649,10 +666,10 @@
     },
 
     {
-      "UpstreamPathTemplate": "/api/Productos/GetProductByProveedorOrAll/{nombre}",
-      "DownstreamPathTemplate": "/api/Productos/GetProductByProveedorOrAll/{nombre}",
+      "UpstreamPathTemplate": "/api/Productos/GetProductByProveedorOrAll",
+      "DownstreamPathTemplate": "/api/Productos/GetProductByProveedorOrAll",
       "DownstreamScheme": "https",
-      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
           "Host": "incentivosproductos.azurewebsites.net",

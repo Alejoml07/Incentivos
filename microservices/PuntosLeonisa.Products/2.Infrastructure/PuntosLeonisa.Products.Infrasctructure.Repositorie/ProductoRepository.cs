@@ -298,19 +298,24 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
         }      
     }
 
-    public async Task<IEnumerable<Producto>> GetProductByProveedorOrAll(string nombre)
+    public async Task<IEnumerable<Producto>> GetProductByProveedorOrAll(TipoUsuarioDto[] data)
     {
-        var response = await _context.Set<Producto>().Where(p => p.ProveedorLite.Nombres == nombre).ToListAsync();
-        // si response es nulo o 0, entonces devolver todos los productos
-
-        if (response == null || response.Count == 0)
+        
+        List<Producto>? productos = null;
+        foreach (var item in data)
         {
-           return response = await _context.Set<Producto>().ToListAsync();
+            if(item.TipoUsuario == "0")
+            {
+                return await _context.Set<Producto>().Where(x => x.Puntos != null && x.Cantidad != 0 && x.Estado != "2").ToListAsync();
+            }
+            else
+            {
+                var producto = await _context.Set<Producto>().Where(x => x.Roles.Contains(item.TipoUsuario) && x.Puntos != null && x.Cantidad != 0 && x.Estado != "2").ToListAsync();
+                productos.AddRange(producto);
+            }
+            
         }
-        else
-        {
-            return response;
-        }
+        return productos;
     }
 
     public async Task<PagedResult<IGrouping<string, Producto>>> GetProductsForSearch(SearchDto data)

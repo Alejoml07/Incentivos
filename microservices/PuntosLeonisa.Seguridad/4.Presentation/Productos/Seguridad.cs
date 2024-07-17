@@ -14,6 +14,7 @@ using PuntosLeonisa.Seguridad.Domain.Service.DTO.Usuarios;
 using PuntosLeonisa.Seguridad.Application.Core;
 using System.Collections.Generic;
 using PuntosLeonisa.Seguridad.Domain.Service.Interfaces;
+using PuntosLeonisa.Products.Domain.Model;
 
 namespace Usuarios
 {
@@ -83,6 +84,39 @@ namespace Usuarios
 
                 log.LogInformation($"Usuario:GetUsuarioos Inicia obtener todos los usuarios. Fecha:{DateTime.UtcNow}");
                 var usuarios = await usuarioApplication.GetAll();
+                log.LogInformation($"Usuario:GetUsuarioos finaliza obtener todos los usuarios sin errores. Fecha:{DateTime.UtcNow}");
+                return new OkObjectResult(usuarios);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("GetUsuariosByTipoUsuario")]
+        [OpenApiOperation(operationId: "GetUsuariosByTipoUsuario", tags: new[] { "Usuario/GetUsuariosByTipoUsuario" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los usuarios")]
+        public async Task<IActionResult> GetUsuariosByTipoUsuario(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Usuario/GetUsuariosByTipoUsuario")] HttpRequest req,
+           ILogger log)
+        {
+
+
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<TiposUsuarioDto[]>(requestBody);
+                log.LogInformation($"Usuario:GetUsuarioos Inicia obtener todos los usuarios por tipo ususario. Fecha:{DateTime.UtcNow}");
+                var usuarios = await usuarioApplication.GetUsuariosByTipoUsuario(data);
                 log.LogInformation($"Usuario:GetUsuarioos finaliza obtener todos los usuarios sin errores. Fecha:{DateTime.UtcNow}");
                 return new OkObjectResult(usuarios);
             }

@@ -125,6 +125,24 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
         var usuarios = _context.Set<Usuario>().Where(u => cedulas.Contains(u.Cedula));
         return usuarios.AsEnumerable();
     }
+
+    public async Task<IEnumerable<Usuario>> GetUsuariosByTipoUsuario(TiposUsuarioDto[] data)
+    {
+        List<Usuario> usuarios = new List<Usuario>();
+        foreach (var item in data)
+        {
+            if (item.TipoUsuario == "0")
+            {
+                return await _context.Set<Usuario>().ToListAsync();
+            }
+            else
+            {
+                var usuario = _context.Set<Usuario>().Where(u => u.TipoUsuario == item.TipoUsuario);
+                usuarios.AddRange(usuario);
+            }
+        }
+        return usuarios.AsEnumerable();       
+    }
 }
 
 

@@ -13,6 +13,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.PuntoDeVenta
         public string? IdVariable { get; set; }
         public string? CodigoPuntoVenta { get; set; }
         public string? Mes { get; set; }
+        public double? Base { get; set; }
         public string? Anio { get; set; }
         public string? Presupuesto { get; set; }
         public string? ValReal { get; set; }

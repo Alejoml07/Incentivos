@@ -18,5 +18,6 @@ public interface IUsuarioApplication : IApplicationCore<UsuarioDto>
     Task<GenericResponse<IEnumerable<UsuarioBasicDto>>> GetUsuarioBasic();
     Task<GenericResponse<bool>> ResetearTodasLasContrasenas();
     Task<GenericResponse<bool>> UpdateEmailSinEspacios();
+    Task<GenericResponse<IEnumerable<Usuario>>> GetUsuariosByTipoUsuario(TiposUsuarioDto[] data);
 }
 

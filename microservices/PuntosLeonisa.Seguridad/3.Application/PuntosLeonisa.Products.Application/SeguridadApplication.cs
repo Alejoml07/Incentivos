@@ -472,6 +472,19 @@ public class SeguridadApplication : IUsuarioApplication
             throw ex;
         }
     }
-    
+
+    public async Task<GenericResponse<IEnumerable<Usuario>>> GetUsuariosByTipoUsuario(TiposUsuarioDto[] data)
+    {
+        try
+        {
+            var usuarios = await usuarioRepository.GetUsuariosByTipoUsuario(data);
+            return new GenericResponse<IEnumerable<Usuario>>() { Result = usuarios };
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
 }
 

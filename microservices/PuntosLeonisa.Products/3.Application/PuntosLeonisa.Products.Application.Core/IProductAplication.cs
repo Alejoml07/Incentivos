@@ -22,7 +22,7 @@ public interface IProductApplication : IApplicationCore<ProductoDto>
     Task<GenericResponse<IEnumerable<ProductoDto>>> GetProductByProveedor(string proveedor);
     Task<GenericResponse<bool>> AddBanner(Banner banner);
     Task<GenericResponse<Banner>> GetBannerById(Banner data);
-    Task<GenericResponse<IEnumerable<ProductoDto>>> GetProductByProveedorOrAll(string proveedor);
+    Task<GenericResponse<IEnumerable<ProductoDto>>> GetProductByProveedorOrAll(TipoUsuarioDto[] data);
     Task<GenericResponse<PagedResult<ProductoDto>>> GetProductsBySearch(SearchDto data);
     Task<GenericResponse<IEnumerable<ProductoDto>>> GetProductByName(string nombre);
 }

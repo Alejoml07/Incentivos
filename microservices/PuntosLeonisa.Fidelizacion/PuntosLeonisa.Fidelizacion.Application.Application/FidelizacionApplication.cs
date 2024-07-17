@@ -2515,6 +2515,19 @@ public class FidelizacionApplication : IFidelizacionApplication
             if (data.FechaRedencion < DateTime.Now.AddMonths(-6))
             {
                 data.Estado = "Rechazada";
+                data.Id = Guid.NewGuid().ToString();
+                await UploadImageToGarantia(data);
+                data.FechaReclamacion = DateTime.Now.AddHours(-5);
+                data.EAN = data.EAN;
+                data.ObservacionEstado = "Supera el limite de tiempo (6 Meses)";
+                data.NroTicket = this.unitOfWork.GarantiaRepository.GetNroGarantia() + 1;
+                await this.unitOfWork.GarantiaRepository.Add(data);
+                await this.unitOfWork.SaveChangesAsync();
+                return new GenericResponse<bool>
+                {
+                    Message = "Supera el limite de tiempo",
+                    Result = false                    
+                };
             }
             else
             {

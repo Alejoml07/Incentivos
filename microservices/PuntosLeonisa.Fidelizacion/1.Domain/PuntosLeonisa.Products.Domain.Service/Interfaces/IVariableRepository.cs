@@ -1,4 +1,5 @@
 ﻿using PuntosLeonisa.Fidelizacion.Domain.Model;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.PuntoDeVenta;
 using PuntosLeonisa.Products.Domain.Model;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,6 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces
     public interface IVariableRepository : IRepository<Variable>
     {
         Task<Variable> GetVariablesByCodigo(string codigo);
-        Task<Variable> GetVariablesParaBase(PuntoVentaVar data);
+        Task<Variable> GetVariablesParaBase(PuntoVentaVarDto data);
     }
 }
