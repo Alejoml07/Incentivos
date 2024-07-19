@@ -30,7 +30,7 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
 
         public Task<Variable> GetVariablesParaBase(PuntoVentaVarDto data)
         {
-            var response = context.Set<Variable>().Where(x => x.Id == data.IdVariable && x.Status == "1" && x.Eliminado == "0").FirstOrDefault();
+            var response = context.Set<Variable>().Where(x => x.Codigo == data.IdVariable && x.Status == "1" && x.Eliminado == "0").FirstOrDefault();
             return Task.FromResult(response);
         }
     }

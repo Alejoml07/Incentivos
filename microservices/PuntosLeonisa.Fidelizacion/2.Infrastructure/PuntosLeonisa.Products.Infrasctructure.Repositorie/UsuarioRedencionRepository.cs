@@ -1,9 +1,11 @@
 ﻿using Microsoft.Azure.Cosmos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Cosmos.Storage.Internal;
+using Polly;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Garantias;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Usuarios;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
 using PuntosLeonisa.Infrasctructure.Core.Repository;
 using PuntosLeonisa.infrastructure.Persistence.CosmoDb;
@@ -128,6 +130,37 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
         {
             var redencion = await this.context.Set<UsuarioRedencion>().Where(x => x.NroPedido == nropedido).FirstOrDefaultAsync();
             return redencion;
-        }                              
+        }
+
+        public async Task<IEnumerable<UsuarioRedencion>> GetUsuariosRedencionPuntosByTipoUsuarioAndProveedor(TipoUsuarioDto[] data)
+        {
+            var redenciones = new HashSet<UsuarioRedencion>();
+
+            foreach (var item in data)
+            {
+                if (item.TipoUsuario == "0" && item.Proveedor == "0")
+                {
+                    var todasRedenciones = await context.Set<UsuarioRedencion>().ToListAsync();
+                    redenciones.UnionWith(todasRedenciones);
+                }
+                if (item.TipoUsuario == "0" && item.Proveedor != "0")
+                {
+                    var usuariosRedencion = await context.Set<UsuarioRedencion>().ToListAsync();
+                    var productosPorProveedor = usuariosRedencion
+                        .Where(x => x.ProductosCarrito != null && x.ProductosCarrito.Any(c => c.ProveedorLite != null && c.ProveedorLite.Nombres == item.Proveedor))
+                        .ToList();
+                    redenciones.UnionWith(productosPorProveedor);
+                }
+                if (item.TipoUsuario != "0" && item.Proveedor == "0")
+                {
+                    var productosPorTipoUsuario = await context.Set<UsuarioRedencion>()
+                                                                .Where(x => x.Usuario.TipoUsuario==item.TipoUsuario)
+                                                                .ToListAsync();
+                    redenciones.UnionWith(productosPorTipoUsuario);
+                }
+            }
+
+            return redenciones.ToList();
+        }
     }
 }

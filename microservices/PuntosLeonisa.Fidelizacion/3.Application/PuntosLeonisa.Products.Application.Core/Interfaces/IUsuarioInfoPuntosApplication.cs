@@ -2,6 +2,7 @@
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.FidelizacionPuntos;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.MovimientoPuntos;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Usuarios;
 using PuntosLeonisa.Fidelizacion.Infrasctructure.Common.Communication;
 using System.Globalization;
 
@@ -23,6 +24,7 @@ namespace PuntosLeonisa.Fidelizacion.Application.Core.Interfaces
         Task<GenericResponse<SmsDto>> SaveCodeAndSendSms(SmsDto data);
         Task<GenericResponse<bool>> CreateRedencion(UsuarioRedencion data);
         Task<GenericResponse<IEnumerable<OrdenDto>>> GetUsuariosRedencionPuntosByProveedor(string proveedor);
+        Task<GenericResponse<IEnumerable<UsuarioRedencion>>> GetUsuariosByTipoUsuarioAndProveedor(TipoUsuarioDto[] data);
         Task<GenericResponse<IEnumerable<OrdenDto>>> GetUsuariosRedencionPuntosByEmail(string email);
         Task<GenericResponse<AddNroGuiaYTransportadora>> AddNroGuiaYTransportadora(AddNroGuiaYTransportadora data);
         Task<GenericResponse<int>> DevolucionPuntosYCancelarEstado(DevolucionPuntosDto data);

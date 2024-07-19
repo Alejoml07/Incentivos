@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PuntosLeonisa.Products.Domain.Service.DTO.Productos
+namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Usuarios
 {
     public class TipoUsuarioDto
     {

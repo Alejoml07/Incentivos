@@ -1105,6 +1105,24 @@
     },
 
     {
+      "UpstreamPathTemplate": "/api/fidelizacion/GetUsuariosByTipoUsuarioAndProveedor",
+      "DownstreamPathTemplate": "/api/fidelizacion/GetUsuariosByTipoUsuarioAndProveedor",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetUsuariosByTipoUsuarioAndProveedorRoute"
+    },
+
+    {
       "UpstreamPathTemplate": "/api/fidelizacion/DevolucionPuntosYCancelarEstado",
       "DownstreamPathTemplate": "/api/fidelizacion/DevolucionPuntosYCancelarEstado",
       "DownstreamScheme": "https",
@@ -1633,10 +1651,10 @@
     },
 
     {
-      "DownstreamPathTemplate": "/api/fidelizacion/GetGarantiasByProveedorOrAll/{proveedor}",
-      "UpstreamPathTemplate": "/api/fidelizacion/GetGarantiasByProveedorOrAll/{proveedor}",
+      "DownstreamPathTemplate": "/api/fidelizacion/GetGarantiasByProveedorOrAll",
+      "UpstreamPathTemplate": "/api/fidelizacion/GetGarantiasByProveedorOrAll",
       "DownstreamScheme": "https",
-      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamHttpMethod": [ "Post" ],
       "DownstreamHostAndPorts": [
         {
           "Host": "azfidelizacion.azurewebsites.net",
@@ -1647,7 +1665,7 @@
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       },
-      "Key": "GetGarantiasRoute"
+      "Key": "GetGarantiasByProveedorOrAllRoute"
     },
     {
       "DownstreamPathTemplate": "/api/fidelizacion/CambiarEstadosGarantia",

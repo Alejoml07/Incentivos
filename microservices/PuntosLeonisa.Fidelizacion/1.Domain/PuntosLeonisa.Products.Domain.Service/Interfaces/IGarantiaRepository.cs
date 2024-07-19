@@ -1,4 +1,5 @@
 ﻿using PuntosLeonisa.Fidelizacion.Domain.Model;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Usuarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces
     public interface IGarantiaRepository : IRepository<Garantia>
     {
         int GetNroGarantia();
-        Task<IEnumerable<Garantia>> GetGarantiaByProveedorOrAll(string proveedor);
+        Task<IEnumerable<Garantia>> GetGarantiaByProveedorOrAll(TipoUsuarioDto[] data);
         Task<IEnumerable<Garantia>> GetGarantiaByEmail(string email);
     }
 }

@@ -27,6 +27,7 @@ using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Scanner;
 using Azure.Storage.Blobs.Models;
 using Azure.Storage.Blobs;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Garantias;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Usuarios;
 
 namespace Usuarioos
 {
@@ -1484,13 +1485,15 @@ namespace Usuarioos
         [OpenApiOperation(operationId: "GetGarantiasByProveedorOrAll", tags: new[] { "GetGarantiasByProveedorOrAll" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los reportes por fechas")]
         public async Task<IActionResult> GetGarantiasByProveedorOrAll(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "fidelizacion/GetGarantiasByProveedorOrAll/{proveedor}")] HttpRequest req, ILogger log, string proveedor)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/GetGarantiasByProveedorOrAll")] HttpRequest req, ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             try
             {
-                var response = await this.puntosApplication.GetGarantiasByProveedorOrAll(proveedor);
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<TipoUsuarioDto[]>(requestBody);
+                var response = await this.puntosApplication.GetGarantiasByProveedorOrAll(data);
                 return new OkObjectResult(response);
             }
             catch (Exception ex)
@@ -1550,6 +1553,27 @@ namespace Usuarioos
             try
             {
                 var response = await this.puntosApplication.ActualizarYCrearInfoPuntos();
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los reportes:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("GetUsuariosByTipoUsuarioAndProveedor")]
+        [OpenApiOperation(operationId: "GetUsuariosByTipoUsuarioAndProveedor", tags: new[] { "GetUsuariosByTipoUsuarioAndProveedor" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Obtiene los reportes por fechas")]
+        public async Task<IActionResult> GetUsuariosByTipoUsuarioAndProveedor(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/GetUsuariosByTipoUsuarioAndProveedor")] HttpRequest req, ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<TipoUsuarioDto[]>(requestBody);
+                var response = await this.puntosApplication.GetUsuariosByTipoUsuarioAndProveedor(data);
                 return new OkObjectResult(response);
             }
             catch (Exception ex)

@@ -304,7 +304,7 @@ namespace PuntosLeonisa.Seguridad.Application
 
                 var resultAser = await this.usuarioExternalService.GetUsuarioTPA(fecha, Token);
                 var page = 1;
-                var pageSize = 400;
+                var pageSize = 200;
                 var total = resultAser.Count();
 
 
@@ -343,8 +343,7 @@ namespace PuntosLeonisa.Seguridad.Application
             var cont = 0;
             if (resultAser != null)
             {
-                //foreach (var item in resultAser)
-                for (var i = 0; i <= resultAser.Count(); i++)
+                for (var i = 0; i < resultAser.Count(); i++)
                 {
                     var item = resultAser.ElementAt(i);
                     cont++;
@@ -387,8 +386,6 @@ namespace PuntosLeonisa.Seguridad.Application
                             float porcentajeFloat = float.Parse(porcentajeString);
                             float porclaborado = porcentajeFloat / 100;
                             var cumplimiento = item2.Cumplimiento / 100;
-
-                            //var bases = await unitOfWork.VariableRepository.GetVariablesParaBase(item2);
 
                             if (item2.IdVariable == "22" && item2.Cumplimiento >= 100.5)
                             {
@@ -480,20 +477,10 @@ namespace PuntosLeonisa.Seguridad.Application
                                     IdVariable = item2.IdVariable
                                 };
                                 await AddSeguimientoLiquidacion(seguimiento);
-                                //await this.unitOfWork.SaveChangesAsync();
-                                //var extracto = new Extractos
-                                //{
-                                //    Id = Guid.NewGuid().ToString(),
-                                //    Anio = data.Fecha.Anho,
-                                //    Mes = data.Fecha.Mes,
-                                //    ValorMovimiento = (int)ptsobt,
-                                //    Descripcion = "Liquidación de puntos por mes",
-                                //    OrigenMovimiento = "Liquidación de puntos por mes",
-                                //    Fecha = DateTime.Now.AddHours(-5),
-                                //    Usuario = valuser.Result
-                                //};
-                                //await this.unitOfWork.ExtractosRepository.Add(extracto);
-                                //await this.unitOfWork.SaveChangesAsync();
+                            }
+                            else
+                            {
+                                continue;
                             }
 
                         }
@@ -502,6 +489,7 @@ namespace PuntosLeonisa.Seguridad.Application
             }
             await this.unitOfWork.SaveChangesAsync();
         }
+
 
         public async Task<GenericResponse<bool>> AddAndDeleteVentaVarAndHistoria(LiquidacionPuntos data)
         {
@@ -646,6 +634,7 @@ namespace PuntosLeonisa.Seguridad.Application
                 //}
                 foreach (var item in data.Registro)
                 {
+                    double bas = 0;
                     if (item.IdPuntoVenta != null && !string.IsNullOrEmpty(item.IdVariable))
                     {
                         var id_ptventa = await this.unitOfWork.PuntoDeVentaRepository.GetPuntoDeVentaByCodigo(item.IdPuntoVenta);
@@ -654,12 +643,7 @@ namespace PuntosLeonisa.Seguridad.Application
                         {
                             continue;
                         }
-                        var bases = await unitOfWork.VariableRepository.GetVariablesParaBase(item);
-                        double bas = 0;
-                        if(bases != null)
-                        {
-                            bas = (double)bases.Base;
-                        }
+                        
                         var pventa = new PuntoVentaVarDto
                         {
                             Mes = data.Fecha.Mes,
@@ -681,6 +665,12 @@ namespace PuntosLeonisa.Seguridad.Application
                         else if (item.Cumplimiento == null)
                         {
                             item.Cumplimiento = 0;
+                        }                        
+                        var bases = await unitOfWork.VariableRepository.GetVariablesParaBase(item);
+                        
+                        if (bases != null)
+                        {
+                            bas = (double)bases.Base;
                         }
 
                         if (valptexisten != null)

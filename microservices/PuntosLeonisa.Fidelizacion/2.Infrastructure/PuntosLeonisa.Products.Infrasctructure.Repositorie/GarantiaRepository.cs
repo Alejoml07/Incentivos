@@ -1,4 +1,6 @@
-﻿using PuntosLeonisa.Fidelizacion.Domain.Model;
+﻿using Microsoft.EntityFrameworkCore;
+using PuntosLeonisa.Fidelizacion.Domain.Model;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Usuarios;
 using PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces;
 using PuntosLeonisa.Infrasctructure.Core.Repository;
 using PuntosLeonisa.infrastructure.Persistence.CosmoDb;
@@ -19,19 +21,33 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
             
         }
 
-        public Task<IEnumerable<Garantia>> GetGarantiaByProveedorOrAll(string proveedor)
+        public async Task<IEnumerable<Garantia>> GetGarantiaByProveedorOrAll(TipoUsuarioDto[] data)
         {
-            //si el proveedor es nulo o vacio, se retornan todas las garantias
-            if (proveedor != "0")
+            var garantias = new HashSet<Garantia>();
+
+            foreach (var item in data)
             {
-                return Task.FromResult(this.context.Set<Garantia>().Where(x => x.Proveedor == proveedor).AsEnumerable());
-                
+                if (item.TipoUsuario == "0" && item.Proveedor == "0")
+                {
+                    var todasGarantias = await context.Set<Garantia>().ToListAsync();
+                    garantias.UnionWith(todasGarantias);
+                }
+                if (item.TipoUsuario == "0" && item.Proveedor != "0")
+                {
+                    var usuariosRedencion = await context.Set<Garantia>().Where(x => x.Proveedor == item.Proveedor).ToListAsync();
+
+                    garantias.UnionWith(usuariosRedencion);
+                }
+                if (item.TipoUsuario != "0" && item.Proveedor == "0")
+                {
+                    var productosPorTipoUsuario = await context.Set<Garantia>()
+                                                                .Where(x => x.TipoUsuario == item.TipoUsuario)
+                                                                .ToListAsync();
+                    garantias.UnionWith(productosPorTipoUsuario);
+                }
             }
-            else
-            {
-                return Task.FromResult(this.context.Set<Garantia>().AsEnumerable());
-            }
-            
+
+            return garantias.ToList();
         }
 
         public int GetNroGarantia()

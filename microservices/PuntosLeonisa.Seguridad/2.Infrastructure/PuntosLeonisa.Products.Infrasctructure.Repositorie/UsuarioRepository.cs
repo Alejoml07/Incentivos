@@ -128,20 +128,26 @@ public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
 
     public async Task<IEnumerable<Usuario>> GetUsuariosByTipoUsuario(TiposUsuarioDto[] data)
     {
-        List<Usuario> usuarios = new List<Usuario>();
+        var usuarios = new HashSet<Usuario>();
+
         foreach (var item in data)
         {
             if (item.TipoUsuario == "0")
             {
-                return await _context.Set<Usuario>().ToListAsync();
+                var todosUsuarios = await _context.Set<Usuario>().ToListAsync();
+                usuarios.UnionWith(todosUsuarios);
+                return usuarios.ToList(); 
             }
             else
             {
-                var usuario = _context.Set<Usuario>().Where(u => u.TipoUsuario == item.TipoUsuario);
-                usuarios.AddRange(usuario);
+                var usuariosPorTipo = await _context.Set<Usuario>()
+                                                    .Where(u => u.TipoUsuario == item.TipoUsuario)
+                                                    .ToListAsync();
+                usuarios.UnionWith(usuariosPorTipo);
             }
         }
-        return usuarios.AsEnumerable();       
+
+        return usuarios.ToList();
     }
 }
 

@@ -11,6 +11,7 @@ using System.Reflection.Metadata;
 using System.Collections;
 using System.Collections.Generic;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using PuntosLeonisa.Products.Domain.Model;
 
 namespace PuntosLeonisa.Products.Infrasctructure.Repositorie;
 public class ProductoRepository : Repository<Producto>, IProductoRepository
@@ -300,22 +301,34 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
 
     public async Task<IEnumerable<Producto>> GetProductByProveedorOrAll(TipoUsuarioDto[] data)
     {
-        
-        List<Producto>? productos = null;
+        var productos = new HashSet<Producto>();
+
         foreach (var item in data)
         {
-            if(item.TipoUsuario == "0")
+            if (item.TipoUsuario == "0" && item.Proveedor == "0")
             {
-                return await _context.Set<Producto>().Where(x => x.Puntos != null && x.Cantidad != 0 && x.Estado != "2").ToListAsync();
+                var todosProductos = await _context.Set<Producto>()
+                                                   .Where(x => x.Puntos != null && x.Cantidad != 0 && x.Estado != "2")
+                                                   .ToListAsync();
+                productos.UnionWith(todosProductos);
             }
-            else
+            if (item.TipoUsuario == "0" && item.Proveedor != "0")
             {
-                var producto = await _context.Set<Producto>().Where(x => x.Roles.Contains(item.TipoUsuario) && x.Puntos != null && x.Cantidad != 0 && x.Estado != "2").ToListAsync();
-                productos.AddRange(producto);
+                var productosPorProveedor = await _context.Set<Producto>()
+                                                          .Where(x => x.ProveedorLite.Nombres == item.Proveedor && x.Puntos != null && x.Cantidad != 0 && x.Estado != "2")
+                                                          .ToListAsync();
+                productos.UnionWith(productosPorProveedor);
             }
-            
+            if (item.TipoUsuario != "0" && item.Proveedor == "0")
+            {
+                var productosPorTipoUsuario = await _context.Set<Producto>()
+                                                            .Where(x => x.Roles.Contains(item.TipoUsuario) && x.Puntos != null && x.Cantidad != 0 && x.Estado != "2")
+                                                            .ToListAsync();
+                productos.UnionWith(productosPorTipoUsuario);
+            }
         }
-        return productos;
+
+        return productos.ToList();
     }
 
     public async Task<PagedResult<IGrouping<string, Producto>>> GetProductsForSearch(SearchDto data)

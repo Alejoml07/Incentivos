@@ -1,6 +1,7 @@
 ﻿using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Garantias;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Usuarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces
         IEnumerable<UsuarioRedencion> GetRedencionesWithProductsByEmail(string email);
         IEnumerable<UsuarioRedencion> GetReporteRedencion(ReporteDto data);
         Task<UsuarioRedencion> GetUsuarioRedencionByNroPedido(int nropedido);
+        Task<IEnumerable<UsuarioRedencion>> GetUsuariosRedencionPuntosByTipoUsuarioAndProveedor(TipoUsuarioDto[] data);
 
     }
 }
