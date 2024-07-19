@@ -25,5 +25,6 @@ public interface IProductApplication : IApplicationCore<ProductoDto>
     Task<GenericResponse<IEnumerable<ProductoDto>>> GetProductByProveedorOrAll(TipoUsuarioDto[] data);
     Task<GenericResponse<PagedResult<ProductoDto>>> GetProductsBySearch(SearchDto data);
     Task<GenericResponse<IEnumerable<ProductoDto>>> GetProductByName(string nombre);
+    Task<GenericResponse<IEnumerable<bool>>> DeleteLeonisaProduct();
 }
 

@@ -1686,6 +1686,25 @@
     },
 
     {
+      "DownstreamPathTemplate": "/api/fidelizacion/RecalcularPuntos",
+      "UpstreamPathTemplate": "/api/fidelizacion/RecalcularPuntos",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "RecalcularPuntosRoute"
+    },
+
+
+    {
       "DownstreamPathTemplate": "/api/fidelizacion/GetGarantiasByUser/{email}",
       "UpstreamPathTemplate": "/api/fidelizacion/GetGarantiasByUser/{email}",
       "DownstreamScheme": "https",

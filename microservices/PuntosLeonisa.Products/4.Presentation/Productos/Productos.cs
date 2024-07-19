@@ -591,6 +591,35 @@ namespace Productos
                 return GetFunctionError(log, "Error al obtener los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("DeleteLeonisaProduct")]
+        [OpenApiOperation(operationId: "DeleteLeonisaProduct", tags: new[] { "Productos/DeleteLeonisaProduct" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
+        public async Task<IActionResult> DeleteLeonisaProduct(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "Productos/DeleteLeonisaProduct")] HttpRequest req,
+        // <-- Parámetro adicional
+        ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+;
+                var producto = await this.productoApplication.DeleteLeonisaProduct();
+                return new OkObjectResult(producto);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 

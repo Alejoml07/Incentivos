@@ -653,4 +653,17 @@ public class ProductosApplication : IProductApplication
             throw;
         }
     }
+
+    public async Task<GenericResponse<IEnumerable<bool>>> DeleteLeonisaProduct()
+    {
+        var productos = await this.productoRepository.GetProductByProveedor("811044814");
+        foreach (var producto in productos)
+        {
+            await this.productoRepository.Delete(producto);
+        }
+        return new GenericResponse<IEnumerable<bool>>()
+        {
+            Result = new List<bool>() { true }
+        };
+    }
 }
