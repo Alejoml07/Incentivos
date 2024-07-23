@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace PuntosLeonisa.Seguridad.Function
@@ -29,11 +28,10 @@ namespace PuntosLeonisa.Seguridad.Function
             this.PuntoDeVentaApplicationErrorResult = new BadRequestObjectResult(this.responseError);
             this.responseError = new GenericResponse<PuntoDeVenta>();
         }
-        private IActionResult GetFunctionError(ILogger log, string logMessage, Exception ex)
+        public IActionResult GetFunctionError(ILogger log, string message, Exception ex)
         {
-            log.LogError(ex, logMessage, null);
-            this.responseError.Message = ex.Message;
-            this.responseError.IsSuccess = false;
+            log.LogError(ex, message);
+            this.responseError.Message = message;
             return this.PuntoDeVentaApplicationErrorResult;
         }
 
@@ -252,20 +250,24 @@ namespace PuntosLeonisa.Seguridad.Function
            ILogger log)
         {
 
+            Task t = Task.Factory.StartNew(()=>{
+                try
+                {
+                    log.LogInformation($"PuntosDeVenta:LoadAsignacion Inicia agregar registros masivos. Fecha:{DateTime.UtcNow}");
+                    string requestBody = new StreamReader(req.Body).ReadToEnd();
+                    var PuntoVenta = JsonConvert.DeserializeObject<LiquidacionPuntos>(requestBody);
+                    var punto = this._puntoDeVentaApplication.LiquidacionPuntosMes(PuntoVenta);
+                    //return new OkObjectResult(punto);
 
-            try
-            {
-                log.LogInformation($"PuntosDeVenta:LoadAsignacion Inicia agregar registros masivos. Fecha:{DateTime.UtcNow}");
-                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var PuntoVenta = JsonConvert.DeserializeObject<LiquidacionPuntos>(requestBody);
-                var punto = await this._puntoDeVentaApplication.LiquidacionPuntosMes(PuntoVenta);
-                return new OkObjectResult(punto);
-
-            }
-            catch (Exception ex)
-            {
-                return GetFunctionError(log, "Error al guardar los registros:" + DateTime.UtcNow.ToString(), ex);
-            }
+                }
+                catch (Exception ex)
+                {
+                    log.LogError(ex, "Error al guardar los registros:" + DateTime.UtcNow.ToString());
+                    //return GetFunctionError(log, "Error al guardar los registros:" + DateTime.UtcNow.ToString(), ex);
+                }
+            });
+            //t.RunSynchronously();
+            return new OkObjectResult("Liquidacion Realizada Correctamente");
         }
 
         [FunctionName("AddAndDeleteVentaVarAndHistoria")]
@@ -333,6 +335,58 @@ namespace PuntosLeonisa.Seguridad.Function
                 return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+    //    [FunctionName("OrquestacionLiquidacionPuntosMes")]
+    //    public static async Task<IActionResult> OrquestacionLiquidacionPuntosMes(
+    //    [OrchestrationTrigger] IDurableOrchestrationContext context)
+    //    {
+    //        try
+    //        {
+    //            // Reemplaza "LiquidacionPuntos" con el tipo de objeto adecuado
+    //            var puntoVenta = context.GetInput<LiquidacionPuntos>();
+    //            var resultado = await context.CallActivityAsync<IActionResult>("LiquidacionPuntosMes", puntoVenta);
+    //            return resultado;
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            // Manejo de errores
+    //            return new BadRequestObjectResult(ex.Message);
+    //        }
+    //    }
+
+    //    [FunctionName("LiquidacionPuntosMes")]
+    //    public  async Task<IActionResult> LiquidacionPuntosMes(
+    //    [ActivityTrigger] LiquidacionPuntos puntoVenta,
+    //    ILogger log)
+    //    {
+    //        try
+    //        {
+    //            log.LogInformation($"PuntosDeVenta:LoadAsignacion Inicia agregar registros masivos. Fecha:{DateTime.UtcNow}");
+    //            // No es necesario deserializar el cuerpo de la solicitud, puntoVenta ya es el objeto deserializado
+    //            var resultado = await this._puntoDeVentaApplication.LiquidacionPuntosMes(puntoVenta);
+    //            return new OkObjectResult(resultado);
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            return GetFunctionError(log, "Error al guardar los registros:" + DateTime.UtcNow.ToString(), ex);
+    //        }
+    //    }
+
+    //    [FunctionName("IniciarLiquidacionPuntosMes")]
+    //    public static async Task<IActionResult> IniciarLiquidacionPuntosMes(
+    //    [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "PuntosDeVenta/LiquidacionPuntosMes")] HttpRequest req,
+    //    [DurableClient] IDurableOrchestrationClient starter,
+    //    ILogger log)
+    //    {
+    //        string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+    //        var puntoVenta = JsonConvert.DeserializeObject<LiquidacionPuntos>(requestBody);
+
+    //        string instanceId = await starter.StartNewAsync("OrquestacionLiquidacionPuntosMes", puntoVenta);
+
+    //        log.LogInformation($"Orquestación de liquidación de puntos iniciada con ID: {instanceId}.");
+
+    //        return starter.CreateCheckStatusResponse(req, instanceId);
+    //    }
     }
 }
 

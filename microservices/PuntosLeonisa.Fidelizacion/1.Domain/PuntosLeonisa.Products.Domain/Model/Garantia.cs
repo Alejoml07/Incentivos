@@ -132,7 +132,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
             if (data.Proveedor == "LEONISA")
             {
                 sb.Append("<h2 style=\"color:#594fa0;\">Recuerda:</h2>");
-                sb.Append("<p>Para continuar con tu reclamación, descarga e imprime el comprobante que aparece en el módulo \"Garantías\", agrégalo dentro del paquete del producto y llévalo a la tienda más cercana.</p>");
+                sb.Append("<p> Para continuar con tu reclamación debes ingresar al siguiente enlace: https://leonisa.co/a/centro-de-devoluciones, digitar tu número de pedido y tu email o teléfono, y dar clic en 'ENCONTRAR MI PEDIDO'.</p>");
             }
             sb.Append("<table class=\"tabla-estilizada\">");
             sb.Append("<tr><th class=\"encabezado-tabla\">Ticket de reclamación</th><th class=\"encabezado-tabla\">Nro pedido</th><th class=\"encabezado-tabla\">Fecha reclamación</th><th class=\"encabezado-tabla\">Proveedor</th><th class=\"encabezado-tabla\">Producto</th><th class=\"encabezado-tabla\">Observación usuario</th></tr>");

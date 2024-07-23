@@ -2694,4 +2694,6 @@ public class FidelizacionApplication : IFidelizacionApplication
             throw;
         }
     }
+
+
 }
