@@ -11,6 +11,7 @@ namespace PuntosLeonisa.Seguridad.Application.Core
         Task<GenericResponse<bool>> LiquidacionPuntosMes(LiquidacionPuntos data);
         Task<GenericResponse<bool>> AddAndDeleteVentaVarAndHistoria(LiquidacionPuntos data);
         Task<GenericResponse<IEnumerable<UsuarioInfoPuntos>>> GetInfoWithSpace();
+        Task<GenericResponse<bool>> ValidarLiquidacion();
 
         
     }

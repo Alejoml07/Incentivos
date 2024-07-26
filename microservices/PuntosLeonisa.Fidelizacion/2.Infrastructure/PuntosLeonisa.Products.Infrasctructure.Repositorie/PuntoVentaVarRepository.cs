@@ -24,13 +24,13 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
 
         public async Task<IEnumerable<PuntoVentaVar>> GetPuntosByCodigoUsuario(PuntoVentaVar data)
         {
-            var response = await context.Set<PuntoVentaVar>().Where(x => x.CodigoPuntoVenta == data.CodigoPuntoVenta && x.Mes == data.Mes && x.Anio == data.Anio).ToListAsync();
+            var response = await context.Set<PuntoVentaVar>().Where(x => x.CodigoPuntoVenta == data.CodigoPuntoVenta && x.Mes == data.Mes && x.Anio == data.Anio && x.Cumplimiento >= 100.5).ToListAsync();
             return response;
         }
 
         public Task<PuntoVentaVar> GetPuntoVentaVar(PuntoVentaVarDto data)
         {
-            var response = context.Set<PuntoVentaVar>().Where(x => x.IdVariable == data.IdPuntoVenta && x.IdVariable == data.IdVariable && x.Mes == data.Mes && x.Anio == data.Anio).FirstOrDefault();
+            var response = context.Set<PuntoVentaVar>().Where(x => x.IdPuntoVenta == data.IdPuntoVenta && x.IdVariable == data.IdVariable && x.Mes == data.Mes && x.Anio == data.Anio).FirstOrDefault();
             return Task.FromResult(response);
         }
 

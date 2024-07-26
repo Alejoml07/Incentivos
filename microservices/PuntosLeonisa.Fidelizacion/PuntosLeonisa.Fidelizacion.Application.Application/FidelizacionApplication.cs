@@ -2682,12 +2682,14 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
-            var redenciones = this.unitOfWork.UsuarioRedencionRepository.GetUsuariosRedencionPuntosByTipoUsuarioAndProveedor(data);
+            var redencionesTask = this.unitOfWork.UsuarioRedencionRepository.GetUsuariosRedencionPuntosByTipoUsuarioAndProveedor(data);
+            var redenciones = await redencionesTask; 
+            var redencionesOrdenadas = redenciones.OrderByDescending(p => p.FechaRedencion); 
+
             return new GenericResponse<IEnumerable<UsuarioRedencion>>
             {
-                Result = redenciones.Result
+                Result = redencionesOrdenadas
             };
-
         }
         catch (Exception)
         {

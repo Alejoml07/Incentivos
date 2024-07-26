@@ -16,5 +16,6 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
         public double? Cumplimiento { get; set; }
         public double? Puntos { get; set; }
         public string? IdVariable { get; set; }
+        public string? Porcentaje { get; set; }
     }
 }
