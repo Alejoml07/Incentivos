@@ -829,5 +829,25 @@ namespace PuntosLeonisa.Seguridad.Application
                 Result = true
             };
         }
+
+        public async Task<GenericResponse<IEnumerable<SeguimientoLiquidacion>>> GetSeguimientoLiquidacion(Fechas data)
+        {
+            try
+            {
+                var seguimientos = await this.unitOfWork.SeguimientoLiquidacionRepository.GetSeguimientoLiquidacion(data);
+                //necesito retornar cedulas que no se repitan y sumar sus puntos
+                return new GenericResponse<IEnumerable<SeguimientoLiquidacion>>
+                {
+                    IsSuccess = true,
+                    Message = "Seguimientos encontrados",
+                    Result = seguimientos
+                };
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

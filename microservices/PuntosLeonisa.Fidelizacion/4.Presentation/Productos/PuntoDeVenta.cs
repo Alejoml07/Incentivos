@@ -408,6 +408,28 @@ namespace PuntosLeonisa.Seguridad.Function
                 return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("GetSeguimientoLiquidacion")]
+        [OpenApiOperation(operationId: "GetSeguimientoLiquidacion", tags: new[] { "PuntosDeVenta/GetSeguimientoLiquidacion" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Get carga masiva de registros de liquidacion")]
+        public async Task<IActionResult> GetSeguimientoLiquidacion(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "PuntosDeVenta/GetSeguimientoLiquidacion")] HttpRequest req,
+           ILogger log)
+        {
+            try
+            {
+                log.LogInformation($"Reportes:GetSeguimientoLiquidacion Inicia obtener registros de liquidacion. Fecha:{DateTime.UtcNow}");
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var fechas = JsonConvert.DeserializeObject<Fechas>(requestBody);
+                var punto = await this._puntoDeVentaApplication.GetSeguimientoLiquidacion(fechas);
+                return new OkObjectResult(punto);
+
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 

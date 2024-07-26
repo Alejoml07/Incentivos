@@ -1792,6 +1792,24 @@
       },
       "Key": "AddAndDeleteVentaVarAndHistoriaRoute"
     },
+    {
+      "DownstreamPathTemplate": "/api/PuntosDeVenta/GetSeguimientoLiquidacion",
+      "UpstreamPathTemplate": "/api/PuntosDeVenta/GetSeguimientoLiquidacion",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizaciontest.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "GetSeguimientoLiquidacionRoute"
+    },
+    //Fin Liquidacion Puntos Mes
     //Scanner
     {
       "DownstreamPathTemplate": "/api/fidelizacion/AddUsuarioScanner",
