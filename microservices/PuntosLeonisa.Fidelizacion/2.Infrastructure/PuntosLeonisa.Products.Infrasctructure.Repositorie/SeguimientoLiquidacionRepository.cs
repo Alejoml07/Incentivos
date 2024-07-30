@@ -19,21 +19,10 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
         public async Task<IEnumerable<SeguimientoLiquidacion>> GetSeguimientoLiquidacion(Fechas data)
         {
             // Traer todos los seguimientos
-            var seguimientos = await context.Set<SeguimientoLiquidacion>().Where(x => x.Mes == data.Mes && x.Anio == data.Anio).ToListAsync();
-
-            // Agruparlos por cédula y sumar sus puntos en memoria
-            var resultado = seguimientos
-                .GroupBy(x => x.Cedula)
-                .Select(x => new SeguimientoLiquidacion
-                {
-                    Cedula = x.Key,
-                    Puntos = x.Sum(y => y.Puntos),
-                    Anio = x.First().Anio,
-                    Mes = x.First().Mes
-                })
-                .ToList();
-
-            return resultado;
+            var seguimientos = await context.Set<SeguimientoLiquidacion>()
+                                             .Where(x => x.Mes == data.Mes && x.Anio == data.Anio)
+                                             .ToListAsync();
+            return seguimientos.Where(x => x.Puntos != 0);
         }
     }
 }

@@ -437,8 +437,10 @@ namespace PuntosLeonisa.Seguridad.Application
                                         Cumplimiento = item2.Cumplimiento,
                                         Puntos = (int)ptsobt,
                                         IdVariable = item2.IdVariable,
-                                        Porcentaje = item.Porcentaje
-
+                                        Porcentaje = item.Porcentaje,
+                                        NombreVariable = item2.NombreVariable,
+                                        NombrePtoVenta = item2.NombrePtoVenta,
+                                     
                                     };
                                     await AddSeguimientoLiquidacion(seguimiento);
                                     
@@ -688,6 +690,8 @@ namespace PuntosLeonisa.Seguridad.Application
                                 Presupuesto = item.Presupuesto,
                                 ValReal = item.ValReal,
                                 Cumplimiento = item.Cumplimiento,
+                                NombrePtoVenta = id_ptventa.Nombre,
+                                NombreVariable = id_variable.Nombre
                             };
                             await this.unitOfWork.PuntoVentaVarRepository.Add(exist);
                             await this.unitOfWork.SaveChangesAsync();

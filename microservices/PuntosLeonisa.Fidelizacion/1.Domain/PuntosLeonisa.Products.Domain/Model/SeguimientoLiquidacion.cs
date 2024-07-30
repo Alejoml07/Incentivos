@@ -10,6 +10,8 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
     {
         public string? Id { get; set; }
         public string? Cedula { get; set; }
+        public string? NombrePtoVenta { get; set; }
+        public string? NombreVariable { get; set; }
         public string? Mes { get; set; }
         public string? Anio { get; set; }
         public string? PtoVenta { get; set; }
