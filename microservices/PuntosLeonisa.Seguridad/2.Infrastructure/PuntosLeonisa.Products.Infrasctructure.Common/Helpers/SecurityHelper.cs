@@ -80,6 +80,7 @@ namespace PuntosLeonisa.Seguridad.Infrasctructure.Common.Helpers
 
         public string GenerarHTML(string urlRestablecer)
         {
+            var imgUrl = "https://incentivosvotre.web.app/assets/images/MSAUC.png";
             var sb = new StringBuilder();
 
             sb.Append("<!DOCTYPE html><html lang=\"es\">");
@@ -93,7 +94,7 @@ namespace PuntosLeonisa.Seguridad.Infrasctructure.Common.Helpers
             sb.Append("<!-- Aquí puedes agregar cualquier otro contenido HTML antes de la tabla -->");
 
             sb.Append("<div style=\"padding: 5%;\" class=\"\">");
-            sb.Append("<img src=\"https://stgactincentivos.blob.core.windows.net/$web/img/mis%20sue%C3%B1os%20a%20un%20clic.svg?sp=r&st=2023-12-19T16:00:18Z&se=2023-12-20T00:00:18Z&spr=https&sv=2022-11-02&sr=b&sig=oZC6y4Uw3sH9%2FjTNNYgxzDqxQfKzqZAeS6clt92IS6Y%3D\" style=\"width: 100%; margin: auto; display: block;\">");
+            sb.Append($"<img src=\"{imgUrl}\" class=\"imagen-centrada\">");
             sb.Append("</div>");
             sb.Append("<div class=\"content\">");
             sb.Append("<p>Hemos recibido una solicitud para restablecer tu contraseña. Si no has hecho esta solicitud, por favor ignora este correo. De lo contrario, puedes restablecer tu contraseña haciendo clic en el siguiente enlace:</p>");

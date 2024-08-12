@@ -383,7 +383,7 @@ namespace PuntosLeonisa.Seguridad.Application
                                 };
                                 var resultadoConsultaPresupuesto = await unitOfWork.PuntoVentaVarRepository.GetConsultaPresupuesto(consp);
                                 
-                                if (resultadoConsultaPresupuesto.Cumplimiento >= 100.5 && item2.IdVariable != "22" && item2.Cumplimiento >= 100)
+                                if (resultadoConsultaPresupuesto.Cumplimiento >= 100.5 && item2.IdVariable != "22" && item2.Cumplimiento >= 99.5)
                                 {
                                     if (item2.Cumplimiento > 110)
                                     {

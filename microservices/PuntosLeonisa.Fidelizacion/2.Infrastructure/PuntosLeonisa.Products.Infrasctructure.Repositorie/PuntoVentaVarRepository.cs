@@ -24,7 +24,7 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
 
         public async Task<IEnumerable<PuntoVentaVar>> GetPuntosByCodigoUsuario(PuntoVentaVar data)
         {
-            var response = await context.Set<PuntoVentaVar>().Where(x => x.CodigoPuntoVenta == data.CodigoPuntoVenta && x.Mes == data.Mes && x.Anio == data.Anio && x.Cumplimiento >= 100.5).ToListAsync();
+            var response = await context.Set<PuntoVentaVar>().Where(x => x.CodigoPuntoVenta == data.CodigoPuntoVenta && x.Mes == data.Mes && x.Anio == data.Anio && x.Cumplimiento >= 99.5).ToListAsync();
             return response;
         }
 

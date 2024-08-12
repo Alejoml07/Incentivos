@@ -112,7 +112,15 @@ namespace PuntosLeonisa.Seguridad.Application
         public Task<GenericResponse<bool>> VerificarUser(string email)
         {
             var usuario = usuarioRepository.GetUsuarioByEmail(email);
-
+            if (usuario.Result.TipoUsuario != "Asesoras vendedoras")
+            {
+                return Task.FromResult(new GenericResponse<bool>
+                {
+                    IsSuccess = true,
+                    Message = "Usuario no necesita aceptar terminos y condiciones",
+                    Result = true,
+                });
+            }
             if(usuario.Result.TratamientoDatos == true)
             {
                 return Task.FromResult(new GenericResponse<bool>
