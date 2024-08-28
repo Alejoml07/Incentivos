@@ -2984,6 +2984,7 @@
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "C:\\Program Files\\dotnet\\library-packs": {},
+        "\\\\landivt\\sft\\Sfttrns\\Sftdllo\\Componentes\\SecurityService\\Nuget Packages V1\\NetStandard": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

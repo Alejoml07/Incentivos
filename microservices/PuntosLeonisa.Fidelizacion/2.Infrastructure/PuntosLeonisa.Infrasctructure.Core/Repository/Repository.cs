@@ -67,8 +67,10 @@ namespace PuntosLeonisa.Infrasctructure.Core.Repository
         {
             try
             {
-               
+
                 // Actualizamos la entidad
+                _context.ChangeTracker.Clear();
+                _context.Entry(entity).State = EntityState.Modified;
                 _context.Set<T>().Update(entity);
 
                 // Guardamos los cambios de manera asincrónica

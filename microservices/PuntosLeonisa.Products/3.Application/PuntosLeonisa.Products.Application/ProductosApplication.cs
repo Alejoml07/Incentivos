@@ -522,6 +522,37 @@ public class ProductosApplication : IProductApplication
         
     }
 
+    public async Task<GenericResponse<bool>> AddBannerEventos(Banner banner)
+    {
+        try
+        {
+            var bannerExist = await this.bannerRepository.GetById(banner.TipoUsuario);
+            if (bannerExist != null)
+            {
+                await UploadImageToBanner(banner);
+                await this.bannerRepository.Update(banner);
+                return new GenericResponse<bool>()
+                {
+                    Result = true
+                };
+            }
+            else
+            {
+                await UploadImageToBanner(banner);
+                await this.bannerRepository.Add(banner);
+                return new GenericResponse<bool>()
+                {
+                    Result = true
+                };
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }        
+    }
+
     public async Task<GenericResponse<bool>> AddBanner(Banner banner)
     {
         try
@@ -551,12 +582,26 @@ public class ProductosApplication : IProductApplication
 
             throw;
         }
-            
-        
-        
     }
 
-    public Task<GenericResponse<Banner>> GetBannerById(Banner data)
+        public Task<GenericResponse<Banner>> GetBannerById(Banner data)
+        {
+            try
+            {
+                var response = this.bannerRepository.GetBannersByUserType(data);
+                return Task.FromResult(new GenericResponse<Banner>()
+                {
+                    Result = response.Result
+                });
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+    public Task<GenericResponse<Banner>> GetBannerByEvent(Banner data)
     {
         try
         {
@@ -572,7 +617,6 @@ public class ProductosApplication : IProductApplication
             throw;
         }
     }
-
     public async Task<GenericResponse<IEnumerable<ProductoDto>>> GetProductByProveedorOrAll(TipoUsuarioDto[] data)
     {
         try

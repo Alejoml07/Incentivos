@@ -758,6 +758,34 @@
     },
 
     {
+      "UpstreamPathTemplate": "/api/Productos/AddBannerEventos",
+      "DownstreamPathTemplate": "/api/Productos/AddBannerEventos",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azproductostest.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "AddBannerEventosRoute"
+    },
+
+    {
+      "UpstreamPathTemplate": "/api/Productos/GetBannerByEvent",
+      "DownstreamPathTemplate": "/api/Productos/GetBannerByEvent",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azproductostest.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "GetBannerByEventRoute"
+    },
+
+    {
       "UpstreamPathTemplate": "/api/Productos/GetBannerById",
       "DownstreamPathTemplate": "/api/Productos/GetBannerById",
       "DownstreamScheme": "https",

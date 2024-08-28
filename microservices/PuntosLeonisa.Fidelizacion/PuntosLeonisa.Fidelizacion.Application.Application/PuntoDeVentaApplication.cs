@@ -366,7 +366,7 @@ namespace PuntosLeonisa.Seguridad.Application
                                     var one_port = 0.01;
 
                                     ptsobt = porclaborado * (cumplimiento - one_port) * item2.Base;
-                                    ptsobt = Math.Floor((double)ptsobt);
+                                    ptsobt = Math.Round((double)ptsobt);
                                 }
                                 else
                                 {
@@ -394,6 +394,7 @@ namespace PuntosLeonisa.Seguridad.Application
                                         cumplimiento = item2.Cumplimiento / 100;
                                     }
                                     ptsobt = (porclaborado * cumplimiento * item2.Base);
+                                    ptsobt = Math.Round((double)ptsobt);
                                 }
 
                                 //if (item2.Cumplimiento >= 104.5)
@@ -420,6 +421,7 @@ namespace PuntosLeonisa.Seguridad.Application
                                     };
 
                                     await this.unitOfWork.UsuarioInfoPuntosRepository.Add(NuevoInfo);
+                                    await this.unitOfWork.SaveChangesAsync();
                                 }
                                 puntosUsuario = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByCedula(item.Cedula);
                                 if (puntosUsuario != null)

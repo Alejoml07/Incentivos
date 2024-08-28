@@ -202,7 +202,7 @@ namespace Productos
         string id,  // <-- Parámetro adicional
         ILogger log)
         {
-            
+
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             try
@@ -245,7 +245,7 @@ namespace Productos
                 log.LogInformation($"Product:ProductInventory Inicia obtener todos los productos. Fecha:{DateTime.UtcNow}");
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var productoInventarioDtos = JsonConvert.DeserializeObject<ProductoInventarioDto[]>(requestBody);
-                var response  = await this.productoApplication.AddProductoInventario(productoInventarioDtos);
+                var response = await this.productoApplication.AddProductoInventario(productoInventarioDtos);
                 return new OkObjectResult(response);
             }
             catch (Exception ex)
@@ -310,7 +310,7 @@ namespace Productos
                 var generalFiltersWithResponses = JsonConvert.DeserializeObject<GeneralFiltersWithResponseDto>(requestBody);
                 generalFiltersWithResponses.ApplyFiltro.TipoUsuario = tipoUsuario;
                 var filtros = await productoApplication.GetAndApplyFilters(generalFiltersWithResponses);
-                log.LogInformation($"Product:ObtenerFiltros finaliza obtener todos los filtros sin errores. Fecha:{DateTime.UtcNow}");  
+                log.LogInformation($"Product:ObtenerFiltros finaliza obtener todos los filtros sin errores. Fecha:{DateTime.UtcNow}");
                 return new OkObjectResult(filtros);
             }
             catch (Exception ex)
@@ -380,7 +380,7 @@ namespace Productos
         [OpenApiOperation(operationId: "GetProductByEAN", tags: new[] { "Productos/GetProductByEAN" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
         public async Task<IActionResult> GetProductByEAN(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Productos/GetProductByEAN/{ean}")] HttpRequest req,ILogger logger, string ean)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Productos/GetProductByEAN/{ean}")] HttpRequest req, ILogger logger, string ean)
         {
             try
             {
@@ -497,7 +497,7 @@ namespace Productos
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
         public async Task<IActionResult> GetProductByProveedorOrAll(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Productos/GetProductByProveedorOrAll")] HttpRequest req,
-          // <-- Parámetro adicional
+        // <-- Parámetro adicional
         ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
@@ -566,7 +566,7 @@ namespace Productos
         [OpenApiOperation(operationId: "GetProductByName", tags: new[] { "Productos/GetProductByName" })]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los productos")]
         public async Task<IActionResult> GetProductByName(
-           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Productos/GetProductByName/{nombre}")] HttpRequest req,string nombre,
+           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Productos/GetProductByName/{nombre}")] HttpRequest req, string nombre,
            ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
@@ -618,6 +618,66 @@ namespace Productos
             catch (Exception ex)
             {
                 return GetFunctionError(log, "Error al obtener los productos Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("AddBannerEventos")]
+        [OpenApiOperation(operationId: "AddBannerEventos", tags: new[] { "Productos/AddBannerEventos" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los banners")]
+        public async Task<IActionResult> AddBannerEventos(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Productos/AddBannerEventos")] HttpRequest req,
+        // <-- Parámetro adicional
+        ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<Banner>(requestBody);
+                var banner = await this.productoApplication.AddBannerEventos(data);
+                return new OkObjectResult(banner);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los banners Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("GetBannerByEvent")]
+        [OpenApiOperation(operationId: "GetBannerByEvent", tags: new[] { "Productos/GetBannerByEvent" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(GenericResponse<>), Description = "Lista de dtos con los banners")]
+        public async Task<IActionResult> GetBannerByEvent(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Productos/GetBannerByEvent")] HttpRequest req,
+        // <-- Parámetro adicional
+        ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+            try
+            {
+                if (req is null)
+                {
+                    throw new ArgumentNullException(nameof(req));
+                }
+                if (log is null)
+                {
+                    throw new ArgumentNullException(nameof(log));
+                }
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<Banner>(requestBody);
+                var banner = await this.productoApplication.GetBannerByEvent(data);
+                return new OkObjectResult(banner);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los banners Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
         }
     }
