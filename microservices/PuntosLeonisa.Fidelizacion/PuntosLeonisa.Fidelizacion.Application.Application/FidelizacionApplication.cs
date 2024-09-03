@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Azure.Cosmos.Serialization.HybridRow;
 using Newtonsoft.Json.Linq;
 using PuntosLeonisa.fidelizacion.Domain.Service.DTO.PuntosManuales;
 using PuntosLeonisa.Fidelizacion.Domain;
@@ -1523,6 +1524,14 @@ public class FidelizacionApplication : IFidelizacionApplication
             var extractos = await this.unitOfWork.ExtractosRepository.GetById(data.Id);
             if (extractos == null)
             {
+                if(data.OrigenMovimiento == "Redención" && data.ValorMovimiento == 0)
+                {
+                    return new GenericResponse<bool>
+                    {
+                        Result = false,
+                        Message = "No se puede redimir 0 puntos"
+                    };
+                }
                 data.Id = Guid.NewGuid().ToString();
                 data.Fecha = DateTime.Now;
                 data.Mes = DateTime.Now.Month.ToString();
@@ -2697,5 +2706,58 @@ public class FidelizacionApplication : IFidelizacionApplication
         }
     }
 
+    public async Task<GenericResponse<bool>> AddEventoContenido(EventoContenido data)
+    {
 
+        try
+        {
+            var evento = await this.unitOfWork.EventoContenidoRepository.GetEventoContenidoByEvento(data);
+            if (evento != null)
+            {
+                data.Id = evento.Id;
+                await this.unitOfWork.EventoContenidoRepository.Update(data);
+                await this.unitOfWork.SaveChangesAsync();
+                return new GenericResponse<bool>
+                {
+                    Message = "Evento actualizado",
+                    Result = true
+                };
+            }
+            else
+            {
+                data.Id = Guid.NewGuid().ToString();
+                await this.unitOfWork.EventoContenidoRepository.Add(data);
+                await this.unitOfWork.SaveChangesAsync();
+                return new GenericResponse<bool>
+                {
+                    Message = "Evento creado",
+                    Result = true
+                };
+            }
+
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+
+    }
+
+    public Task<GenericResponse<EventoContenido>> GetEventoContenidoByEvento(EventoContenido data)
+    {
+        try
+        {
+            var eventos = this.unitOfWork.EventoContenidoRepository.GetEventoContenidoByEvento(data).GetAwaiter().GetResult();
+            return Task.FromResult(new GenericResponse<EventoContenido>
+            {
+                Result = eventos
+            });
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
 }

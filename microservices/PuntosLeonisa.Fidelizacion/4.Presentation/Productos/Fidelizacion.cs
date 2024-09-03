@@ -1581,6 +1581,50 @@ namespace Usuarioos
                 return GetFunctionError(log, "Error al obtener los reportes:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("AddEventoContenido")]
+        [OpenApiOperation(operationId: "AddEventoContenido", tags: new[] { "AddEventoContenido" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Añadido correctamente")]
+        public async Task<IActionResult> AddEventoContenido(
+       [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/AddEventoContenido")] HttpRequest req, ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<EventoContenido>(requestBody);
+                var response = await this.puntosApplication.AddEventoContenido(data);
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los datos:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("GetEventoContenidoByEvento")]
+        [OpenApiOperation(operationId: "GetEventoContenidoByEvento", tags: new[] { "GetEventoContenidoByEvento" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Datos enviados correctamente")]
+        public async Task<IActionResult> GetEventoContenidoByEvento(
+       [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/GetEventoContenidoByEvento")] HttpRequest req, ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<EventoContenido>(requestBody);
+                var response = await this.puntosApplication.GetEventoContenidoByEvento(data);
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los datos:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+
     }
 }
 

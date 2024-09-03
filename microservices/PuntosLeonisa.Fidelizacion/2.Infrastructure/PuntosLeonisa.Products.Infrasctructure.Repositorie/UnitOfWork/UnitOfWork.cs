@@ -25,6 +25,8 @@ public class UnitOfWork : IUnitOfWork
     private IUsuarioScannerRepository _usuarioScannerRepository;
     private IGarantiaRepository _garantiaRepository;
     private ISeguimientoLiquidacionRepository _seguimientoLiquidacionRepository;
+    private IEventoContenidoRepository _eventoContenidoRepository;
+
 
 
     public UnitOfWork(FidelizacionContext fidelizacionContext)
@@ -174,6 +176,14 @@ public class UnitOfWork : IUnitOfWork
         {
             _seguimientoLiquidacionRepository ??= new SeguimientoLiquidacionRepository(_fidelizacionContext);
             return _seguimientoLiquidacionRepository;
+        }
+    }
+    public IEventoContenidoRepository EventoContenidoRepository
+    {
+        get
+        {
+            _eventoContenidoRepository ??= new EventoContenidoRepository(_fidelizacionContext);
+            return _eventoContenidoRepository;
         }
     }
 

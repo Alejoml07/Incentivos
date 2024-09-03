@@ -958,6 +958,33 @@
       "Key": "deleteWishListRoute"
     },
     {
+      "UpstreamPathTemplate": "/api/fidelizacion/GetEventoContenidoByEvento",
+      "DownstreamPathTemplate": "/api/fidelizacion/GetEventoContenidoByEvento",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "GetEventoContenidoByEventoRoute"
+    },
+
+    {
+      "UpstreamPathTemplate": "/api/fidelizacion/AddEventoContenido",
+      "DownstreamPathTemplate": "/api/fidelizacion/AddEventoContenido",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizacion.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "Key": "AddEventoContenidoRoute"
+    },
+    {
       "UpstreamPathTemplate": "/api/fidelizacion/DeleteWishList/{id}",
       "DownstreamPathTemplate": "/api/fidelizacion/DeleteWishList/{id}",
       "DownstreamScheme": "https",

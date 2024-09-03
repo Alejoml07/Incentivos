@@ -382,7 +382,12 @@ public class ProductosApplication : IProductApplication
         try
         {
             var response = await this.productoRepository.GetProductsByFiltersAndRange(filtros);
-            var productos = response.Data.SelectMany(group => group.ToList()).ToList().GroupBy(p => p.Referencia).Select(g => g.FirstOrDefault());
+            var productos = response.Data
+            .SelectMany(group => group) 
+            .GroupBy(p => p.Referencia)  
+            .Select(g => g.FirstOrDefault()) 
+            .Where(p => p != null && p.Cantidad > 0) 
+            .ToList(); 
             var pageresult = new PagedResult<Producto>();
             pageresult.PageNumber = response.PageNumber;
             pageresult.PageSize = response.PageSize;

@@ -50,6 +50,7 @@ namespace Productos
             builder.Services.AddScoped<IUsuarioScannerRepository, UsuarioScannerRepository>();
             builder.Services.AddScoped<IGarantiaRepository, GarantiaRepository>();
             builder.Services.AddScoped<ISeguimientoLiquidacionRepository, SeguimientoLiquidacionRepository>();
+            builder.Services.AddScoped<IEventoContenidoRepository, EventoContenidoRepository>();
 
 
             //Add ServiceProxy
@@ -61,6 +62,7 @@ namespace Productos
             builder.Services.AddScoped<IOrdenOPExternalService, OrdenOPExternalServices>();
             builder.Services.AddScoped<IUsuarioScannerExternalService, UsuarioScannerExternalServices>();
             builder.Services.AddScoped<IPuntoDeVentaApplication, PuntoDeVentaApplication>();
+
         }
     }
 }

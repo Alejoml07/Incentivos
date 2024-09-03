@@ -86,7 +86,7 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
     public async Task<PagedResult<IGrouping<string, Producto>>> GetProductsByFiltersAndRange(ProductosFilters queryObject)
     {
 
-        var query = _context.Set<Producto>().Where(x => x.Roles.Contains(queryObject.TipoUsuario) && x.Puntos != null && x.Cantidad != 0 && x.Estado != "2").AsQueryable(); // x.ProveedorLite.CiudadRestringida.Contains(queryObject.Ciudad) &&
+        var query = _context.Set<Producto>().Where(x => x.Roles.Contains(queryObject.TipoUsuario) && x.Puntos != null && x.Cantidad != 0 && x.Estado != "2" && x.Cantidad != null).AsQueryable(); // x.ProveedorLite.CiudadRestringida.Contains(queryObject.Ciudad) &&
 
         Expression? combinedExpression = null;
         var parameter = Expression.Parameter(typeof(Producto), "p");
@@ -308,21 +308,21 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
             if (item.TipoUsuario == "0" && item.Proveedor == "0")
             {
                 var todosProductos = await _context.Set<Producto>()
-                                                   .Where(x => x.Puntos != null && x.Cantidad != 0)
+                                                   .Where(x => x.Puntos != null)
                                                    .ToListAsync();
                 productos.UnionWith(todosProductos);
             }
             if (item.TipoUsuario == "0" && item.Proveedor != "0")
             {
                 var productosPorProveedor = await _context.Set<Producto>()
-                                                          .Where(x => x.ProveedorLite.Nombres == item.Proveedor && x.Puntos != null && x.Cantidad != 0)
+                                                          .Where(x => x.ProveedorLite.Nombres == item.Proveedor && x.Puntos != null)
                                                           .ToListAsync();
                 productos.UnionWith(productosPorProveedor);
             }
             if (item.TipoUsuario != "0" && item.Proveedor == "0")
             {
                 var productosPorTipoUsuario = await _context.Set<Producto>()
-                                                            .Where(x => x.Roles.Contains(item.TipoUsuario) && x.Puntos != null && x.Cantidad != 0)
+                                                            .Where(x => x.Roles.Contains(item.TipoUsuario) && x.Puntos != null)
                                                             .ToListAsync();
                 productos.UnionWith(productosPorTipoUsuario);
             }
@@ -336,7 +336,7 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
         var Page = 1;
         var PageSize = 12;
         List<Producto>? productos = null;
-        productos = await _context.Set<Producto>().Where(x => x.Nombre.ToLower().Contains(data.Busqueda)).Where(x => x.Roles.Contains(data.TipoUsuario) && x.Puntos != null && x.Cantidad != 0 && x.Estado != "2").ToListAsync();
+        productos = await _context.Set<Producto>().Where(x => x.Nombre.ToLower().Contains(data.Busqueda)).Where(x => x.Roles.Contains(data.TipoUsuario) && x.Puntos != null && x.Cantidad != 0 && x.Estado != "2" && x.Cantidad != null).ToListAsync();
 
         // Agrupar los datos en memoria
         var groupedData = productos.GroupBy(p => p.Referencia)
@@ -364,7 +364,7 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
         var Page = 1;
         var PageSize = 12;
         List<Producto>? productos = null;
-        productos = await _context.Set<Producto>().Where(x => x.Roles.Contains(data.TipoUsuario) && x.Puntos != null && x.Cantidad != 0 && x.Estado != "2").ToListAsync();
+        productos = await _context.Set<Producto>().Where(x => x.Roles.Contains(data.TipoUsuario) && x.Puntos != null && x.Cantidad != 0 && x.Estado != "2" && x.Cantidad != null).ToListAsync();
 
         // Agrupar los datos en memoria
         var groupedData = productos.GroupBy(p => p.Referencia)

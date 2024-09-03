@@ -38,6 +38,7 @@ public class FidelizacionContext : DbContext, IDisposable
         modelBuilder.ApplyConfiguration(new UsuarioScannerConfiguration());
         modelBuilder.ApplyConfiguration(new GarantiaConfiguration());
         modelBuilder.ApplyConfiguration(new SeguimientoLiquidacionConfiguration());
+        modelBuilder.ApplyConfiguration(new EventoContenidoConfiguration());    
 
     }
 
