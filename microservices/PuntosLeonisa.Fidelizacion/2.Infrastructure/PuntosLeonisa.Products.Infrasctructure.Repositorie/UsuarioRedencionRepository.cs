@@ -53,6 +53,36 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
 
         public IEnumerable<UsuarioRedencion> GetReporteRedencion(ReporteDto data)
         {
+            if(data.TipoUsuario == "Administrador DLM" && data.FechaFin != null && data.FechaInicio != null)
+            {
+                data.FechaFin = new DateTime(data.FechaFin.Value.Year, data.FechaFin.Value.Month, data.FechaFin.Value.Day, 23, 59, 59);
+                var red = this.context.Set<UsuarioRedencion>()
+                    .Where(x => x.FechaRedencion >= data.FechaInicio
+                                && x.FechaRedencion <= data.FechaFin && x.Usuario.TipoUsuario == "Lideres" || x.Usuario.TipoUsuario == "Lideres ZE")
+                    .ToList();
+                return red;
+            }
+
+            if (data.TipoUsuario == "Administrador Retail" && data.FechaFin != null && data.FechaInicio != null)
+            {
+                data.FechaFin = new DateTime(data.FechaFin.Value.Year, data.FechaFin.Value.Month, data.FechaFin.Value.Day, 23, 59, 59);
+                var red = this.context.Set<UsuarioRedencion>()
+                    .Where(x => x.FechaRedencion >= data.FechaInicio
+                                && x.FechaRedencion <= data.FechaFin && x.Usuario.TipoUsuario == "Asesoras vendedoras")
+                    .ToList();
+                return red;
+            }
+
+            if (data.TipoUsuario != "" && data.TipoUsuario != null && data.FechaFin != null && data.FechaInicio != null)
+            {
+                data.FechaFin = new DateTime(data.FechaFin.Value.Year, data.FechaFin.Value.Month, data.FechaFin.Value.Day, 23, 59, 59);
+                var red = this.context.Set<UsuarioRedencion>()
+                    .Where(x => x.FechaRedencion >= data.FechaInicio
+                                && x.FechaRedencion <= data.FechaFin)
+                    .ToList();
+                return red;
+            }
+
             if (data.TipoUsuario != "" && data.TipoUsuario != null && data.FechaFin != null && data.FechaInicio != null && data.Proveedor != "" && data.Proveedor != null)
             {
                 data.FechaFin = new DateTime(data.FechaFin.Value.Year, data.FechaFin.Value.Month, data.FechaFin.Value.Day, 23, 59, 59);

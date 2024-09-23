@@ -50,6 +50,7 @@ namespace PuntosLeonisa.Seguridad.Domain.Service.Mapping
             CreateMap<OrdenDto, UsuarioRedencion>();
             CreateMap<Garantia, GarantiaDto>();
             CreateMap<GarantiaDto, Garantia>();
+            CreateMap<EventoContenido, EventoContenido>().ForMember(dest => dest.Id, opt => opt.Ignore()); ;
 
             //TODO: Hacer el de usuario
         }

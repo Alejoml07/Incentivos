@@ -32,7 +32,6 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
         {
             get;
             set;
-
         }
 
 
@@ -88,9 +87,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Model
             {
                 return EstadoOrden.Cancelado;
             }
-
             return EstadoOrden.Pendiente;
-
         }
 
 

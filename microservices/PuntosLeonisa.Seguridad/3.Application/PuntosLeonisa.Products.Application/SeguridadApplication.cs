@@ -375,7 +375,7 @@ public class SeguridadApplication : IUsuarioApplication
                         mapper.Map(response, usuarioLocal);
                         usuarioLocal.Pwd = contra;
                         await this.usuarioRepository.Update(usuarioLocal);
-                        var actCorreo = new UpdateInfoDto() { Cedula = usuarioLocal.Cedula, Email = usuarioLocal.Email };
+                        var actCorreo = new UpdateInfoDto() { Cedula = usuarioLocal.Cedula, Email = usuarioLocal.Email.Trim().ToLower() };
                         await this.getUsuarioExternalService.UpdateCorreoInfoPuntos(actCorreo);
                         return new GenericResponse<bool>() { Result = true };
                     }

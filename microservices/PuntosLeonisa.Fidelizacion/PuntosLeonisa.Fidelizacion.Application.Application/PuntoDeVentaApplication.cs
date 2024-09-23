@@ -42,18 +42,21 @@ namespace PuntosLeonisa.Seguridad.Application
         {
             try
             {
-                var puntoDeVenta = await this.puntoDeVentaRepository.GetById(value.Id ?? "");
+                var puntoDeVenta = await this.unitOfWork.PuntoDeVentaRepository.GetById(value.Id);
                 if (puntoDeVenta != null)
                 {
                     //agregar mapping de datos de punto de venta
                     mapper.Map(value, puntoDeVenta);
-                    await this.puntoDeVentaRepository.Update(puntoDeVenta);
+                    await this.unitOfWork.PuntoDeVentaRepository.Update(puntoDeVenta);
                     return response;
                 }
                 else
                 {
+                    value.Id = await this.unitOfWork.PuntoDeVentaRepository.GetAll().ContinueWith(x => x.Result.Count()+300.ToString());
+                    value.Eliminado = 0;
                     var punto = this.mapper.Map<PuntoDeVenta>(value);
-                    await this.puntoDeVentaRepository.Add(punto);
+                    await this.unitOfWork.PuntoDeVentaRepository.Add(punto);
+                    await this.unitOfWork.SaveChangesAsync();
                     return response;
                 }
             }

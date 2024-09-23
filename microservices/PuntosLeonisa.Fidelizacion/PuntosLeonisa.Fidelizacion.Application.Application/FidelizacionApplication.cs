@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.Azure.Cosmos.Serialization.HybridRow;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Query;
 using Newtonsoft.Json.Linq;
 using PuntosLeonisa.fidelizacion.Domain.Service.DTO.PuntosManuales;
 using PuntosLeonisa.Fidelizacion.Domain;
@@ -232,7 +234,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                 await this.unitOfWork.CarritoRepository.Add(carrito);
                 //await this.unitOfWork.SaveChangesAsync();
                 //agregar a usuarioinfo puntos
-                var usuarioInfoPuntos = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(carrito.User.Email);
+                var usuarioInfoPuntos = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByCedula(carrito.User.Cedula);
                 if (usuarioInfoPuntos != null)
                 {
                     usuarioInfoPuntos.PuntosEnCarrito = (int)carrito.Product.Puntos * carrito.Product.Quantity;
@@ -1067,11 +1069,11 @@ public class FidelizacionApplication : IFidelizacionApplication
 
 
             data.PuntosRedimidos = data.GetSumPuntos();
-            if(data.ProductosCarrito.Any(p => p.ProveedorLite.Nit != "811044814"))
+            if (data.ProductosCarrito.Any(p => p.ProveedorLite.Nit != "811044814"))
             {
                 var redenciones = unitOfWork.UsuarioRedencionRepository.GetNroPedido() + 1;
                 data.NroPedido = redenciones;
-            }            
+            }
             await this.unitOfWork.UsuarioRedencionRepository.Add(data);
             this.unitOfWork.SaveChangesSync();
 
@@ -1524,7 +1526,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             var extractos = await this.unitOfWork.ExtractosRepository.GetById(data.Id);
             if (extractos == null)
             {
-                if(data.OrigenMovimiento == "Redención" && data.ValorMovimiento == 0)
+                if (data.OrigenMovimiento == "Redención" && data.ValorMovimiento == 0)
                 {
                     return new GenericResponse<bool>
                     {
@@ -1863,11 +1865,54 @@ public class FidelizacionApplication : IFidelizacionApplication
 
     public Task<GenericResponse<IEnumerable<Extractos>>> GetExtractosByUserAndDate(ReporteDto data)
     {
-        var extractos = this.unitOfWork.ExtractosRepository.GetExtractosByUserAndDate(data).GetAwaiter().GetResult();
-        return Task.FromResult(new GenericResponse<IEnumerable<Extractos>>
+        try
         {
-            Result = extractos.OrderByDescending(p => p.Fecha)
-        });
+            //crear lista de tipo Extractos
+            var ext = new List<Extractos>();
+            var extractos = this.unitOfWork.ExtractosRepository.GetExtractosByUserAndDate(data).GetAwaiter().GetResult();
+            //if (data.TipoUsuario != "Administrador DLM" && data.TipoUsuario != "Administrador Retail")
+            //{
+            //    return Task.FromResult(new GenericResponse<IEnumerable<Extractos>>
+            //    {
+            //        Result = extractos.OrderByDescending(p => p.Fecha)
+            //    });
+            //}
+            //foreach (var item in extractos)
+            //{
+            //    if(item.Usuario == null)
+            //    {
+            //        continue;
+            //    }
+
+            //    var user = this.usuarioExternalService.GetUserLiteByCedula(item.Usuario.Cedula).GetAwaiter().GetResult();
+            //    if (user == null)
+            //    {
+            //        continue;
+            //    }
+            //    else
+            //    {
+
+            //        if (data.TipoUsuario == "Administrador DLM" && user.Result.TipoUsuario == "Lideres" || user.Result.TipoUsuario == "Lideres ZE")
+            //        {
+            //            ext.Add(item);
+            //        }
+            //        if (data.TipoUsuario == "Administrador Retail" && user.Result.TipoUsuario == "Asesoras vendedoras")
+            //        {
+            //            ext.Add(item);
+            //        }
+            //    }
+            //}
+            return Task.FromResult(new GenericResponse<IEnumerable<Extractos>>
+            {
+                Result = extractos.OrderByDescending(p => p.Fecha)
+            });
+        }
+        catch (Exception ex)
+        {
+
+            throw ex;
+        }
+        
     }
 
     public Task<GenericResponse<IEnumerable<Extractos>>> UpdateUser()
@@ -2224,7 +2269,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             {
                 foreach (var item in reporte.ProductosCarrito)
                 {
-                    if(item.ContadorPendiente == null)
+                    if (item.ContadorPendiente == null)
                     {
                         item.ContadorPendiente = 0;
                     }
@@ -2267,6 +2312,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                     redencionEncontrada.Transportadora = item.Producto.Transportadora;
                     redencionEncontrada.FechaActEnviado = DateTime.Now;
                     item.Producto = redencionEncontrada;
+                    redencion.Estado = EstadoOrden.Enviado;
                     await this.unitOfWork.UsuarioRedencionRepository.Update(redencion);
                     await this.usuarioExternalService.UserSendEmailWithMessageAndState(redencion);
                 }
@@ -2301,8 +2347,10 @@ public class FidelizacionApplication : IFidelizacionApplication
                     redencionEncontrada.Estado = EstadoOrdenItem.Entregado;
                     redencionEncontrada.FechaActEntregado = DateTime.Now;
                     item.Producto = redencionEncontrada;
+                    redencion.Estado = EstadoOrden.Entregado;
                     await this.unitOfWork.UsuarioRedencionRepository.Update(redencion);
                     await this.usuarioExternalService.UserSendEmailWithMessageAndState(redencion);
+                    
                 }
                 else
                 {
@@ -2464,15 +2512,15 @@ public class FidelizacionApplication : IFidelizacionApplication
         try
         {
             var redencion = await this.unitOfWork.UsuarioRedencionRepository.GetUsuarioRedencionByNroPedido(data.NroPedido);
-            if(data.TipoUsuario == "Super Usuario")
+            if (data.TipoUsuario == "Super Usuario")
             {
-               return new GenericResponse<UsuarioRedencion>
-               {
+                return new GenericResponse<UsuarioRedencion>
+                {
                     Result = redencion
-               };
+                };
             }
 
-            if(redencion.Usuario.Email != data.Email)
+            if (redencion.Usuario.Email != data.Email)
             {
                 return new GenericResponse<UsuarioRedencion>
                 {
@@ -2480,7 +2528,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                     Message = "Este Nro de pedido no esta asociado a este usuario"
                 };
             }
-            if(redencion != null)
+            if (redencion != null)
             {
                 return new GenericResponse<UsuarioRedencion>
                 {
@@ -2539,7 +2587,7 @@ public class FidelizacionApplication : IFidelizacionApplication
                 return new GenericResponse<bool>
                 {
                     Message = "Supera el limite de tiempo",
-                    Result = false                    
+                    Result = false
                 };
             }
             else
@@ -2548,12 +2596,12 @@ public class FidelizacionApplication : IFidelizacionApplication
             }
             data.Id = Guid.NewGuid().ToString();
             await UploadImageToGarantia(data);
-            data.FechaReclamacion = DateTime.Now.AddHours(-5);           
+            data.FechaReclamacion = DateTime.Now.AddHours(-5);
             data.EAN = data.EAN;
-            data.NroTicket = this.unitOfWork.GarantiaRepository.GetNroGarantia() +1;
+            data.NroTicket = this.unitOfWork.GarantiaRepository.GetNroGarantia() + 1;
             await this.unitOfWork.GarantiaRepository.Add(data);
             await this.unitOfWork.SaveChangesAsync();
-            await this.usuarioExternalService.SendMailGarantiaEnviada(data,data.CorreoProveedor);
+            await this.usuarioExternalService.SendMailGarantiaEnviada(data, data.CorreoProveedor);
             return new GenericResponse<bool>
             {
                 Result = true
@@ -2590,7 +2638,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         try
         {
             var garantia = await this.unitOfWork.GarantiaRepository.GetById(data.Id);
-            if(garantia != null)
+            if (garantia != null)
             {
                 garantia.Estado = data.Estado;
                 garantia.ObservacionEstado = data.ObservacionEstado;
@@ -2602,8 +2650,8 @@ public class FidelizacionApplication : IFidelizacionApplication
                 await this.unitOfWork.GarantiaRepository.Update(garantia);
                 await this.unitOfWork.SaveChangesAsync();
                 await this.usuarioExternalService.SendMailGarantia(garantia);
-            }       
-                            
+            }
+
             return new GenericResponse<bool>
             {
                 Result = true
@@ -2625,7 +2673,7 @@ public class FidelizacionApplication : IFidelizacionApplication
             return new GenericResponse<IEnumerable<GarantiaDto>>
             {
                 Result = garantiasDto.OrderByDescending(p => p.FechaReclamacion)
-            };            
+            };
         }
         catch (Exception)
         {
@@ -2691,9 +2739,18 @@ public class FidelizacionApplication : IFidelizacionApplication
     {
         try
         {
+            // Obtener las redenciones de la base de datos
             var redencionesTask = this.unitOfWork.UsuarioRedencionRepository.GetUsuariosRedencionPuntosByTipoUsuarioAndProveedor(data);
-            var redenciones = await redencionesTask; 
-            var redencionesOrdenadas = redenciones.OrderByDescending(p => p.FechaRedencion); 
+            var redenciones = await redencionesTask;
+
+            // Recalcular el estado de cada redención
+            foreach (var redencion in redenciones)
+            {
+                redencion.Estado = redencion.GetEstadoOrden();
+            }
+
+            // Ordenar por la fecha de redención
+            var redencionesOrdenadas = redenciones.OrderByDescending(p => p.FechaRedencion);
 
             return new GenericResponse<IEnumerable<UsuarioRedencion>>
             {
@@ -2714,8 +2771,8 @@ public class FidelizacionApplication : IFidelizacionApplication
             var evento = await this.unitOfWork.EventoContenidoRepository.GetEventoContenidoByEvento(data);
             if (evento != null)
             {
-                data.Id = evento.Id;
-                await this.unitOfWork.EventoContenidoRepository.Update(data);
+                mapper.Map(data,evento);
+                await this.unitOfWork.EventoContenidoRepository.Update(evento);
                 await this.unitOfWork.SaveChangesAsync();
                 return new GenericResponse<bool>
                 {
