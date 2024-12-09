@@ -11,5 +11,6 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.Interfaces
     public interface ISeguimientoLiquidacionRepository :IRepository<SeguimientoLiquidacion>
     {
         Task<IEnumerable<SeguimientoLiquidacion>> GetSeguimientoLiquidacion(Fechas data);
+        Task<IEnumerable<SeguimientoLiquidacion>> DeleteSeguimientoByMesYAnio(SeguimientoLiquidacion data);
     }
 }

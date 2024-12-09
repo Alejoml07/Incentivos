@@ -232,12 +232,14 @@ public class FidelizacionApplication : IFidelizacionApplication
             {
                 carrito.Id = Guid.NewGuid().ToString();
                 await this.unitOfWork.CarritoRepository.Add(carrito);
-                //await this.unitOfWork.SaveChangesAsync();
+                await this.unitOfWork.SaveChangesAsync();
                 //agregar a usuarioinfo puntos
                 var usuarioInfoPuntos = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByCedula(carrito.User.Cedula);
                 if (usuarioInfoPuntos != null)
                 {
-                    usuarioInfoPuntos.PuntosEnCarrito = (int)carrito.Product.Puntos * carrito.Product.Quantity;
+                    var puntosEnCarrito = this.unitOfWork.CarritoRepository.GetPuntosEnCarrito(carrito.User.Email).GetAwaiter().GetResult();
+                    var puntosEnCarritoSum = puntosEnCarrito.Sum(x => x.Product.Puntos * x.Product.Quantity);
+                    usuarioInfoPuntos.PuntosEnCarrito = puntosEnCarritoSum;
                     await this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuarioInfoPuntos);
                     await this.unitOfWork.SaveChangesAsync();
                 }
@@ -259,7 +261,9 @@ public class FidelizacionApplication : IFidelizacionApplication
                     var usuarioInfoPuntos = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(carrito.User.Email);
                     if (usuarioInfoPuntos != null)
                     {
-                        usuarioInfoPuntos.PuntosEnCarrito += (int?)carrito.Product?.Puntos * carrito.Product?.Quantity;
+                        var puntosEnCarrito = this.unitOfWork.CarritoRepository.GetPuntosEnCarrito(carrito.User.Email).GetAwaiter().GetResult();
+                        var puntosEnCarritoSum = puntosEnCarrito.Sum(x => x.Product.Puntos * x.Product.Quantity);
+                        usuarioInfoPuntos.PuntosEnCarrito = puntosEnCarritoSum;
                         carritoToUpdate.Product.Quantity = carrito.Product.Quantity;
                         await this.unitOfWork.CarritoRepository.Update(carritoToUpdate);
                         await this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuarioInfoPuntos);
@@ -295,6 +299,16 @@ public class FidelizacionApplication : IFidelizacionApplication
             if (carrito != null)
             {
                 await this.unitOfWork.CarritoRepository.Delete(carrito);
+                await this.unitOfWork.SaveChangesAsync();
+                var puntosEnCarrito = this.unitOfWork.CarritoRepository.GetPuntosEnCarrito(carrito.User.Email).GetAwaiter().GetResult();
+                var puntosEnCarritoSum = puntosEnCarrito.Sum(x => x.Product.Puntos * x.Product.Quantity);
+                var usuarioInfoPuntos = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(carrito.User.Email);
+                if (usuarioInfoPuntos != null)
+                {
+                    usuarioInfoPuntos.PuntosEnCarrito = puntosEnCarritoSum;
+                    await this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuarioInfoPuntos);
+                    await this.unitOfWork.SaveChangesAsync();
+                }
                 await this.unitOfWork.SaveChangesAsync();
                 return true;
             }
@@ -497,7 +511,7 @@ public class FidelizacionApplication : IFidelizacionApplication
         try
         {
             var usuarioCompleto = this.usuarioExternalService.GetUserByEmail(data.Usuario.Email ?? "").GetAwaiter().GetResult();
-            var usuarioInfoPuntos = this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByEmail(data.Usuario.Email).GetAwaiter().GetResult();
+            var usuarioInfoPuntos = this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByCedula(data.Usuario.Cedula).GetAwaiter().GetResult();
             data.Usuario.Agencia = usuarioCompleto.Result.Agencia;
             data.Usuario.Empresa = usuarioCompleto.Result.Empresa;
             data.Usuario = usuarioCompleto.Result;
@@ -511,10 +525,11 @@ public class FidelizacionApplication : IFidelizacionApplication
                 }
 
                 var res = await this.CreateRedencion(data);
-                if (res.Message == "No se puede redimir 0 puntos")
+                if (res.Message == "No se puede redimir 0 puntos" || res.Message == "La cantidad de productos no puede ser 0")
                 {
                     throw new Exception(res.Message);
                 }
+                
                 if (res.Result)
                 {
                     //validacion donde no los puntos a redimir no pueden ser mayores al disponible
@@ -879,6 +894,17 @@ public class FidelizacionApplication : IFidelizacionApplication
                     Result = false,
                     Message = "No se puede redimir 0 puntos"
                 };
+            }
+            foreach (var item in data.ProductosCarrito)
+            {
+                if (item.Quantity == null || item.Quantity == 0)
+                {
+                    return new GenericResponse<bool>
+                    {
+                        Result = false,
+                        Message = "La cantidad de productos no puede ser 0"
+                    };
+                }
             }
             data.Id = Guid.NewGuid().ToString();
             data.FechaRedencion = DateTime.Now;

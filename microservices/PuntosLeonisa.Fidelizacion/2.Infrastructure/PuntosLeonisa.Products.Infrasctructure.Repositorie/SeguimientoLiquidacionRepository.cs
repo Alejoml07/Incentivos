@@ -16,6 +16,15 @@ namespace PuntosLeonisa.Fidelizacion.Infrasctructure.Repositorie
             this.context = context;
         }
 
+        public async Task<IEnumerable<SeguimientoLiquidacion>> DeleteSeguimientoByMesYAnio(SeguimientoLiquidacion data)
+        {
+            var registros = await context.Set<SeguimientoLiquidacion>()
+                   .Where(x => x.Mes == data.Mes && x.Anio == data.Anio)
+                   .ToListAsync();
+            context.Set<SeguimientoLiquidacion>().RemoveRange(registros);
+            return registros;
+        }
+
         public async Task<IEnumerable<SeguimientoLiquidacion>> GetSeguimientoLiquidacion(Fechas data)
         {
             // Traer todos los seguimientos

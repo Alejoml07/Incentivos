@@ -67,21 +67,38 @@ namespace PuntosLeonisa.Infrasctructure.Core.Repository
         {
             try
             {
+                // Verifica si la entidad ya está siendo rastreada por el contexto
+                var entityInContext = _context.Set<T>().Local.FirstOrDefault(e => e == entity);
+
+                if (entityInContext == null)
+                {
+                    // Si la entidad no está siendo rastreada, adjúntala y marca como modificada
+                    _context.Set<T>().Attach(entity);
+                }
 
                 // Actualizamos la entidad
-                //_context.ChangeTracker.Clear();
                 _context.Entry(entity).State = EntityState.Modified;
-                _context.Set<T>().Update(entity);
 
                 // Guardamos los cambios de manera asincrónica
-                //await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                // Maneja problemas de concurrencia
+                throw new Exception("Concurrencia al actualizar: " + ex.Message);
+            }
+            catch (DbUpdateException ex)
+            {
+                // Maneja errores al actualizar la base de datos
+                throw new Exception("Error de base de datos al actualizar: " + ex.Message);
             }
             catch (Exception ex)
             {
-                // Aquí deberías manejar o registrar la excepción
+                // Maneja cualquier otro tipo de excepción
                 throw new Exception("Error al actualizar: " + ex.Message);
             }
         }
+
 
         /// <summary>
         /// Método para limpiar contexto y se tomen los cambios en la base de datos

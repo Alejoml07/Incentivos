@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using PuntosLeonisa.Fidelizacion.Domain.Model;
 using PuntosLeonisa.Fidelizacion.Domain.Model.Carrito;
+using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Carrito;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.PuntoDeVenta;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Redencion;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Usuarios;
@@ -42,7 +43,7 @@ namespace PuntosLeonisa.Seguridad.Application
         {
             try
             {
-                var puntoDeVenta = await this.unitOfWork.PuntoDeVentaRepository.GetById(value.Id);
+                var puntoDeVenta = await this.unitOfWork.PuntoDeVentaRepository.GetPuntoDeVentaByCodigo(value.Codigo);
                 if (puntoDeVenta != null)
                 {
                     //agregar mapping de datos de punto de venta
@@ -254,8 +255,14 @@ namespace PuntosLeonisa.Seguridad.Application
                     Mes = data.Fecha.Mes,
                     Anio = data.Fecha.Anho
                 };
+                var seguimiento = new SeguimientoLiquidacion
+                {
+                    Mes = data.Fecha.Mes,
+                    Anio = data.Fecha.Anho
+                };
                 var ToDeleteHistoria = await this.unitOfWork.PuntoVentaHistoria.DeletePuntoVentaHistoriaByMesAndAnio(historia);
                 var ToDeleteVar = await this.unitOfWork.PuntoVentaVarRepository.DeletePuntoVentaVarByMesAndAnio(ventaVar);
+                var ToDeleteSeg = await this.unitOfWork.SeguimientoLiquidacionRepository.DeleteSeguimientoByMesYAnio(seguimiento);
                 await this.unitOfWork.SaveChangesAsync();
                 return new GenericResponse<bool>
                 {
@@ -411,27 +418,27 @@ namespace PuntosLeonisa.Seguridad.Application
                                 //        ptsobt = ptsobt * 1.5;
                                 //    }
                                 //}
-                                var puntosUsuario = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByCedula(item.Cedula);
-                                if (puntosUsuario == null)
-                                {
-                                    var NuevoInfo = new UsuarioInfoPuntos()
-                                    {
-                                        Cedula = item.Cedula.Trim(),
-                                        PuntosAcumulados = 0,
-                                        PuntosDisponibles = 0,
-                                        PuntosEnCarrito = 0,
-                                        PuntosRedimidos = 0,
-                                    };
+                                //var puntosUsuario = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByCedula(item.Cedula);
+                                //if (puntosUsuario == null)
+                                //{
+                                //    var NuevoInfo = new UsuarioInfoPuntos()
+                                //    {
+                                //        Cedula = item.Cedula.Trim(),
+                                //        PuntosAcumulados = 0,
+                                //        PuntosDisponibles = 0,
+                                //        PuntosEnCarrito = 0,
+                                //        PuntosRedimidos = 0,
+                                //    };
 
-                                    await this.unitOfWork.UsuarioInfoPuntosRepository.Add(NuevoInfo);
-                                    await this.unitOfWork.SaveChangesAsync();
-                                }
-                                puntosUsuario = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByCedula(item.Cedula);
-                                if (puntosUsuario != null)
-                                {
-                                    puntosUsuario.PuntosAcumulados += (int)ptsobt;
-                                    puntosUsuario.PuntosDisponibles += (int)ptsobt;
-                                    await this.unitOfWork.UsuarioInfoPuntosRepository.Update(puntosUsuario);
+                                //    await this.unitOfWork.UsuarioInfoPuntosRepository.Add(NuevoInfo);
+                                //    await this.unitOfWork.SaveChangesAsync();
+                                //}
+                                //puntosUsuario = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByCedula(item.Cedula);
+                                //if (puntosUsuario != null)
+                                //{
+                                    //puntosUsuario.PuntosAcumulados += (int)ptsobt;
+                                    //puntosUsuario.PuntosDisponibles += (int)ptsobt;
+                                    //await this.unitOfWork.UsuarioInfoPuntosRepository.Update(puntosUsuario);
                                     var seguimiento = new SeguimientoLiquidacion
                                     {
                                         Id = Guid.NewGuid().ToString(),
@@ -449,24 +456,24 @@ namespace PuntosLeonisa.Seguridad.Application
                                     };
                                     await AddSeguimientoLiquidacion(seguimiento);
                                     
-                                    var extracto = new Extractos
-                                    {
-                                        Id = Guid.NewGuid().ToString(),
-                                        Anio = data.Fecha.Anho,
-                                        Mes = data.Fecha.Mes,
-                                        ValorMovimiento = (int)ptsobt,
-                                        Descripcion = "Liquidación de puntos por mes",
-                                        OrigenMovimiento = "Liquidación de puntos por mes",
-                                        Fecha = DateTime.Now.AddHours(-5)
-                                    };
-                                    var usuario = new Usuario()
-                                    {
-                                        Cedula = item.Cedula
-                                    };                                   
-                                    extracto.Usuario = usuario;
-                                    await this.unitOfWork.ExtractosRepository.Add(extracto);
+                                    //var extracto = new Extractos
+                                    //{
+                                    //    Id = Guid.NewGuid().ToString(),
+                                    //    Anio = data.Fecha.Anho,
+                                    //    Mes = data.Fecha.Mes,
+                                    //    ValorMovimiento = (int)ptsobt,
+                                    //    Descripcion = "Liquidación de puntos por mes",
+                                    //    OrigenMovimiento = "Liquidación de puntos por mes",
+                                    //    Fecha = DateTime.Now.AddHours(-5)
+                                    //};
+                                    //var usuario = new Usuario()
+                                    //{
+                                    //    Cedula = item.Cedula
+                                    //};                                   
+                                    //extracto.Usuario = usuario;
+                                    //await this.unitOfWork.ExtractosRepository.Add(extracto);
                                     await this.unitOfWork.SaveChangesAsync();
-                                }
+                                //}
                             }
                         }
                     }
@@ -851,6 +858,104 @@ namespace PuntosLeonisa.Seguridad.Application
                     Message = "Seguimientos encontrados",
                     Result = seguimientos
                 };
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<GenericResponse<bool>> ActualizarCarritoLideres()
+        {
+            try
+            {
+                var lideres = await this.usuarioExternalService.GetUsuarios();
+
+                // Aplicar el filtro y obtener solo los usuarios líderes
+                var lideresFiltrados = lideres.Result
+                    .Where(x => x.TipoUsuario == "Lideres" || x.TipoUsuario == "Lideres ZE")
+                    .ToList();
+
+                // Verificar si se encontraron líderes
+                if (lideresFiltrados.Count > 0)
+                {
+                    foreach (var lider in lideresFiltrados)
+                    {
+                        var usuarioInfo = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByCedula(lider.Cedula);
+                        if(usuarioInfo == null)
+                        {
+                            continue;
+                        }
+                        var puntosEnCarrito = await this.unitOfWork.CarritoRepository.GetPuntosEnCarrito(lider.Email);
+                        var puntosEnCarritoSum = puntosEnCarrito.Sum(x => x.Product.Puntos * x.Product.Quantity);
+                        usuarioInfo.PuntosEnCarrito = puntosEnCarritoSum;
+                        await this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuarioInfo);
+                        await this.unitOfWork.SaveChangesAsync();
+                    }
+
+                    return new GenericResponse<bool>
+                    {
+                        IsSuccess = true,
+                        Message = "Carrito de líderes actualizado correctamente",
+                        Result = true
+                    };
+                }
+
+                return new GenericResponse<bool>
+                {
+                    IsSuccess = false,
+                    Message = "No se encontraron líderes",
+                    Result = false
+                };
+            }
+            catch (Exception ex)
+            {
+                // Se recomienda loggear el error para facilitar el diagnóstico
+                throw new Exception("Ocurrió un error al actualizar el carrito de líderes.", ex);
+            }
+        }
+
+        public async Task<GenericResponse<bool>> ActualizarPuntosLideres()
+        {
+            try
+            {
+                var lideres = await this.usuarioExternalService.GetUsuarios();
+
+                // Aplicar el filtro y obtener solo los usuarios líderes
+                var lideresFiltrados = lideres.Result
+                    .Where(x => x.TipoUsuario == "Lideres" || x.TipoUsuario == "Lideres ZE")
+                    .ToList();
+
+                if (lideresFiltrados.Count() > 0)
+                {
+                    foreach (var lider in lideresFiltrados)
+                    {
+                        var usuarioInfo = await this.unitOfWork.UsuarioInfoPuntosRepository.GetUsuarioByCedula(lider.Cedula);
+                        if (usuarioInfo == null)
+                        {
+                            continue;
+                        }
+                        usuarioInfo.PuntosDisponibles = 0;
+                        await this.unitOfWork.UsuarioInfoPuntosRepository.Update(usuarioInfo);
+                        await this.unitOfWork.SaveChangesAsync();
+                    }
+
+                    return new GenericResponse<bool>
+                    {
+                        IsSuccess = true,
+                        Message = "Puntos de líderes actualizados correctamente",
+                        Result = true
+                    };
+
+                }
+                return new GenericResponse<bool>
+                {
+                    IsSuccess = false,
+                    Message = "No se encontraron líderes",
+                    Result = false
+                };
+
             }
             catch (Exception)
             {

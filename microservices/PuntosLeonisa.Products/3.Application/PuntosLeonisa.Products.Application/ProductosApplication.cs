@@ -470,6 +470,10 @@ public class ProductosApplication : IProductApplication
                 else
                 {
                     var productos = await this.productoRepository.GetById(producto.EAN);
+                    if (producto.Quantity == null || producto.Quantity == 0)
+                    {
+                        continue;
+                    }
                     productos.Cantidad -= producto.Quantity;
                     await this.productoRepository.Update(productos);
                 }

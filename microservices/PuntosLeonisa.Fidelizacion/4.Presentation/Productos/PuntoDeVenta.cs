@@ -430,6 +430,69 @@ namespace PuntosLeonisa.Seguridad.Function
                 return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
             }
         }
+
+        [FunctionName("EliminarExcels")]
+        [OpenApiOperation(operationId: "EliminarExcels", tags: new[] { "PuntosDeVenta/EliminarExcels" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Get carga masiva de registros de liquidacion")]
+        public async Task<IActionResult> EliminarExcels(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "PuntosDeVenta/EliminarExcels")] HttpRequest req,
+           ILogger log)
+        {
+            try
+            {
+                log.LogInformation($"Reportes:GetSeguimientoLiquidacion Inicia obtener registros de liquidacion. Fecha:{DateTime.UtcNow}");
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var fechas = JsonConvert.DeserializeObject<LiquidacionPuntos>(requestBody);
+                var punto = await this._puntoDeVentaApplication.EliminarExcels(fechas);
+                return new OkObjectResult(punto);
+
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los usuarios Fecha:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+
+        [FunctionName("ActualizarCarritoLideres")]
+        [OpenApiOperation(operationId: "ActualizarCarritoLideres", tags: new[] { "ActualizarCarritoLideres" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Datos enviados correctamente")]
+        public async Task<IActionResult> ActualizarCarritoLideres(
+       [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "fidelizacion/ActualizarCarritoLideres")] HttpRequest req, ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+
+                var response = await this._puntoDeVentaApplication.ActualizarCarritoLideres();
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los datos:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("ActualizarPuntosLideres")]
+        [OpenApiOperation(operationId: "ActualizarCarritoLideres", tags: new[] { "ActualizarPuntosLideres" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Datos enviados correctamente")]
+        public async Task<IActionResult> ActualizarPuntosLideres(
+       [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "fidelizacion/ActualizarPuntosLideres")] HttpRequest req, ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+
+                var response = await this._puntoDeVentaApplication.ActualizarPuntosLideres();
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los datos:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
     }
 }
 

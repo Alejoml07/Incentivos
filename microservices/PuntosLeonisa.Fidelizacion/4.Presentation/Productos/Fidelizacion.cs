@@ -1037,7 +1037,7 @@ namespace Usuarioos
             {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var data = JsonConvert.DeserializeObject<UsuarioRedencion>(requestBody);
-                var response = await this.puntosApplication.CreateRedencion(data);
+                var response = await this.puntosApplication.RedencionPuntos(data);
                 return new OkObjectResult(response);
             }
             catch (Exception ex)
@@ -1623,7 +1623,6 @@ namespace Usuarioos
                 return GetFunctionError(log, "Error al obtener los datos:" + DateTime.UtcNow.ToString(), ex);
             }
         }
-
 
     }
 }

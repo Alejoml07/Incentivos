@@ -308,21 +308,21 @@ public class ProductoRepository : Repository<Producto>, IProductoRepository
             if (item.TipoUsuario == "0" && item.Proveedor == "0")
             {
                 var todosProductos = await _context.Set<Producto>()
-                                                   .Where(x => x.Puntos != null)
+                                                   
                                                    .ToListAsync();
                 productos.UnionWith(todosProductos);
             }
             if (item.TipoUsuario == "0" && item.Proveedor != "0")
             {
                 var productosPorProveedor = await _context.Set<Producto>()
-                                                          .Where(x => x.ProveedorLite.Nombres == item.Proveedor && x.Puntos != null)
+                                                          .Where(x => x.ProveedorLite.Nombres == item.Proveedor)
                                                           .ToListAsync();
                 productos.UnionWith(productosPorProveedor);
             }
             if (item.TipoUsuario != "0" && item.Proveedor == "0")
             {
                 var productosPorTipoUsuario = await _context.Set<Producto>()
-                                                            .Where(x => x.Roles.Contains(item.TipoUsuario) && x.Puntos != null)
+                                                            .Where(x => x.Roles.Contains(item.TipoUsuario))
                                                             .ToListAsync();
                 productos.UnionWith(productosPorTipoUsuario);
             }

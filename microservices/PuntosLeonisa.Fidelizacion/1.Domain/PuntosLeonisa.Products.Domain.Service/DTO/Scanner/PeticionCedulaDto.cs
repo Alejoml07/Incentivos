@@ -12,6 +12,6 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Scanner
         public string? nombre { get; set; }
         public string? correo { get; set; }
         public long? identificacion { get; set; }
-        public int? telefono { get; set; }
+        public long? telefono { get; set; }
     }
 }

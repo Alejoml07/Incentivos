@@ -112,19 +112,40 @@ namespace Logistic.Infrastructure.Agents.AgentsImpl
             {
                 string jsonString = JsonConvert.SerializeObject(content);
                 HttpContent contentHttp = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
                 var CircuitBreakerPolicy = _circuitBreaker.GetCircuitBreaker();
                 var TransientErrorRetryPolicy = _transientRetry.GetTransientRetry();
                 var httpClient = _httpClientFactory.CreateClient();
+
                 httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
                 httpClient.DefaultRequestHeaders.Add("Authorization", _configuration["AuthorizationScanner"]);
+
                 var resultData = await CircuitBreakerPolicy.ExecuteAsync(() =>
-                        TransientErrorRetryPolicy.ExecuteAsync(() =>
+                    TransientErrorRetryPolicy.ExecuteAsync(() =>
                         httpClient.PostAsync(requestUrl, contentHttp))
-                    );
+                );
+
                 var response = await resultData.Content.ReadAsStringAsync();
-#pragma warning disable CS8603 // Posible tipo de valor devuelto de referencia nulo
-                return JsonConvert.DeserializeObject<T1>(response);
-#pragma warning restore CS8603 // Posible tipo de valor devuelto de referencia nulo
+
+                // Configuración personalizada para manejar enteros grandes
+                var settings = new JsonSerializerSettings
+                {
+                    MaxDepth = 128, // Ajusta la profundidad si es necesario
+                    TypeNameHandling = TypeNameHandling.None,
+                    MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
+                    // Aquí se ignoran errores de tamaño de entero grande
+                    Error = (sender, args) =>
+                    {
+                        if (args.ErrorContext.Error.Message.Contains("JSON integer"))
+                        {
+                            // Ignorar errores relacionados con enteros grandes
+                            args.ErrorContext.Handled = true;
+                        }
+                    }
+                };
+
+                // Deserializa usando los settings personalizados
+                return JsonConvert.DeserializeObject<T1>(response, settings);
             }
             catch (Exception ex)
             {
