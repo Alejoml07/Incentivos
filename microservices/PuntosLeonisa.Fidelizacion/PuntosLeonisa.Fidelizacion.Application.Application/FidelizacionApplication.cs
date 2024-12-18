@@ -2843,4 +2843,45 @@ public class FidelizacionApplication : IFidelizacionApplication
             throw;
         }
     }
+
+    public async Task<GenericResponse<bool>> AddLogEstado(LogEstado data)
+    {
+        try
+        {
+            data.Id = Guid.NewGuid().ToString();
+            await this.unitOfWork.LogEstadoRepository.Add(data);
+            await this.unitOfWork.SaveChangesAsync();
+            return new GenericResponse<bool>
+            {
+                Result = true
+            };
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    public async Task<GenericResponse<bool>> AddLogsEstado(LogEstado[] data)
+    {
+        try
+        {
+            foreach (var item in data)
+            {
+                item.Id = Guid.NewGuid().ToString();
+                await this.unitOfWork.LogEstadoRepository.Add(item);  
+                await this.unitOfWork.SaveChangesAsync();
+            }
+            return new GenericResponse<bool>
+            {
+                Result = true
+            };
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
 }

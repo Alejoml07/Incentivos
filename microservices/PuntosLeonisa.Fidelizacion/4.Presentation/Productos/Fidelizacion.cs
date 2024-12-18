@@ -28,6 +28,7 @@ using Azure.Storage.Blobs.Models;
 using Azure.Storage.Blobs;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Garantias;
 using PuntosLeonisa.Fidelizacion.Domain.Service.DTO.Usuarios;
+using PuntosLeonisa.Fidelizacion.Domain;
 
 namespace Usuarioos
 {
@@ -1616,6 +1617,48 @@ namespace Usuarioos
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var data = JsonConvert.DeserializeObject<EventoContenido>(requestBody);
                 var response = await this.puntosApplication.GetEventoContenidoByEvento(data);
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los datos:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("AddLogEstado")]
+        [OpenApiOperation(operationId: "AddLogEstado", tags: new[] { "AddLogEstado" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Datos enviados correctamente")]
+        public async Task<IActionResult> AddLogEstado(
+       [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/AddLogEstado")] HttpRequest req, ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<LogEstado>(requestBody);
+                var response = await this.puntosApplication.AddLogEstado(data);
+                return new OkObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return GetFunctionError(log, "Error al obtener los datos:" + DateTime.UtcNow.ToString(), ex);
+            }
+        }
+
+        [FunctionName("AddLogsEstado")]
+        [OpenApiOperation(operationId: "AddLogsEstado", tags: new[] { "AddLogsEstado" })]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(GenericResponse<>), Description = "Datos enviados correctamente")]
+        public async Task<IActionResult> AddLogsEstado(
+       [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "fidelizacion/AddLogsEstado")] HttpRequest req, ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            try
+            {
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<LogEstado[]>(requestBody);
+                var response = await this.puntosApplication.AddLogsEstado(data);
                 return new OkObjectResult(response);
             }
             catch (Exception ex)

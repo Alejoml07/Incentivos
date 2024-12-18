@@ -94,7 +94,7 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
                     var email = new EmailDTO()
                     {
                         Message = data.GenerarHTML(),
-                        Recipients = new string[] {data?.Usuario?.Email, "svelezs@dissensas.com" }, //,"svelezs@dissensas.com"
+                        Recipients = new string[] {data?.Usuario?.Email}, //,"svelezs@dissensas.com"
                         Subject = "Redención de premio"
                     };
                     var response = this.httpClientAgent.SendMail(email);
@@ -205,7 +205,7 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
                 var email = new EmailDTO()
                 {
                     Message = data.GenerarHTMLGarantia(),
-                    Recipients = new string[] {data.Email, "dalzate@votre.com.co" }, //,"dalzate@votre.com.co" 
+                    Recipients = new string[] {data.Email}, //,"dalzate@votre.com.co" 
                     Subject = "Cambio estado garantia"
                 };
                 var response = this.httpClientAgent.SendMail(email);
@@ -227,7 +227,7 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
                     var email = new EmailDTO()
                     {
                         Message = data.GenerarHTMLGarantiaEnviada(data),
-                        Recipients = new string[] { data.Email, CorreoProveedor, "dalzate@votre.com.co", "sburgos@votre.com.co" }, //,"dalzate@votre.com.co", "sburgos@votre.com.co"
+                        Recipients = new string[] { data.Email, CorreoProveedor}, //,"dalzate@votre.com.co", "sburgos@votre.com.co"
                         Subject = "Petición garantía rechazada"
                     };
                     var response = this.httpClientAgent.SendMail(email);
@@ -239,7 +239,7 @@ namespace PuntosLeonisa.Fd.Infrastructure.ExternalService.Services
                     var email = new EmailDTO()
                     {
                         Message = data.GenerarHTMLGarantiaEnviada(data),
-                        Recipients = new string[] { data.Email, CorreoProveedor, "dalzate@votre.com.co", "sburgos@votre.com.co" }, //"dalzate@votre.com.co", "sburgos@votre.com.co"
+                        Recipients = new string[] { data.Email, CorreoProveedor}, //"dalzate@votre.com.co", "sburgos@votre.com.co"
                         Subject = "Petición garantía exitosa"
                     };
                     var response = this.httpClientAgent.SendMail(email);

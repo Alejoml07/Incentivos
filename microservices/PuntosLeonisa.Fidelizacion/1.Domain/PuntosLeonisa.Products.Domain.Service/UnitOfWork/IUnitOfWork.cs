@@ -23,6 +23,7 @@ namespace PuntosLeonisa.Fidelizacion.Domain.Service.UnitOfWork
         IPuntoDeVentaRepository PuntoDeVentaRepository { get; }
         ISeguimientoLiquidacionRepository SeguimientoLiquidacionRepository { get; }
         IEventoContenidoRepository EventoContenidoRepository { get; }
+        ILogEstadoRepository LogEstadoRepository { get; }
 
 
 

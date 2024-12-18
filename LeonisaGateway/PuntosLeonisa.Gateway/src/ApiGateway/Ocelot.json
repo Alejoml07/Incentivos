@@ -1865,6 +1865,60 @@
       },
       "Key": "GetSeguimientoLiquidacionRoute"
     },
+
+    {
+      "DownstreamPathTemplate": "/api/PuntosDeVenta/EliminarExcels",
+      "UpstreamPathTemplate": "/api/PuntosDeVenta/EliminarExcels",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizaciondev.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "EliminarExcelsRoute"
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/fidelizacion/AddLogEstado",
+      "UpstreamPathTemplate": "/api/fidelizacion/AddLogEstado",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizaciondev.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "AddLogEstadoRoute"
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/fidelizacion/AddLogsEstado",
+      "UpstreamPathTemplate": "/api/fidelizacion/AddLogsEstado",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "azfidelizaciondev.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "Key": "AddLogsEstadoRoute"
+    },
     //Fin Liquidacion Puntos Mes
     //Scanner
     {

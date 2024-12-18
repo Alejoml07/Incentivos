@@ -26,6 +26,7 @@ public class UnitOfWork : IUnitOfWork
     private IGarantiaRepository _garantiaRepository;
     private ISeguimientoLiquidacionRepository _seguimientoLiquidacionRepository;
     private IEventoContenidoRepository _eventoContenidoRepository;
+    private ILogEstadoRepository _logEstadoRepository;
 
 
 
@@ -184,6 +185,15 @@ public class UnitOfWork : IUnitOfWork
         {
             _eventoContenidoRepository ??= new EventoContenidoRepository(_fidelizacionContext);
             return _eventoContenidoRepository;
+        }
+    }
+
+    public ILogEstadoRepository LogEstadoRepository
+    {
+        get
+        {
+            _logEstadoRepository ??= new LogEstadoRepository(_fidelizacionContext);
+            return _logEstadoRepository;
         }
     }
 
